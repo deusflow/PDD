@@ -29,6 +29,7 @@ interface ActiveQuizSession {
   key: string;
   title: string;
   subtitle?: string;
+  moduleId?: number;
   questions: TeoriQuestion[];
   requeueFailures: boolean;
 }
@@ -57,11 +58,10 @@ export const App: React.FC = () => {
   const [appState, setAppState] = useState<UserAppState>(() => StorageManager.load());
   const [activeTab, setActiveTab] = useState<ActiveTab>('dashboard');
   const [selectedModuleId, setSelectedModuleId] = useState<number>(1);
+  const [modulesViewMode, setModulesViewMode] = useState<'list' | 'lesson'>('list');
   const [dictionaryCategory, setDictionaryCategory] = useState<CategoryFilter>('all');
   const [activeSession, setActiveSession] = useState<ActiveQuizSession | null>(null);
-  const [isOnboardingOpen, setIsOnboardingOpen] = useState<boolean>(
-    () => !StorageManager.load().hasSeenOnboarding
-  );
+  const [isOnboardingOpen, setIsOnboardingOpen] = useState<boolean>(false);
   const [isBackupOpen, setIsBackupOpen] = useState<boolean>(false);
 
   // Persist to localStorage whenever appState updates
@@ -112,7 +112,11 @@ export const App: React.FC = () => {
     if (tab === 'dictionary') {
       setDictionaryCategory('all');
     }
+    if (tab === 'modules') {
+      setModulesViewMode('list');
+    }
     setActiveTab(tab);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleRecordResult = (itemId: string, isAllCorrect: boolean): SRSRecord => {
@@ -142,21 +146,25 @@ export const App: React.FC = () => {
       questions: selected,
       requeueFailures: true,
     });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleStartCustomSession = (
     title: string,
     subtitle: string,
-    questions: TeoriQuestion[]
+    questions: TeoriQuestion[],
+    moduleId?: number
   ) => {
     danishSpeech.stop();
     setActiveSession({
       key: `custom_${Date.now()}`,
       title,
       subtitle,
+      moduleId,
       questions,
       requeueFailures: true,
     });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleCompleteSession = () => {
@@ -186,16 +194,56 @@ export const App: React.FC = () => {
     });
   };
 
-  const handleOpenModuleFromDashboard = (moduleId: number) => {
+  const handleOpenLessonsList = () => {
+    danishSpeech.stop();
+    setModulesViewMode('list');
+    setActiveTab('modules');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleContinueLesson = (moduleId: number) => {
     danishSpeech.stop();
     setSelectedModuleId(moduleId);
+    setModulesViewMode('lesson');
     setActiveTab('modules');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleContinueToNextModule = (nextModuleId: number) => {
+    danishSpeech.stop();
+    setActiveSession(null);
+    setSelectedModuleId(nextModuleId);
+    setModulesViewMode('lesson');
+    setActiveTab('modules');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleReturnToLessons = () => {
+    danishSpeech.stop();
+    setActiveSession(null);
+    setModulesViewMode('list');
+    setActiveTab('modules');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleOpenExam = () => {
+    danishSpeech.stop();
+    setActiveTab('exam');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleOpenSignsAndKontrol = () => {
     danishSpeech.stop();
     setDictionaryCategory('sign_kontrol');
     setActiveTab('dictionary');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleOpenDictionary = () => {
+    danishSpeech.stop();
+    setDictionaryCategory('all');
+    setActiveTab('dictionary');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleRestoreState = (next: UserAppState) => {
@@ -212,6 +260,7 @@ export const App: React.FC = () => {
     <div className="min-h-screen bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100">
       <Header
         activeTab={activeTab}
+        inActiveSession={Boolean(activeSession)}
         onTabChange={handleTabChange}
         languageMode={appState.languageMode}
         onLanguageModeChange={handleLanguageChange}
@@ -228,15 +277,22 @@ export const App: React.FC = () => {
             key={activeSession.key}
             title={activeSession.title}
             subtitle={activeSession.subtitle}
+            moduleId={activeSession.moduleId}
             initialQuestions={activeSession.questions}
             srsMap={appState.srs}
             languageMode={appState.languageMode}
             requeueFailuresInSession={activeSession.requeueFailures}
             onRecordResult={handleRecordResult}
             onCompleteSession={handleCompleteSession}
+            onContinueToNextModule={handleContinueToNextModule}
+            onReturnToLessons={
+              activeSession.moduleId !== undefined ? handleReturnToLessons : undefined
+            }
+            onRestartWithQuestions={handleStartCustomSession}
             onExit={() => {
               danishSpeech.stop();
               setActiveSession(null);
+              setActiveTab('dashboard');
             }}
           />
         ) : (
@@ -244,18 +300,21 @@ export const App: React.FC = () => {
             {activeTab === 'dashboard' && (
               <DashboardView
                 srsMap={appState.srs}
-                languageMode={appState.languageMode}
                 sessionsCompleted={appState.sessionsCompleted}
                 onStartSmartSession={handleStartSmartSession}
                 onStartCustomSession={handleStartCustomSession}
-                onOpenModule={handleOpenModuleFromDashboard}
+                onOpenLessonsList={handleOpenLessonsList}
+                onContinueLesson={handleContinueLesson}
+                onOpenExam={handleOpenExam}
                 onOpenSignsAndKontrol={handleOpenSignsAndKontrol}
+                onOpenDictionary={handleOpenDictionary}
               />
             )}
 
             {activeTab === 'modules' && (
               <ModulesView
                 selectedModuleId={selectedModuleId}
+                initialViewMode={modulesViewMode}
                 onSelectModule={setSelectedModuleId}
                 srsMap={appState.srs}
                 languageMode={appState.languageMode}

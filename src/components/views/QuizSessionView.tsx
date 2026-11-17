@@ -20,12 +20,21 @@ import { TrafficSceneSVG } from '../visuals/TrafficSceneSVG';
 interface QuizSessionViewProps {
   title: string;
   subtitle?: string;
+  moduleId?: number;
   initialQuestions: TeoriQuestion[];
   srsMap: Record<string, SRSRecord>;
   languageMode: LanguageMode;
   requeueFailuresInSession?: boolean;
   onRecordResult: (questionId: string, isAllCorrect: boolean) => SRSRecord;
   onCompleteSession: () => void;
+  onContinueToNextModule?: (nextModuleId: number) => void;
+  onReturnToLessons?: () => void;
+  onRestartWithQuestions?: (
+    title: string,
+    subtitle: string,
+    questions: TeoriQuestion[],
+    moduleId?: number
+  ) => void;
   onExit: () => void;
 }
 
@@ -38,12 +47,16 @@ interface SessionHistoryItem {
 export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
   title,
   subtitle,
+  moduleId,
   initialQuestions,
   srsMap,
   languageMode,
   requeueFailuresInSession = true,
   onRecordResult,
   onCompleteSession,
+  onContinueToNextModule,
+  onReturnToLessons,
+  onRestartWithQuestions,
   onExit,
 }) => {
   const [queue, setQueue] = useState<Array<{ question: TeoriQuestion; isRetry: boolean }>>(() =>
@@ -82,7 +95,7 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
           className="mt-4 inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-4 py-2 text-sm font-semibold text-white dark:bg-zinc-100 dark:text-zinc-900"
         >
           <ArrowLeft className="h-4 w-4" />
-          Назад
+          В главное меню
         </button>
       </div>
     );
@@ -94,6 +107,12 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
     const passedCount = firstPassAttempts.filter((h) => h.passed).length;
     const totalCount = firstPassAttempts.length;
     const retriesCount = history.filter((h) => h.wasRetry).length;
+    const failedInThisSession = firstPassAttempts
+      .filter((h) => !h.passed)
+      .map((h) => h.question);
+
+    const hasNextModule =
+      moduleId !== undefined && moduleId < 8 && Boolean(onContinueToNextModule);
 
     return (
       <div className="mx-auto max-w-2xl space-y-6 animate-slide-up">
@@ -104,7 +123,7 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
             </div>
             <div>
               <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">
-                Тренировка завершена
+                {moduleId ? `Тест Урока ${moduleId} завершён` : 'Тренировка завершена'}
               </h2>
               <p className="text-xs text-zinc-500 dark:text-zinc-400">{title}</p>
             </div>
@@ -139,9 +158,9 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
 
           <div className="mt-6 space-y-2">
             <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-              Итоговый статус карточек (SRS)
+              Итоги по билетам
             </h3>
-            <div className="max-h-64 space-y-2 overflow-y-auto pr-1">
+            <div className="max-h-60 space-y-2 overflow-y-auto pr-1">
               {firstPassAttempts.map((item, idx) => {
                 const rec = getSRSRecord(srsMap, item.question.id);
                 const meta = BOX_META[rec.box];
@@ -157,7 +176,9 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
                         <XCircle className="h-4 w-4 shrink-0 text-rose-500" />
                       )}
                       <span className="truncate text-xs font-medium text-zinc-800 dark:text-zinc-200">
-                        {item.question.situationDa}
+                        {languageMode !== 'da_only'
+                          ? item.question.situationRu
+                          : item.question.situationDa}
                       </span>
                     </div>
                     <span
@@ -171,13 +192,58 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
             </div>
           </div>
 
-          <button
-            type="button"
-            onClick={onExit}
-            className="mt-6 w-full rounded-2xl bg-zinc-900 py-3 text-sm font-semibold text-white transition-colors hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
-          >
-            Вернуться к обзору
-          </button>
+          {/* Guided Next Step Actions */}
+          <div className="mt-6 space-y-2.5">
+            {hasNextModule && moduleId !== undefined && onContinueToNextModule && (
+              <button
+                type="button"
+                onClick={() => onContinueToNextModule(moduleId + 1)}
+                className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-emerald-600 py-3.5 text-sm font-bold text-white shadow-sm transition-colors hover:bg-emerald-500"
+              >
+                <span>Перейти к следующему уроку (Урок {moduleId + 1})</span>
+                <ArrowRight className="h-4 w-4" />
+              </button>
+            )}
+
+            {failedInThisSession.length > 0 && onRestartWithQuestions && (
+              <button
+                type="button"
+                onClick={() =>
+                  onRestartWithQuestions(
+                    moduleId
+                      ? `Исправление ошибок Урока ${moduleId}`
+                      : 'Повтор билетов с ошибками',
+                    `Повторное закрепление (${failedInThisSession.length} вопр.)`,
+                    failedInThisSession,
+                    moduleId
+                  )
+                }
+                className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-rose-200 bg-rose-50 py-3 text-sm font-bold text-rose-700 transition-colors hover:bg-rose-100 dark:border-rose-900/60 dark:bg-rose-950/40 dark:text-rose-300"
+              >
+                <RotateCcw className="h-4 w-4" />
+                <span>Повторить только билеты с ошибками ({failedInThisSession.length})</span>
+              </button>
+            )}
+
+            <div className="flex flex-col gap-2 sm:flex-row">
+              {onReturnToLessons && (
+                <button
+                  type="button"
+                  onClick={onReturnToLessons}
+                  className="flex-1 rounded-2xl border border-zinc-200 bg-white py-3 text-xs font-semibold text-zinc-800 transition-colors hover:bg-zinc-50 sm:text-sm dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
+                >
+                  К списку уроков
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={onExit}
+                className="flex-1 rounded-2xl bg-zinc-900 py-3 text-xs font-semibold text-white transition-colors hover:bg-zinc-800 sm:text-sm dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+              >
+                В главное меню
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -310,7 +376,7 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
       {/* Main Question Card */}
       <div className="nordic-card overflow-hidden p-4 sm:p-6">
         <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-          <span className="nordic-pill">Модуль {question.moduleId}</span>
+          <span className="nordic-pill">Урок {question.moduleId}</span>
           <span
             className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[11px] font-semibold ${boxMeta.badgeClass}`}
           >

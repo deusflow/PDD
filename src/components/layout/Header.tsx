@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  ArrowLeft,
   BookOpen,
   Compass,
   FileCheck2,
@@ -14,6 +15,7 @@ import { ActiveTab, LanguageMode, ThemeMode } from '../../types';
 
 interface HeaderProps {
   activeTab: ActiveTab;
+  inActiveSession?: boolean;
   onTabChange: (tab: ActiveTab) => void;
   languageMode: LanguageMode;
   onLanguageModeChange: (mode: LanguageMode) => void;
@@ -27,25 +29,25 @@ interface HeaderProps {
 const TABS: Array<{ id: ActiveTab; label: string; shortLabel: string; icon: React.ReactNode }> = [
   {
     id: 'dashboard',
-    label: 'Умная тренировка',
-    shortLabel: 'Обзор',
+    label: 'Меню',
+    shortLabel: 'Меню',
     icon: <Compass className="h-4 w-4" />,
   },
   {
     id: 'modules',
-    label: '8 модулей',
-    shortLabel: 'Темы',
+    label: 'Уроки (8 тем)',
+    shortLabel: 'Уроки',
     icon: <BookOpen className="h-4 w-4" />,
   },
   {
     id: 'exam',
-    label: 'Экзамен 25',
+    label: 'Экзамен',
     shortLabel: 'Экзамен',
     icon: <FileCheck2 className="h-4 w-4" />,
   },
   {
     id: 'dictionary',
-    label: 'Словарь & Шпаргалка',
+    label: 'Словарь и знаки',
     shortLabel: 'Словарь',
     icon: <Search className="h-4 w-4" />,
   },
@@ -59,6 +61,7 @@ const LANG_OPTIONS: Array<{ id: LanguageMode; label: string; hint: string }> = [
 
 export const Header: React.FC<HeaderProps> = ({
   activeTab,
+  inActiveSession = false,
   onTabChange,
   languageMode,
   onLanguageModeChange,
@@ -68,35 +71,51 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenBackup,
   dueBadgeCount,
 }) => {
+  const showBackToMenu = activeTab !== 'dashboard' || inActiveSession;
+
   return (
     <header className="sticky top-0 z-30 border-b border-zinc-200/80 bg-white/85 backdrop-blur-md dark:border-zinc-800/80 dark:bg-zinc-950/85">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         {/* Top bar */}
-        <div className="flex h-14 items-center justify-between gap-3">
-          {/* Brand */}
-          <button
-            type="button"
-            onClick={() => onTabChange('dashboard')}
-            className="flex items-center gap-2.5 text-left transition-opacity hover:opacity-85"
-          >
-            <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-rose-600 text-xs font-extrabold tracking-tight text-white shadow-sm">
-              DK
-            </span>
-            <div>
-              <div className="flex items-center gap-1.5 text-sm font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
-                <span>Kørekort B</span>
-                <span className="hidden rounded-md bg-zinc-100 px-1.5 py-0.5 text-[10px] font-semibold text-zinc-600 sm:inline-block dark:bg-zinc-800 dark:text-zinc-400">
-                  Færdselsstyrelsen
-                </span>
+        <div className="flex h-14 items-center justify-between gap-2 sm:gap-3">
+          {/* Left: Brand + Quick Return to Main Menu */}
+          <div className="flex items-center gap-2 sm:gap-3">
+            {showBackToMenu && (
+              <button
+                type="button"
+                onClick={() => onTabChange('dashboard')}
+                className="inline-flex h-8 items-center gap-1 rounded-xl border border-zinc-200 bg-zinc-50 px-2.5 text-xs font-semibold text-zinc-700 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
+                title="Вернуться в главное меню"
+              >
+                <ArrowLeft className="h-3.5 w-3.5" />
+                <span>Меню</span>
+              </button>
+            )}
+
+            <button
+              type="button"
+              onClick={() => onTabChange('dashboard')}
+              className="flex items-center gap-2 text-left transition-opacity hover:opacity-85"
+            >
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-rose-600 text-xs font-extrabold tracking-tight text-white shadow-sm">
+                DK
+              </span>
+              <div className={showBackToMenu ? 'hidden sm:block' : ''}>
+                <div className="flex items-center gap-1.5 text-sm font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+                  <span>Kørekort B</span>
+                  <span className="hidden rounded-md bg-zinc-100 px-1.5 py-0.5 text-[10px] font-semibold text-zinc-600 md:inline-block dark:bg-zinc-800 dark:text-zinc-400">
+                    Дания
+                  </span>
+                </div>
+                <p className="hidden text-[11px] text-zinc-500 sm:block dark:text-zinc-400">
+                  ПДД и техосмотр
+                </p>
               </div>
-              <p className="hidden text-[11px] text-zinc-500 sm:block dark:text-zinc-400">
-                Teoriprøven &amp; Kontrolprøven
-              </p>
-            </div>
-          </button>
+            </button>
+          </div>
 
           {/* Right Controls */}
-          <div className="flex items-center gap-1.5 sm:gap-2">
+          <div className="flex items-center gap-1.5">
             {/* Language Switcher */}
             <div
               className="flex items-center rounded-xl border border-zinc-200 bg-zinc-100/80 p-0.5 dark:border-zinc-800 dark:bg-zinc-900"
@@ -124,26 +143,26 @@ export const Header: React.FC<HeaderProps> = ({
               })}
             </div>
 
-            {/* Backup / Sync */}
+            {/* Backup / Sync (compact icon) */}
             <button
               type="button"
               onClick={onOpenBackup}
-              title="Бэкап / Перенос прогресса"
-              className="inline-flex h-8 items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-2.5 text-xs font-medium text-zinc-700 transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              title="Бэкап и перенос прогресса"
+              aria-label="Бэкап и перенос прогресса"
+              className="inline-flex h-8 w-8 items-center justify-center rounded-xl border border-zinc-200 bg-white text-zinc-600 transition-colors hover:bg-zinc-50 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
             >
-              <HardDriveDownload className="h-3.5 w-3.5" />
-              <span className="hidden md:inline">Бэкап / Перенос</span>
+              <HardDriveDownload className="h-4 w-4" />
             </button>
 
-            {/* Onboarding */}
+            {/* Onboarding / Guide (compact icon) */}
             <button
               type="button"
               onClick={onOpenOnboarding}
-              title="Как это работает?"
-              className="inline-flex h-8 items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-2.5 text-xs font-medium text-zinc-700 transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              title="Как работает тренажёр и правила экзамена?"
+              aria-label="Как работает тренажёр"
+              className="inline-flex h-8 w-8 items-center justify-center rounded-xl border border-zinc-200 bg-white text-zinc-600 transition-colors hover:bg-zinc-50 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
             >
-              <HelpCircle className="h-3.5 w-3.5" />
-              <span className="hidden lg:inline">Как это работает?</span>
+              <HelpCircle className="h-4 w-4" />
             </button>
 
             {/* Theme toggle */}
@@ -152,7 +171,7 @@ export const Header: React.FC<HeaderProps> = ({
               onClick={onThemeToggle}
               title={theme === 'dark' ? 'Светлая тема' : 'Тёмная тема'}
               aria-label="Переключить тему"
-              className="inline-flex h-8 w-8 items-center justify-center rounded-xl border border-zinc-200 bg-white text-zinc-600 transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              className="inline-flex h-8 w-8 items-center justify-center rounded-xl border border-zinc-200 bg-white text-zinc-600 transition-colors hover:bg-zinc-50 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
             >
               {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </button>
@@ -162,7 +181,7 @@ export const Header: React.FC<HeaderProps> = ({
         {/* 4-Tab Navigation */}
         <nav className="-mb-px flex gap-1 overflow-x-auto pb-1.5 pt-0.5 sm:gap-2" aria-label="Разделы">
           {TABS.map((tab) => {
-            const active = activeTab === tab.id;
+            const active = !inActiveSession && activeTab === tab.id;
             return (
               <button
                 key={tab.id}
