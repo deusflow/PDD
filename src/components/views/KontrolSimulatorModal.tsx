@@ -150,8 +150,8 @@ const KONTROL_QUESTIONS: KontrolQuestion[] = [
         da: 'Mindst 1,0 mm i tørt vejr.',
       },
       {
-        ru: 'Минимум 1,6 мм по основным канавкам (по индикаторам TWI), одинаковый тип шин на оси, правильное давление и отсутствие грыж/порезов.',
-        da: 'Mindst 1,6 mm hovedmønster (TWI-indikatorer), korrekt dæktryk og ingen skader/revner.',
+        ru: 'Минимум 1,6 мм по основным канавкам (по индикаторам TWI), одинаковый тип шин на всех 4 колёсах, правильное давление и отсутствие грыж/порезов.',
+        da: 'Mindst 1,6 mm hovedmønster (TWI-indikatorer), samme dæktype på alle 4 hjul, korrekt dæktryk og ingen skader/revner.',
       },
       {
         ru: 'Главное, чтобы на передней оси были зимние шины, на задней — летние.',

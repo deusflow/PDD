@@ -25,6 +25,7 @@ import { SpeakButton } from '../common/SpeakButton';
 import { LessonTheory } from '../course/LessonTheory';
 import { CarTechnicalSVG } from '../visuals/CarTechnicalSVG';
 import { DanishRoadSignSVG } from '../visuals/DanishRoadSignSVG';
+import { DictionaryVisualThumbnail } from '../visuals/DictionaryVisualThumbnail';
 import { LessonHeroIllustration } from '../visuals/LessonHeroIllustration';
 
 interface ModulesViewProps {
@@ -575,15 +576,7 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
                         </div>
 
                         <div className="flex items-start gap-3">
-                          {entry.signCode && (
-                            <div className="shrink-0">
-                              <DanishRoadSignSVG
-                                code={entry.signCode}
-                                subPlaque={entry.subPlaque}
-                                size={56}
-                              />
-                            </div>
-                          )}
+                          <DictionaryVisualThumbnail entry={entry} size="sm" />
                           <div className="min-w-0 flex-1 space-y-1.5">
                             <BilingualText
                               da={entry.da}
