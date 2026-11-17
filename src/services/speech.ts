@@ -29,6 +29,14 @@ class DanishSpeechService {
     return this.currentId;
   }
 
+  public getVoiceStatus(): 'ready' | 'missing_da' | 'loading' {
+    if (!this.isSupported()) return 'missing_da';
+    const voices =
+      this.cachedVoices.length > 0 ? this.cachedVoices : window.speechSynthesis.getVoices();
+    if (voices.length === 0) return 'loading';
+    return this.getDanishVoice() ? 'ready' : 'missing_da';
+  }
+
   public subscribe(listener: SpeechListener): () => void {
     this.listeners.add(listener);
     return () => {

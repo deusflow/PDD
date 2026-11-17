@@ -3,7 +3,7 @@ import { CheckCircle2, RotateCw, XCircle } from 'lucide-react';
 import { DICTIONARY_ENTRIES } from '../../data/signsAndGlossary';
 import { DictionaryEntry, LanguageMode } from '../../types';
 import { SpeakButton } from '../common/SpeakButton';
-import { DanishRoadSignSVG } from '../visuals/DanishRoadSignSVG';
+import { DictionaryVisualThumbnail } from '../visuals/DictionaryVisualThumbnail';
 
 interface LessonFlashcardsProps {
   entryIds: string[];
@@ -123,15 +123,7 @@ export const LessonFlashcards: React.FC<LessonFlashcardsProps> = ({
             </div>
 
             <div className="my-auto flex flex-col items-center py-4 text-center">
-              {card.signCode && (
-                <div className="mb-4">
-                  <DanishRoadSignSVG
-                    code={card.signCode}
-                    subPlaque={card.subPlaque}
-                    size={104}
-                  />
-                </div>
-              )}
+              <DictionaryVisualThumbnail entry={card} size="lg" />
               <div className="text-xl font-semibold tracking-tight text-zinc-900 sm:text-2xl dark:text-zinc-100">
                 {card.da}
               </div>

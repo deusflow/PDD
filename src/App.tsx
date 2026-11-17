@@ -1,13 +1,29 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { BackupSyncModal } from './components/layout/BackupSyncModal';
+import React, { Suspense, lazy, useEffect, useMemo, useState } from 'react';
 import { Header } from './components/layout/Header';
-import { OnboardingModal } from './components/layout/OnboardingModal';
-import { CourseView } from './components/views/CourseView';
 import { DashboardView } from './components/views/DashboardView';
-import { CategoryFilter, DictionaryView } from './components/views/DictionaryView';
-import { ExamSimulatorView } from './components/views/ExamSimulatorView';
-import { ModulesView } from './components/views/ModulesView';
-import { QuizSessionView } from './components/views/QuizSessionView';
+import type { CategoryFilter } from './components/views/DictionaryView';
+
+const BackupSyncModal = lazy(() =>
+  import('./components/layout/BackupSyncModal').then((m) => ({ default: m.BackupSyncModal }))
+);
+const OnboardingModal = lazy(() =>
+  import('./components/layout/OnboardingModal').then((m) => ({ default: m.OnboardingModal }))
+);
+const CourseView = lazy(() =>
+  import('./components/views/CourseView').then((m) => ({ default: m.CourseView }))
+);
+const ModulesView = lazy(() =>
+  import('./components/views/ModulesView').then((m) => ({ default: m.ModulesView }))
+);
+const ExamSimulatorView = lazy(() =>
+  import('./components/views/ExamSimulatorView').then((m) => ({ default: m.ExamSimulatorView }))
+);
+const DictionaryView = lazy(() =>
+  import('./components/views/DictionaryView').then((m) => ({ default: m.DictionaryView }))
+);
+const QuizSessionView = lazy(() =>
+  import('./components/views/QuizSessionView').then((m) => ({ default: m.QuizSessionView }))
+);
 import { QUESTIONS_BANK } from './data/questionsBank';
 import { DICTIONARY_ENTRIES } from './data/signsAndGlossary';
 import {
@@ -398,7 +414,14 @@ export const App: React.FC = () => {
       />
 
       <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8">
-        {activeSession ? (
+        <Suspense
+          fallback={
+            <div className="nordic-card mx-auto max-w-3xl p-8 text-center text-sm text-zinc-500 dark:text-zinc-400">
+              Загрузка раздела...
+            </div>
+          }
+        >
+          {activeSession ? (
           <QuizSessionView
             key={activeSession.key}
             mode="free"
@@ -509,17 +532,24 @@ export const App: React.FC = () => {
             )}
           </>
         )}
+        </Suspense>
       </main>
 
-      <OnboardingModal isOpen={isOnboardingOpen} onClose={handleCloseOnboarding} />
+      <Suspense fallback={null}>
+        {isOnboardingOpen && (
+          <OnboardingModal isOpen={isOnboardingOpen} onClose={handleCloseOnboarding} />
+        )}
 
-      <BackupSyncModal
-        isOpen={isBackupOpen}
-        onClose={() => setIsBackupOpen(false)}
-        appState={appState}
-        onRestoreState={handleRestoreState}
-        onResetAll={handleResetAll}
-      />
+        {isBackupOpen && (
+          <BackupSyncModal
+            isOpen={isBackupOpen}
+            onClose={() => setIsBackupOpen(false)}
+            appState={appState}
+            onRestoreState={handleRestoreState}
+            onResetAll={handleResetAll}
+          />
+        )}
+      </Suspense>
     </div>
   );
 };

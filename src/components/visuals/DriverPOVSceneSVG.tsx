@@ -945,6 +945,217 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
           </CockpitFrame>
         );
 
+      case 'pov_police_signal':
+        return (
+          <CockpitFrame skyColor="#BAE6FD">
+            <HorizonRoad withCenterDash={false} />
+            <polygon points="80,118 380,118 425,148 35,148" fill="#52525B" />
+            {/* Traffic light showing green behind officer (overridden!) */}
+            <rect x="336" y="42" width="22" height="54" rx="5" fill="#18181B" />
+            <circle cx="347" cy="54" r="5" fill="#450A0A" />
+            <circle cx="347" cy="69" r="5" fill="#422006" />
+            <circle cx="347" cy="84" r="5" fill="#22C55E" />
+            {/* Police officer in hi-vis vest raising arm STOP */}
+            <g transform="translate(230, 146)">
+              <ellipse cx="0" cy="22" rx="14" ry="4" fill="#09090B" opacity="0.28" />
+              <rect x="-8" y="-8" width="16" height="22" rx="4" fill="#FACC15" stroke="#0F172A" strokeWidth="1.5" />
+              <line x1="-8" y1="3" x2="8" y2="3" stroke="#0F172A" strokeWidth="2.5" />
+              <rect x="-6" y="12" width="5" height="11" fill="#0F172A" />
+              <rect x="1" y="12" width="5" height="11" fill="#0F172A" />
+              <circle cx="0" cy="-16" r="6" fill="#FED7AA" stroke="#0F172A" strokeWidth="1.2" />
+              <rect x="-6" y="-23" width="12" height="4" rx="1" fill="#0F172A" />
+              {/* Raised arm */}
+              <path d="M 8 -4 L 18 -24" stroke="#0F172A" strokeWidth="4" strokeLinecap="round" />
+            </g>
+            <BadgePill x={14} y={16} text="Жест полицейского ОТМЕНЯЕТ зелёный свет!" tone="warn" />
+          </CockpitFrame>
+        );
+
+      case 'pov_green_arrow_signal':
+        return (
+          <CockpitFrame skyColor="#BAE6FD">
+            <HorizonRoad withCenterDash />
+            <polygon points="80,118 380,118 425,148 35,148" fill="#52525B" />
+            <FrontCar x={188} y={136} scale={0.72} color="#E11D48" />
+            {/* Traffic light with green arrow */}
+            <g transform="translate(332, 34)">
+              <rect x="0" y="0" width="32" height="82" rx="8" fill="#18181B" stroke="#52525B" strokeWidth="1.5" />
+              <circle cx="16" cy="17" r="8" fill="#450A0A" />
+              <circle cx="16" cy="41" r="8" fill="#422006" />
+              <circle cx="16" cy="65" r="9" fill="#064E3B" />
+              <path d="M 21 65 L 11 65 M 15 60 L 10 65 L 15 70" fill="none" stroke="#4ADE80" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+            </g>
+            <BadgePill x={14} y={16} text="Зелёная стрелка = встречные СТОЯТ на красный!" tone="teal" />
+          </CockpitFrame>
+        );
+
+      case 'pov_rail_no_barrier':
+        return (
+          <CockpitFrame skyColor="#DBEAFE">
+            <HorizonRoad withCenterDash={false} />
+            {/* Railway tracks crossing road */}
+            <rect x="0" y="138" width="460" height="22" fill="#78716C" />
+            <line x1="0" y1="143" x2="460" y2="143" stroke="#18181B" strokeWidth="3.5" />
+            <line x1="0" y1="155" x2="460" y2="155" stroke="#18181B" strokeWidth="3.5" />
+            {/* Red flashing warning post + St. Andrew's cross */}
+            <g transform="translate(342, 48)">
+              <rect x="-2" y="28" width="4" height="92" fill="#71717A" />
+              <line x1="-18" y1="4" x2="18" y2="26" stroke="#FFFFFF" strokeWidth="7" strokeLinecap="round" />
+              <line x1="18" y1="4" x2="-18" y2="26" stroke="#FFFFFF" strokeWidth="7" strokeLinecap="round" />
+              <line x1="-18" y1="4" x2="18" y2="26" stroke="#DC2626" strokeWidth="4" strokeLinecap="round" />
+              <line x1="18" y1="4" x2="-18" y2="26" stroke="#DC2626" strokeWidth="4" strokeLinecap="round" />
+              <rect x="-14" y="34" width="28" height="42" rx="6" fill="#18181B" />
+              <circle cx="0" cy="46" r="6" fill="#EF4444" />
+              <circle cx="0" cy="64" r="5" fill="#F8FAFC" opacity="0.4" />
+            </g>
+            <BadgePill x={14} y={16} text="Без шлагбаума: красный огонь = ПОЛНЫЙ СТОП!" tone="warn" />
+            <BadgePill x={14} y={46} text="Ехать можно только когда огонь ПОГАС" tone="dark" />
+          </CockpitFrame>
+        );
+
+      case 'pov_motorway_exit_frakoersel':
+        return (
+          <CockpitFrame skyColor="#7DD3FC">
+            <HorizonRoad withCenterDash />
+            {/* Right deceleration exit branch */}
+            <polygon points="274,108 308,108 446,204 374,218" fill="#475569" />
+            <line x1="274" y1="108" x2="374" y2="218" stroke="#FFFFFF" strokeWidth="3" strokeDasharray="8 8" />
+            {/* Overhead green exit gantry */}
+            <rect x="200" y="20" width="210" height="36" rx="6" fill="#047857" stroke="#FFFFFF" strokeWidth="2" />
+            <path d="M 305 30 L 305 46 M 298 40 L 305 47 L 312 40" stroke="#FFFFFF" strokeWidth="3" strokeLinecap="round" fill="none" />
+            <FrontCar x={204} y={136} scale={0.72} color="#475569" />
+            <BadgePill x={14} y={16} text="Съезд (Frakørsel): тормозите на полосе съезда!" tone="teal" />
+            <BadgePill x={14} y={46} text="На автобане: всегда держитесь правой полосы" tone="dark" />
+          </CockpitFrame>
+        );
+
+      case 'pov_winter_glatbane_esp':
+        return (
+          <CockpitFrame skyColor="#CBD5E1">
+            {/* Snowy / icy ground & slick curve */}
+            <rect x="0" y="98" width="460" height="152" fill="#E2E8F0" opacity="0.88" />
+            <polygon points="185,98 275,98 445,220 15,220" fill="#64748B" />
+            <line x1="230" y1="98" x2="230" y2="215" stroke="#FFFFFF" strokeWidth="3" strokeDasharray="10 10" />
+            {/* Icy shimmer patch */}
+            <ellipse cx="240" cy="166" rx="76" ry="20" fill="#BAE6FD" opacity="0.55" />
+            <FrontCar x={234} y={144} scale={0.8} color="#0284C7" brake />
+            <BadgePill x={14} y={16} text="Гололёд (Glatbane) и крутой спуск: низкая передача!" tone="warn" />
+            <BadgePill x={14} y={46} text="ABS даёт рулить · ESP гасит занос" tone="teal" />
+          </CockpitFrame>
+        );
+
+      case 'pov_tunnel_lights':
+        return (
+          <CockpitFrame night>
+            <HorizonRoad withCenterDash />
+            {/* Arched tunnel portal */}
+            <path d="M 85 210 L 85 110 A 145 78 0 0 1 375 110 L 375 210" fill="none" stroke="#94A3B8" strokeWidth="14" />
+            <circle cx="165" cy="56" r="4" fill="#FDE047" />
+            <circle cx="230" cy="48" r="4" fill="#FDE047" />
+            <circle cx="295" cy="56" r="4" fill="#FDE047" />
+            <FrontCar x={230} y={144} scale={0.76} color="#64748B" />
+            <BadgePill x={14} y={16} text="В туннеле: ОБЯЗАТЕЛЬНО включите Nærlys (ближний)!" tone="warn" />
+            <BadgePill x={14} y={46} text="Снимите солнцезащитные очки · Разворот запрещён" tone="dark" />
+          </CockpitFrame>
+        );
+
+      case 'pov_vanvidskorsel_law':
+        return (
+          <CockpitFrame night>
+            <HorizonRoad withCenterDash />
+            <rect x="44" y="34" width="372" height="148" rx="16" fill="#0F172A" fillOpacity="0.92" stroke="#EF4444" strokeWidth="2" />
+            <text x="230" y="64" textAnchor="middle" fill="#FCA5A5" fontSize="13.5" fontWeight="800">
+              VANVIDSKØRSEL = КОНФИСКАЦИЯ АВТО!
+            </text>
+            <text x="230" y="96" textAnchor="middle" fill="#FFFFFF" fontSize="11.5" fontWeight="700">
+              • Скорость &gt; 200 км/ч ИЛИ ≥ +100% (при &gt;100 км/ч)
+            </text>
+            <text x="230" y="122" textAnchor="middle" fill="#FFFFFF" fontSize="11.5" fontWeight="700">
+              • Алкоголь &gt; 2,00‰ (даже на чужой машине!)
+            </text>
+            <text x="230" y="152" textAnchor="middle" fill="#FDE68A" fontSize="10.5" fontWeight="600">
+              Штраф + тюрьма + лишение прав + продажа авто на аукционе
+            </text>
+          </CockpitFrame>
+        );
+
+      case 'pov_child_seat_airbag':
+        return (
+          <CockpitFrame skyColor="#BAE6FD">
+            <HorizonRoad withCenterDash />
+            <rect x="34" y="32" width="392" height="156" rx="16" fill="#0F172A" fillOpacity="0.9" stroke="#38BDF8" strokeWidth="1.8" />
+            <text x="230" y="62" textAnchor="middle" fill="#5EEAD4" fontSize="13.5" fontWeight="800">
+              Дети (&lt; 135 см) и подушка безопасности
+            </text>
+            <text x="230" y="94" textAnchor="middle" fill="#FFFFFF" fontSize="11.5" fontWeight="700">
+              Автокресло / бустер обязательны до роста 135 см
+            </text>
+            <text x="230" y="122" textAnchor="middle" fill="#FCA5A5" fontSize="11.5" fontWeight="700">
+              Спереди спиной вперёд = AIRBAG ОБЯЗАТЕЛЬНО ОТКЛЮЧИТЬ!
+            </text>
+            <text x="230" y="152" textAnchor="middle" fill="#CBD5E1" fontSize="10.5" fontWeight="600">
+              Водитель отвечает за пристёгивание всех пассажиров до 15 лет
+            </text>
+          </CockpitFrame>
+        );
+
+      case 'pov_horn_warning_only':
+        return (
+          <CockpitFrame skyColor="#BAE6FD">
+            <HorizonRoad withCenterDash withCykelsti="solid" />
+            <CyclistPOV x={316} y={162} scale={0.95} />
+            <FrontCar x={198} y={138} scale={0.76} color="#475569" brake />
+            <BadgePill x={14} y={16} text="Звуковой сигнал (Horn): ТОЛЬКО для предотвращения ДТП!" tone="warn" />
+            <BadgePill x={14} y={46} text="Вне города при угрозе допускается световой/звуковой" tone="teal" />
+          </CockpitFrame>
+        );
+
+      case 'pov_horse_rider_slow':
+        return (
+          <CockpitFrame skyColor="#7DD3FC">
+            <HorizonRoad withCenterDash />
+            {/* Stylized horse & rider silhouette on right shoulder */}
+            <g transform="translate(318, 152)">
+              <ellipse cx="0" cy="22" rx="16" ry="4" fill="#09090B" opacity="0.28" />
+              <rect x="-14" y="-8" width="28" height="14" rx="5" fill="#78350F" />
+              <rect x="-11" y="4" width="4" height="16" fill="#78350F" />
+              <rect x="7" y="4" width="4" height="16" fill="#78350F" />
+              <path d="M 8 -6 L 16 -22 L 22 -18" stroke="#78350F" strokeWidth="6" strokeLinecap="round" fill="none" />
+              {/* Rider */}
+              <circle cx="-2" cy="-22" r="5" fill="#F59E0B" stroke="#18181B" strokeWidth="1.2" />
+              <rect x="-6" y="-17" width="8" height="11" rx="3" fill="#0D9488" />
+            </g>
+            {/* Wide safe passing arc */}
+            <path d="M 225 192 Q 202 150 218 118" fill="none" stroke="#4ADE80" strokeWidth="3.5" strokeDasharray="6 4" />
+            <BadgePill x={14} y={16} text="Всадники: снизить скорость + широкий интервал" tone="teal" />
+            <BadgePill x={14} y={46} text="ЗАПРЕЩЕНО сигналить и моргать дальним светом!" tone="warn" />
+          </CockpitFrame>
+        );
+
+      case 'pov_motorway_breakdown_100m':
+        return (
+          <CockpitFrame skyColor="#BAE6FD">
+            <HorizonRoad withCenterDash />
+            {/* Stopped car on right shoulder + warning triangle */}
+            <FrontCar x={338} y={142} scale={0.72} color="#EF4444" blinkLeft blinkRight />
+            <polygon points="354,174 366,194 342,194" fill="#FACC15" stroke="#DC2626" strokeWidth="3" strokeLinejoin="round" />
+            <BadgePill x={14} y={16} text="Поломка на автобане: съезд на Nødspor + жилет + за отбойник!" tone="warn" />
+            <BadgePill x={14} y={46} text="Треугольник на автобане: минимум 100 м позади" tone="teal" />
+          </CockpitFrame>
+        );
+
+      case 'pov_towing_max30':
+        return (
+          <CockpitFrame skyColor="#BAE6FD">
+            <HorizonRoad withCenterDash />
+            {/* Towed car behind lead car on street */}
+            <FrontCar x={230} y={136} scale={0.82} color="#475569" blinkLeft blinkRight />
+            <line x1="230" y1="150" x2="230" y2="188" stroke="#FACC15" strokeWidth="3.5" strokeDasharray="5 3" />
+            <BadgePill x={14} y={16} text="Буксировка (Slæbetov): макс. 30 км/ч · трос 2–4 м" tone="warn" />
+            <BadgePill x={14} y={46} text="На Motorvej и Motortrafikvej буксировка тросом ЗАПРЕЩЕНА!" tone="dark" />
+          </CockpitFrame>
+        );
+
       case 'pov_school_roadmap':
       default:
         return (

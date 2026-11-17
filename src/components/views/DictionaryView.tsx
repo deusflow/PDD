@@ -11,7 +11,7 @@ import { BOX_META, getSRSRecord } from '../../services/srsEngine';
 import { LanguageMode, SRSRecord } from '../../types';
 import { BilingualText } from '../common/BilingualText';
 import { SpeakButton } from '../common/SpeakButton';
-import { DanishRoadSignSVG } from '../visuals/DanishRoadSignSVG';
+import { DictionaryVisualThumbnail } from '../visuals/DictionaryVisualThumbnail';
 import { SignBlitzModal } from './SignBlitzModal';
 
 interface DictionaryViewProps {
@@ -221,15 +221,7 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({
                   </div>
 
                   <div className="flex items-start gap-3.5">
-                    {entry.signCode && (
-                      <div className="shrink-0 rounded-xl border border-zinc-200/80 bg-zinc-50 p-1.5 dark:border-zinc-800 dark:bg-zinc-950">
-                        <DanishRoadSignSVG
-                          code={entry.signCode}
-                          subPlaque={entry.subPlaque}
-                          size={60}
-                        />
-                      </div>
-                    )}
+                    <DictionaryVisualThumbnail entry={entry} size="sm" />
                     <div className="min-w-0 flex-1 space-y-1.5">
                       <BilingualText
                         da={entry.da}

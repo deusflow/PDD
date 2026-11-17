@@ -2286,7 +2286,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       'Вы едете со скоростью 110 км/ч по двухполосной автомагистрали и приближаетесь к своему съезду с полосой торможения.',
     visual: {
       type: 'scene',
-      presetId: 'motorway_merge_nodspor',
+      presetId: 'pov_motorway_exit_frakoersel',
       signCode: 'E42',
       captionDa: 'Motorvej: Placering til højre & Retardationsspor ved frakørsel',
       captionRu: 'Автомагистраль: правый ряд и полоса торможения на съезде',
@@ -2462,7 +2462,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       'Водитель едет ночью со скоростью 110 км/ч в городе (где ограничение 50 км/ч). Полиция останавливает его и предъявляет обвинение в vanvidskørsel («безумном вождении»).',
     visual: {
       type: 'scene',
-      presetId: 'alcohol_klip_law',
+      presetId: 'pov_vanvidskorsel_law',
       signCode: 'C55-50',
       captionDa: 'Vanvidskørsel & Konfiskation af bilen i Danmark',
       captionRu: 'Закон о vanvidskørsel и конфискация автомобиля в Дании',
@@ -3037,7 +3037,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       'Машина вашего друга заглохла в городе, и вы собираетесь отбуксировать её на гибком тросе в ближайший сервис.',
     visual: {
       type: 'scene',
-      presetId: 'pov_trailer_weight',
+      presetId: 'pov_towing_max30',
       maneuverBadge: 'Slæbning (буксировка) — особые ограничения скорости и дороги',
       captionDa: 'Regler for slæbning af havareret bil',
       captionRu: 'Правила буксировки неисправного автомобиля',
@@ -3648,7 +3648,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       'Вы подъезжаете к ж/д переезду без шлагбаумов, где мигают красные огни и звучит сирена.',
     visual: {
       type: 'scene',
-      presetId: 'railway_crossing',
+      presetId: 'pov_rail_no_barrier',
       captionDa: 'Jernbaneoverkørsel med røde blinklys',
       captionRu: 'Ж/д переезд с работающим красным светофором',
     },
@@ -3734,7 +3734,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       'У вашего автомобиля заглох двигатель на автобане, и вам удалось съехать на правую аварийную полосу (nødspor).',
     visual: {
       type: 'scene',
-      presetId: 'accident_triangle_112',
+      presetId: 'pov_motorway_breakdown_100m',
       captionDa: 'Motorstop i nødsporet på motorvejen',
       captionRu: 'Вынужденная остановка на аварийной полосе автобана',
     },
@@ -4615,7 +4615,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       'Вы в городе за машиной, которая задержалась на секунду на зелёном, а позже на трассе хотите предупредить об опасности.',
     visual: {
       type: 'scene',
-      presetId: 'curb_departure',
+      presetId: 'pov_horn_warning_only',
       captionDa: 'Korrekt brug af lydhorn og lyshorn i Danmark',
       captionRu: 'Правила применения звукового и светового сигнала в Дании',
     },
@@ -4701,7 +4701,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       'Вы едете по холмистой местности и начинаете затяжной крутой спуск на гружёной машине.',
     visual: {
       type: 'scene',
-      presetId: 'overtaking_hill_curve',
+      presetId: 'pov_winter_glatbane_esp',
       captionDa: 'Kørsel ned ad lang, stejl bakke',
       captionRu: 'Техника торможения на длинном крутом спуске',
     },
@@ -4874,7 +4874,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       'Вы едете по крупному датскому городу (например, Орхус или Оденсе) и подъезжаете к пересечению с путями лёгкого рельсового транспорта (Letbane).',
     visual: {
       type: 'scene',
-      presetId: 'railway_crossing',
+      presetId: 'pov_udrykning_letbane',
       captionDa: 'Krydsning med letbane (skinner i byen)',
       captionRu: 'Пересечение трамвайных / легкорельсовых путей Letbane',
     },
@@ -5003,7 +5003,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       'На узкой загородной дороге вы догоняете всадника на лошади, двигающегося по краю дороги в попутном направлении.',
     visual: {
       type: 'scene',
-      presetId: 'overtaking_hill_curve',
+      presetId: 'pov_horse_rider_slow',
       captionDa: 'Forbikørsel af heste og ryttere i trafikken',
       captionRu: 'Осторожный объезд всадников на лошадях',
     },
@@ -5397,7 +5397,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       'В одном городском перекрёстке горит обычный круглый зелёный сигнал, а в другом — зелёная стрелка налево.',
     visual: {
       type: 'scene',
-      presetId: 'traffic_light_yellow',
+      presetId: 'pov_green_arrow_signal',
       captionDa: 'Rundt grønt lys vs. Grøn svingpil i lyskryds',
       captionRu: 'Разница между обычным зелёным сигналом и зелёной стрелкой',
     },
@@ -5528,7 +5528,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       'В центре перекрёстка стоит полицейский-регулировщик и подаёт сигналы руками, хотя светофор продолжает работать.',
     visual: {
       type: 'scene',
-      presetId: 'traffic_light_yellow',
+      presetId: 'pov_police_signal',
       captionDa: 'Politiets tegngivning står altid over lyssignaler og tavler',
       captionRu: 'Сигналы полицейского отменяют светофор и знаки',
     },
@@ -5700,7 +5700,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       'Вы едете по трёхполосному автобану в свободном потоке. Правая полоса совершенно пуста на сотни метров вперёд, но вы продолжаете ехать в среднем ряду.',
     visual: {
       type: 'scene',
-      presetId: 'motorway_merge_nodspor',
+      presetId: 'pov_motorway_exit_frakoersel',
       captionDa: 'Pligt til at holde til højre på motorvej',
       captionRu: 'Правило «держись правее» на многополосном автобане',
     },
@@ -5786,7 +5786,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       'Ясным солнечным днём вы подъезжаете к длинному тоннелю (например, под Лимфьордом или Эресунном).',
     visual: {
       type: 'scene',
-      presetId: 'night_driving_lights',
+      presetId: 'pov_tunnel_lights',
       captionDa: 'Kørsel i tunnel: lys, solbriller og sikkerhedsafstand',
       captionRu: 'Правила движения и освещения в туннеле',
     },
@@ -6218,7 +6218,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       'Вам нужно установить детское кресло для младенца спиной вперёд (bagudvendt) на переднее пассажирское сиденье автомобиля с подушкой безопасности.',
     visual: {
       type: 'scene',
-      presetId: 'fatigue_seatbelt_children',
+      presetId: 'pov_child_seat_airbag',
       captionDa: 'Bagudvendt barnestol på forsædet og passagerairbag',
       captionRu: 'Установка детского кресла спереди и отключение подушки безопасности',
     },
@@ -6304,7 +6304,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       'Зимним утром при 0 °C на скользкой дороге (мост или площадка glatbane) передняя или задняя ось автомобиля начинает скользить.',
     visual: {
       type: 'scene',
-      presetId: 'fog_and_aquaplaning',
+      presetId: 'pov_winter_glatbane_esp',
       captionDa: 'Understyring, overstyring, ESP & ABS på glat vej',
       captionRu: 'Поведение авто при заносе (сносе), работа систем ABS и ESP',
     },

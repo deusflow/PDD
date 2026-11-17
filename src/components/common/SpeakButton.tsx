@@ -33,6 +33,12 @@ export const SpeakButton: React.FC<SpeakButtonProps> = ({
   }
 
   const isSpeaking = speakingId === id;
+  const voiceStatus = danishSpeech.getVoiceStatus();
+  const computedTitle = isSpeaking
+    ? 'Остановить озвучку'
+    : voiceStatus === 'missing_da'
+      ? `${title} (датский системный голос не найден — читается базовым голосом ОС)`
+      : title;
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -47,7 +53,7 @@ export const SpeakButton: React.FC<SpeakButtonProps> = ({
     <button
       type="button"
       onClick={handleClick}
-      title={isSpeaking ? 'Остановить озвучку' : title}
+      title={computedTitle}
       aria-label={isSpeaking ? 'Stop dansk oplæsning' : 'Læs op på dansk'}
       className={`inline-flex shrink-0 items-center justify-center gap-1.5 rounded-lg border transition-all ${
         label
