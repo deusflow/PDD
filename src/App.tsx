@@ -480,6 +480,7 @@ export const App: React.FC = () => {
               <ExamSimulatorView
                 languageMode={appState.languageMode}
                 examHistory={appState.examHistory}
+                srsMap={appState.srs}
                 onFinishExam={handleFinishExam}
                 onTrainFailedQuestions={(failedQs) => {
                   handleStartCustomSession(

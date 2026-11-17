@@ -284,12 +284,23 @@ export function computeProgressStats(
   };
 }
 
+function shuffleSlice<T>(items: T[]): T[] {
+  const arr = [...items];
+  for (let i = arr.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
 /**
  * Selects 25 balanced questions for the official Teoriprøve simulator.
+ * When `srsMap` is passed, prioritizes weak (Box 1) and unseen (Box 0) items within each module.
  */
 export function buildExamQuestions(
   allQuestions: TeoriQuestion[],
-  count: number = 25
+  count: number = 25,
+  srsMap?: Record<string, SRSRecord>
 ): TeoriQuestion[] {
   const byModule = new Map<number, TeoriQuestion[]>();
   for (const q of allQuestions) {
@@ -298,12 +309,31 @@ export function buildExamQuestions(
     byModule.set(q.moduleId, arr);
   }
 
-  // Shuffle within each module
-  for (const [, arr] of byModule) {
-    for (let i = arr.length - 1; i > 0; i -= 1) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [arr[i], arr[j]] = [arr[j], arr[i]];
+  for (const [mId, arr] of byModule) {
+    if (!srsMap) {
+      byModule.set(mId, shuffleSlice(arr));
+      continue;
     }
+
+    const box1: TeoriQuestion[] = [];
+    const box0: TeoriQuestion[] = [];
+    const learning: TeoriQuestion[] = [];
+    const mastered: TeoriQuestion[] = [];
+
+    for (const q of arr) {
+      const box = getSRSRecord(srsMap, q.id).box;
+      if (box === 1) box1.push(q);
+      else if (box === 0) box0.push(q);
+      else if (box <= 3) learning.push(q);
+      else mastered.push(q);
+    }
+
+    byModule.set(mId, [
+      ...shuffleSlice(box1),
+      ...shuffleSlice(box0),
+      ...shuffleSlice(learning),
+      ...shuffleSlice(mastered),
+    ]);
   }
 
   const selected: TeoriQuestion[] = [];

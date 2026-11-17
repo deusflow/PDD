@@ -11,11 +11,13 @@ import {
   RotateCcw,
   Scale,
   ShieldAlert,
+  Volume2,
   XCircle,
 } from 'lucide-react';
 import { QUESTIONS_BANK } from '../../data/questionsBank';
+import { danishSpeech } from '../../services/speech';
 import { buildExamQuestions } from '../../services/srsEngine';
-import { ExamAttemptSummary, LanguageMode, TeoriQuestion } from '../../types';
+import { ExamAttemptSummary, LanguageMode, SRSRecord, TeoriQuestion } from '../../types';
 import { BilingualText } from '../common/BilingualText';
 import { SpeakButton } from '../common/SpeakButton';
 import { CarTechnicalSVG } from '../visuals/CarTechnicalSVG';
@@ -25,6 +27,7 @@ import { TrafficSceneSVG } from '../visuals/TrafficSceneSVG';
 interface ExamSimulatorViewProps {
   languageMode: LanguageMode;
   examHistory: ExamAttemptSummary[];
+  srsMap?: Record<string, SRSRecord>;
   autoStart?: boolean;
   onBackToCourse?: () => void;
   onFinishExam: (
@@ -46,6 +49,7 @@ function formatTimer(sec: number): string {
 export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
   languageMode,
   examHistory,
+  srsMap,
   autoStart = false,
   onBackToCourse,
   onFinishExam,
@@ -54,8 +58,9 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
   const [phase, setPhase] = useState<'intro' | 'active' | 'review'>(() =>
     autoStart ? 'active' : 'intro'
   );
+  const [officialMode, setOfficialMode] = useState(false);
   const [examQuestions, setExamQuestions] = useState<TeoriQuestion[]>(() =>
-    autoStart ? buildExamQuestions(QUESTIONS_BANK, 25) : []
+    autoStart ? buildExamQuestions(QUESTIONS_BANK, 25, srsMap) : []
   );
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, boolean | undefined>>({});
@@ -115,6 +120,35 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
     }
   }, [phase, secondsLeft, finalizeExam]);
 
+  useEffect(() => {
+    if (phase !== 'active' || !officialMode) return;
+    const q = examQuestions[currentIndex];
+    if (!q) return;
+    danishSpeech.stop();
+    danishSpeech.speak(q.situationDa, `exam_auto_${q.id}`);
+    return () => {
+      danishSpeech.stop();
+    };
+  }, [phase, officialMode, currentIndex, examQuestions]);
+
+  useEffect(() => {
+    if (phase !== 'active') return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      const tag = (e.target as HTMLElement | null)?.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+
+      if (e.key === 'ArrowRight' && currentIndex + 1 < examQuestions.length) {
+        e.preventDefault();
+        goToQuestion(currentIndex + 1);
+      } else if (e.key === 'ArrowLeft' && !officialMode && currentIndex > 0) {
+        e.preventDefault();
+        goToQuestion(currentIndex - 1);
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [phase, officialMode, currentIndex, examQuestions.length]);
+
   const goToQuestion = (nextIndex: number) => {
     setCurrentIndex(nextIndex);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -152,7 +186,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
   };
 
   const startExam = () => {
-    const selected = buildExamQuestions(QUESTIONS_BANK, 25);
+    const selected = buildExamQuestions(QUESTIONS_BANK, 25, srsMap);
     setExamQuestions(selected);
     setCurrentIndex(0);
     setAnswers({});
@@ -209,8 +243,39 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
 
           <button
             type="button"
+            onClick={() => setOfficialMode((v) => !v)}
+            className={`mt-4 flex w-full items-start justify-between gap-3 rounded-2xl border p-4 text-left transition-all ${
+              officialMode
+                ? 'border-teal-500 bg-teal-50/70 dark:border-teal-500 dark:bg-teal-950/30'
+                : 'border-zinc-200 bg-zinc-50/70 hover:bg-zinc-100/70 dark:border-zinc-800 dark:bg-zinc-950/50'
+            }`}
+          >
+            <div className="flex items-start gap-2.5">
+              <Volume2 className={`mt-0.5 h-4 w-4 shrink-0 ${officialMode ? 'text-teal-600 dark:text-teal-400' : 'text-zinc-500'}`} />
+              <div>
+                <div className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
+                  Официальный режим Teoriprøven (строгий)
+                </div>
+                <div className="mt-0.5 text-[11px] leading-relaxed text-zinc-600 dark:text-zinc-400">
+                  Автоматически зачитывает ситуацию на датском (da-DK) и отключает возврат на прошлые билеты — как на реальном экзамене.
+                </div>
+              </div>
+            </div>
+            <span
+              className={`mt-0.5 shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-bold ${
+                officialMode
+                  ? 'bg-teal-600 text-white'
+                  : 'bg-zinc-200 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400'
+              }`}
+            >
+              {officialMode ? 'ВКЛ' : 'ВЫКЛ'}
+            </span>
+          </button>
+
+          <button
+            type="button"
             onClick={startExam}
-            className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-zinc-900 py-3.5 text-sm font-bold text-white shadow-md transition-all hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+            className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-zinc-900 py-3.5 text-sm font-bold text-white shadow-md transition-all hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
           >
             <Play className="h-4 w-4 fill-current" />
             Начать экзамен (25 вопросов)
@@ -328,9 +393,26 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
 
         {/* Detailed Breakdown of all 25 questions */}
         <div className="nordic-card p-5">
-          <h3 className="mb-3 text-sm font-bold text-zinc-900 dark:text-zinc-100">
-            Детальный разбор всех 25 билетов по Færdselsloven
-          </h3>
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+            <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+              Детальный разбор всех 25 билетов по Færdselsloven
+            </h3>
+            {failedQuestions.length > 1 && (
+              <button
+                type="button"
+                onClick={() =>
+                  setExpandedReviewId(
+                    expandedReviewId === 'all_failed' ? 'none' : 'all_failed'
+                  )
+                }
+                className="rounded-lg border border-rose-200 bg-rose-50 px-3 py-1 text-xs font-semibold text-rose-700 transition-colors hover:bg-rose-100 dark:border-rose-900/60 dark:bg-rose-950/40 dark:text-rose-300"
+              >
+                {expandedReviewId === 'all_failed'
+                  ? 'Свернуть ошибки'
+                  : `Раскрыть все ошибки (${failedQuestions.length})`}
+              </button>
+            )}
+          </div>
           <p className="mb-4 text-xs text-zinc-500 dark:text-zinc-400">
             Все билеты с ошибками автоматически перенесены в Box 1 (Критическая зона). Нажмите на любой билет, чтобы раскрыть подробный разбор.
           </p>
@@ -338,7 +420,15 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
           <div className="space-y-2.5">
             {examQuestions.map((q, idx) => {
               const passed = q.subQuestions.every((sq) => answers[sq.id] === sq.correctAnswer);
-              const isOpen = expandedReviewId === q.id || (!passed && expandedReviewId === null && idx === examQuestions.findIndex((x) => !x.subQuestions.every((s) => answers[s.id] === s.correctAnswer)));
+              const isOpen =
+                (expandedReviewId === 'all_failed' && !passed) ||
+                expandedReviewId === q.id ||
+                (!passed &&
+                  expandedReviewId === null &&
+                  idx ===
+                    examQuestions.findIndex(
+                      (x) => !x.subQuestions.every((s) => answers[s.id] === s.correctAnswer)
+                    ));
 
               return (
                 <div
@@ -529,27 +619,37 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
       )}
 
       {/* Question Number Strip */}
-      <div className="flex flex-wrap gap-1">
+      <div className="flex flex-wrap items-center gap-1">
         {examQuestions.map((q, idx) => {
           const isComplete = q.subQuestions.every((sq) => answers[sq.id] !== undefined);
           const isCurrent = idx === currentIndex;
+          const lockedBack = officialMode && idx < currentIndex;
           return (
             <button
               key={q.id}
               type="button"
+              disabled={lockedBack}
               onClick={() => goToQuestion(idx)}
+              title={lockedBack ? 'В официальном режиме возврат назад отключён' : undefined}
               className={`h-7 min-w-[28px] rounded-lg border text-[11px] font-bold transition-all ${
-                isCurrent
-                  ? 'border-zinc-900 bg-zinc-900 text-white dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-900'
-                  : isComplete
-                    ? 'border-emerald-300 bg-emerald-50 text-emerald-800 dark:border-emerald-900 dark:bg-emerald-950/60 dark:text-emerald-300'
-                    : 'border-zinc-200 bg-white text-zinc-500 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400'
+                lockedBack
+                  ? 'cursor-not-allowed border-zinc-200/50 bg-zinc-100/70 text-zinc-400 opacity-60 dark:border-zinc-800/60 dark:bg-zinc-900/40'
+                  : isCurrent
+                    ? 'border-zinc-900 bg-zinc-900 text-white dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-900'
+                    : isComplete
+                      ? 'border-emerald-300 bg-emerald-50 text-emerald-800 dark:border-emerald-900 dark:bg-emerald-950/60 dark:text-emerald-300'
+                      : 'border-zinc-200 bg-white text-zinc-500 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400'
               }`}
             >
               {idx + 1}
             </button>
           );
         })}
+        {officialMode && (
+          <span className="ml-2 rounded-lg bg-teal-50 px-2 py-1 text-[10px] font-semibold text-teal-700 dark:bg-teal-950/60 dark:text-teal-300">
+            Официальный режим · без возврата назад
+          </span>
+        )}
       </div>
 
       {/* Question Card */}
@@ -619,7 +719,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
         <div className="mt-5 flex items-center justify-between gap-3">
           <button
             type="button"
-            disabled={currentIndex === 0}
+            disabled={currentIndex === 0 || officialMode}
             onClick={() => goToQuestion(Math.max(0, currentIndex - 1))}
             className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 px-3.5 py-2 text-xs font-semibold text-zinc-700 transition-colors hover:bg-zinc-50 disabled:opacity-35 dark:border-zinc-800 dark:text-zinc-300"
           >

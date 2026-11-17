@@ -53,7 +53,7 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
     mod.cheatSheet.forEach((rule, index) => {
       list.push({ kind: 'rule', rule, index });
     });
-    if (mod.id === 1 || mod.id === 5) {
+    if (mod.id === 1 || moduleSigns.length > 0) {
       list.push({ kind: 'visual' });
     }
     if (mod.algorithms && mod.algorithms.length > 0) {
@@ -214,7 +214,7 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
               <CarTechnicalSVG initialTab="motorrum" languageMode={languageMode} />
             )}
 
-            {mod.id === 5 && (
+            {mod.id !== 1 && moduleSigns.length > 0 && (
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                 {moduleSigns.map((sign) => (
                   <div
@@ -289,7 +289,16 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
         );
 
       case 'summary': {
-        const keyRules = modQuestions.slice(0, 3);
+        const pickedIndices = Array.from(
+          new Set([
+            0,
+            Math.floor(modQuestions.length * 0.35),
+            Math.floor(modQuestions.length * 0.65),
+            Math.max(0, modQuestions.length - 2),
+            Math.max(0, modQuestions.length - 1),
+          ])
+        ).filter((idx) => idx < modQuestions.length);
+        const keyRules = pickedIndices.map((idx) => modQuestions[idx]);
         return (
           <div className="space-y-5">
             <div className="flex items-center gap-2 text-teal-600 dark:text-teal-400">

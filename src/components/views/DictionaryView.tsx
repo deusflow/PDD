@@ -3,6 +3,7 @@ import {
   CheckCircle2,
   RotateCcw,
   Search,
+  Signpost,
   X,
 } from 'lucide-react';
 import { DICTIONARY_ENTRIES } from '../../data/signsAndGlossary';
@@ -11,6 +12,7 @@ import { LanguageMode, SRSRecord } from '../../types';
 import { BilingualText } from '../common/BilingualText';
 import { SpeakButton } from '../common/SpeakButton';
 import { DanishRoadSignSVG } from '../visuals/DanishRoadSignSVG';
+import { SignBlitzModal } from './SignBlitzModal';
 
 interface DictionaryViewProps {
   srsMap: Record<string, SRSRecord>;
@@ -31,6 +33,7 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({
   const [query, setQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>(initialCategory);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
+  const [isSignBlitzOpen, setIsSignBlitzOpen] = useState(false);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -88,8 +91,18 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({
               {DICTIONARY_ENTRIES.length} карточек: датские термины, {signCount} дорожных знаков и весь Kontrolprøven
             </p>
           </div>
-          <div className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">
-            Найдено: <span className="text-zinc-900 dark:text-zinc-100">{filtered.length}</span>
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setIsSignBlitzOpen(true)}
+              className="inline-flex items-center gap-1.5 rounded-xl bg-teal-600 px-3.5 py-2 text-xs font-bold text-white shadow-sm transition-colors hover:bg-teal-500"
+            >
+              <Signpost className="h-3.5 w-3.5" />
+              Блиц по знакам (10)
+            </button>
+            <div className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">
+              Найдено: <span className="text-zinc-900 dark:text-zinc-100">{filtered.length}</span>
+            </div>
           </div>
         </div>
 
@@ -260,6 +273,14 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({
           })}
         </div>
       )}
+
+      <SignBlitzModal
+        isOpen={isSignBlitzOpen}
+        srsMap={srsMap}
+        languageMode={languageMode}
+        onRecordEntryReview={onRecordEntryReview}
+        onClose={() => setIsSignBlitzOpen(false)}
+      />
     </div>
   );
 };

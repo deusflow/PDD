@@ -134,6 +134,19 @@ export const DanishRoadSignSVG: React.FC<DanishRoadSignSVGProps> = ({
             />
           </WarningTriangle>
         );
+      case 'A41': // Farlig kurve til højre
+        return (
+          <WarningTriangle>
+            <path
+              d="M 52 90 L 52 68 Q 52 54 68 50"
+              fill="none"
+              stroke={DARK}
+              strokeWidth="6"
+              strokeLinecap="round"
+            />
+            <path d="M 64 42 L 77 48 L 67 59 Z" fill={DARK} />
+          </WarningTriangle>
+        );
       case 'A43': // Indsnævring af vej
         return (
           <WarningTriangle>
@@ -279,6 +292,25 @@ export const DanishRoadSignSVG: React.FC<DanishRoadSignSVGProps> = ({
             <circle cx="72" cy="70" r="4" fill={DARK} />
             <circle cx="86" cy="70" r="4" fill={DARK} />
           </ProhibitionCircle>
+        );
+      case 'C52': // Overhaling forbudt ophører
+        return (
+          <g>
+            <circle cx="60" cy="60" r="52" fill="#FFFFFF" stroke={DARK} strokeWidth="4" />
+            <rect x="28" y="47" width="24" height="20" rx="5" fill="#9CA3AF" />
+            <rect x="68" y="47" width="24" height="20" rx="5" fill="#9CA3AF" />
+            <line x1="25" y1="95" x2="95" y2="25" stroke={DARK} strokeWidth="8" strokeLinecap="round" />
+            <line x1="30" y1="98" x2="98" y2="30" stroke={DARK} strokeWidth="2.5" strokeLinecap="round" />
+          </g>
+        );
+      case 'C59': // Ophør af lokal begrænsning
+        return (
+          <g>
+            <circle cx="60" cy="60" r="52" fill="#FFFFFF" stroke={DARK} strokeWidth="4" />
+            <line x1="25" y1="95" x2="95" y2="25" stroke={DARK} strokeWidth="10" strokeLinecap="round" />
+            <line x1="20" y1="86" x2="86" y2="20" stroke={DARK} strokeWidth="3.5" strokeLinecap="round" />
+            <line x1="34" y1="100" x2="100" y2="34" stroke={DARK} strokeWidth="3.5" strokeLinecap="round" />
+          </g>
         );
       case 'C55-50':
       case 'C55-60':
@@ -452,6 +484,56 @@ export const DanishRoadSignSVG: React.FC<DanishRoadSignSVGProps> = ({
             <rect x="40" y="46" width="40" height="10" rx="2" fill={BLUE} />
             <circle cx="39" cy="67" r="4.5" fill={BLUE} />
             <circle cx="81" cy="67" r="4.5" fill={BLUE} />
+          </g>
+        );
+      case 'E49': // Cykelgade
+        return (
+          <g>
+            <rect x="12" y="12" width="96" height="96" rx="8" fill={BLUE} />
+            <rect x="15" y="15" width="90" height="90" rx="6" fill="none" stroke="#FFFFFF" strokeWidth="2" />
+            <circle cx="44" cy="54" r="10" fill="none" stroke="#FFFFFF" strokeWidth="3.5" />
+            <circle cx="76" cy="54" r="10" fill="none" stroke="#FFFFFF" strokeWidth="3.5" />
+            <path
+              d="M 44 54 L 55 38 L 69 38 L 76 54 M 55 38 L 51 31 M 69 38 L 65 29 L 72 29 M 55 38 L 59 54 L 76 54"
+              fill="none"
+              stroke="#FFFFFF"
+              strokeWidth="3.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <text x="60" y="90" textAnchor="middle" fill="#FFFFFF" fontSize="13.5" fontWeight="800">
+              CYKELGADE
+            </text>
+          </g>
+        );
+      case 'E51': // Opholds- og legeområde (15 km/t)
+        return (
+          <g>
+            <rect x="12" y="12" width="96" height="96" rx="8" fill={BLUE} />
+            <rect x="15" y="15" width="90" height="90" rx="6" fill="none" stroke="#FFFFFF" strokeWidth="2" />
+            {/* House */}
+            <path d="M 24 52 L 38 38 L 52 52 L 52 68 L 24 68 Z" fill="#FFFFFF" />
+            {/* Child + Ball */}
+            <circle cx="72" cy="48" r="5" fill="#FFFFFF" />
+            <path d="M 72 54 L 72 72 M 64 60 L 82 58 M 72 72 L 65 86 M 72 72 L 80 86" stroke="#FFFFFF" strokeWidth="3.5" strokeLinecap="round" />
+            <circle cx="88" cy="76" r="4.5" fill="#FFFFFF" />
+            {/* Car */}
+            <rect x="24" y="76" width="32" height="12" rx="3" fill="#FFFFFF" />
+            <circle cx="30" cy="90" r="3" fill="#FFFFFF" />
+            <circle cx="50" cy="90" r="3" fill="#FFFFFF" />
+          </g>
+        );
+      case 'E68': // Zone 40
+        return (
+          <g>
+            <rect x="14" y="10" width="92" height="100" rx="6" fill="#FFFFFF" stroke={DARK} strokeWidth="3" />
+            <text x="60" y="30" textAnchor="middle" fill={DARK} fontSize="14" fontWeight="800" letterSpacing="1">
+              ZONE
+            </text>
+            <circle cx="60" cy="68" r="30" fill="#FFFFFF" stroke={RED} strokeWidth="7" />
+            <text x="60" y="77" textAnchor="middle" fill={DARK} fontSize="24" fontWeight="800">
+              40
+            </text>
           </g>
         );
       case 'E55': // Byzone

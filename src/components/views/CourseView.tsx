@@ -158,6 +158,7 @@ export const CourseView: React.FC<CourseViewProps> = ({
         <ExamSimulatorView
           languageMode={appState.languageMode}
           examHistory={appState.examHistory}
+          srsMap={appState.srs}
           autoStart
           onFinishExam={onFinishExam}
           onTrainFailedQuestions={onTrainFailedQuestions}
@@ -447,6 +448,7 @@ export const CourseView: React.FC<CourseViewProps> = ({
             key={stepKey}
             languageMode={appState.languageMode}
             examHistory={appState.examHistory}
+            srsMap={appState.srs}
             autoStart
             onFinishExam={onFinishExam}
             onTrainFailedQuestions={onTrainFailedQuestions}

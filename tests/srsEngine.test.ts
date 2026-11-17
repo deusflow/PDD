@@ -119,3 +119,32 @@ test('buildExamQuestions returns 25 unique questions spanning all 8 modules', ()
   const coveredModules = new Set(exam.map((q) => q.moduleId));
   assert.equal(coveredModules.size, 8);
 });
+
+test('buildExamQuestions prioritizes Box 1 / unseen questions over Box 5 when srsMap is supplied', () => {
+  const now = 1_700_000_000_000;
+  const srs: Record<string, SRSRecord> = {};
+  for (const q of QUESTIONS_BANK) {
+    srs[q.id] = {
+      id: q.id,
+      box: 5,
+      streak: 5,
+      lastReviewedAt: now,
+      nextReviewAt: now + 999_999,
+      totalAttempts: 5,
+      totalFailures: 0,
+    };
+  }
+  const priorityTarget = QUESTIONS_BANK.find((q) => q.moduleId === 1)!;
+  srs[priorityTarget.id] = {
+    id: priorityTarget.id,
+    box: 1,
+    streak: 0,
+    lastReviewedAt: now,
+    nextReviewAt: now,
+    totalAttempts: 1,
+    totalFailures: 1,
+  };
+
+  const exam = buildExamQuestions(QUESTIONS_BANK, 25, srs);
+  assert.ok(exam.some((q) => q.id === priorityTarget.id));
+});

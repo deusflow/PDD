@@ -178,6 +178,11 @@ export const MODULES_DATA: ModuleInfo[] = [
         da: 'Røde kontrollamper (olie, bremse, batteri, kølevand): Stands sikkert med det samme og sluk motoren.',
         ru: 'Красные лампы (давление масла, тормоза, АКБ, перегрев): Немедленно безопасно остановиться и заглушить мотор.',
       },
+      {
+        step: '3',
+        da: 'Kontrol før kørsel: Dæk min. 1,6 mm (3 mm vinter), væsker mellem MIN–MAX, styretøj uden slør og rent udsyn.',
+        ru: 'Проверка перед выездом: шины от 1,6 мм (зимой 3 мм), жидкости между MIN–MAX, 0 люфта руля и чистый обзор.',
+      },
     ],
   },
   {
@@ -484,6 +489,23 @@ export const MODULES_DATA: ModuleInfo[] = [
         },
       },
     ],
+    algorithms: [
+      {
+        step: '1',
+        da: 'Tjek tavler og afmærkning (B11 hajtænder, B13 STOP, B16 hovedvej eller overkørsel).',
+        ru: 'Сначала ищите знаки и разметку («акульи зубы» B11, STOP B13, главную B16 или переезд тротуара).',
+      },
+      {
+        step: '2',
+        da: 'Ingen tavler/overkørsel (inkl. T-kryds) → Højrevigepligt!',
+        ru: 'Знаков и переезда тротуара нет (даже на Т-образном!) → действует помеха справа.',
+      },
+      {
+        step: '3',
+        da: 'Rundkørsel: ubetinget vigepligt ved indkørsel; blink til højre og skulderkig ved udkørsel.',
+        ru: 'Круг: при въезде уступите всем; перед съездом включите правый поворотник и сделайте skulderkig.',
+      },
+    ],
   },
   {
     id: 4,
@@ -611,6 +633,23 @@ export const MODULES_DATA: ModuleInfo[] = [
           presetId: 'children_school_a22',
           maneuverBadge: 'Схема: дети у дороги (A22), школьный патруль и жилая зона 15 км/ч',
         },
+      },
+    ],
+    algorithms: [
+      {
+        step: '1',
+        da: 'Højresving over cykelsti: Spejl → Skulderkig → Blink.',
+        ru: 'Перед правым поворотом: зеркала → взгляд через правое плечо (skulderkig) → поворотник.',
+      },
+      {
+        step: '2',
+        da: 'Heltrukken streg (cykelsti løber igennem): Bliv i din vognbane og hold tilbage for cyklister.',
+        ru: 'Сплошная белая полоса велодорожки: оставайтесь в своей полосе и пропустите всех велосипедистов.',
+      },
+      {
+        step: '3',
+        da: 'Punkteret streg (højresvingsbane): Træk ind til kantstenen når frit og luk blinde vinkel.',
+        ru: 'Пунктирная полоса перестроения: заранее прижмитесь к правому бордюру, не оставляя щели для велосипедиста.',
       },
     ],
   },
@@ -749,6 +788,23 @@ export const MODULES_DATA: ModuleInfo[] = [
         },
       },
     ],
+    algorithms: [
+      {
+        step: '1',
+        da: 'Hierarki ved tvivl: 1. Politi → 2. Lyssignal → 3. Skilte/gul vejarbejdsafmærkning → 4. Regler.',
+        ru: 'Иерархия сигналов: 1. Регулировщик → 2. Светофор → 3. Знаки и жёлтая разметка ремонта → 4. Общие правила.',
+      },
+      {
+        step: '2',
+        da: 'Læs tavler efter form: Trekant (A) = advarsel · Rød cirkel (C) = forbud · Blå cirkel (D) = påbud.',
+        ru: 'Читайте форму знака: треугольник = предупреждение · красный круг = запрет · синий круг = строгий приказ.',
+      },
+      {
+        step: '3',
+        da: 'Undertavler: uden parentes = hverdag · (parentes) = lørdag · RØD = søn-/helligdag.',
+        ru: 'Подтаблички времени: без скобок = будни · (в скобках) = суббота · красным = воскресенье и праздники.',
+      },
+    ],
   },
   {
     id: 6,
@@ -885,6 +941,23 @@ export const MODULES_DATA: ModuleInfo[] = [
         },
       },
     ],
+    algorithms: [
+      {
+        step: '1',
+        da: 'Før tilkørsel til motorvej: Accelerer kraftigt på tilkørselsbanen op til trafikkens fart og brug flettereglen.',
+        ru: 'Разгон на полосе въезда (tilkørselsbane) до скорости потока автобана и плавное слияние (fletning).',
+      },
+      {
+        step: '2',
+        da: 'Før overhaling: Tjek at ingen bagved allerede overhaler dig → tjek fri sigt → blink → overhal hurtigt.',
+        ru: 'Перед обгоном: проверьте левое зеркало (не обгоняют ли вас сзади!) → чистый обзор → поворотник → уверенный обгон.',
+      },
+      {
+        step: '3',
+        da: 'Ved påhængsvogn: Tjek i registreringsattesten, at totalvægt ≤ 3.500 kg og bilens max koblingsvægt overholdes.',
+        ru: 'С прицепом: проверьте сумму масс ≤ 3.500 кг по техпаспортам и допустимую массу буксировки тягача.',
+      },
+    ],
   },
   {
     id: 7,
@@ -1016,6 +1089,23 @@ export const MODULES_DATA: ModuleInfo[] = [
           presetId: 'pov_parking_meters',
           maneuverBadge: 'Вид водителя: золотые отступы 5/10/12/30 м и правила парковки',
         },
+      },
+    ],
+    algorithms: [
+      {
+        step: '1',
+        da: 'Tjek generelle forbudszoner: 5 m før felt/cykelsti · 10 m fra kryds · 12 m busstop · 30 m jernbane · 3 m til spærrelinje.',
+        ru: 'Проверьте золотые метры: 5 м до перехода/велодорожки · 10 м от перекрёстка · 12 м остановка · 30 м ж/д · 3 м до сплошной.',
+      },
+      {
+        step: '2',
+        da: 'Læs parkeringstavlen oppefra og ned (hovedtavle + tidsrum på undertavler + gul kantsten).',
+        ru: 'Прочитайте парковочный столб сверху вниз (главный знак → таблички времени/условий → жёлтая линия на бордюре).',
+      },
+      {
+        step: '3',
+        da: 'Indstil manuel P-skive frem til nærmeste kvarter (fx 14:07 → 14:15) og tjek døren med højre hånd.',
+        ru: 'Настройте P-skive вперёд к 15 мин (14:07 → 14:15), заглушите мотор и открывайте дверь правой рукой.',
       },
     ],
   },
