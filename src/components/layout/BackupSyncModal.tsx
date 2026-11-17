@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   Check,
   Copy,
@@ -38,6 +38,15 @@ export const BackupSyncModal: React.FC<BackupSyncModalProps> = ({
     if (!isOpen) return '';
     return StorageManager.encodeSyncString(appState);
   }, [appState, isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -108,11 +117,15 @@ export const BackupSyncModal: React.FC<BackupSyncModalProps> = ({
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-950/60 p-4 backdrop-blur-sm animate-fade-in"
+      onClick={onClose}
       role="dialog"
       aria-modal="true"
       aria-label="Бэкап и перенос прогресса"
     >
-      <div className="relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl animate-slide-up dark:border-zinc-800 dark:bg-zinc-900">
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl animate-slide-up dark:border-zinc-800 dark:bg-zinc-900"
+      >
         <div className="flex items-start justify-between gap-3">
           <div>
             <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">

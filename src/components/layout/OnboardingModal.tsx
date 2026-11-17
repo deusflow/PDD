@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ArrowLeft,
   ArrowRight,
@@ -80,6 +80,18 @@ const STEPS = [
 export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) => {
   const [step, setStep] = useState(0);
 
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setStep(0);
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const current = STEPS[step];
@@ -93,11 +105,15 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-950/60 p-4 backdrop-blur-sm animate-fade-in"
+      onClick={handleDone}
       role="dialog"
       aria-modal="true"
       aria-label="Как работает тренажёр"
     >
-      <div className="relative w-full max-w-xl overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-2xl animate-slide-up dark:border-zinc-800 dark:bg-zinc-900">
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-xl overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-2xl animate-slide-up dark:border-zinc-800 dark:bg-zinc-900"
+      >
         {/* Top progress strip */}
         <div className="flex gap-1.5 px-6 pt-5">
           {STEPS.map((_, idx) => (

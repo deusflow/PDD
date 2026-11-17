@@ -309,11 +309,38 @@ export const KontrolSimulatorModal: React.FC<KontrolSimulatorModalProps> = ({
   useEffect(() => {
     if (!isOpen) return;
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape') {
+        onClose();
+        return;
+      }
+      if (finished) return;
+      const currentQ = KONTROL_QUESTIONS[index];
+      if (!currentQ) return;
+
+      if (selectedIdx === null && ['1', '2', '3'].includes(e.key)) {
+        const optIdx = Number(e.key) - 1;
+        if (currentQ.options[optIdx]) {
+          e.preventDefault();
+          setSelectedIdx(optIdx);
+          if (optIdx === currentQ.correctIndex) {
+            setCorrectCount((prev) => prev + 1);
+          }
+        }
+      } else if (e.key === 'Enter' && selectedIdx !== null) {
+        const tag = (e.target as HTMLElement | null)?.tagName;
+        if (tag === 'BUTTON') return;
+        e.preventDefault();
+        if (index + 1 >= KONTROL_QUESTIONS.length) {
+          setFinished(true);
+        } else {
+          setIndex((prev) => prev + 1);
+          setSelectedIdx(null);
+        }
+      }
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [isOpen, onClose]);
+  }, [isOpen, onClose, finished, index, selectedIdx]);
 
   const handleRestart = () => {
     setIndex(0);

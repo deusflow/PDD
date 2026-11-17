@@ -76,11 +76,38 @@ export const SignBlitzModal: React.FC<SignBlitzModalProps> = ({
   useEffect(() => {
     if (!isOpen) return;
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape') {
+        onClose();
+        return;
+      }
+      if (finished || rounds.length === 0) return;
+      const currentRound = rounds[index];
+      if (!currentRound) return;
+
+      if (selectedId === null && ['1', '2', '3', '4'].includes(e.key)) {
+        const opt = currentRound.options[Number(e.key) - 1];
+        if (opt) {
+          e.preventDefault();
+          setSelectedId(opt.id);
+          const ok = opt.id === currentRound.target.id;
+          if (ok) setScore((s) => s + 1);
+          onRecordEntryReview(currentRound.target.id, ok);
+        }
+      } else if (e.key === 'Enter' && selectedId !== null) {
+        const tag = (e.target as HTMLElement | null)?.tagName;
+        if (tag === 'BUTTON') return;
+        e.preventDefault();
+        if (index + 1 >= rounds.length) {
+          setFinished(true);
+        } else {
+          setIndex((i) => i + 1);
+          setSelectedId(null);
+        }
+      }
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [isOpen, onClose]);
+  }, [isOpen, onClose, finished, rounds, index, selectedId, onRecordEntryReview]);
 
   if (!isOpen || rounds.length === 0) return null;
 
@@ -275,7 +302,9 @@ export const SignBlitzModal: React.FC<SignBlitzModalProps> = ({
         {!finished && (
           <div className="flex items-center justify-between border-t border-zinc-200/80 bg-zinc-50/70 px-6 py-3.5 dark:border-zinc-800 dark:bg-zinc-950/50">
             <span className="text-xs text-zinc-500 dark:text-zinc-400">
-              {isAnswered ? 'Перейдите к следующему знаку' : 'Выберите правильное значение знака'}
+              {isAnswered
+                ? 'Enter — следующий знак · Esc — закрыть'
+                : 'Клавиши 1–4 — быстрый выбор ответа'}
             </span>
             <button
               type="button"

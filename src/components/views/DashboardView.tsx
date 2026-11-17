@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Suspense, lazy, useState } from 'react';
 import {
   ArrowRight,
   BarChart3,
@@ -22,12 +22,18 @@ import {
 } from '../../services/coursePlanner';
 import {
   BOX_META,
+  buildSmartSession,
   computeProgressStats,
   getSRSRecord,
 } from '../../services/srsEngine';
 import { BoxLevel, TeoriQuestion, UserAppState } from '../../types';
-import { KontrolSimulatorModal } from './KontrolSimulatorModal';
-import { QuickNumbersModal } from './QuickNumbersModal';
+
+const KontrolSimulatorModal = lazy(() =>
+  import('./KontrolSimulatorModal').then((m) => ({ default: m.KontrolSimulatorModal }))
+);
+const QuickNumbersModal = lazy(() =>
+  import('./QuickNumbersModal').then((m) => ({ default: m.QuickNumbersModal }))
+);
 
 interface DashboardViewProps {
   appState: UserAppState;
@@ -198,8 +204,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 onClick={() =>
                   onStartCustomSession(
                     'Только новые билеты (Box 0)',
-                    `Ещё не изученные ситуации (${Math.min(10, unseenQuestions.length)} из ${unseenQuestions.length})`,
-                    unseenQuestions.slice(0, 10)
+                    `Ещё не изученные ситуации по всем темам (${Math.min(10, unseenQuestions.length)} из ${unseenQuestions.length})`,
+                    buildSmartSession(unseenQuestions, appState.srs, 10)
                   )
                 }
                 className="inline-flex h-8 w-full items-center justify-center rounded-lg border border-sky-200/80 bg-sky-50/70 px-3 text-[11px] font-semibold text-sky-700 transition-colors hover:bg-sky-100 dark:border-sky-900/60 dark:bg-sky-950/30 dark:text-sky-300"
@@ -419,16 +425,22 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         )}
       </section>
 
-      <QuickNumbersModal
-        isOpen={isNumbersOpen}
-        languageMode={appState.languageMode}
-        onClose={() => setIsNumbersOpen(false)}
-      />
-      <KontrolSimulatorModal
-        isOpen={isKontrolOpen}
-        languageMode={appState.languageMode}
-        onClose={() => setIsKontrolOpen(false)}
-      />
+      <Suspense fallback={null}>
+        {isNumbersOpen && (
+          <QuickNumbersModal
+            isOpen={isNumbersOpen}
+            languageMode={appState.languageMode}
+            onClose={() => setIsNumbersOpen(false)}
+          />
+        )}
+        {isKontrolOpen && (
+          <KontrolSimulatorModal
+            isOpen={isKontrolOpen}
+            languageMode={appState.languageMode}
+            onClose={() => setIsKontrolOpen(false)}
+          />
+        )}
+      </Suspense>
     </div>
   );
 };
