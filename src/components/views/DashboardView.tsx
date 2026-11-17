@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
   AlertCircle,
   ArrowRight,
+  BookMarked,
   CheckCircle2,
   Flame,
   Layers,
@@ -26,6 +27,7 @@ interface DashboardViewProps {
   onStartSmartSession: (count: 10 | 20) => void;
   onStartCustomSession: (title: string, subtitle: string, questions: TeoriQuestion[]) => void;
   onOpenModule: (moduleId: number) => void;
+  onOpenSignsAndKontrol: () => void;
 }
 
 export const DashboardView: React.FC<DashboardViewProps> = ({
@@ -35,6 +37,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   onStartSmartSession,
   onStartCustomSession,
   onOpenModule,
+  onOpenSignsAndKontrol,
 }) => {
   const [sessionSize, setSessionSize] = useState<10 | 20>(10);
 
@@ -46,6 +49,10 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   const overallStats = computeProgressStats(allDatabaseIds, srsMap);
   const questionStats = computeProgressStats(
     QUESTIONS_BANK.map((q) => q.id),
+    srsMap
+  );
+  const dictionaryStats = computeProgressStats(
+    DICTIONARY_ENTRIES.map((d) => d.id),
     srsMap
   );
 
@@ -144,6 +151,14 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 </button>
               )}
             </div>
+            <button
+              type="button"
+              onClick={onOpenSignsAndKontrol}
+              className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2 text-xs font-semibold text-zinc-700 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
+            >
+              <BookMarked className="h-3.5 w-3.5 text-sky-600 dark:text-sky-400" />
+              <span>Тренировать знаки и Kontrolprøven</span>
+            </button>
           </div>
         </div>
       </section>
@@ -187,6 +202,14 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             </span>
             <span>Цель: 100% без сюрпризов</span>
           </div>
+          <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-0.5 text-[11px] text-zinc-400 dark:text-zinc-500">
+            <span>
+              Билеты: <strong className="text-zinc-600 dark:text-zinc-300">{questionStats.seenItems}/{questionStats.totalItems}</strong>
+            </span>
+            <span>
+              Знаки/Термины/Kontrol: <strong className="text-zinc-600 dark:text-zinc-300">{dictionaryStats.seenItems}/{dictionaryStats.totalItems}</strong>
+            </span>
+          </div>
         </div>
 
         {/* 2. Mastery */}
@@ -226,6 +249,14 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               {overallStats.totalItems}
             </span>
             <span>Сессий завершено: {sessionsCompleted}</span>
+          </div>
+          <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-0.5 text-[11px] text-zinc-400 dark:text-zinc-500">
+            <span>
+              Билеты: <strong className="text-zinc-600 dark:text-zinc-300">{questionStats.masteredItems}/{questionStats.totalItems}</strong>
+            </span>
+            <span>
+              Знаки/Термины/Kontrol: <strong className="text-zinc-600 dark:text-zinc-300">{dictionaryStats.masteredItems}/{dictionaryStats.totalItems}</strong>
+            </span>
           </div>
         </div>
       </section>

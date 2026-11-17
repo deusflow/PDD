@@ -15,25 +15,29 @@ import { DanishRoadSignSVG } from '../visuals/DanishRoadSignSVG';
 interface DictionaryViewProps {
   srsMap: Record<string, SRSRecord>;
   languageMode: LanguageMode;
+  initialCategory?: CategoryFilter;
   onRecordEntryReview: (entryId: string, passed: boolean) => void;
 }
 
-type CategoryFilter = 'all' | 'term' | 'sign' | 'kontrol';
+export type CategoryFilter = 'all' | 'term' | 'sign' | 'kontrol' | 'sign_kontrol';
 type StatusFilter = 'all' | 'unknown' | 'learning' | 'mastered';
 
 export const DictionaryView: React.FC<DictionaryViewProps> = ({
   srsMap,
   languageMode,
+  initialCategory = 'all',
   onRecordEntryReview,
 }) => {
   const [query, setQuery] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>('all');
+  const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>(initialCategory);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     return DICTIONARY_ENTRIES.filter((entry) => {
-      if (categoryFilter !== 'all' && entry.category !== categoryFilter) {
+      if (categoryFilter === 'sign_kontrol') {
+        if (entry.category !== 'sign' && entry.category !== 'kontrol') return false;
+      } else if (categoryFilter !== 'all' && entry.category !== categoryFilter) {
         return false;
       }
 
@@ -111,6 +115,7 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({
           <div className="flex flex-wrap gap-1.5">
             {[
               { id: 'all', label: 'Все' },
+              { id: 'sign_kontrol', label: 'Знаки + Kontrolprøven' },
               { id: 'term', label: 'Термины' },
               { id: 'sign', label: 'Знаки' },
               { id: 'kontrol', label: 'Kontrolprøven' },

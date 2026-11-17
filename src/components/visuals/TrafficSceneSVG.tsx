@@ -364,7 +364,7 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
             <circle cx="220" cy="120" r="36" fill="#22C55E" stroke="#FFFFFF" strokeWidth="3" />
             {isExit ? (
               <>
-                <TopCar x="242" y="170" angle={-135} isPlayer blinkRight />
+                <TopCar x="242" y="170" angle={70} isPlayer blinkRight />
                 <CyclistTop x="294" y="138" angle={12} />
                 <path d="M 252 162 Q 295 145 340 135" fill="none" stroke="#F59E0B" strokeWidth="3" strokeDasharray="5 4" />
                 <rect x="12" y="12" width="150" height="44" rx="8" fill="#18181B" opacity="0.9" />
@@ -931,7 +931,13 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
             {/* Broken car with hazard */}
             <TopCar x="340" y="146" angle={90} color="#EF4444" blinkLeft blinkRight label="STOP" />
             {/* Warning triangle behind */}
-            <polygon points="105,134 125,146 105,158" fill="none" stroke="#EF4444" strokeWidth="3.5" />
+            <polygon
+              points="115,132 127,154 103,154"
+              fill="#FACC15"
+              stroke="#EF4444"
+              strokeWidth="3"
+              strokeLinejoin="round"
+            />
             <line x1="125" y1="146" x2="310" y2="146" stroke="#FACC15" strokeWidth="2.5" strokeDasharray="5 4" />
             <rect x="155" y="122" width="132" height="22" rx="5" fill="#18181B" />
             <text x="221" y="137" textAnchor="middle" fill="#FACC15" fontSize="10" fontWeight="800">

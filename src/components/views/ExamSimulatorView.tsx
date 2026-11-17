@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   AlertTriangle,
   Award,
@@ -55,44 +55,90 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
   const [lastSummary, setLastSummary] = useState<ExamAttemptSummary | null>(null);
   const [expandedReviewId, setExpandedReviewId] = useState<string | null>(null);
 
-  const finalizeExam = (questionsList: TeoriQuestion[], currentAnswers: Record<string, boolean | undefined>, remainingSec: number) => {
-    const results = questionsList.map((q) => {
-      const passed = q.subQuestions.every(
-        (sq) => currentAnswers[sq.id] === sq.correctAnswer
-      );
-      return { questionId: q.id, passed };
-    });
+  const answersRef = useRef(answers);
+  answersRef.current = answers;
 
-    const score = results.filter((r) => r.passed).length;
-    const summary: ExamAttemptSummary = {
-      id: `exam_${Date.now()}`,
-      date: Date.now(),
-      score,
-      total: questionsList.length,
-      passed: score >= PASS_THRESHOLD,
-      durationSeconds: EXAM_DURATION_SEC - remainingSec,
-    };
+  const examQuestionsRef = useRef(examQuestions);
+  examQuestionsRef.current = examQuestions;
 
-    setLastSummary(summary);
-    setPhase('review');
-    onFinishExam(summary, results);
-  };
+  const finalizeExam = useCallback(
+    (
+      questionsList: TeoriQuestion[],
+      currentAnswers: Record<string, boolean | undefined>,
+      remainingSec: number
+    ) => {
+      const results = questionsList.map((q) => {
+        const passed = q.subQuestions.every(
+          (sq) => currentAnswers[sq.id] === sq.correctAnswer
+        );
+        return { questionId: q.id, passed };
+      });
+
+      const score = results.filter((r) => r.passed).length;
+      const summary: ExamAttemptSummary = {
+        id: `exam_${Date.now()}`,
+        date: Date.now(),
+        score,
+        total: questionsList.length,
+        passed: score >= PASS_THRESHOLD,
+        durationSeconds: EXAM_DURATION_SEC - remainingSec,
+      };
+
+      setLastSummary(summary);
+      setPhase('review');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      onFinishExam(summary, results);
+    },
+    [onFinishExam]
+  );
 
   useEffect(() => {
     if (phase !== 'active') return;
     const timer = window.setInterval(() => {
-      setSecondsLeft((prev) => {
-        if (prev <= 1) {
-          window.clearInterval(timer);
-          finalizeExam(examQuestions, answers, 0);
-          return 0;
-        }
-        return prev - 1;
-      });
+      setSecondsLeft((prev) => (prev <= 1 ? 0 : prev - 1));
     }, 1000);
     return () => window.clearInterval(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phase, examQuestions, answers]);
+  }, [phase]);
+
+  useEffect(() => {
+    if (phase === 'active' && secondsLeft === 0) {
+      finalizeExam(examQuestionsRef.current, answersRef.current, 0);
+    }
+  }, [phase, secondsLeft, finalizeExam]);
+
+  const goToQuestion = (nextIndex: number) => {
+    setCurrentIndex(nextIndex);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const renderVisualForQuestion = (q: TeoriQuestion) => {
+    const { visual } = q;
+    if (visual.type === 'sign' && visual.signCode) {
+      return (
+        <div className="flex flex-wrap items-center justify-center gap-6 rounded-xl border border-zinc-200 bg-zinc-50 py-5 dark:border-zinc-800 dark:bg-zinc-950/60">
+          <DanishRoadSignSVG code={visual.signCode} subPlaque={visual.subPlaque} size={128} />
+          {visual.signCode === 'E33' && <PSkiveSVG size={110} />}
+        </div>
+      );
+    }
+    if (visual.type === 'technical') {
+      return (
+        <CarTechnicalSVG
+          initialTab={visual.technicalTab ?? 'motorrum'}
+          activeHotspot={visual.technicalHotspot}
+          languageMode={languageMode}
+          compact
+        />
+      );
+    }
+    return (
+      <TrafficSceneSVG
+        presetId={visual.presetId}
+        signCode={visual.signCode}
+        subPlaque={visual.subPlaque}
+      />
+    );
+  };
 
   const startExam = () => {
     const selected = buildExamQuestions(QUESTIONS_BANK, 25);
@@ -304,6 +350,8 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
 
                   {isOpen && (
                     <div className="border-t border-zinc-200/80 p-4 dark:border-zinc-800">
+                      <div className="mb-3">{renderVisualForQuestion(q)}</div>
+
                       <div className="mb-3 flex items-start justify-between gap-2">
                         <BilingualText
                           da={q.situationDa}
@@ -379,35 +427,6 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
     q.subQuestions.every((sq) => answers[sq.id] !== undefined)
   ).length;
 
-  const renderVisual = () => {
-    const { visual } = question;
-    if (visual.type === 'sign' && visual.signCode) {
-      return (
-        <div className="flex flex-wrap items-center justify-center gap-6 rounded-xl border border-zinc-200 bg-zinc-50 py-5 dark:border-zinc-800 dark:bg-zinc-950/60">
-          <DanishRoadSignSVG code={visual.signCode} subPlaque={visual.subPlaque} size={128} />
-          {visual.signCode === 'E33' && <PSkiveSVG size={110} />}
-        </div>
-      );
-    }
-    if (visual.type === 'technical') {
-      return (
-        <CarTechnicalSVG
-          initialTab={visual.technicalTab ?? 'motorrum'}
-          activeHotspot={visual.technicalHotspot}
-          languageMode={languageMode}
-          compact
-        />
-      );
-    }
-    return (
-      <TrafficSceneSVG
-        presetId={visual.presetId}
-        signCode={visual.signCode}
-        subPlaque={visual.subPlaque}
-      />
-    );
-  };
-
   return (
     <div className="mx-auto max-w-3xl space-y-4 animate-fade-in">
       {/* Top Exam Status Bar */}
@@ -459,7 +478,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
             <button
               key={q.id}
               type="button"
-              onClick={() => setCurrentIndex(idx)}
+              onClick={() => goToQuestion(idx)}
               className={`h-7 min-w-[28px] rounded-lg border text-[11px] font-bold transition-all ${
                 isCurrent
                   ? 'border-zinc-900 bg-zinc-900 text-white dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-900'
@@ -476,7 +495,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
 
       {/* Question Card */}
       <div className="nordic-card p-4 sm:p-6">
-        <div className="mb-4">{renderVisual()}</div>
+        <div className="mb-4">{renderVisualForQuestion(question)}</div>
 
         <div className="mb-4 flex items-start justify-between gap-3 rounded-2xl border border-zinc-200/80 bg-zinc-50/70 p-4 dark:border-zinc-800 dark:bg-zinc-950/50">
           <BilingualText
@@ -542,7 +561,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
           <button
             type="button"
             disabled={currentIndex === 0}
-            onClick={() => setCurrentIndex((i) => Math.max(0, i - 1))}
+            onClick={() => goToQuestion(Math.max(0, currentIndex - 1))}
             className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 px-3.5 py-2 text-xs font-semibold text-zinc-700 transition-colors hover:bg-zinc-50 disabled:opacity-35 dark:border-zinc-800 dark:text-zinc-300"
           >
             <ChevronLeft className="h-4 w-4" />
@@ -552,7 +571,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
           {currentIndex + 1 < examQuestions.length ? (
             <button
               type="button"
-              onClick={() => setCurrentIndex((i) => Math.min(examQuestions.length - 1, i + 1))}
+              onClick={() => goToQuestion(Math.min(examQuestions.length - 1, currentIndex + 1))}
               className="inline-flex items-center gap-1.5 rounded-xl bg-zinc-900 px-5 py-2 text-xs font-bold text-white transition-colors hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900"
             >
               Следующий

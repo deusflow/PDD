@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import { LanguageMode } from '../../types';
 
@@ -26,6 +26,10 @@ export const BilingualText: React.FC<BilingualTextProps> = ({
   className = '',
 }) => {
   const [revealed, setRevealed] = useState(false);
+
+  useEffect(() => {
+    setRevealed(false);
+  }, [da, ru, mode]);
 
   // Mode 3: Kun Dansk (hidden unless inside post-answer explanation block)
   if (mode === 'da_only' && !revealInExplanation) {

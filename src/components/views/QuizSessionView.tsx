@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   AlertTriangle,
   ArrowLeft,
@@ -55,7 +55,22 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
   const [history, setHistory] = useState<SessionHistoryItem[]>([]);
   const [finished, setFinished] = useState(false);
 
+  const keyHandlerRef = useRef<() => void>(() => {});
+
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== 'Enter') return;
+      const tag = (e.target as HTMLElement | null)?.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'BUTTON') return;
+      e.preventDefault();
+      keyHandlerRef.current();
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, []);
+
   if (queue.length === 0) {
+    keyHandlerRef.current = () => {};
     return (
       <div className="nordic-card mx-auto max-w-2xl p-8 text-center">
         <p className="text-sm text-zinc-600 dark:text-zinc-400">
@@ -74,6 +89,7 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
   }
 
   if (finished) {
+    keyHandlerRef.current = () => {};
     const firstPassAttempts = history.filter((h) => !h.wasRetry);
     const passedCount = firstPassAttempts.filter((h) => h.passed).length;
     const totalCount = firstPassAttempts.length;
@@ -200,6 +216,7 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
   };
 
   const handleNext = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     if (currentIndex + 1 < queue.length) {
       setCurrentIndex((i) => i + 1);
       setAnswers({});
@@ -207,6 +224,14 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
     } else {
       onCompleteSession();
       setFinished(true);
+    }
+  };
+
+  keyHandlerRef.current = () => {
+    if (!isSubmitted && allAnswered) {
+      handleSubmit();
+    } else if (isSubmitted) {
+      handleNext();
     }
   };
 

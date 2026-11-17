@@ -3,11 +3,12 @@ import { BackupSyncModal } from './components/layout/BackupSyncModal';
 import { Header } from './components/layout/Header';
 import { OnboardingModal } from './components/layout/OnboardingModal';
 import { DashboardView } from './components/views/DashboardView';
-import { DictionaryView } from './components/views/DictionaryView';
+import { CategoryFilter, DictionaryView } from './components/views/DictionaryView';
 import { ExamSimulatorView } from './components/views/ExamSimulatorView';
 import { ModulesView } from './components/views/ModulesView';
 import { QuizSessionView } from './components/views/QuizSessionView';
 import { QUESTIONS_BANK } from './data/questionsBank';
+import { DICTIONARY_ENTRIES } from './data/signsAndGlossary';
 import { danishSpeech } from './services/speech';
 import {
   buildSmartSession,
@@ -32,10 +33,31 @@ interface ActiveQuizSession {
   requeueFailures: boolean;
 }
 
+function syncRelatedDictionaryItems(
+  srsMap: Record<string, SRSRecord>,
+  questionId: string,
+  isAllCorrect: boolean,
+  now: number
+): void {
+  const q = QUESTIONS_BANK.find((item) => item.id === questionId);
+  if (!q) return;
+
+  for (const entry of DICTIONARY_ENTRIES) {
+    const matchesSign = Boolean(q.visual.signCode && entry.signCode === q.visual.signCode);
+    const matchesHotspot = Boolean(
+      q.visual.technicalHotspot && entry.technicalHotspot === q.visual.technicalHotspot
+    );
+    if (matchesSign || matchesHotspot) {
+      srsMap[entry.id] = updateSRSRecord(srsMap[entry.id], entry.id, isAllCorrect, now);
+    }
+  }
+}
+
 export const App: React.FC = () => {
   const [appState, setAppState] = useState<UserAppState>(() => StorageManager.load());
   const [activeTab, setActiveTab] = useState<ActiveTab>('dashboard');
   const [selectedModuleId, setSelectedModuleId] = useState<number>(1);
+  const [dictionaryCategory, setDictionaryCategory] = useState<CategoryFilter>('all');
   const [activeSession, setActiveSession] = useState<ActiveQuizSession | null>(null);
   const [isOnboardingOpen, setIsOnboardingOpen] = useState<boolean>(
     () => !StorageManager.load().hasSeenOnboarding
@@ -87,18 +109,26 @@ export const App: React.FC = () => {
   const handleTabChange = (tab: ActiveTab) => {
     danishSpeech.stop();
     setActiveSession(null);
+    if (tab === 'dictionary') {
+      setDictionaryCategory('all');
+    }
     setActiveTab(tab);
   };
 
   const handleRecordResult = (itemId: string, isAllCorrect: boolean): SRSRecord => {
-    const updatedRecord = updateSRSRecord(appState.srs[itemId], itemId, isAllCorrect);
-    setAppState((prev) => ({
-      ...prev,
-      srs: {
+    const now = Date.now();
+    const updatedRecord = updateSRSRecord(appState.srs[itemId], itemId, isAllCorrect, now);
+    setAppState((prev) => {
+      const nextSrs: Record<string, SRSRecord> = {
         ...prev.srs,
-        [itemId]: updateSRSRecord(prev.srs[itemId], itemId, isAllCorrect),
-      },
-    }));
+        [itemId]: updateSRSRecord(prev.srs[itemId], itemId, isAllCorrect, now),
+      };
+      syncRelatedDictionaryItems(nextSrs, itemId, isAllCorrect, now);
+      return {
+        ...prev,
+        srs: nextSrs,
+      };
+    });
     return updatedRecord;
   };
 
@@ -145,6 +175,7 @@ export const App: React.FC = () => {
       const now = Date.now();
       for (const r of results) {
         nextSrs[r.questionId] = updateSRSRecord(nextSrs[r.questionId], r.questionId, r.passed, now);
+        syncRelatedDictionaryItems(nextSrs, r.questionId, r.passed, now);
       }
       return {
         ...prev,
@@ -159,6 +190,12 @@ export const App: React.FC = () => {
     danishSpeech.stop();
     setSelectedModuleId(moduleId);
     setActiveTab('modules');
+  };
+
+  const handleOpenSignsAndKontrol = () => {
+    danishSpeech.stop();
+    setDictionaryCategory('sign_kontrol');
+    setActiveTab('dictionary');
   };
 
   const handleRestoreState = (next: UserAppState) => {
@@ -212,6 +249,7 @@ export const App: React.FC = () => {
                 onStartSmartSession={handleStartSmartSession}
                 onStartCustomSession={handleStartCustomSession}
                 onOpenModule={handleOpenModuleFromDashboard}
+                onOpenSignsAndKontrol={handleOpenSignsAndKontrol}
               />
             )}
 
@@ -245,8 +283,10 @@ export const App: React.FC = () => {
 
             {activeTab === 'dictionary' && (
               <DictionaryView
+                key={dictionaryCategory}
                 srsMap={appState.srs}
                 languageMode={appState.languageMode}
+                initialCategory={dictionaryCategory}
                 onRecordEntryReview={(entryId, passed) => {
                   handleRecordResult(entryId, passed);
                 }}

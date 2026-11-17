@@ -2,7 +2,23 @@ type SpeechListener = (speakingId: string | null) => void;
 
 class DanishSpeechService {
   private currentId: string | null = null;
+  private activeUtterance: SpeechSynthesisUtterance | null = null;
+  private cachedVoices: SpeechSynthesisVoice[] = [];
   private listeners = new Set<SpeechListener>();
+
+  constructor() {
+    if (this.isSupported()) {
+      this.loadVoices();
+      window.speechSynthesis.addEventListener?.('voiceschanged', () => {
+        this.loadVoices();
+      });
+    }
+  }
+
+  private loadVoices(): void {
+    if (!this.isSupported()) return;
+    this.cachedVoices = window.speechSynthesis.getVoices();
+  }
 
   public isSupported(): boolean {
     return typeof window !== 'undefined' && 'speechSynthesis' in window;
@@ -28,6 +44,7 @@ class DanishSpeechService {
   public stop(): void {
     if (!this.isSupported()) return;
     window.speechSynthesis.cancel();
+    this.activeUtterance = null;
     this.currentId = null;
     this.notify();
   }
@@ -47,7 +64,7 @@ class DanishSpeechService {
     utterance.rate = 0.94;
     utterance.pitch = 1.0;
 
-    const voices = window.speechSynthesis.getVoices();
+    const voices = this.cachedVoices.length > 0 ? this.cachedVoices : window.speechSynthesis.getVoices();
     const danishVoice =
       voices.find((v) => v.lang.toLowerCase() === 'da-dk') ??
       voices.find((v) => v.lang.toLowerCase().startsWith('da'));
@@ -56,24 +73,27 @@ class DanishSpeechService {
       utterance.voice = danishVoice;
     }
 
+    this.activeUtterance = utterance;
     this.currentId = id;
     this.notify();
 
-    utterance.onend = () => {
+    this.activeUtterance.onend = () => {
       if (this.currentId === id) {
+        this.activeUtterance = null;
         this.currentId = null;
         this.notify();
       }
     };
 
-    utterance.onerror = () => {
+    this.activeUtterance.onerror = () => {
       if (this.currentId === id) {
+        this.activeUtterance = null;
         this.currentId = null;
         this.notify();
       }
     };
 
-    window.speechSynthesis.speak(utterance);
+    window.speechSynthesis.speak(this.activeUtterance);
   }
 }
 

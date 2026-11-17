@@ -187,12 +187,14 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
           </h3>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 md:grid-cols-6">
             {DICTIONARY_ENTRIES.filter((d) => d.category === 'sign' && d.signCode)
-              .slice(0, 12)
               .map((sign) => (
                 <div
                   key={sign.id}
-                  className="flex flex-col items-center rounded-2xl border border-zinc-200/80 bg-zinc-50/70 p-3 text-center dark:border-zinc-800 dark:bg-zinc-950/60"
+                  className="relative flex flex-col items-center rounded-2xl border border-zinc-200/80 bg-zinc-50/70 p-3 text-center dark:border-zinc-800 dark:bg-zinc-950/60"
                 >
+                  <div className="mb-1 self-end">
+                    <SpeakButton id={`mod5_sign_${sign.id}`} text={sign.da} />
+                  </div>
                   <DanishRoadSignSVG
                     code={sign.signCode!}
                     subPlaque={sign.subPlaque}
