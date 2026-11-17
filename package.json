@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "tsc -p tsconfig.test.json && printf '{\"type\":\"commonjs\"}\\n' > .test-dist/package.json && node --test .test-dist/tests/*.test.js"
   },
   "dependencies": {
     "lucide-react": "^0.460.0",

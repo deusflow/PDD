@@ -2,15 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { MODULES_DATA } from '../../data/modulesData';
 import {
   CHECKPOINT_MIN_PASS_SCORE,
-  COURSE_MIN_PASS_SCORE,
   CourseStep,
   getCourseOverview,
+  getModulePassThreshold,
   getModuleProgress,
+  getModuleQuestions,
   getNextCourseStep,
   REQUIRED_MOCK_EXAM_STREAK,
 } from '../../services/coursePlanner';
 import { danishSpeech } from '../../services/speech';
-import { SRSRecord, UserAppState } from '../../types';
+import { SRSRecord, TeoriQuestion, UserAppState } from '../../types';
 import { CourseInterstitial } from '../course/CourseInterstitial';
 import { CourseProgressBar } from '../course/CourseProgressBar';
 import { LessonFlashcards } from '../course/LessonFlashcards';
@@ -27,6 +28,7 @@ interface CourseViewProps {
   onCompleteCourseQuiz: (moduleId: number, isFullQuiz: boolean, firstTryScore: number) => void;
   onCompleteCheckpoint: (passed: boolean) => void;
   onFinishExam: Parameters<typeof ExamSimulatorView>[0]['onFinishExam'];
+  onTrainFailedQuestions: (questions: TeoriQuestion[]) => void;
   onOpenSmartTraining: () => void;
   onExit: () => void;
 }
@@ -72,6 +74,7 @@ export const CourseView: React.FC<CourseViewProps> = ({
   onCompleteCourseQuiz,
   onCompleteCheckpoint,
   onFinishExam,
+  onTrainFailedQuestions,
   onOpenSmartTraining,
   onExit,
 }) => {
@@ -145,23 +148,19 @@ export const CourseView: React.FC<CourseViewProps> = ({
     onExit();
   };
 
-  // Extra mock exam launched from 'ready' screen
-  if (extraMockExam) {
-    return (
-      <div className="space-y-5">
-        <CourseProgressBar
-          step={{ kind: 'mock_exam' }}
-          celebratingModuleId={null}
-          percent={overview.percent}
-          course={appState.course}
-          onExit={handleExit}
-        />
+  const effectiveStep: CourseStep = extraMockExam ? { kind: 'mock_exam' } : activeStep;
+  const effectivePercent = activeStep.kind === 'ready' && !extraMockExam ? 100 : overview.percent;
+
+  const renderMainBody = (): React.ReactNode => {
+    // Extra mock exam launched from 'ready' screen
+    if (extraMockExam) {
+      return (
         <ExamSimulatorView
           languageMode={appState.languageMode}
           examHistory={appState.examHistory}
           autoStart
           onFinishExam={onFinishExam}
-          onTrainFailedQuestions={() => {}}
+          onTrainFailedQuestions={onTrainFailedQuestions}
           onBackToCourse={() => {
             setExtraMockExam(false);
             const next = getNextCourseStep(appState);
@@ -170,32 +169,22 @@ export const CourseView: React.FC<CourseViewProps> = ({
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
         />
-      </div>
-    );
-  }
+      );
+    }
 
-  // Celebration screen after closing a module
-  if (celebrating !== null) {
-    const mod = MODULES_DATA.find((m) => m.id === celebrating.moduleId);
-    const nextButtonText =
-      activeStep.kind === 'checkpoint'
-        ? 'К контрольной по урокам 1–4'
-        : activeStep.kind === 'mock_exam'
-          ? 'К финальному экзамену'
-          : activeStep.kind === 'review'
-            ? 'Продолжить'
-            : `Урок ${celebrating.moduleId + 1}`;
+    // Celebration screen after closing a module
+    if (celebrating !== null) {
+      const mod = MODULES_DATA.find((m) => m.id === celebrating.moduleId);
+      const nextButtonText =
+        activeStep.kind === 'checkpoint'
+          ? 'К контрольной по урокам 1–4'
+          : activeStep.kind === 'mock_exam'
+            ? 'К финальному экзамену'
+            : activeStep.kind === 'review'
+              ? 'Продолжить'
+              : `Урок ${celebrating.moduleId + 1}`;
 
-    return (
-      <div className="space-y-6">
-        <CourseProgressBar
-          step={activeStep}
-          celebratingModuleId={celebrating.moduleId}
-          percent={overview.percent}
-          course={appState.course}
-          moduleProgress={getModuleProgress(appState.course, celebrating.moduleId)}
-          onExit={handleExit}
-        />
+      return (
         <CourseInterstitial
           variant="lesson_passed"
           title={`Урок ${celebrating.moduleId} пройден`}
@@ -208,24 +197,15 @@ export const CourseView: React.FC<CourseViewProps> = ({
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
         />
-      </div>
-    );
-  }
+      );
+    }
 
-  // Course fully completed ('ready')
-  if (activeStep.kind === 'ready') {
-    const examsCount = appState.examHistory.length;
-    const passedCount = appState.examHistory.filter((e) => e.passed).length;
+    // Course fully completed ('ready')
+    if (activeStep.kind === 'ready') {
+      const examsCount = appState.examHistory.length;
+      const passedCount = appState.examHistory.filter((e) => e.passed).length;
 
-    return (
-      <div className="space-y-6">
-        <CourseProgressBar
-          step={activeStep}
-          celebratingModuleId={null}
-          percent={100}
-          course={appState.course}
-          onExit={handleExit}
-        />
+      return (
         <CourseInterstitial
           variant="ready"
           title="Вы готовы к Teoriprøven"
@@ -241,22 +221,13 @@ export const CourseView: React.FC<CourseViewProps> = ({
           tertiaryLabel="Вернуться в главное меню"
           onTertiary={handleExit}
         />
-      </div>
-    );
-  }
+      );
+    }
 
-  // Interstitial screens before review, fix, checkpoint, mock_exam
-  if (showInterstitial) {
-    if (activeStep.kind === 'review') {
-      return (
-        <div className="space-y-6">
-          <CourseProgressBar
-            step={activeStep}
-            celebratingModuleId={null}
-            percent={overview.percent}
-            course={appState.course}
-            onExit={handleExit}
-          />
+    // Interstitial screens before review, fix, checkpoint, mock_exam
+    if (showInterstitial) {
+      if (activeStep.kind === 'review') {
+        return (
           <CourseInterstitial
             variant="review"
             title="Сначала повторим"
@@ -267,21 +238,11 @@ export const CourseView: React.FC<CourseViewProps> = ({
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
           />
-        </div>
-      );
-    }
+        );
+      }
 
-    if (activeStep.kind === 'fix') {
-      return (
-        <div className="space-y-6">
-          <CourseProgressBar
-            step={activeStep}
-            celebratingModuleId={null}
-            percent={overview.percent}
-            course={appState.course}
-            moduleProgress={moduleProgress}
-            onExit={handleExit}
-          />
+      if (activeStep.kind === 'fix') {
+        return (
           <CourseInterstitial
             variant="fix"
             title={`Исправим ошибки урока ${activeStep.moduleId}`}
@@ -292,46 +253,29 @@ export const CourseView: React.FC<CourseViewProps> = ({
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
           />
-        </div>
-      );
-    }
+        );
+      }
 
-    if (activeStep.kind === 'quiz') {
-      const modProg = getModuleProgress(appState.course, activeStep.moduleId);
-      return (
-        <div className="space-y-6">
-          <CourseProgressBar
-            step={activeStep}
-            celebratingModuleId={null}
-            percent={overview.percent}
-            course={appState.course}
-            moduleProgress={moduleProgress}
-            onExit={handleExit}
-          />
+      if (activeStep.kind === 'quiz') {
+        const modProg = getModuleProgress(appState.course, activeStep.moduleId);
+        const modTotal = getModuleQuestions(activeStep.moduleId).length;
+        const modThreshold = getModulePassThreshold(activeStep.moduleId);
+        return (
           <CourseInterstitial
             variant="retake_quiz"
             title={`Закрепим Урок ${activeStep.moduleId} ещё раз`}
-            description={`Ошибки разобраны, но с 1-й попытки было ${modProg.bestFirstTryScore} из 7 (нужно минимум ${COURSE_MIN_PASS_SCORE}). Пройдите тест ещё раз без подсказок.`}
+            description={`Ошибки разобраны, но с 1-й попытки было ${modProg.bestFirstTryScore} из ${modTotal} (нужно минимум ${modThreshold}). Пройдите тест ещё раз без подсказок.`}
             buttonLabel={`Пройти тест (${activeStep.questions.length} вопр.)`}
             onPrimary={() => {
               setShowInterstitial(false);
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
           />
-        </div>
-      );
-    }
+        );
+      }
 
-    if (activeStep.kind === 'checkpoint') {
-      return (
-        <div className="space-y-6">
-          <CourseProgressBar
-            step={activeStep}
-            celebratingModuleId={null}
-            percent={overview.percent}
-            course={appState.course}
-            onExit={handleExit}
-          />
+      if (activeStep.kind === 'checkpoint') {
+        return (
           <CourseInterstitial
             variant="checkpoint"
             title="Контрольная: уроки 1–4"
@@ -346,21 +290,12 @@ export const CourseView: React.FC<CourseViewProps> = ({
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
           />
-        </div>
-      );
-    }
+        );
+      }
 
-    if (activeStep.kind === 'mock_exam') {
-      const streak = appState.course.mockExamStreak;
-      return (
-        <div className="space-y-6">
-          <CourseProgressBar
-            step={activeStep}
-            celebratingModuleId={null}
-            percent={overview.percent}
-            course={appState.course}
-            onExit={handleExit}
-          />
+      if (activeStep.kind === 'mock_exam') {
+        const streak = appState.course.mockExamStreak;
+        return (
           <CourseInterstitial
             variant="mock_exam"
             title="Пробный экзамен Teoriprøven"
@@ -372,10 +307,12 @@ export const CourseView: React.FC<CourseViewProps> = ({
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
           />
-        </div>
-      );
+        );
+      }
     }
-  }
+
+    return renderStepContent();
+  };
 
   // Active Step Rendering
   const renderStepContent = () => {
@@ -512,7 +449,7 @@ export const CourseView: React.FC<CourseViewProps> = ({
             examHistory={appState.examHistory}
             autoStart
             onFinishExam={onFinishExam}
-            onTrainFailedQuestions={() => {}}
+            onTrainFailedQuestions={onTrainFailedQuestions}
             onBackToCourse={() => {
               danishSpeech.stop();
               const next = getNextCourseStep(appState);
@@ -529,9 +466,9 @@ export const CourseView: React.FC<CourseViewProps> = ({
   return (
     <div className="space-y-5">
       <CourseProgressBar
-        step={activeStep}
-        celebratingModuleId={null}
-        percent={overview.percent}
+        step={effectiveStep}
+        celebratingModuleId={celebrating?.moduleId ?? null}
+        percent={effectivePercent}
         course={appState.course}
         moduleProgress={moduleProgress}
         browsingModuleId={browsingModuleId}
@@ -573,7 +510,7 @@ export const CourseView: React.FC<CourseViewProps> = ({
           />
         </div>
       ) : (
-        renderStepContent()
+        renderMainBody()
       )}
     </div>
   );

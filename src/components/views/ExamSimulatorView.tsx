@@ -133,6 +133,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
     if (visual.type === 'technical') {
       return (
         <CarTechnicalSVG
+          key={q.id}
           initialTab={visual.technicalTab ?? 'motorrum'}
           activeHotspot={visual.technicalHotspot}
           languageMode={languageMode}
@@ -145,6 +146,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
         presetId={visual.presetId}
         signCode={visual.signCode}
         subPlaque={visual.subPlaque}
+        maneuverBadge={visual.maneuverBadge}
       />
     );
   };
@@ -301,7 +303,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
                   Вернуться к курсу
                 </button>
               )}
-              {failedQuestions.length > 0 && !onBackToCourse && (
+              {failedQuestions.length > 0 && (
                 <button
                   type="button"
                   onClick={() => onTrainFailedQuestions(failedQuestions)}

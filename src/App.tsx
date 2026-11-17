@@ -446,6 +446,13 @@ export const App: React.FC = () => {
                 onCompleteCourseQuiz={handleCompleteCourseQuiz}
                 onCompleteCheckpoint={handleCompleteCheckpoint}
                 onFinishExam={handleFinishExam}
+                onTrainFailedQuestions={(failedQs) => {
+                  handleStartCustomSession(
+                    'Отработка ошибок экзамена (Box 1)',
+                    'Повтор билетов, в которых были допущены ошибки',
+                    failedQs
+                  );
+                }}
                 onOpenSmartTraining={() => {
                   setActiveTab('dashboard');
                   handleStartSmartSession(10);

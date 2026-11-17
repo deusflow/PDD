@@ -167,11 +167,11 @@ const NUMBER_GROUPS: NumberGroup[] = [
         noteRu: 'Габариты и задние фонари должны быть видны с 300 м; белый свет номера читается с 20 м.',
       },
       {
-        id: 'k_60_120',
-        value: '60–120 мин',
-        daTerm: 'Parkeringslys eller standsning uden belysning',
-        labelRu: 'Контроль уровня масла / тормозной жидкости',
-        noteRu: 'Главные тех. проверки под капотом: уровни между MIN и MAX + тормозная педаль не проваливается (проверка вакуумного усилителя).',
+        id: 'k_minmax',
+        value: 'MIN–MAX',
+        daTerm: 'Væskestand mellem MIN og MAX for motorolie, kølervæske og bremsevæske',
+        labelRu: 'Уровни масла и жидкостей под капотом',
+        noteRu: 'Уровень моторного масла, тормозной и охлаждающей жидкости — строго между MIN и MAX. Плюс проверка герметичности педали тормоза.',
       },
       {
         id: 'k_park_2s',

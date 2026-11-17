@@ -350,6 +350,7 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
     if (visual.type === 'technical') {
       return (
         <CarTechnicalSVG
+          key={question.id}
           initialTab={visual.technicalTab ?? 'motorrum'}
           activeHotspot={visual.technicalHotspot}
           languageMode={languageMode}
@@ -363,6 +364,7 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
         presetId={visual.presetId}
         signCode={visual.signCode}
         subPlaque={visual.subPlaque}
+        maneuverBadge={visual.maneuverBadge}
       />
     );
   };

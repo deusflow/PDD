@@ -12,12 +12,17 @@ import {
 import { getSRSRecord } from './srsEngine';
 import { createEmptyModuleProgress } from './storage';
 
-export const COURSE_MIN_PASS_SCORE = 6; // out of 7
+export const COURSE_MIN_PASS_RATIO = 0.75; // 75% first-try accuracy (e.g. 6/8, 10/13)
 export const CHECKPOINT_MIN_PASS_SCORE = 10; // out of 12
 export const COURSE_REVIEW_THRESHOLD = 3;
 export const COURSE_REVIEW_MAX_QUESTIONS = 8;
 export const COURSE_FLASHCARDS_MAX = 8;
 export const REQUIRED_MOCK_EXAM_STREAK = 2;
+
+export function getModulePassThreshold(moduleId: number): number {
+  const total = getModuleQuestions(moduleId).length;
+  return total === 0 ? 0 : Math.ceil(total * COURSE_MIN_PASS_RATIO);
+}
 
 export type CourseStep =
   | { kind: 'review'; questions: TeoriQuestion[]; reason: string }
@@ -58,7 +63,7 @@ export function canModulePass(
   moduleId: number
 ): boolean {
   const failed = getModuleFailedQuestions(srsMap, moduleId);
-  return progress.bestFirstTryScore >= COURSE_MIN_PASS_SCORE && failed.length === 0;
+  return progress.bestFirstTryScore >= getModulePassThreshold(moduleId) && failed.length === 0;
 }
 
 function pluralizeQuestions(count: number): string {
@@ -240,7 +245,7 @@ export function getCourseOverview(state: UserAppState, now: number = Date.now())
   let firstUnpassed = 8;
   let foundUnpassed = false;
 
-  // 8 modules * 10% + checkpoint 5% + 3 mock exams * 5% = 100%
+  // 8 modules * 10% + checkpoint 6% + 2 mock exams * 7% = 100%
   let rawPercent = 0;
 
   for (let m = 1; m <= 8; m += 1) {
@@ -259,14 +264,14 @@ export function getCourseOverview(state: UserAppState, now: number = Date.now())
     }
   }
 
-  if (state.course.checkpointMidPassed) rawPercent += 5;
-  rawPercent += Math.min(REQUIRED_MOCK_EXAM_STREAK, state.course.mockExamStreak) * 5;
+  if (state.course.checkpointMidPassed) rawPercent += 6;
+  rawPercent += Math.min(REQUIRED_MOCK_EXAM_STREAK, state.course.mockExamStreak) * 7;
 
   const percent = Math.min(100, Math.round(rawPercent));
   const nextStep = getNextCourseStep(state, now);
 
   let stepLabel = 'Курс пройден';
-  let stepDescription = 'Все уроки и 3 пробных экзамена успешно сданы.';
+  let stepDescription = `Все уроки и ${REQUIRED_MOCK_EXAM_STREAK} пробных экзамена успешно сданы.`;
 
   switch (nextStep.kind) {
     case 'review':
@@ -287,9 +292,10 @@ export function getCourseOverview(state: UserAppState, now: number = Date.now())
       break;
     case 'quiz': {
       const mod = MODULES_DATA.find((x) => x.id === nextStep.moduleId);
+      const minScore = getModulePassThreshold(nextStep.moduleId);
       stepLabel = `Урок ${nextStep.moduleId} · Тест (${nextStep.questions.length} вопр.)`;
       stepDescription = mod
-        ? `Проверьте знания по теме «${mod.titleRu}» (нужно ≥ 6 из 7).`
+        ? `Проверьте знания по теме «${mod.titleRu}» (нужно ≥ ${minScore} из ${nextStep.questions.length}).`
         : 'Тест по изученной теме.';
       break;
     }
@@ -303,7 +309,7 @@ export function getCourseOverview(state: UserAppState, now: number = Date.now())
       break;
     case 'mock_exam':
       stepLabel = `Пробный экзамен · ${state.course.mockExamStreak + 1} из ${REQUIRED_MOCK_EXAM_STREAK}`;
-      stepDescription = 'Сдайте 3 экзамена подряд (≥ 20/25), чтобы подтвердить полную готовность.';
+      stepDescription = `Сдайте ${REQUIRED_MOCK_EXAM_STREAK} экзамена подряд (≥ 20/25), чтобы подтвердить полную готовность.`;
       break;
     case 'ready':
       stepLabel = 'Вы готовы к Teoriprøven';

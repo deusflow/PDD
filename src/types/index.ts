@@ -36,6 +36,7 @@ export interface TeoriQuestion {
     subPlaque?: string;
     technicalTab?: TechnicalTabId;
     technicalHotspot?: string;
+    maneuverBadge?: string;
     captionDa?: string;
     captionRu?: string;
   };

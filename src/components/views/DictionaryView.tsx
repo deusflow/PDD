@@ -57,6 +57,11 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({
     });
   }, [query, categoryFilter, statusFilter, srsMap]);
 
+  const signCount = useMemo(
+    () => DICTIONARY_ENTRIES.filter((entry) => entry.category === 'sign').length,
+    []
+  );
+
   const counts = useMemo(() => {
     let unknown = 0;
     let learning = 0;
@@ -80,7 +85,7 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({
               Словарь и Шпаргалка (Ordbog &amp; Hurtig-Tjek)
             </h1>
             <p className="text-xs text-zinc-500 dark:text-zinc-400">
-              {DICTIONARY_ENTRIES.length} карточек: датские термины, 32 дорожных знака и весь Kontrolprøven
+              {DICTIONARY_ENTRIES.length} карточек: датские термины, {signCount} дорожных знаков и весь Kontrolprøven
             </p>
           </div>
           <div className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">

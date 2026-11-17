@@ -6,6 +6,7 @@ interface TrafficSceneSVGProps {
   presetId: string;
   signCode?: string;
   subPlaque?: string;
+  maneuverBadge?: string;
   className?: string;
 }
 
@@ -134,6 +135,7 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
   presetId,
   signCode,
   subPlaque,
+  maneuverBadge,
   className = '',
 }) => {
   if (presetId.startsWith('pov_')) {
@@ -142,6 +144,7 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
         presetId={presetId}
         signCode={signCode}
         subPlaque={subPlaque}
+        maneuverBadge={maneuverBadge}
         className={className}
       />
     );
