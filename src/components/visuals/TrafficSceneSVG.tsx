@@ -31,25 +31,26 @@ const TopCar: React.FC<{
   label,
   brakeLights = false,
 }) => {
-  const fill = color ?? (isPlayer ? '#2563EB' : '#52525B');
-  const roof = isPlayer ? '#60A5FA' : '#A1A1AA';
+  const fill = color ?? (isPlayer ? '#0D9488' : '#475569');
+  const roof = isPlayer ? '#5EEAD4' : '#94A3B8';
   return (
     <g transform={`translate(${x}, ${y}) rotate(${angle})`}>
       {/* Car shadow */}
-      <rect x="-15" y="-27" width="30" height="54" rx="7" fill="rgba(0,0,0,0.22)" transform="translate(2, 2)" />
+      <rect x="-15" y="-27" width="30" height="54" rx="8" fill="#09090B" opacity="0.26" transform="translate(2.5, 3)" />
       {/* Body */}
-      <rect x="-15" y="-27" width="30" height="54" rx="7" fill={fill} stroke="#FFFFFF" strokeWidth="1.5" />
+      <rect x="-15" y="-27" width="30" height="54" rx="8" fill={fill} stroke="#FFFFFF" strokeWidth="1.5" />
       {/* Windshield & cabin */}
-      <rect x="-11" y="-13" width="22" height="27" rx="4" fill="#18181B" opacity="0.85" />
-      <rect x="-9" y="-6" width="18" height="14" rx="2.5" fill={roof} opacity="0.9" />
+      <rect x="-11" y="-14" width="22" height="28" rx="4.5" fill="#0F172A" opacity="0.88" />
+      <rect x="-9" y="-6" width="18" height="14" rx="3" fill={roof} opacity="0.9" />
+      <line x1="-8" y1="-12" x2="-2" y2="-8" stroke="#E0F2FE" strokeWidth="1.2" opacity="0.5" />
       {/* Headlights */}
-      <rect x="-12" y="-26" width="6" height="3" rx="1" fill="#FEF08A" />
-      <rect x="6" y="-26" width="6" height="3" rx="1" fill="#FEF08A" />
+      <rect x="-12" y="-26" width="6" height="3" rx="1.5" fill="#FEF08A" />
+      <rect x="6" y="-26" width="6" height="3" rx="1.5" fill="#FEF08A" />
       {/* Brake lights */}
       {brakeLights && (
         <>
-          <rect x="-13" y="24" width="7" height="3.5" rx="1" fill="#EF4444" />
-          <rect x="6" y="24" width="7" height="3.5" rx="1" fill="#EF4444" />
+          <rect x="-13" y="24" width="7" height="3.5" rx="1.5" fill="#EF4444" />
+          <rect x="6" y="24" width="7" height="3.5" rx="1.5" fill="#EF4444" />
         </>
       )}
       {/* Indicators */}
@@ -71,7 +72,7 @@ const TopCar: React.FC<{
           y="4"
           textAnchor="middle"
           fill="#FFFFFF"
-          fontSize="9"
+          fontSize="8.5"
           fontWeight="800"
         >
           {label ?? 'DU'}
@@ -81,8 +82,17 @@ const TopCar: React.FC<{
   );
 };
 
+const TreeTop: React.FC<{ x: number; y: number; r?: number }> = ({ x, y, r = 16 }) => (
+  <g transform={`translate(${x}, ${y})`}>
+    <circle cx="3" cy="4" r={r} fill="#09090B" opacity="0.14" />
+    <circle cx="0" cy="0" r={r} fill="#4ADE80" stroke="#16A34A" strokeWidth="1.5" />
+    <circle cx={-r * 0.25} cy={-r * 0.2} r={r * 0.55} fill="#86EFAC" opacity="0.55" />
+  </g>
+);
+
 const CyclistTop: React.FC<{ x: number | string; y: number | string; angle?: number }> = ({ x, y, angle = 0 }) => (
   <g transform={`translate(${x}, ${y}) rotate(${angle})`}>
+    <ellipse cx="2" cy="2" rx="7" ry="13" fill="#09090B" opacity="0.22" />
     <rect x="-3" y="-14" width="6" height="28" rx="3" fill="#0EA5E9" stroke="#FFFFFF" strokeWidth="1" />
     <line x1="-8" y1="-6" x2="8" y2="-6" stroke="#FFFFFF" strokeWidth="2.5" strokeLinecap="round" />
     <circle cx="0" cy="-2" r="5" fill="#FDE047" stroke="#18181B" strokeWidth="1.5" />
@@ -91,6 +101,7 @@ const CyclistTop: React.FC<{ x: number | string; y: number | string; angle?: num
 
 const PedestrianTop: React.FC<{ x: number | string; y: number | string; label?: string }> = ({ x, y, label }) => (
   <g transform={`translate(${x}, ${y})`}>
+    <circle cx="2" cy="2" r="7" fill="#09090B" opacity="0.2" />
     <circle cx="0" cy="0" r="7" fill="#F97316" stroke="#FFFFFF" strokeWidth="1.5" />
     <circle cx="0" cy="0" r="3.5" fill="#18181B" />
     {label && (
@@ -158,51 +169,58 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
         return (
           <g>
             {/* Sky & road inside windshield */}
-            <rect x="0" y="0" width="440" height="240" fill="#E2E8F0" />
-            <rect x="0" y="0" width="440" height="105" fill="#BAE6FD" />
-            <polygon points="110,105 330,105 440,210 0,210" fill="#3F3F46" />
+            <rect x="0" y="0" width="440" height="240" fill="url(#tsGrassBg)" />
+            <rect x="0" y="0" width="440" height="105" fill="url(#tsSkyGrad)" />
+            <circle cx="382" cy="28" r="13" fill="#FEF9C3" opacity="0.9" />
+            <ellipse cx="82" cy="30" rx="26" ry="9" fill="#FFFFFF" opacity="0.7" />
+            <rect x="34" y="84" width="22" height="20" fill="#E11D48" opacity="0.5" />
+            <polygon points="32,84 45,74 58,84" fill="#9F1239" opacity="0.6" />
+            <polygon points="110,105 330,105 440,210 0,210" fill="url(#tsAsphalt)" />
             <line x1="220" y1="105" x2="220" y2="210" stroke="#FFFFFF" strokeWidth="3" strokeDasharray="10 8" />
             {/* Blue bike lane on right */}
-            <polygon points="315,105 350,105 440,190 400,210" fill="#0284C7" opacity="0.8" />
+            <polygon points="315,105 350,105 440,190 400,210" fill="#0284C7" opacity="0.85" />
             {/* Dashboard */}
             <path d="M 0 185 Q 220 165 440 185 L 440 240 L 0 240 Z" fill="#18181B" />
+            <path d="M 0 185 Q 220 165 440 185" fill="none" stroke="#52525B" strokeWidth="1.5" opacity="0.7" />
             {/* Steering wheel */}
             <circle cx="145" cy="222" r="46" fill="none" stroke="#3F3F46" strokeWidth="10" />
             <circle cx="145" cy="222" r="14" fill="#27272A" />
             {/* Center rearview mirror */}
-            <rect x="168" y="14" width="104" height="32" rx="7" fill="#0F172A" stroke="#71717A" strokeWidth="3" />
+            <rect x="168" y="14" width="104" height="32" rx="8" fill="#0F172A" stroke="#71717A" strokeWidth="2.5" />
             <rect x="174" y="19" width="92" height="22" rx="4" fill="#334155" />
             <rect x="208" y="25" width="22" height="11" rx="2" fill="#94A3B8" />
-            <text x="220" y="59" textAnchor="middle" fill="#0F172A" fontSize="9.5" fontWeight="700">
+            <rect x="176" y="48" width="88" height="17" rx="8.5" fill="#0F172A" fillOpacity="0.85" />
+            <text x="220" y="59.5" textAnchor="middle" fill="#FFFFFF" fontSize="9.5" fontWeight="700">
               1. Bakspejl
             </text>
             {/* Right side mirror */}
-            <rect x="336" y="102" width="84" height="44" rx="8" fill="#0F172A" stroke="#71717A" strokeWidth="3" />
+            <rect x="336" y="102" width="84" height="44" rx="8" fill="#0F172A" stroke="#71717A" strokeWidth="2.5" />
             <rect x="342" y="108" width="72" height="32" rx="4" fill="#334155" />
-            <rect x="345" y="114" width="12" height="22" rx="2" fill="#2563EB" />
-            <text x="378" y="159" textAnchor="middle" fill="#0F172A" fontSize="9.5" fontWeight="700">
+            <rect x="345" y="114" width="12" height="22" rx="2" fill="#0D9488" />
+            <rect x="335" y="149" width="86" height="17" rx="8.5" fill="#0F172A" fillOpacity="0.85" />
+            <text x="378" y="160.5" textAnchor="middle" fill="#FFFFFF" fontSize="9.5" fontWeight="700">
               2. Sidespejl
             </text>
             {isBlindSpot ? (
               <g>
                 {/* Blind spot cyclist badge */}
-                <rect x="305" y="166" width="128" height="26" rx="6" fill="#EF4444" />
-                <text x="369" y="182" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="700">
+                <rect x="298" y="168" width="136" height="26" rx="13" fill="#DC2626" stroke="#FFFFFF" strokeOpacity="0.25" />
+                <text x="366" y="184" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="700">
                   3. SKULDERKIG! (Cyklist)
                 </text>
-                <circle cx="385" cy="86" r="16" fill="#FEF08A" stroke="#DC2626" strokeWidth="2.5" />
-                <text x="385" y="90" textAnchor="middle" fill="#DC2626" fontSize="11" fontWeight="800">
+                <circle cx="385" cy="84" r="16" fill="#FEF08A" stroke="#DC2626" strokeWidth="2.5" />
+                <text x="385" y="88.5" textAnchor="middle" fill="#DC2626" fontSize="12" fontWeight="900">
                   !
                 </text>
               </g>
             ) : (
               <g>
                 {/* Headrest alignment callout */}
-                <rect x="18" y="18" width="132" height="42" rx="8" fill="#FFFFFF" stroke="#0284C7" strokeWidth="2" />
-                <text x="84" y="36" textAnchor="middle" fill="#0F172A" fontSize="10" fontWeight="700">
+                <rect x="16" y="16" width="136" height="42" rx="10" fill="#0F172A" fillOpacity="0.9" stroke="#38BDF8" strokeWidth="1.6" />
+                <text x="84" y="34" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="700">
                   Nakkestøtte =
                 </text>
-                <text x="84" y="50" textAnchor="middle" fill="#0284C7" fontSize="10" fontWeight="700">
+                <text x="84" y="49" textAnchor="middle" fill="#5EEAD4" fontSize="10" fontWeight="700">
                   hovedets top
                 </text>
               </g>
@@ -214,24 +232,27 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
       case 'curb_departure':
         return (
           <g>
-            <rect x="0" y="0" width="440" height="240" fill="#86EFAC" opacity="0.35" />
-            <rect x="65" y="0" width="310" height="240" fill="#3F3F46" />
+            <rect x="0" y="0" width="440" height="240" fill="url(#tsGrassBg)" />
+            <TreeTop x={28} y={145} r={20} />
+            <TreeTop x={418} y={55} r={18} />
+            <TreeTop x={418} y={185} r={16} />
+            <rect x="65" y="0" width="310" height="240" fill="url(#tsAsphalt)" />
             {/* Cykelsti */}
-            <rect x="315" y="0" width="44" height="240" fill="#0284C7" opacity="0.75" />
+            <rect x="315" y="0" width="44" height="240" fill="#0284C7" opacity="0.85" />
             {/* Curb / sidewalk */}
-            <rect x="359" y="0" width="32" height="240" fill="#D4D4D8" />
+            <rect x="359" y="0" width="32" height="240" fill="#E4E4E7" />
             <line x1="190" y1="0" x2="190" y2="240" stroke="#FFFFFF" strokeWidth="3" strokeDasharray="14 10" />
             {/* Parked car pulling out */}
             <TopCar x="288" y="162" angle={-14} isPlayer blinkLeft />
-            <path d="M 278 134 Q 256 105 244 82" fill="none" stroke="#60A5FA" strokeWidth="3" strokeDasharray="5 4" />
+            <path d="M 278 134 Q 256 105 244 82" fill="none" stroke="#5EEAD4" strokeWidth="3" strokeDasharray="5 4" />
             {/* Approaching car + cyclist */}
-            <TopCar x="242" y="210" color="#71717A" />
+            <TopCar x="242" y="210" color="#64748B" />
             <CyclistTop x="337" y="205" />
-            <rect x="12" y="14" width="160" height="42" rx="8" fill="#18181B" opacity="0.88" />
-            <text x="92" y="32" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="700">
+            <rect x="12" y="14" width="164" height="44" rx="10" fill="#0F172A" fillOpacity="0.9" stroke="#FFFFFF" strokeOpacity="0.2" />
+            <text x="94" y="32" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="700">
               Igangsætning fra kantsten
             </text>
-            <text x="92" y="47" textAnchor="middle" fill="#FDE047" fontSize="9.5" fontWeight="600">
+            <text x="94" y="48" textAnchor="middle" fill="#FDE047" fontSize="9.5" fontWeight="600">
               Vigepligt for bil + cyklist!
             </text>
           </g>
@@ -292,11 +313,15 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
         const isHajtander = presetId === 'intersection_hajtaender';
         return (
           <g>
-            {/* Grass quadrants */}
-            <rect x="0" y="0" width="440" height="240" fill="#D9F99D" opacity="0.4" />
+            {/* Grass quadrants + Nordic trees */}
+            <rect x="0" y="0" width="440" height="240" fill="url(#tsGrassBg)" />
+            <TreeTop x={44} y={36} r={20} />
+            <TreeTop x={392} y={40} r={18} />
+            <TreeTop x={402} y={205} r={22} />
+            <TreeTop x={46} y={204} r={18} />
             {/* Cross roads */}
-            <rect x="0" y="75" width="440" height="90" fill="#3F3F46" />
-            <rect x="165" y="0" width="110" height="240" fill="#3F3F46" />
+            <rect x="0" y="75" width="440" height="90" fill="url(#tsAsphalt)" />
+            <rect x="165" y="0" width="110" height="240" fill="url(#tsAsphalt)" />
             <line x1="0" y1="120" x2="165" y2="120" stroke="#FFFFFF" strokeWidth="2.5" strokeDasharray="10 8" />
             <line x1="275" y1="120" x2="440" y2="120" stroke="#FFFFFF" strokeWidth="2.5" strokeDasharray="10 8" />
             <line x1="220" y1="0" x2="220" y2="75" stroke="#FFFFFF" strokeWidth="2.5" strokeDasharray="10 8" />
@@ -336,27 +361,29 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
       case 'driveway_overkoersel':
         return (
           <g>
-            <rect x="0" y="0" width="440" height="240" fill="#E4E4E7" />
+            <rect x="0" y="0" width="440" height="240" fill="url(#tsGrassBg)" />
+            <TreeTop x={42} y={208} r={18} />
+            <TreeTop x={398} y={208} r={18} />
             {/* Main road top */}
-            <rect x="0" y="24" width="440" height="96" fill="#3F3F46" />
+            <rect x="0" y="24" width="440" height="96" fill="url(#tsAsphalt)" />
             <line x1="0" y1="72" x2="440" y2="72" stroke="#FFFFFF" strokeWidth="2.5" strokeDasharray="12 10" />
             {/* Cykelsti */}
-            <rect x="0" y="120" width="440" height="24" fill="#0284C7" opacity="0.82" />
+            <rect x="0" y="120" width="440" height="24" fill="#0284C7" opacity="0.86" />
             {/* Sidewalk */}
-            <rect x="0" y="144" width="440" height="24" fill="#D4D4D8" stroke="#71717A" strokeWidth="1" />
+            <rect x="0" y="144" width="440" height="24" fill="#E4E4E7" stroke="#A1A1AA" strokeWidth="1" />
             {/* Driveway / P-plads */}
-            <rect x="175" y="168" width="90" height="72" fill="#52525B" />
-            <text x="360" y="205" textAnchor="middle" fill="#3F3F46" fontSize="11" fontWeight="700">
+            <rect x="175" y="168" width="90" height="72" fill="#64748B" />
+            <text x="342" y="206" textAnchor="middle" fill="#1E293B" fontSize="11" fontWeight="700">
               P-PLADS / GÅRD
             </text>
             <TopCar x="220" y="202" isPlayer />
             <CyclistTop x="120" y="132" angle={90} />
-            <TopCar x="350" y="96" angle={-90} color="#EF4444" label="BIL" />
-            <rect x="14" y="182" width="146" height="44" rx="8" fill="#18181B" />
-            <text x="87" y="200" textAnchor="middle" fill="#FFFFFF" fontSize="9.5" fontWeight="700">
+            <TopCar x="350" y="96" angle={-90} color="#E11D48" label="BIL" />
+            <rect x="14" y="182" width="150" height="44" rx="10" fill="#0F172A" fillOpacity="0.92" stroke="#FFFFFF" strokeOpacity="0.2" />
+            <text x="89" y="200" textAnchor="middle" fill="#FFFFFF" fontSize="9.5" fontWeight="700">
               Over fortov / kantsten
             </text>
-            <text x="87" y="215" textAnchor="middle" fill="#F87171" fontSize="9.5" fontWeight="800">
+            <text x="89" y="216" textAnchor="middle" fill="#F87171" fontSize="9.5" fontWeight="800">
               Ubetinget vigepligt!
             </text>
           </g>
@@ -367,12 +394,15 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
         const isExit = presetId === 'rundkoersel_exit_cyclist';
         return (
           <g>
-            <rect x="0" y="0" width="440" height="240" fill="#D9F99D" opacity="0.32" />
+            <rect x="0" y="0" width="440" height="240" fill="url(#tsGrassBg)" />
+            <TreeTop x={46} y={40} r={18} />
+            <TreeTop x={392} y={40} r={18} />
+            <TreeTop x={392} y={200} r={18} />
             {/* Road arms */}
-            <rect x="175" y="0" width="90" height="240" fill="#3F3F46" />
-            <rect x="0" y="80" width="440" height="80" fill="#3F3F46" />
+            <rect x="175" y="0" width="90" height="240" fill="url(#tsAsphalt)" />
+            <rect x="0" y="80" width="440" height="80" fill="url(#tsAsphalt)" />
             {/* Outer roundabout ring */}
-            <circle cx="220" cy="120" r="88" fill="#3F3F46" />
+            <circle cx="220" cy="120" r="88" fill="url(#tsAsphalt)" />
             {/* Cykelsti around roundabout */}
             <circle cx="220" cy="120" r="78" fill="none" stroke="#0284C7" strokeWidth="14" opacity="0.8" />
             {/* Inner island */}
@@ -408,9 +438,11 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
       case 'fletning_b15':
         return (
           <g>
-            <rect x="0" y="0" width="440" height="240" fill="#D9F99D" opacity="0.3" />
+            <rect x="0" y="0" width="440" height="240" fill="url(#tsGrassBg)" />
+            <TreeTop x={55} y={32} r={18} />
+            <TreeTop x={385} y={208} r={18} />
             {/* Merging road shape */}
-            <polygon points="0,70 250,70 440,95 440,145 250,170 0,170" fill="#3F3F46" />
+            <polygon points="0,70 250,70 440,95 440,145 250,170 0,170" fill="url(#tsAsphalt)" />
             {/* Dashed line ends early -> fletning! */}
             <line x1="0" y1="120" x2="175" y2="120" stroke="#FFFFFF" strokeWidth="3" strokeDasharray="12 10" />
             <TopCar x="125" y="146" angle={90} isPlayer />
@@ -452,10 +484,12 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
       case 'right_turn_cykelsti':
         return (
           <g>
-            <rect x="0" y="0" width="440" height="240" fill="#E4E4E7" />
+            <rect x="0" y="0" width="440" height="240" fill="url(#tsTownBg)" />
+            <TreeTop x={48} y={202} r={19} />
+            <TreeTop x={388} y={202} r={19} />
             {/* Roads */}
-            <rect x="155" y="0" width="130" height="240" fill="#3F3F46" />
-            <rect x="0" y="70" width="440" height="90" fill="#3F3F46" />
+            <rect x="155" y="0" width="130" height="240" fill="url(#tsAsphalt)" />
+            <rect x="0" y="70" width="440" height="90" fill="url(#tsAsphalt)" />
             {/* Cykelsti */}
             <rect x="255" y="0" width="28" height="240" fill="#0284C7" opacity="0.85" />
             <line x1="255" y1="0" x2="255" y2="70" stroke="#FFFFFF" strokeWidth="2.5" />
@@ -482,8 +516,10 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
       case 'bus_stop_byzone':
         return (
           <g>
-            <rect x="0" y="0" width="440" height="240" fill="#E4E4E7" />
-            <rect x="0" y="65" width="440" height="110" fill="#3F3F46" />
+            <rect x="0" y="0" width="440" height="240" fill="url(#tsTownBg)" />
+            <TreeTop x={48} y={208} r={16} />
+            <TreeTop x={388} y={208} r={18} />
+            <rect x="0" y="65" width="440" height="110" fill="url(#tsAsphalt)" />
             <line x1="0" y1="120" x2="440" y2="120" stroke="#FFFFFF" strokeWidth="2.5" strokeDasharray="12 10" />
             {/* Bus */}
             <rect x="215" y="138" width="96" height="34" rx="6" fill="#FACC15" stroke="#18181B" strokeWidth="2" />
@@ -511,8 +547,10 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
       case 'fodgaengerfelt_zebra':
         return (
           <g>
-            <rect x="0" y="0" width="440" height="240" fill="#E4E4E7" />
-            <rect x="85" y="0" width="270" height="240" fill="#3F3F46" />
+            <rect x="0" y="0" width="440" height="240" fill="url(#tsTownBg)" />
+            <TreeTop x={402} y={56} r={19} />
+            <TreeTop x={402} y={196} r={19} />
+            <rect x="85" y="0" width="270" height="240" fill="url(#tsAsphalt)" />
             <line x1="220" y1="0" x2="220" y2="240" stroke="#FFFFFF" strokeWidth="2.5" strokeDasharray="12 10" />
             {/* Zebra stripes */}
             {[95, 125, 155, 185, 215, 245, 275, 305, 335].map((x) => (
@@ -536,11 +574,14 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
       case 'children_school_a22':
         return (
           <g>
-            <rect x="0" y="0" width="440" height="240" fill="#FEF3C7" opacity="0.45" />
-            <rect x="100" y="0" width="240" height="240" fill="#3F3F46" />
+            <rect x="0" y="0" width="440" height="240" fill="url(#tsGrassBg)" />
+            <TreeTop x={46} y={136} r={18} />
+            <TreeTop x={392} y={56} r={20} />
+            <TreeTop x={392} y={196} r={18} />
+            <rect x="100" y="0" width="240" height="240" fill="url(#tsAsphalt)" />
             <line x1="220" y1="0" x2="220" y2="240" stroke="#FFFFFF" strokeWidth="2.5" strokeDasharray="10 8" />
-            <TopCar x="312" y="110" color="#71717A" />
-            <TopCar x="312" y="178" color="#71717A" />
+            <TopCar x="312" y="110" color="#64748B" />
+            <TopCar x="312" y="178" color="#64748B" />
             {/* Child running between parked cars */}
             <circle cx="290" cy="144" r="7" fill="#EF4444" stroke="#FFFFFF" strokeWidth="2" />
             <path d="M 282 144 L 250 144" stroke="#EF4444" strokeWidth="3" strokeDasharray="4 3" />
@@ -548,11 +589,11 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
             <g transform="translate(14, 16) scale(0.6)">
               <DanishRoadSignSVG code="A22" size={110} />
             </g>
-            <rect x="14" y="180" width="150" height="42" rx="8" fill="#18181B" />
-            <text x="89" y="198" textAnchor="middle" fill="#FFFFFF" fontSize="9.5" fontWeight="700">
+            <rect x="14" y="180" width="154" height="42" rx="10" fill="#0F172A" fillOpacity="0.92" stroke="#FFFFFF" strokeOpacity="0.2" />
+            <text x="91" y="198" textAnchor="middle" fill="#FFFFFF" fontSize="9.5" fontWeight="700">
               Børn mellem biler:
             </text>
-            <text x="89" y="213" textAnchor="middle" fill="#FACC15" fontSize="9.5" fontWeight="800">
+            <text x="91" y="213" textAnchor="middle" fill="#FACC15" fontSize="9.5" fontWeight="800">
               Sænk farten + beredskab!
             </text>
           </g>
@@ -594,8 +635,10 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
       case 'traffic_light_yellow':
         return (
           <g>
-            <rect x="0" y="0" width="440" height="240" fill="#E4E4E7" />
-            <rect x="130" y="0" width="180" height="240" fill="#3F3F46" />
+            <rect x="0" y="0" width="440" height="240" fill="url(#tsTownBg)" />
+            <TreeTop x={46} y={196} r={18} />
+            <TreeTop x={392} y={196} r={18} />
+            <rect x="130" y="0" width="180" height="240" fill="url(#tsAsphalt)" />
             {/* Stop line */}
             <line x1="220" y1="125" x2="310" y2="125" stroke="#FFFFFF" strokeWidth="6" />
             {/* Traffic light */}
@@ -630,7 +673,10 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
       case 'railway_crossing':
         return (
           <g>
-            <rect x="0" y="0" width="440" height="240" fill="#ECFCCB" opacity="0.4" />
+            <rect x="0" y="0" width="440" height="240" fill="url(#tsGrassBg)" />
+            <TreeTop x={48} y={32} r={16} />
+            <TreeTop x={392} y={32} r={16} />
+            <TreeTop x={392} y={204} r={18} />
             {/* Tracks */}
             <rect x="0" y="58" width="440" height="44" fill="#78716C" />
             <line x1="0" y1="68" x2="440" y2="68" stroke="#18181B" strokeWidth="4" />
@@ -740,9 +786,9 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
       case 'overtaking_hill_curve':
         return (
           <g>
-            <rect x="0" y="0" width="440" height="240" fill="#DBEAFE" />
+            <rect x="0" y="0" width="440" height="240" fill="url(#tsSkyGrad)" />
             {/* Hill profile */}
-            <path d="M 0 185 Q 220 65 440 185 L 440 240 L 0 240 Z" fill="#65A30D" opacity="0.35" />
+            <path d="M 0 185 Q 220 65 440 185 L 440 240 L 0 240 Z" fill="url(#tsGrassBg)" />
             <path d="M 0 190 Q 220 80 440 190" fill="none" stroke="#3F3F46" strokeWidth="26" />
             <path d="M 0 190 Q 220 80 440 190" fill="none" stroke="#FFFFFF" strokeWidth="2.5" strokeDasharray="10 8" />
             <TopCar x="125" y="150" angle={68} isPlayer />
@@ -764,12 +810,15 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
       case 'parking_5m_10m_rules':
         return (
           <g>
-            <rect x="0" y="0" width="440" height="240" fill="#E4E4E7" />
-            <rect x="145" y="0" width="150" height="240" fill="#3F3F46" />
-            <rect x="0" y="30" width="440" height="70" fill="#3F3F46" />
+            <rect x="0" y="0" width="440" height="240" fill="url(#tsTownBg)" />
+            <TreeTop x={42} y={208} r={16} />
+            <TreeTop x={392} y={145} r={19} />
+            <TreeTop x={392} y={205} r={16} />
+            <rect x="145" y="0" width="150" height="240" fill="url(#tsAsphalt)" />
+            <rect x="0" y="30" width="440" height="70" fill="url(#tsAsphalt)" />
             {/* Zebra */}
             {[160, 185, 210, 235, 260].map((x) => (
-              <rect key={x} x={x} y="106" width="14" height="32" fill="#FFFFFF" />
+              <rect key={x} x={x} y="106" width="14" height="32" rx="2" fill="#FFFFFF" />
             ))}
             {/* 5m danger zone */}
             <rect x="270" y="138" width="25" height="40" fill="#EF4444" opacity="0.45" />
@@ -778,16 +827,16 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
               5 m
             </text>
             {/* 10m junction zone */}
-            <line x1="125" y1="100" x2="125" y2="188" stroke="#F59E0B" strokeWidth="2.5" />
-            <text x="88" y="148" fill="#B45309" fontSize="11" fontWeight="800">
+            <line x1="125" y1="100" x2="125" y2="188" stroke="#D97706" strokeWidth="2.5" />
+            <text x="84" y="148" fill="#B45309" fontSize="11" fontWeight="800">
               10 m (kryds)
             </text>
             <TopCar x="275" y="210" isPlayer />
-            <rect x="16" y="186" width="120" height="38" rx="8" fill="#18181B" />
-            <text x="76" y="203" textAnchor="middle" fill="#FFFFFF" fontSize="9.5" fontWeight="700">
+            <rect x="14" y="184" width="126" height="42" rx="10" fill="#0F172A" fillOpacity="0.92" stroke="#FFFFFF" strokeOpacity="0.2" />
+            <text x="77" y="201" textAnchor="middle" fill="#FFFFFF" fontSize="9.5" fontWeight="700">
               5 m før felt/cykelsti
             </text>
-            <text x="76" y="217" textAnchor="middle" fill="#FACC15" fontSize="9.5" fontWeight="700">
+            <text x="77" y="216" textAnchor="middle" fill="#FACC15" fontSize="9.5" fontWeight="700">
               10 m fra vejskæring
             </text>
           </g>
@@ -796,11 +845,12 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
       case 'parking_bus_driveway':
         return (
           <g>
-            <rect x="0" y="0" width="440" height="240" fill="#E4E4E7" />
-            <rect x="0" y="45" width="440" height="105" fill="#3F3F46" />
+            <rect x="0" y="0" width="440" height="240" fill="url(#tsTownBg)" />
+            <TreeTop x={392} y={202} r={19} />
+            <rect x="0" y="45" width="440" height="105" fill="url(#tsAsphalt)" />
             <line x1="0" y1="97" x2="440" y2="97" stroke="#FFFFFF" strokeWidth="2.5" strokeDasharray="12 10" />
             {/* Driveway on bottom */}
-            <rect x="65" y="150" width="75" height="90" fill="#71717A" />
+            <rect x="65" y="150" width="75" height="90" fill="#64748B" />
             <text x="102" y="198" textAnchor="middle" fill="#FFFFFF" fontSize="9.5" fontWeight="700">
               INDKØRSEL
             </text>
@@ -816,7 +866,7 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
             <text x="304" y="176" textAnchor="middle" fill="#DC2626" fontSize="10" fontWeight="800">
               12 m
             </text>
-            <rect x="14" y="10" width="412" height="28" rx="6" fill="#18181B" />
+            <rect x="14" y="10" width="412" height="28" rx="10" fill="#0F172A" fillOpacity="0.92" stroke="#FFFFFF" strokeOpacity="0.2" />
             <text x="220" y="28" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="700">
               Indkørsel: standsning OK (≤3 min). Busstop: 12 m før/efter forbudt!
             </text>
@@ -826,8 +876,10 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
       case 'parking_oneway_ensrettet':
         return (
           <g>
-            <rect x="0" y="0" width="440" height="240" fill="#E4E4E7" />
-            <rect x="110" y="0" width="220" height="240" fill="#3F3F46" />
+            <rect x="0" y="0" width="440" height="240" fill="url(#tsTownBg)" />
+            <TreeTop x={388} y={48} r={20} />
+            <TreeTop x={388} y={192} r={20} />
+            <rect x="110" y="0" width="220" height="240" fill="url(#tsAsphalt)" />
             {/* One-way arrows */}
             <path d="M 220 190 L 220 50" stroke="#FFFFFF" strokeWidth="5" strokeOpacity="0.45" />
             <polygon points="208,58 220,34 232,58" fill="#FFFFFF" fillOpacity="0.45" />
@@ -837,7 +889,7 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
             <g transform="translate(18, 18) scale(0.55)">
               <DanishRoadSignSVG code="E19" size={110} />
             </g>
-            <rect x="14" y="174" width="84" height="46" rx="8" fill="#18181B" />
+            <rect x="14" y="174" width="84" height="46" rx="10" fill="#0F172A" fillOpacity="0.92" stroke="#FFFFFF" strokeOpacity="0.2" />
             <text x="56" y="194" textAnchor="middle" fill="#4ADE80" fontSize="9.5" fontWeight="800">
               Ensrettet:
             </text>
@@ -940,8 +992,10 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
       case 'accident_triangle_112':
         return (
           <g>
-            <rect x="0" y="0" width="440" height="240" fill="#D9F99D" opacity="0.25" />
-            <rect x="0" y="60" width="440" height="110" fill="#3F3F46" />
+            <rect x="0" y="0" width="440" height="240" fill="url(#tsGrassBg)" />
+            <TreeTop x={46} y={204} r={18} />
+            <TreeTop x={386} y={204} r={20} />
+            <rect x="0" y="60" width="440" height="110" fill="url(#tsAsphalt)" />
             <line x1="0" y1="115" x2="440" y2="115" stroke="#FFFFFF" strokeWidth="2.5" strokeDasharray="14 10" />
             {/* Broken car with hazard */}
             <TopCar x="340" y="146" angle={90} color="#EF4444" blinkLeft blinkRight label="STOP" />
@@ -954,11 +1008,11 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
               strokeLinejoin="round"
             />
             <line x1="125" y1="146" x2="310" y2="146" stroke="#FACC15" strokeWidth="2.5" strokeDasharray="5 4" />
-            <rect x="155" y="122" width="132" height="22" rx="5" fill="#18181B" />
+            <rect x="155" y="122" width="132" height="22" rx="8" fill="#0F172A" fillOpacity="0.92" />
             <text x="221" y="137" textAnchor="middle" fill="#FACC15" fontSize="10" fontWeight="800">
               50 m (100 m motorvej)
             </text>
-            <rect x="16" y="14" width="408" height="32" rx="8" fill="#991B1B" />
+            <rect x="16" y="14" width="408" height="32" rx="10" fill="#991B1B" stroke="#FFFFFF" strokeOpacity="0.2" />
             <text x="220" y="34" textAnchor="middle" fill="#FFFFFF" fontSize="10.5" fontWeight="800">
               112 = Personskade / Akut • 114 = Politi (ej akut)
             </text>
@@ -1005,6 +1059,24 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
   return (
     <div className={`relative overflow-hidden rounded-xl border border-zinc-200 bg-zinc-100 dark:border-zinc-700/80 dark:bg-zinc-900 ${className}`}>
       <svg viewBox="0 0 440 240" className="h-auto w-full select-none" role="img" aria-label={`Trafiksituation ${presetId}`}>
+        <defs>
+          <linearGradient id="tsSkyGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#7DD3FC" />
+            <stop offset="100%" stopColor="#E0F2FE" />
+          </linearGradient>
+          <linearGradient id="tsGrassBg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#DCFCE7" />
+            <stop offset="100%" stopColor="#BBF7D0" />
+          </linearGradient>
+          <linearGradient id="tsTownBg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#F4F4F5" />
+            <stop offset="100%" stopColor="#E4E4E7" />
+          </linearGradient>
+          <linearGradient id="tsAsphalt" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#475569" />
+            <stop offset="100%" stopColor="#334155" />
+          </linearGradient>
+        </defs>
         {renderScene()}
       </svg>
       {signCode && presetId !== 'intersection_hajtaender' && presetId !== 'rundkoersel_entry' && presetId !== 'fletning_b15' && presetId !== 'narrow_bridge_b18' && presetId !== 'fodgaengerfelt_zebra' && presetId !== 'children_school_a22' && presetId !== 'bus_stop_byzone' && presetId !== 'motorway_trailer' && presetId !== 'motorway_merge_nodspor' && presetId !== 'overtaking_hill_curve' && presetId !== 'parking_oneway_ensrettet' && (

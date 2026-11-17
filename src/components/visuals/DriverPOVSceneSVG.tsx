@@ -249,6 +249,35 @@ const BadgePill: React.FC<{ x: number; y: number; text: string; tone?: 'dark' | 
   );
 };
 
+const MountedRoadSignPost: React.FC<{
+  signCode?: string;
+  subPlaque?: string;
+  x?: number;
+  baseY?: number;
+}> = ({ signCode, subPlaque, x = 356, baseY = 182 }) => {
+  if (!signCode) return null;
+  const signSize = 72;
+  const topY = baseY - (subPlaque ? 114 : 96);
+  return (
+    <g>
+      <ellipse cx={x} cy={baseY + 2} rx="12" ry="3.5" fill="#09090B" opacity="0.26" />
+      <rect
+        x={x - 2.5}
+        y={topY + 42}
+        width="5"
+        height={baseY - (topY + 42)}
+        rx="2"
+        fill="#CBD5E1"
+        stroke="#475569"
+        strokeWidth="1"
+      />
+      <g transform={`translate(${x - signSize / 2}, ${topY})`}>
+        <DanishRoadSignSVG code={signCode} subPlaque={subPlaque} size={signSize} />
+      </g>
+    </g>
+  );
+};
+
 export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
   presetId,
   signCode,
@@ -849,6 +878,58 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
           </CockpitFrame>
         );
 
+      case 'pov_sign_city':
+        return (
+          <CockpitFrame skyColor="#7DD3FC">
+            <HorizonRoad withCenterDash withCykelsti="solid" />
+            <FrontCar x={204} y={136} scale={0.7} color="#0D9488" />
+            <CyclistPOV x={315} y={176} scale={0.82} />
+            <MountedRoadSignPost signCode={signCode} subPlaque={subPlaque} />
+          </CockpitFrame>
+        );
+
+      case 'pov_sign_country':
+        return (
+          <CockpitFrame skyColor="#7DD3FC">
+            <HorizonRoad withCenterDash />
+            {/* White-amber Danish roadside delineators */}
+            <rect x="148" y="112" width="4" height="18" rx="1" fill="#FFFFFF" />
+            <rect x="148" y="115" width="4" height="4" fill="#F59E0B" />
+            <rect x="308" y="112" width="4" height="18" rx="1" fill="#FFFFFF" />
+            <rect x="308" y="115" width="4" height="4" fill="#F59E0B" />
+            <FrontCar x={208} y={134} scale={0.68} color="#475569" />
+            <MountedRoadSignPost signCode={signCode} subPlaque={subPlaque} />
+          </CockpitFrame>
+        );
+
+      case 'pov_sign_intersection':
+        return (
+          <CockpitFrame skyColor="#7DD3FC">
+            <HorizonRoad withCenterDash={false} />
+            {/* Crossroad ahead */}
+            <polygon points="80,116 380,116 420,148 40,148" fill="#52525B" />
+            {signCode === 'B13' && (
+              <line x1="150" y1="158" x2="310" y2="158" stroke="#FFFFFF" strokeWidth="4.5" />
+            )}
+            <SideCar x={148} y={122} scale={0.72} color="#E11D48" />
+            <MountedRoadSignPost signCode={signCode} subPlaque={subPlaque} />
+          </CockpitFrame>
+        );
+
+      case 'pov_sign_parking':
+        return (
+          <CockpitFrame skyColor="#7DD3FC">
+            <HorizonRoad withCenterDash />
+            <FrontCar x={286} y={156} scale={0.76} color="#475569" />
+            {signCode === 'E33' && (
+              <g transform="translate(22, 22) scale(0.56)">
+                <PSkiveSVG size={104} />
+              </g>
+            )}
+            <MountedRoadSignPost signCode={signCode} subPlaque={subPlaque} x={364} />
+          </CockpitFrame>
+        );
+
       case 'pov_school_roadmap':
       default:
         return (
@@ -919,7 +1000,8 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
         presetId !== 'pov_motorvej_merge' &&
         presetId !== 'pov_motortrafikvej' &&
         presetId !== 'pov_parking_meters' &&
-        presetId !== 'pov_sign_shapes_abcde' && (
+        presetId !== 'pov_sign_shapes_abcde' &&
+        !presetId.startsWith('pov_sign_') && (
           <div className="absolute right-3 top-3 rounded-lg bg-white/90 p-1 shadow-sm backdrop-blur dark:bg-zinc-900/90">
             <DanishRoadSignSVG code={signCode} subPlaque={subPlaque} size={48} />
           </div>

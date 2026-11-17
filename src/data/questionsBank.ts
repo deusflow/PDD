@@ -1043,8 +1043,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationRu:
       'Вы подъезжаете к зоне дорожных работ: знак A73 имеет жёлтый фон, а поверх обычной белой разметки нанесены временные жёлтые полосы.',
     visual: {
-      type: 'sign',
-      presetId: 'sign_A73',
+      type: 'scene',
+      presetId: 'pov_sign_country',
       signCode: 'A73',
       subPlaque: '500 m',
       captionDa: 'Midlertidig gul skiltning & gul vejafmærkning ved vejarbejde',
@@ -1088,8 +1088,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationRu:
       'На въезде в улицу установлен знак C11 («Въезд запрещён» / кирпич) с подтабличкой «Undtaget cykler».',
     visual: {
-      type: 'sign',
-      presetId: 'sign_C11',
+      type: 'scene',
+      presetId: 'pov_sign_intersection',
       signCode: 'C11',
       subPlaque: 'Undtaget cykler',
       captionDa: 'C11 (Indkørsel forbudt) med undertavle',
@@ -1176,8 +1176,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationRu:
       'Вы видите дорожный знак с информационными подтабличками (undertavler) разных видов.',
     visual: {
-      type: 'sign',
-      presetId: 'sign_E33',
+      type: 'scene',
+      presetId: 'pov_sign_country',
       signCode: 'A99',
       subPlaque: '↑ 1,2 km ↑',
       captionDa: 'Aflæsning af undertavler: Afstand vs. Strækning vs. Tid',
@@ -1268,8 +1268,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationRu:
       'Вы едете на обычном легковом автомобиле без прицепа и проезжаете знак E55 («Населённый пункт» / Byzone). Других знаков ограничения скорости нет.',
     visual: {
-      type: 'sign',
-      presetId: 'sign_E55',
+      type: 'scene',
+      presetId: 'pov_sign_city',
       signCode: 'E55',
       captionDa: 'E55 Byzone — Generelle hastighedsgrænser i Danmark',
       captionRu: 'E55 Населённый пункт — общие скоростные лимиты в Дании',
@@ -1491,8 +1491,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationRu:
       'Вам нужно быстро передать посылку или высадить друга у обочины, где установлен знак C62 («Стоянка запрещена»). Чуть дальше стоит знак C61 («Остановка запрещена»).',
     visual: {
-      type: 'sign',
-      presetId: 'sign_C62',
+      type: 'scene',
+      presetId: 'pov_sign_parking',
       signCode: 'C62',
       captionDa: 'C62 (Parkering forbudt) vs. C61 (Standsning forbudt)',
       captionRu: 'Знак C62 («Стоянка запрещена») и отличие от C61 («Остановка запрещена»)',
@@ -1621,8 +1621,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationRu:
       'Вы приезжаете на парковку в субботу в 10:04 утра. На знаке E33 висит подтабличка «1 time 8-18 (8-14)».',
     visual: {
-      type: 'sign',
-      presetId: 'sign_E33',
+      type: 'scene',
+      presetId: 'pov_sign_parking',
       signCode: 'E33',
       subPlaque: '1 time 8-18 (8-14)',
       captionDa: 'P-skive indstilling ved ankomst kl. 10:04',
@@ -2066,8 +2066,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationRu:
       'Вы едете по главной дороге (знак B16). Далее вы проезжаете знак B17 («Конец главной дороги»), а затем узкий участок со знаком B19.',
     visual: {
-      type: 'sign',
-      presetId: 'sign_B17',
+      type: 'scene',
+      presetId: 'pov_sign_intersection',
       signCode: 'B17',
       captionDa: 'B17 Hovedvej ophører — ændring af vigepligt',
       captionRu: 'Знак B17 («Конец главной дороги») — смена приоритета',
@@ -2197,8 +2197,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationRu:
       'На перекрёстке установлен синий предписывающий знак D11 («Движение прямо»), а чуть дальше — знак D15 («Объезд островка справа»).',
     visual: {
-      type: 'sign',
-      presetId: 'sign_D15',
+      type: 'scene',
+      presetId: 'pov_sign_city',
       signCode: 'D15',
       captionDa: 'D15 (Påbudt passage til højre) & D11 (Påbudt kørselsretning)',
       captionRu: 'Знаки D15 (объезд препятствия справа) и D11 (прямо)',
@@ -2241,8 +2241,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationRu:
       'Автомобиль вашего друга сломался в городе, и вы буксируете его на тросе до сервиса. Позже вы один выезжаете на автомагистраль со знаком C55 (130).',
     visual: {
-      type: 'sign',
-      presetId: 'sign_C55_130',
+      type: 'scene',
+      presetId: 'pov_sign_country',
       signCode: 'C55-130',
       captionDa: 'Bugsering (max 30 km/t) & Motorvej 130 km/t',
       captionRu: 'Буксировка (макс. 30 км/ч) и автомагистраль 130 км/ч',
@@ -2329,8 +2329,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationRu:
       'Вы видите знак C61 («Остановка и стоянка запрещены») на городской улице. Чуть дальше вы проезжаете перекрёсток, а за перекрёстком знаков нет.',
     visual: {
-      type: 'sign',
-      presetId: 'sign_C61',
+      type: 'scene',
+      presetId: 'pov_sign_parking',
       signCode: 'C61',
       captionDa: 'Gyldighedsområde for C61 (Standsning forbudt)',
       captionRu: 'Зона действия знака C61 («Остановка запрещена»)',
@@ -2373,8 +2373,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationRu:
       'Вы едете по главной дороге вне города (знак B16) и приближаетесь к железнодорожному переезду. Вы хотите остановиться, чтобы посмотреть в телефон.',
     visual: {
-      type: 'sign',
-      presetId: 'sign_B16',
+      type: 'scene',
+      presetId: 'pov_sign_country',
       signCode: 'B16',
       captionDa: 'Hovedvej (B16) uden for byzone & Jernbaneoverskæring',
       captionRu: 'Главная дорога (B16) вне города и ж/д переезд',
@@ -2417,8 +2417,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationRu:
       'Зима в Дании, температура около 0 °C, влажный асфальт и знак A31 («Скользкая дорога») перед мостом на загородной трассе.',
     visual: {
-      type: 'sign',
-      presetId: 'sign_A31',
+      type: 'scene',
+      presetId: 'pov_sign_country',
       signCode: 'A31',
       captionDa: 'A31 Glat vej — sort is på broer & vinterkørsel',
       captionRu: 'Знак A31 («Скользкая дорога») — гололёд на мостах',
@@ -3080,8 +3080,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationRu:
       'Вы едете по загородной дороге и проезжаете знак ограничения скорости C55 (60 км/ч) перед небольшим перекрёстком.',
     visual: {
-      type: 'sign',
-      presetId: 'sign_C55_60',
+      type: 'scene',
+      presetId: 'pov_sign_country',
       signCode: 'C55-60',
       captionDa: 'Lokal hastighedsbegrænsning C55 (60 km/t)',
       captionRu: 'Локальное ограничение скорости C55 (60 км/ч)',
@@ -3167,8 +3167,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationRu:
       'Вы подъезжаете к узкому участку дороги (мосту) и видите синий прямоугольный знак B19 с белой стрелкой вперёд.',
     visual: {
-      type: 'sign',
-      presetId: 'sign_B19',
+      type: 'scene',
+      presetId: 'pov_sign_country',
       signCode: 'B19',
       captionDa: 'Tavle B19: Modkørende færdsel skal holde tilbage',
       captionRu: 'Знак B19: Преимущество перед встречным транспортом',
@@ -3211,8 +3211,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationRu:
       'Вы подъезжаете по второстепенной дороге к перекрёстку со знаком B13 (Stop) и сплошной стоп-линией.',
     visual: {
-      type: 'sign',
-      presetId: 'sign_B13',
+      type: 'scene',
+      presetId: 'pov_sign_intersection',
       signCode: 'B13',
       captionDa: 'Tavle B13: Fuldt stop ved stoplinje',
       captionRu: 'Знак B13: Обязательная полная остановка',
@@ -3255,8 +3255,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationRu:
       'Вы едете по улице с односторонним движением (знак E19) и собираетесь повернуть налево на следующем перекрёстке.',
     visual: {
-      type: 'sign',
-      presetId: 'sign_E19',
+      type: 'scene',
+      presetId: 'pov_sign_intersection',
       signCode: 'E19',
       captionDa: 'E19: Ensrettet færdsel',
       captionRu: 'E19: Одностороннее движение',
@@ -3559,8 +3559,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationRu:
       'Вы проезжаете предупреждающий знак A21 («Велосипедисты») и догоняете велосипедистов на узкой загородной дороге без велодорожки.',
     visual: {
-      type: 'sign',
-      presetId: 'sign_A21',
+      type: 'scene',
+      presetId: 'pov_sign_city',
       signCode: 'A21',
       captionDa: 'Tavle A21: Cyklister og knallerter på vejen',
       captionRu: 'Знак A21: Велосипедисты на проезжей части',
@@ -3603,8 +3603,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationRu:
       'Впереди на дороге расположен островок безопасности со знаком D15 (синий круг с белой стрелкой вниз-направо).',
     visual: {
-      type: 'sign',
-      presetId: 'sign_D15',
+      type: 'scene',
+      presetId: 'pov_sign_city',
       signCode: 'D15',
       captionDa: 'Tavle D15: Påbudt passage til højre for helle',
       captionRu: 'Знак D15: Обязательный объезд препятствия справа',
@@ -3907,8 +3907,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationRu:
       'Время 14:07, вы паркуетесь под знаком E33 с ограничением «2 timer» и должны настроить парковочный диск (P-skive).',
     visual: {
-      type: 'sign',
-      presetId: 'sign_E33',
+      type: 'scene',
+      presetId: 'pov_sign_parking',
       signCode: 'E33',
       subPlaque: '2 timer',
       captionDa: 'Indstilling af P-skive ved ankomst kl. 14:07',
@@ -3952,8 +3952,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationRu:
       'Вы видите знак C62 («Парковка запрещена») с табличкой «8–18 | (8–18)» и хотите высадить пассажира в субботу в 10:00.',
     visual: {
-      type: 'sign',
-      presetId: 'sign_C62',
+      type: 'scene',
+      presetId: 'pov_sign_parking',
       signCode: 'C62',
       subPlaque: '8-18 | (8-18)',
       captionDa: 'Tavle C62 med tidsangivelse for hverdag og lørdag',
@@ -4829,8 +4829,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationRu:
       'Вы едете по главной дороге (B16), а под знаком на табличке жирная чёрная линия показывает, что главная дорога поворачивает налево. Вы хотите поехать ПРЯМО на второстепенную.',
     visual: {
-      type: 'sign',
-      presetId: 'sign_B16',
+      type: 'scene',
+      presetId: 'pov_sign_intersection',
       signCode: 'B16',
       captionDa: 'Knækket hovedvej med undertavle',
       captionRu: 'Изменение направления главной дороги (B16 + табличка)',
@@ -5174,8 +5174,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationRu:
       'Вы въезжаете в жилой квартал с синим знаком E51 «Жилая и игровая зона» (Opholds- og legeområde).',
     visual: {
-      type: 'sign',
-      presetId: 'sign_E51',
+      type: 'scene',
+      presetId: 'pov_sign_parking',
       signCode: 'E51',
       captionDa: 'Opholds- og legeområde (E51) — legende børn og 15 km/t',
       captionRu: 'Правила движения и парковки в жилой и игровой зоне (E51)',
@@ -5261,8 +5261,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationRu:
       'Вы едете 80 км/ч через лесной участок со знаком «Дикие животные». Внезапно на дорогу выбегает сначала мелкий зверь (заяц/собака), а позже — крупный олень.',
     visual: {
-      type: 'sign',
-      presetId: 'sign_A99',
+      type: 'scene',
+      presetId: 'pov_sign_country',
       signCode: 'A99',
       subPlaque: 'Vildt',
       captionDa: 'Fare for vildt på vejen — reaktion ved små vs. store dyr',
@@ -5309,8 +5309,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationRu:
       'Перед городским перекрёстком установлен круглый синий знак предписания D11 (стрелка прямо), а чуть дальше — квадратный синий знак E19 («Одностороннее движение»).',
     visual: {
-      type: 'sign',
-      presetId: 'sign_D11_straight',
+      type: 'scene',
+      presetId: 'pov_sign_intersection',
       signCode: 'D11-straight',
       captionDa: 'Blå rund påbudstavle D11 vs. Blå firkantet oplysningstavle E19',
       captionRu: 'Отличие предписывающего круга D11 от информационного квадрата E19',
@@ -5439,8 +5439,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationRu:
       'На загородной дороге вы видите предупреждающий знак A11 (равносторонний крест — пересечение равнозначных дорог) без дополнительных знаков приоритета.',
     visual: {
-      type: 'sign',
-      presetId: 'sign_A11',
+      type: 'scene',
+      presetId: 'pov_sign_intersection',
       signCode: 'A11',
       captionDa: 'Tavle A11: Farligt vejkryds med højrevigepligt',
       captionRu: 'Знак A11: Пересечение равнозначных дорог (помеха справа)',
@@ -5483,8 +5483,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationRu:
       'Вы въезжаете в район с большим квадратным знаком «Zone 40 km/t» и проезжаете три перекрёстка внутри квартала.',
     visual: {
-      type: 'sign',
-      presetId: 'sign_E68',
+      type: 'scene',
+      presetId: 'pov_sign_city',
       signCode: 'E68',
       captionDa: 'Zone-tavle E68 vs. Almindelig lokal hastighedstavle',
       captionRu: 'Зонное ограничение E68 против одиночного знака C55',
@@ -5871,8 +5871,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationRu:
       'На заполненной парковке у торгового центра свободны только место для инвалидов и место с зарядной станцией для электромобилей (ladestander).',
     visual: {
-      type: 'sign',
-      presetId: 'sign_E33',
+      type: 'scene',
+      presetId: 'pov_sign_parking',
       signCode: 'E33',
       subPlaque: 'Kun elbiler / Handicap',
       captionDa: 'Særlige P-båse: Handicap og ladestandere til elbiler',
@@ -6394,8 +6394,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationRu:
       'На загородной дороге перед вами знак A41 («Опасный поворот направо»), асфальт влажный после дождя.',
     visual: {
-      type: 'sign',
-      presetId: 'sign_A41',
+      type: 'scene',
+      presetId: 'pov_sign_country',
       signCode: 'A41',
       captionDa: 'Tavle A41: Farlig kurve — hastighed og bremsning',
       captionRu: 'Знак A41: Опасный поворот — выбор скорости и торможения',
@@ -6438,8 +6438,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationRu:
       'На загородной дороге стоит знак A43 («Сужение дороги») без приоритетных знаков B18/B19. Навстречу приближается грузовик.',
     visual: {
-      type: 'sign',
-      presetId: 'sign_A43',
+      type: 'scene',
+      presetId: 'pov_sign_country',
       signCode: 'A43',
       captionDa: 'Tavle A43: Indsnævring af vej uden vigepligtstavler',
       captionRu: 'Знак A43: Сужение проезжей части без знаков B18/B19',
@@ -6613,8 +6613,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationRu:
       'Вдоль городской дороги установлен круглый синий знак D21 («Велосипедная дорожка») над отдельной дорожкой справа от проезжей части.',
     visual: {
-      type: 'sign',
-      presetId: 'sign_D21',
+      type: 'scene',
+      presetId: 'pov_sign_city',
       signCode: 'D21',
       captionDa: 'Tavle D21: Påbudt cykelsti — hvem må køre her?',
       captionRu: 'Знак D21: Обязательная велодорожка и правила пользования',
@@ -6657,8 +6657,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationRu:
       'Вы въезжаете на городскую улицу со знаком E49 «CYKELGADE» (велосипедная улица). Несколько велосипедистов едут прямо посередине улицы перед вами.',
     visual: {
-      type: 'sign',
-      presetId: 'sign_E49',
+      type: 'scene',
+      presetId: 'pov_sign_city',
       signCode: 'E49',
       captionDa: 'Tavle E49: Cykelgade — cyklisternes gade',
       captionRu: 'Знак E49: Велосипедная улица — правила для водителей',
@@ -6701,8 +6701,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationRu:
       'Перед въездом на улицу установлен белый круг с красной каймой C19 («Движение в обоих направлениях запрещено»), а на соседней улице — «кирпич» C11.',
     visual: {
-      type: 'sign',
-      presetId: 'sign_C19',
+      type: 'scene',
+      presetId: 'pov_sign_intersection',
       signCode: 'C19',
       captionDa: 'Tavle C19 (Kørsel forbudt) vs. C11 (Indkørsel forbudt)',
       captionRu: 'Отличие знака C19 (запрещено сквозное движение) от C11 («кирпич»)',
@@ -6745,8 +6745,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationRu:
       'За городом на трассе (80 км/ч) вы проезжаете предупреждающий знак A19 («Светофорное регулирование») примерно за 200 м до закрытого участка.',
     visual: {
-      type: 'sign',
-      presetId: 'sign_A19',
+      type: 'scene',
+      presetId: 'pov_sign_intersection',
       signCode: 'A19',
       captionDa: 'Tavle A19: Advarsel om lyssignal længere fremme',
       captionRu: 'Знак A19: Предупреждение о светофоре впереди',
@@ -6833,8 +6833,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationRu:
       'На загородной дороге вы проезжаете круглый знак C52 («Конец зоны запрета обгона»). Сразу за ним перед подъёмом начинается сплошная осевая линия разметки.',
     visual: {
-      type: 'sign',
-      presetId: 'sign_C52',
+      type: 'scene',
+      presetId: 'pov_sign_country',
       signCode: 'C52',
       captionDa: 'Tavle C52 (Overhaling forbudt ophører) + Spærrelinje',
       captionRu: 'Знак C52 («Конец запрета обгона») и сплошная линия',
@@ -6921,8 +6921,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationRu:
       'Перед перекрёстком в городе установлен круглый синий знак D11 с белой стрелкой направо («Движение только направо»).',
     visual: {
-      type: 'sign',
-      presetId: 'sign_D11_right',
+      type: 'scene',
+      presetId: 'pov_sign_intersection',
       signCode: 'D11-right',
       captionDa: 'Tavle D11: Påbudt kørselsretning til højre',
       captionRu: 'Знак D11: Движение строго направо',
@@ -6965,8 +6965,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationRu:
       'За городом на трассе вы проезжаете белый круглый знак C59 с чёрными диагональными полосами («Конец зоны ограничений»).',
     visual: {
-      type: 'sign',
-      presetId: 'sign_C59',
+      type: 'scene',
+      presetId: 'pov_sign_country',
       signCode: 'C59',
       captionDa: 'Tavle C59: Ophør af lokal hastighedsbegrænsning / forbud',
       captionRu: 'Знак C59: Конец локальных ограничений',
@@ -7009,8 +7009,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationRu:
       'В сумерках вы выезжаете из города за знак E56 («Конец населённого пункта») на тёмную неосвещённую загородную дорогу.',
     visual: {
-      type: 'sign',
-      presetId: 'sign_E56',
+      type: 'scene',
+      presetId: 'pov_sign_country',
       signCode: 'E56',
       captionDa: 'Tavle E56: Ophør af byzone (80 km/t & uoplyst landevej)',
       captionRu: 'Знак E56: Выезд из города — новые лимиты и опасности',
