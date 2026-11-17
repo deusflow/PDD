@@ -39,6 +39,45 @@ interface ExamSimulatorViewProps {
 
 const EXAM_DURATION_SEC = 25 * 60; // 25 minutes
 const PASS_THRESHOLD = 20; // minimum 20 / 25
+const EXAM_DRAFT_KEY = 'dk_exam_draft_v1';
+
+interface ExamDraft {
+  questionIds: string[];
+  answers: Record<string, boolean | undefined>;
+  currentIndex: number;
+  secondsLeft: number;
+  officialMode: boolean;
+  savedAt: number;
+}
+
+function buildFullTicketSequence(q: TeoriQuestion): string[] {
+  return [q.situationDa, ...q.subQuestions.map((s, i) => `${i + 1}. ${s.da}`)];
+}
+
+function loadExamDraft(): { draft: ExamDraft; questions: TeoriQuestion[] } | null {
+  try {
+    const raw = sessionStorage.getItem(EXAM_DRAFT_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as ExamDraft;
+    if (!Array.isArray(parsed.questionIds) || parsed.questionIds.length === 0) return null;
+    const byId = new Map(QUESTIONS_BANK.map((q) => [q.id, q]));
+    const questions = parsed.questionIds
+      .map((id) => byId.get(id))
+      .filter((q): q is TeoriQuestion => Boolean(q));
+    if (questions.length !== parsed.questionIds.length || parsed.secondsLeft <= 0) return null;
+    return { draft: parsed, questions };
+  } catch {
+    return null;
+  }
+}
+
+function clearExamDraft(): void {
+  try {
+    sessionStorage.removeItem(EXAM_DRAFT_KEY);
+  } catch {
+    // ignore storage errors
+  }
+}
 
 function formatTimer(sec: number): string {
   const m = Math.floor(sec / 60);
@@ -68,6 +107,10 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
   const [lastSummary, setLastSummary] = useState<ExamAttemptSummary | null>(null);
   const [expandedReviewId, setExpandedReviewId] = useState<string | null>(null);
   const [confirmIncomplete, setConfirmIncomplete] = useState(false);
+  const [pendingDraft, setPendingDraft] = useState<{
+    draft: ExamDraft;
+    questions: TeoriQuestion[];
+  } | null>(() => (autoStart ? null : loadExamDraft()));
 
   const answersRef = useRef(answers);
   answersRef.current = answers;
@@ -81,6 +124,8 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
       currentAnswers: Record<string, boolean | undefined>,
       remainingSec: number
     ) => {
+      clearExamDraft();
+      setPendingDraft(null);
       const results = questionsList.map((q) => {
         const passed = q.subQuestions.every(
           (sq) => currentAnswers[sq.id] === sq.correctAnswer
@@ -121,11 +166,28 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
   }, [phase, secondsLeft, finalizeExam]);
 
   useEffect(() => {
+    if (autoStart || phase !== 'active' || examQuestions.length === 0) return;
+    try {
+      const payload: ExamDraft = {
+        questionIds: examQuestions.map((q) => q.id),
+        answers,
+        currentIndex,
+        secondsLeft,
+        officialMode,
+        savedAt: Date.now(),
+      };
+      sessionStorage.setItem(EXAM_DRAFT_KEY, JSON.stringify(payload));
+    } catch {
+      // ignore storage quota errors
+    }
+  }, [autoStart, phase, examQuestions, answers, currentIndex, secondsLeft, officialMode]);
+
+  useEffect(() => {
     if (phase !== 'active' || !officialMode) return;
     const q = examQuestions[currentIndex];
     if (!q) return;
     danishSpeech.stop();
-    danishSpeech.speak(q.situationDa, `exam_auto_${q.id}`);
+    danishSpeech.speakSequence(buildFullTicketSequence(q), `exam_auto_${q.id}`);
     return () => {
       danishSpeech.stop();
     };
@@ -136,6 +198,44 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
     const onKeyDown = (e: KeyboardEvent) => {
       const tag = (e.target as HTMLElement | null)?.tagName;
       if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+
+      const currentQ = examQuestionsRef.current[currentIndex];
+      const lowerKey = e.key.toLowerCase();
+
+      if ((e.key === '1' || lowerKey === 'j') && currentQ) {
+        const subIdx = currentQ.subQuestions.findIndex(
+          (sq) => answersRef.current[sq.id] === undefined
+        );
+        if (subIdx !== -1) {
+          e.preventDefault();
+          const targetSq = currentQ.subQuestions[subIdx];
+          setAnswers((prev) => ({ ...prev, [targetSq.id]: true }));
+        }
+        return;
+      }
+
+      if ((e.key === '2' || lowerKey === 'n') && currentQ) {
+        const subIdx = currentQ.subQuestions.findIndex(
+          (sq) => answersRef.current[sq.id] === undefined
+        );
+        if (subIdx !== -1) {
+          e.preventDefault();
+          const targetSq = currentQ.subQuestions[subIdx];
+          setAnswers((prev) => ({ ...prev, [targetSq.id]: false }));
+        }
+        return;
+      }
+
+      if (e.key === 'Enter' && tag !== 'BUTTON' && currentQ) {
+        const allAnswered = currentQ.subQuestions.every(
+          (sq) => answersRef.current[sq.id] !== undefined
+        );
+        if (allAnswered && currentIndex + 1 < examQuestions.length) {
+          e.preventDefault();
+          goToQuestion(currentIndex + 1);
+        }
+        return;
+      }
 
       if (e.key === 'ArrowRight' && currentIndex + 1 < examQuestions.length) {
         e.preventDefault();
@@ -186,6 +286,8 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
   };
 
   const startExam = () => {
+    clearExamDraft();
+    setPendingDraft(null);
     const selected = buildExamQuestions(QUESTIONS_BANK, 25, srsMap);
     setExamQuestions(selected);
     setCurrentIndex(0);
@@ -193,10 +295,37 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
     setSecondsLeft(EXAM_DURATION_SEC);
     setLastSummary(null);
     setExpandedReviewId(null);
+    setConfirmIncomplete(false);
     setPhase('active');
   };
 
+  const resumeExamDraft = () => {
+    if (!pendingDraft) return;
+    const { draft, questions } = pendingDraft;
+    setOfficialMode(Boolean(draft.officialMode));
+    setExamQuestions(questions);
+    setAnswers(draft.answers ?? {});
+    setCurrentIndex(Math.min(Math.max(0, draft.currentIndex ?? 0), questions.length - 1));
+    setSecondsLeft(Math.max(1, draft.secondsLeft));
+    setLastSummary(null);
+    setExpandedReviewId(null);
+    setConfirmIncomplete(false);
+    setPendingDraft(null);
+    setPhase('active');
+  };
+
+  const discardExamDraft = () => {
+    clearExamDraft();
+    setPendingDraft(null);
+  };
+
   if (phase === 'intro') {
+    const draftAnswered = pendingDraft
+      ? pendingDraft.questions.filter((q) =>
+          q.subQuestions.every((sq) => pendingDraft.draft.answers[sq.id] !== undefined)
+        ).length
+      : 0;
+
     return (
       <div className="mx-auto max-w-2xl space-y-5 animate-fade-in">
         <div className="nordic-card p-6 sm:p-8">
@@ -272,13 +401,41 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
             </span>
           </button>
 
+          {pendingDraft && (
+            <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-teal-200 bg-teal-50/80 p-3.5 text-xs dark:border-teal-800/70 dark:bg-teal-950/35">
+              <div className="text-teal-900 dark:text-teal-200">
+                <div className="font-bold">Найден незавершённый экзамен</div>
+                <div className="mt-0.5 text-[11px] opacity-85">
+                  Заполнено {draftAnswered}/{pendingDraft.questions.length} • Осталось{' '}
+                  {formatTimer(pendingDraft.draft.secondsLeft)}
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={discardExamDraft}
+                  className="rounded-xl border border-teal-300/80 bg-white px-3 py-1.5 font-semibold text-teal-800 transition-colors hover:bg-teal-50 dark:border-teal-700 dark:bg-zinc-900 dark:text-teal-300"
+                >
+                  Сбросить
+                </button>
+                <button
+                  type="button"
+                  onClick={resumeExamDraft}
+                  className="rounded-xl bg-teal-600 px-3.5 py-1.5 font-bold text-white transition-colors hover:bg-teal-500"
+                >
+                  Продолжить ({draftAnswered}/{pendingDraft.questions.length})
+                </button>
+              </div>
+            </div>
+          )}
+
           <button
             type="button"
             onClick={startExam}
             className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-zinc-900 py-3.5 text-sm font-bold text-white shadow-md transition-all hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
           >
             <Play className="h-4 w-4 fill-current" />
-            Начать экзамен (25 вопросов)
+            Начать новый экзамен (25 вопросов)
           </button>
         </div>
 
@@ -535,6 +692,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
 
   // Active exam view
   const question = examQuestions[currentIndex];
+  const focusedSubIdx = question.subQuestions.findIndex((sq) => answers[sq.id] === undefined);
   const answeredCount = examQuestions.filter((q) =>
     q.subQuestions.every((sq) => answers[sq.id] !== undefined)
   ).length;
@@ -664,16 +822,29 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
             daClassName="text-sm sm:text-base"
             ruClassName="text-xs sm:text-sm"
           />
-          <SpeakButton id={`ex_sit_${question.id}`} text={question.situationDa} />
+          <div className="flex shrink-0 items-center gap-1.5">
+            <SpeakButton
+              id={`ex_all_${question.id}`}
+              text={question.situationDa}
+              sequence={buildFullTicketSequence(question)}
+              label="Озвучить билет"
+            />
+            <SpeakButton id={`ex_sit_${question.id}`} text={question.situationDa} />
+          </div>
         </div>
 
         <div className="space-y-2.5">
           {question.subQuestions.map((sq, idx) => {
             const chosen = answers[sq.id];
+            const isFocused = idx === focusedSubIdx;
             return (
               <div
                 key={sq.id}
-                className="flex flex-col gap-3 rounded-2xl border border-zinc-200 bg-white p-3.5 sm:flex-row sm:items-start sm:justify-between dark:border-zinc-800 dark:bg-zinc-900"
+                className={`flex flex-col gap-3 rounded-2xl border bg-white p-3.5 transition-all sm:flex-row sm:items-start sm:justify-between dark:bg-zinc-900 ${
+                  isFocused
+                    ? 'border-teal-400 ring-2 ring-teal-500/20 dark:border-teal-500'
+                    : 'border-zinc-200 dark:border-zinc-800'
+                }`}
               >
                 <div className="flex min-w-0 flex-1 items-start gap-2.5">
                   <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-zinc-100 text-[11px] font-bold text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
@@ -747,6 +918,9 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
             </button>
           )}
         </div>
+        <p className="mt-2.5 text-center text-[11px] text-zinc-400 dark:text-zinc-500">
+          Клавиатура: 1 / J = Ja · 2 / N = Nej · → / Enter = Далее
+        </p>
       </div>
     </div>
   );

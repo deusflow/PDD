@@ -4,16 +4,20 @@ import { danishSpeech } from '../../services/speech';
 
 interface SpeakButtonProps {
   text: string;
+  sequence?: string[];
   id: string;
   size?: 'sm' | 'md';
+  label?: string;
   className?: string;
   title?: string;
 }
 
 export const SpeakButton: React.FC<SpeakButtonProps> = ({
   text,
+  sequence,
   id,
   size = 'sm',
+  label,
   className = '',
   title = 'Озвучить по-датски (da-DK)',
 }) => {
@@ -32,7 +36,11 @@ export const SpeakButton: React.FC<SpeakButtonProps> = ({
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    danishSpeech.speak(text, id);
+    if (sequence && sequence.length > 0) {
+      danishSpeech.speakSequence(sequence, id);
+    } else {
+      danishSpeech.speak(text, id);
+    }
   };
 
   return (
@@ -41,12 +49,16 @@ export const SpeakButton: React.FC<SpeakButtonProps> = ({
       onClick={handleClick}
       title={isSpeaking ? 'Остановить озвучку' : title}
       aria-label={isSpeaking ? 'Stop dansk oplæsning' : 'Læs op på dansk'}
-      className={`inline-flex shrink-0 items-center justify-center rounded-lg border transition-all ${
-        size === 'sm' ? 'h-7 w-7' : 'h-8 w-8'
+      className={`inline-flex shrink-0 items-center justify-center gap-1.5 rounded-lg border transition-all ${
+        label
+          ? 'h-8 px-2.5 text-xs font-semibold'
+          : size === 'sm'
+            ? 'h-7 w-7'
+            : 'h-8 w-8'
       } ${
         isSpeaking
           ? 'border-rose-300 bg-rose-50 text-rose-600 shadow-sm dark:border-rose-700 dark:bg-rose-950/60 dark:text-rose-400 animate-pulse-soft'
-          : 'border-zinc-200 bg-white text-zinc-500 hover:border-zinc-300 hover:bg-zinc-50 hover:text-zinc-900 dark:border-zinc-700 dark:bg-zinc-800/80 dark:text-zinc-400 dark:hover:border-zinc-600 dark:hover:text-zinc-100'
+          : 'border-zinc-200 bg-white text-zinc-600 hover:border-zinc-300 hover:bg-zinc-50 hover:text-zinc-900 dark:border-zinc-700 dark:bg-zinc-800/80 dark:text-zinc-300 dark:hover:border-zinc-600 dark:hover:text-zinc-100'
       } ${className}`}
     >
       {isSpeaking ? (
@@ -54,6 +66,7 @@ export const SpeakButton: React.FC<SpeakButtonProps> = ({
       ) : (
         <Volume2 className={size === 'sm' ? 'h-3.5 w-3.5' : 'h-4 w-4'} />
       )}
+      {label && <span>{isSpeaking ? 'Стоп' : label}</span>}
     </button>
   );
 };

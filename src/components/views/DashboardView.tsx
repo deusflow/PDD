@@ -73,6 +73,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   );
 
   const failedQuestions = QUESTIONS_BANK.filter((q) => getSRSRecord(appState.srs, q.id).box === 1);
+  const unseenQuestions = QUESTIONS_BANK.filter((q) => getSRSRecord(appState.srs, q.id).box === 0);
   const isFreshUser =
     overview.percent === 0 && overallStats.seenItems === 0 && appState.sessionsCompleted === 0;
 
@@ -169,18 +170,44 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               Умная тренировка
             </h2>
             <p className="mt-1 text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">
-              10 билетов: система смешает ваши ошибки, повторения и новые вопросы.
+              Ошибки (Box 1), повторения (Box 2–3) и новые билеты — выберите размер сета.
             </p>
           </div>
 
-          <button
-            type="button"
-            onClick={() => onStartSmartSession(10)}
-            className="mt-4 inline-flex h-10 w-full items-center justify-center gap-1.5 rounded-xl border border-zinc-200/90 bg-white px-4 text-xs font-semibold text-zinc-900 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800"
-          >
-            <Play className="h-3.5 w-3.5 fill-current" />
-            <span>Тренировка (10 вопр.)</span>
-          </button>
+          <div className="mt-4 space-y-2">
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => onStartSmartSession(10)}
+                className="inline-flex h-10 flex-1 items-center justify-center gap-1.5 rounded-xl border border-zinc-200/90 bg-white px-3 text-xs font-semibold text-zinc-900 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800"
+              >
+                <Play className="h-3.5 w-3.5 fill-current" />
+                <span>10 вопр.</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => onStartSmartSession(20)}
+                className="inline-flex h-10 flex-1 items-center justify-center gap-1.5 rounded-xl border border-zinc-200/80 bg-zinc-50 px-3 text-xs font-semibold text-zinc-700 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200 dark:hover:bg-zinc-800"
+              >
+                <span>20 вопр.</span>
+              </button>
+            </div>
+            {unseenQuestions.length > 0 && (
+              <button
+                type="button"
+                onClick={() =>
+                  onStartCustomSession(
+                    'Только новые билеты (Box 0)',
+                    `Ещё не изученные ситуации (${Math.min(10, unseenQuestions.length)} из ${unseenQuestions.length})`,
+                    unseenQuestions.slice(0, 10)
+                  )
+                }
+                className="inline-flex h-8 w-full items-center justify-center rounded-lg border border-sky-200/80 bg-sky-50/70 px-3 text-[11px] font-semibold text-sky-700 transition-colors hover:bg-sky-100 dark:border-sky-900/60 dark:bg-sky-950/30 dark:text-sky-300"
+              >
+                Только новые · Box 0 ({unseenQuestions.length})
+              </button>
+            )}
+          </div>
         </div>
 
         {/* 2. Mock Exam */}

@@ -103,14 +103,21 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
               ))}
             </ul>
           ) : (
-            <ul className="space-y-2">
+            <ul className="space-y-2.5">
               {pointsRu.map((pt, idx) => (
                 <li
                   key={idx}
-                  className="flex items-start gap-2.5 text-[15px] leading-7 text-zinc-800 dark:text-zinc-200"
+                  className="flex items-start gap-2.5 text-[15px] leading-relaxed text-zinc-800 dark:text-zinc-200"
                 >
-                  <CheckCircle2 className="mt-1.5 h-4 w-4 shrink-0 text-teal-600 dark:text-teal-400" />
-                  <span>{pt}</span>
+                  <CheckCircle2 className="mt-1 h-4 w-4 shrink-0 text-teal-600 dark:text-teal-400" />
+                  <div>
+                    <div>{pt}</div>
+                    {pointsDa[idx] && (
+                      <div className="mt-0.5 text-xs font-normal text-zinc-500 dark:text-zinc-400">
+                        DA: {pointsDa[idx]}
+                      </div>
+                    )}
+                  </div>
                 </li>
               ))}
             </ul>
@@ -139,7 +146,14 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
                 ruClassName="text-xs"
               />
             ) : (
-              <span className="text-sky-900/90 dark:text-sky-100">{rule.exceptionsRu}</span>
+              <div>
+                <span className="text-sky-900/90 dark:text-sky-100">{rule.exceptionsRu}</span>
+                {rule.exceptionsDa && (
+                  <div className="mt-1 text-[11px] text-sky-800/75 dark:text-sky-300/80">
+                    DA: {rule.exceptionsDa}
+                  </div>
+                )}
+              </div>
             )}
           </div>
         </div>
@@ -164,7 +178,14 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
                 ruClassName="text-xs"
               />
             ) : (
-              <span className="text-amber-900/90 dark:text-amber-100">{rule.trapRu}</span>
+              <div>
+                <span className="text-amber-900/90 dark:text-amber-100">{rule.trapRu}</span>
+                {rule.trapDa && (
+                  <div className="mt-1 text-[11px] text-amber-800/75 dark:text-amber-300/80">
+                    DA: {rule.trapDa}
+                  </div>
+                )}
+              </div>
             )}
           </div>
         </div>

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { CheckCircle2, RotateCw, XCircle } from 'lucide-react';
 import { DICTIONARY_ENTRIES } from '../../data/signsAndGlossary';
 import { DictionaryEntry, LanguageMode } from '../../types';
@@ -33,7 +33,20 @@ export const LessonFlashcards: React.FC<LessonFlashcardsProps> = ({
   const [index, setIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
 
+  const keyHandlerRef = useRef<(e: KeyboardEvent) => void>(() => {});
+
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      const tag = (e.target as HTMLElement | null)?.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+      keyHandlerRef.current(e);
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, []);
+
   if (queue.length === 0) {
+    keyHandlerRef.current = () => {};
     return null;
   }
 
@@ -55,6 +68,19 @@ export const LessonFlashcards: React.FC<LessonFlashcardsProps> = ({
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       onComplete();
+    }
+  };
+
+  keyHandlerRef.current = (e: KeyboardEvent) => {
+    if (!flipped && (e.key === ' ' || e.key === 'Enter')) {
+      e.preventDefault();
+      setFlipped(true);
+    } else if (flipped && (e.key === '1' || e.key === 'ArrowLeft')) {
+      e.preventDefault();
+      handleGrade(false);
+    } else if (flipped && (e.key === '2' || e.key === 'ArrowRight')) {
+      e.preventDefault();
+      handleGrade(true);
     }
   };
 

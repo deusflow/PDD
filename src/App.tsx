@@ -83,6 +83,8 @@ function applyModuleQuizUpdate(
   const nowPassed = prevMod.passed || canModulePass(candidateMod, prev.srs, moduleId);
   const updatedMod: ModuleCourseProgress = {
     ...candidateMod,
+    theoryCompleted: prevMod.theoryCompleted || nowPassed,
+    flashcardsCompleted: prevMod.flashcardsCompleted || nowPassed,
     passed: nowPassed,
     passedAt: nowPassed ? (prevMod.passedAt ?? now) : null,
   };
@@ -467,8 +469,10 @@ export const App: React.FC = () => {
                 initialViewMode={modulesViewMode}
                 onSelectModule={setSelectedModuleId}
                 srsMap={appState.srs}
+                courseModules={appState.course.modules}
                 languageMode={appState.languageMode}
                 onStartModuleQuiz={handleStartCustomSession}
+                onMarkTheoryRead={handleCompleteTheory}
                 onRecordEntryReview={(entryId, passed) => {
                   handleRecordResult(entryId, passed);
                 }}

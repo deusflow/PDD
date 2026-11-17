@@ -78,15 +78,13 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
   const [history, setHistory] = useState<SessionHistoryItem[]>([]);
   const [finished, setFinished] = useState(false);
 
-  const keyHandlerRef = useRef<() => void>(() => {});
+  const keyHandlerRef = useRef<(e: KeyboardEvent) => void>(() => {});
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key !== 'Enter') return;
       const tag = (e.target as HTMLElement | null)?.tagName;
-      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'BUTTON') return;
-      e.preventDefault();
-      keyHandlerRef.current();
+      if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+      keyHandlerRef.current(e);
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
@@ -286,6 +284,7 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
   const boxMeta = BOX_META[currentRecord.box];
 
   const allAnswered = question.subQuestions.every((sq) => answers[sq.id] !== undefined);
+  const focusedSubIdx = question.subQuestions.findIndex((sq) => answers[sq.id] === undefined);
   const isSubmitted = submittedRecord !== null;
   const isQuestionPassed =
     isSubmitted &&
@@ -328,11 +327,29 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
     }
   };
 
-  keyHandlerRef.current = () => {
-    if (!isSubmitted && allAnswered) {
-      handleSubmit();
-    } else if (isSubmitted) {
-      handleNext();
+  keyHandlerRef.current = (e: KeyboardEvent) => {
+    const k = e.key.toLowerCase();
+    if (!isSubmitted && focusedSubIdx !== -1) {
+      if (k === '1' || k === 'j') {
+        e.preventDefault();
+        handleSelectAnswer(question.subQuestions[focusedSubIdx].id, true);
+        return;
+      }
+      if (k === '2' || k === 'n') {
+        e.preventDefault();
+        handleSelectAnswer(question.subQuestions[focusedSubIdx].id, false);
+        return;
+      }
+    }
+    if (e.key === 'Enter') {
+      const tag = (e.target as HTMLElement | null)?.tagName;
+      if (tag === 'BUTTON') return;
+      e.preventDefault();
+      if (!isSubmitted && allAnswered) {
+        handleSubmit();
+      } else if (isSubmitted) {
+        handleNext();
+      }
     }
   };
 
@@ -431,7 +448,19 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
       {/* Main Question Card */}
       <div className="nordic-card overflow-hidden p-4 sm:p-6">
         <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-          <span className="nordic-pill">Урок {question.moduleId}</span>
+          <div className="flex items-center gap-2">
+            <span className="nordic-pill">Урок {question.moduleId}</span>
+            <SpeakButton
+              id={`quiz_all_${question.id}`}
+              text={question.situationDa}
+              sequence={[
+                question.situationDa,
+                ...question.subQuestions.map((s, i) => `${i + 1}. ${s.da}`),
+              ]}
+              label="Озвучить билет"
+              title="Прослушать ситуацию и все утверждения подряд"
+            />
+          </div>
           {mode !== 'course' && (
             <span
               className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[11px] font-semibold ${boxMeta.badgeClass}`}
@@ -462,6 +491,7 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
             const chosen = answers[sq.id];
             const isCorrectSub = isSubmitted && chosen === sq.correctAnswer;
             const isWrongSub = isSubmitted && chosen !== sq.correctAnswer;
+            const isActiveFocus = !isSubmitted && idx === focusedSubIdx;
 
             return (
               <div
@@ -471,7 +501,9 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
                     ? isCorrectSub
                       ? 'border-emerald-300 bg-emerald-50/50 dark:border-emerald-900/70 dark:bg-emerald-950/25'
                       : 'border-rose-300 bg-rose-50/60 dark:border-rose-900/70 dark:bg-rose-950/30'
-                    : 'border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900'
+                    : isActiveFocus
+                      ? 'border-teal-400 bg-white ring-2 ring-teal-500/20 dark:border-teal-700 dark:bg-zinc-900'
+                      : 'border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900'
                 }`}
               >
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
@@ -560,9 +592,11 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
 
         {/* Submit or Post-answer Law Reference & Next */}
         {!isSubmitted ? (
-          <div className="mt-5 flex items-center justify-between gap-3">
+          <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
             <span className="text-xs text-zinc-500 dark:text-zinc-400">
-              Ответьте на все утверждения «Ja / Nej»
+              Ответьте на все «Ja / Nej» · Клавиши: <kbd className="rounded bg-zinc-100 px-1 py-0.5 font-mono text-[10px] dark:bg-zinc-800">1</kbd> Ja /{' '}
+              <kbd className="rounded bg-zinc-100 px-1 py-0.5 font-mono text-[10px] dark:bg-zinc-800">2</kbd> Nej ·{' '}
+              <kbd className="rounded bg-zinc-100 px-1 py-0.5 font-mono text-[10px] dark:bg-zinc-800">Enter</kbd> Проверить
             </span>
             <button
               type="button"
