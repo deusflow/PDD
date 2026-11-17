@@ -489,36 +489,32 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
 
       case 'pov_trailer_weight':
         return (
-          <g>
-            <rect x="0" y="0" width="460" height="250" fill="#18181B" />
-            <rect x="20" y="20" width="420" height="210" rx="16" fill="#27272A" stroke="#3F3F46" strokeWidth="2" />
-            <text x="230" y="52" textAnchor="middle" fill="#FFFFFF" fontSize="15" fontWeight="800">
-              Registreringsattest · Категория B (макс. 3.500 kg)
+          <CockpitFrame skyColor="#BAE6FD">
+            <HorizonRoad withCenterDash />
+            {/* Side illustration of car + trailer pulling down scenic road */}
+            <rect x="34" y="138" width="392" height="58" rx="14" fill="#0F172A" fillOpacity="0.88" stroke="#38BDF8" strokeOpacity="0.45" strokeWidth="1.5" />
+            {/* Mini car + trailer side silhouette */}
+            <g transform="translate(88, 166)">
+              {/* Trailer */}
+              <rect x="-42" y="-16" width="38" height="20" rx="4" fill="#94A3B8" stroke="#FFFFFF" strokeWidth="1.4" />
+              <circle cx="-23" cy="6" r="5.5" fill="#18181B" stroke="#E2E8F0" strokeWidth="1.5" />
+              {/* Hitch */}
+              <line x1="-4" y1="0" x2="10" y2="0" stroke="#E2E8F0" strokeWidth="2.5" />
+              {/* Car */}
+              <rect x="10" y="-12" width="54" height="16" rx="5" fill="#0D9488" stroke="#FFFFFF" strokeWidth="1.4" />
+              <path d="M 18 -12 L 26 -22 L 46 -22 L 54 -12 Z" fill="#0D9488" stroke="#FFFFFF" strokeWidth="1.4" />
+              <circle cx="22" cy="6" r="5.5" fill="#18181B" stroke="#E2E8F0" strokeWidth="1.5" />
+              <circle cx="52" cy="6" r="5.5" fill="#18181B" stroke="#E2E8F0" strokeWidth="1.5" />
+            </g>
+            <text x="292" y="160" textAnchor="middle" fill="#FFFFFF" fontSize="11.5" fontWeight="800">
+              Bil + Påhængsvogn ≤ 3.500 kg
             </text>
-            <rect x="38" y="72" width="178" height="84" rx="12" fill="#0F172A" stroke="#0D9488" strokeWidth="2" />
-            <text x="127" y="98" textAnchor="middle" fill="#5EEAD4" fontSize="12" fontWeight="700">
-              Bil (Totalvægt)
+            <text x="292" y="178" textAnchor="middle" fill="#5EEAD4" fontSize="9.8" fontWeight="600">
+              Лёгкий прицеп ≤ 750 kg → итого до 4.250 kg
             </text>
-            <text x="127" y="126" textAnchor="middle" fill="#FFFFFF" fontSize="18" fontWeight="800">
-              напр. 2.100 kg
-            </text>
-            <text x="230" y="122" textAnchor="middle" fill="#FFFFFF" fontSize="22" fontWeight="800">
-              +
-            </text>
-            <rect x="244" y="72" width="178" height="84" rx="12" fill="#0F172A" stroke="#F59E0B" strokeWidth="2" />
-            <text x="333" y="98" textAnchor="middle" fill="#FDE68A" fontSize="12" fontWeight="700">
-              Påhængsvogn (Totalvægt)
-            </text>
-            <text x="333" y="126" textAnchor="middle" fill="#FFFFFF" fontSize="18" fontWeight="800">
-              ≤ 1.400 kg (≤ 3.500)
-            </text>
-            <text x="230" y="186" textAnchor="middle" fill="#CBD5E1" fontSize="11.5" fontWeight="600">
-              Исключение: лёгкий прицеп до 750 kg можно к авто 3.500 kg (итого до 4.250 kg)
-            </text>
-            <text x="230" y="208" textAnchor="middle" fill="#FCA5A5" fontSize="11" fontWeight="600">
-              Всегда проверяйте max påhængsvægt в техпаспорте авто!
-            </text>
-          </g>
+            <BadgePill x={16} y={18} text="Сверяйте max påhængsvægt в Registreringsattest!" tone="teal" />
+            <BadgePill x={16} y={48} text="Категория B: общий потолок по техпаспорту" tone="dark" />
+          </CockpitFrame>
         );
 
       case 'pov_motorvej_merge':
@@ -570,50 +566,56 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
 
       case 'pov_alcohol_klip_law':
         return (
-          <g>
-            <rect x="0" y="0" width="460" height="250" fill="#18181B" />
-            <rect x="20" y="24" width="132" height="202" rx="14" fill="#27272A" stroke="#EF4444" strokeWidth="2" />
-            <text x="86" y="72" textAnchor="middle" fill="#EF4444" fontSize="26" fontWeight="800">
-              0,50‰
-            </text>
-            <text x="86" y="102" textAnchor="middle" fill="#FFFFFF" fontSize="11.5" fontWeight="700">
-              Алкоголь
-            </text>
-            <text x="86" y="128" textAnchor="middle" fill="#A1A1AA" fontSize="10">
-              ≥ 0,51‰ = лишение
-            </text>
-            <text x="86" y="148" textAnchor="middle" fill="#FCA5A5" fontSize="10">
-              &gt; 2,00‰ = конфискация
-            </text>
+          <CockpitFrame night>
+            <HorizonRoad withCenterDash />
+            <g transform="translate(22, 26)">
+              <rect x="0" y="0" width="130" height="162" rx="14" fill="#0F172A" fillOpacity="0.9" stroke="#EF4444" strokeWidth="1.8" />
+              <circle cx="65" cy="36" r="18" fill="#7F1D1D" stroke="#EF4444" strokeWidth="2" />
+              <text x="65" y="41" textAnchor="middle" fill="#FFFFFF" fontSize="12" fontWeight="800">
+                0,50‰
+              </text>
+              <text x="65" y="76" textAnchor="middle" fill="#FFFFFF" fontSize="11.5" fontWeight="700">
+                Алкоголь
+              </text>
+              <text x="65" y="102" textAnchor="middle" fill="#CBD5E1" fontSize="9.8">
+                ≥ 0,51‰ = лишение
+              </text>
+              <text x="65" y="122" textAnchor="middle" fill="#FCA5A5" fontSize="9.5">
+                &gt; 2,00‰ = конфискация
+              </text>
+            </g>
 
-            <rect x="164" y="24" width="132" height="202" rx="14" fill="#27272A" stroke="#F59E0B" strokeWidth="2" />
-            <text x="230" y="72" textAnchor="middle" fill="#F59E0B" fontSize="24" fontWeight="800">
-              2 KLIP
-            </text>
-            <text x="230" y="102" textAnchor="middle" fill="#FFFFFF" fontSize="11.5" fontWeight="700">
-              Новичок (0–3 года)
-            </text>
-            <text x="230" y="128" textAnchor="middle" fill="#FDE68A" fontSize="10">
-              = Kørselsforbud!
-            </text>
-            <text x="230" y="148" textAnchor="middle" fill="#A1A1AA" fontSize="10">
-              Опытный: 3 klip / 3 года
-            </text>
+            <g transform="translate(165, 26)">
+              <rect x="0" y="0" width="130" height="162" rx="14" fill="#0F172A" fillOpacity="0.9" stroke="#F59E0B" strokeWidth="1.8" />
+              <rect x="33" y="20" width="64" height="30" rx="8" fill="#78350F" stroke="#F59E0B" strokeWidth="2" />
+              <text x="65" y="40" textAnchor="middle" fill="#FDE68A" fontSize="12" fontWeight="800">
+                2 KLIP
+              </text>
+              <text x="65" y="76" textAnchor="middle" fill="#FFFFFF" fontSize="11.5" fontWeight="700">
+                Новичок (0–3 г.)
+              </text>
+              <text x="65" y="102" textAnchor="middle" fill="#FDE68A" fontSize="9.8">
+                = Kørselsforbud!
+              </text>
+              <text x="65" y="122" textAnchor="middle" fill="#CBD5E1" fontSize="9.5">
+                Опытный: 3 klip / 3 г.
+              </text>
+            </g>
 
-            <rect x="308" y="24" width="132" height="202" rx="14" fill="#27272A" stroke="#0D9488" strokeWidth="2" />
-            <text x="374" y="72" textAnchor="middle" fill="#5EEAD4" fontSize="24" fontWeight="800">
-              112/114
-            </text>
-            <text x="374" y="102" textAnchor="middle" fill="#FFFFFF" fontSize="11.5" fontWeight="700">
-              ДТП (Uheld)
-            </text>
-            <text x="374" y="128" textAnchor="middle" fill="#CBD5E1" fontSize="10">
-              Треугольник: 50 / 100 м
-            </text>
-            <text x="374" y="148" textAnchor="middle" fill="#CBD5E1" fontSize="10">
-              112 (травмы) · 114 (ДТП)
-            </text>
-          </g>
+            <g transform="translate(308, 26)">
+              <rect x="0" y="0" width="130" height="162" rx="14" fill="#0F172A" fillOpacity="0.9" stroke="#14B8A6" strokeWidth="1.8" />
+              <polygon points="65,18 45,52 85,52" fill="#0F172A" stroke="#EF4444" strokeWidth="3.5" strokeLinejoin="round" />
+              <text x="65" y="76" textAnchor="middle" fill="#FFFFFF" fontSize="11.5" fontWeight="700">
+                ДТП: 112 / 114
+              </text>
+              <text x="65" y="102" textAnchor="middle" fill="#5EEAD4" fontSize="9.8">
+                Треугольник: 50 / 100 м
+              </text>
+              <text x="65" y="122" textAnchor="middle" fill="#CBD5E1" fontSize="9.5">
+                112 травмы · 114 полиция
+              </text>
+            </g>
+          </CockpitFrame>
         );
 
       case 'pov_t_kryds':
@@ -709,38 +711,141 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
         return (
           <CockpitFrame night>
             <HorizonRoad withCenterDash />
-            {/* Medicine red triangle warning + Syn card */}
-            <g transform="translate(26, 36)">
-              <rect x="0" y="0" width="194" height="148" rx="14" fill="#18181B" stroke="#EF4444" strokeWidth="2" />
-              <polygon points="97,22 65,78 129,78" fill="#FFFFFF" stroke="#EF4444" strokeWidth="5" />
+            {/* Medicine red triangle warning + Syn card (frosted over night road) */}
+            <g transform="translate(26, 32)">
+              <rect x="0" y="0" width="194" height="152" rx="14" fill="#0F172A" fillOpacity="0.9" stroke="#EF4444" strokeWidth="1.8" />
+              <polygon points="97,22 65,78 129,78" fill="#FFFFFF" stroke="#EF4444" strokeWidth="5" strokeLinejoin="round" />
               <text x="97" y="68" textAnchor="middle" fill="#EF4444" fontSize="24" fontWeight="900">
                 !
               </text>
-              <text x="97" y="106" textAnchor="middle" fill="#FFFFFF" fontSize="11.5" fontWeight="700">
-                Красный треугольник / Усталость
+              <text x="97" y="108" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="700">
+                Лекарства / Усталость
               </text>
-              <text x="97" y="126" textAnchor="middle" fill="#FCA5A5" fontSize="9.5">
+              <text x="97" y="128" textAnchor="middle" fill="#FCA5A5" fontSize="9.5">
                 Приравнено к § 54 (как алкоголь!)
               </text>
             </g>
-            <g transform="translate(240, 36)">
-              <rect x="0" y="0" width="194" height="148" rx="14" fill="#18181B" stroke="#0D9488" strokeWidth="2" />
-              <text x="97" y="34" textAnchor="middle" fill="#5EEAD4" fontSize="12" fontWeight="800">
-                Страховка и Техосмотр
+            <g transform="translate(240, 32)">
+              <rect x="0" y="0" width="194" height="152" rx="14" fill="#0F172A" fillOpacity="0.9" stroke="#14B8A6" strokeWidth="1.8" />
+              <circle cx="97" cy="30" r="14" fill="#134E4A" stroke="#5EEAD4" strokeWidth="1.6" />
+              <text x="97" y="34" textAnchor="middle" fill="#5EEAD4" fontSize="10" fontWeight="800">
+                SYN
               </text>
-              <text x="97" y="64" textAnchor="middle" fill="#FFFFFF" fontSize="10.5" fontWeight="600">
+              <text x="97" y="64" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="700">
+                Страховка + Техосмотр
+              </text>
+              <text x="97" y="86" textAnchor="middle" fill="#5EEAD4" fontSize="9.8" fontWeight="600">
                 Ansvarsforsikring = ОБЯЗАТЕЛЬНА
               </text>
-              <text x="97" y="92" textAnchor="middle" fill="#CBD5E1" fontSize="10">
-                1-й Syn: через 4 года
+              <text x="97" y="108" textAnchor="middle" fill="#CBD5E1" fontSize="9.8">
+                1-й Syn: 4 года · Далее: каждые 2 г.
               </text>
-              <text x="97" y="112" textAnchor="middle" fill="#CBD5E1" fontSize="10">
-                Далее Syn: каждые 2 года
-              </text>
-              <text x="97" y="132" textAnchor="middle" fill="#FDE047" fontSize="9.5">
+              <text x="97" y="128" textAnchor="middle" fill="#FDE68A" fontSize="9.5">
                 Новичок 3 года: лишение за 2 klip!
               </text>
             </g>
+          </CockpitFrame>
+        );
+
+      case 'pov_glass_wiper_exhaust':
+        return (
+          <CockpitFrame skyColor="#BAE6FD">
+            <HorizonRoad withCenterDash />
+            {/* Windshield wiper sweeps + washer spray droplets */}
+            <path d="M 110 206 Q 165 130 228 150" fill="none" stroke="#18181B" strokeWidth="4" strokeLinecap="round" />
+            <path d="M 275 206 Q 332 130 392 150" fill="none" stroke="#18181B" strokeWidth="4" strokeLinecap="round" />
+            <g fill="#38BDF8" opacity="0.85">
+              <circle cx="170" cy="145" r="2.8" />
+              <circle cx="182" cy="132" r="2.2" />
+              <circle cx="195" cy="142" r="2.5" />
+              <circle cx="338" cy="144" r="2.8" />
+              <circle cx="352" cy="133" r="2.2" />
+              <circle cx="364" cy="145" r="2.5" />
+            </g>
+            <BadgePill x={14} y={16} text="Стекло + щётки + омыватель (Sprinklervæske)" tone="teal" />
+            <BadgePill x={14} y={46} text="Зона обзора без сколов · Выхлоп без дыма и шума" tone="dark" />
+          </CockpitFrame>
+        );
+
+      case 'pov_stopping_math':
+        return (
+          <CockpitFrame skyColor="#BAE6FD">
+            <HorizonRoad withCenterDash />
+            <FrontCar x={230} y={122} scale={0.76} color="#475569" brake />
+            {/* Braking distance bar */}
+            <rect x="28" y="138" width="404" height="58" rx="14" fill="#0F172A" fillOpacity="0.9" stroke="#F59E0B" strokeOpacity="0.55" strokeWidth="1.5" />
+            <rect x="46" y="152" width="110" height="12" rx="6" fill="#38BDF8" />
+            <text x="166" y="162" fill="#E0F2FE" fontSize="10" fontWeight="700">
+              Реакция (~1 сек): 2× скорость → 2× м
+            </text>
+            <rect x="46" y="172" width="215" height="12" rx="6" fill="#F59E0B" />
+            <text x="270" y="182" fill="#FDE68A" fontSize="10" fontWeight="700">
+              Торможение: 2× скорость → 4× м!
+            </text>
+            <BadgePill x={14} y={16} text="40 → 80 км/ч: тормозной путь растёт в 4 РАЗА!" tone="warn" />
+          </CockpitFrame>
+        );
+
+      case 'pov_udrykning_letbane':
+        return (
+          <CockpitFrame skyColor="#DBEAFE">
+            <HorizonRoad withCykelsti="solid" />
+            {/* Letbane rail tracks on left */}
+            <line x1="158" y1="98" x2="72" y2="218" stroke="#94A3B8" strokeWidth="2.5" />
+            <line x1="172" y1="98" x2="108" y2="218" stroke="#94A3B8" strokeWidth="2.5" />
+            {/* Approaching Letbane tram */}
+            <g transform="translate(152, 118) scale(0.75)">
+              <rect x="-24" y="-26" width="48" height="44" rx="8" fill="#0D9488" stroke="#FFFFFF" strokeWidth="1.8" />
+              <rect x="-18" y="-18" width="36" height="18" rx="3" fill="#0F172A" />
+              <circle cx="-12" cy="10" r="3.5" fill="#FEF08A" />
+              <circle cx="12" cy="10" r="3.5" fill="#FEF08A" />
+            </g>
+            {/* Rearview mirror showing flashing blue ambulance */}
+            <rect x="172" y="12" width="116" height="34" rx="8" fill="#0F172A" stroke="#38BDF8" strokeWidth="2.5" />
+            <rect x="178" y="17" width="104" height="24" rx="4" fill="#1E293B" />
+            <circle cx="212" cy="27" r="4.5" fill="#3B82F6" />
+            <circle cx="248" cy="27" r="4.5" fill="#3B82F6" />
+            <rect x="218" y="25" width="24" height="10" rx="2" fill="#F8FAFC" />
+            {/* Pull-right green arrow */}
+            <path d="M 248 188 Q 292 178 334 186" fill="none" stroke="#4ADE80" strokeWidth="4" strokeDasharray="6 4" />
+            <BadgePill x={14} y={54} text="Синий маячок сзади → сразу прими вправо!" tone="warn" />
+            <BadgePill x={14} y={84} text="Рельсы Letbane всегда свободны · Не сигналь лошадям" tone="teal" />
+          </CockpitFrame>
+        );
+
+      case 'pov_sign_shapes_abcde':
+        return (
+          <CockpitFrame skyColor="#BAE6FD">
+            <HorizonRoad withCenterDash />
+            <g transform="translate(40, 26) scale(0.56)">
+              <DanishRoadSignSVG code="A20" size={110} />
+            </g>
+            <g transform="translate(142, 26) scale(0.56)">
+              <DanishRoadSignSVG code="C51" size={110} />
+            </g>
+            <g transform="translate(244, 26) scale(0.56)">
+              <DanishRoadSignSVG code="D15" size={110} />
+            </g>
+            <g transform="translate(346, 26) scale(0.56)">
+              <DanishRoadSignSVG code="E55" size={110} />
+            </g>
+            <BadgePill x={24} y={102} text="A Опасность" tone="warn" />
+            <BadgePill x={142} y={102} text="C Запрет" tone="dark" />
+            <BadgePill x={242} y={102} text="D Приказ" tone="teal" />
+            <BadgePill x={346} y={102} text="E Зона" tone="dark" />
+          </CockpitFrame>
+        );
+
+      case 'pov_parking_night_tomgang':
+        return (
+          <CockpitFrame night>
+            <HorizonRoad withCenterDash />
+            {/* Parked car on dark shoulder with glowing positionslys */}
+            <FrontCar x={315} y={150} scale={0.78} color="#475569" brake />
+            <circle cx="292" cy="144" r="7" fill="#EF4444" opacity="0.45" />
+            <circle cx="338" cy="144" r="7" fill="#EF4444" opacity="0.45" />
+            <BadgePill x={14} y={16} text="Ночью за городом при стоянке — габариты (Positionslys)!" tone="warn" />
+            <BadgePill x={14} y={46} text="Холостой ход (Tomgang): заглуши через 1–3 мин" tone="teal" />
           </CockpitFrame>
         );
 
@@ -748,18 +853,25 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
       default:
         return (
           <g>
-            <rect x="0" y="0" width="460" height="250" fill="#18181B" />
-            <text x="230" y="40" textAnchor="middle" fill="#FFFFFF" fontSize="15" fontWeight="800">
-              Обязательный путь в датской автошколе (Lovpakke B)
+            <defs>
+              <linearGradient id="roadmapBg" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stopColor="#0F172A" />
+                <stop offset="100%" stopColor="#134E4A" />
+              </linearGradient>
+            </defs>
+            <rect x="0" y="0" width="460" height="250" fill="url(#roadmapBg)" />
+            <text x="230" y="38" textAnchor="middle" fill="#FFFFFF" fontSize="14.5" fontWeight="800">
+              Путь в датской автошколе (Lovpakke B)
             </text>
+            <line x1="65" y1="114" x2="395" y2="114" stroke="#5EEAD4" strokeWidth="3" strokeDasharray="6 6" opacity="0.45" />
             {[
               { x: 24, n: '1', t: '29 ч теории', s: 'Правила + тесты' },
-              { x: 130, n: '2', t: '4 ч Manøvre', s: 'Закрытая площадка' },
-              { x: 236, n: '3', t: '16 ч город', s: '+ mørkekørsel' },
+              { x: 130, n: '2', t: '4 ч Manøvre', s: 'Площадка' },
+              { x: 236, n: '3', t: '16 ч город', s: '+ ночное вожд.' },
               { x: 342, n: '4', t: '4 ч Glatbane', s: 'Лёд и заносы' },
             ].map((item) => (
-              <g key={item.n} transform={`translate(${item.x}, 68)`}>
-                <rect x="0" y="0" width="94" height="92" rx="12" fill="#27272A" stroke="#0D9488" strokeWidth="1.8" />
+              <g key={item.n} transform={`translate(${item.x}, 66)`}>
+                <rect x="0" y="0" width="94" height="92" rx="14" fill="#0F172A" fillOpacity="0.82" stroke="#14B8A6" strokeWidth="1.6" />
                 <circle cx="47" cy="24" r="12" fill="#0D9488" />
                 <text x="47" y="28" textAnchor="middle" fill="#FFFFFF" fontSize="12" fontWeight="800">
                   {item.n}
@@ -767,16 +879,16 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
                 <text x="47" y="56" textAnchor="middle" fill="#FFFFFF" fontSize="10.5" fontWeight="700">
                   {item.t}
                 </text>
-                <text x="47" y="74" textAnchor="middle" fill="#A1A1AA" fontSize="9">
+                <text x="47" y="74" textAnchor="middle" fill="#99F6E4" fontSize="9">
                   {item.s}
                 </text>
               </g>
             ))}
-            <rect x="24" y="178" width="412" height="46" rx="12" fill="#0F172A" stroke="#3F3F46" strokeWidth="1.5" />
-            <text x="230" y="198" textAnchor="middle" fill="#5EEAD4" fontSize="11.5" fontWeight="700">
-              Документы: Lægeattest (медсправка) + Førstehjælp (8 ч) + Tolk (при надобности)
+            <rect x="24" y="176" width="412" height="48" rx="12" fill="#0F172A" fillOpacity="0.88" stroke="#5EEAD4" strokeOpacity="0.35" strokeWidth="1.4" />
+            <text x="230" y="196" textAnchor="middle" fill="#5EEAD4" fontSize="11" fontWeight="700">
+              Lægeattest + Førstehjælp (8 ч) + Tolk (при надобности)
             </text>
-            <text x="230" y="214" textAnchor="middle" fill="#CBD5E1" fontSize="10.5">
+            <text x="230" y="213" textAnchor="middle" fill="#E2E8F0" fontSize="10.5">
               Финал: Teoriprøve (≥20/25) → Kontrolprøve + Praktisk køreprøve
             </text>
           </g>
@@ -806,7 +918,8 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
         presetId !== 'pov_speed_limits' &&
         presetId !== 'pov_motorvej_merge' &&
         presetId !== 'pov_motortrafikvej' &&
-        presetId !== 'pov_parking_meters' && (
+        presetId !== 'pov_parking_meters' &&
+        presetId !== 'pov_sign_shapes_abcde' && (
           <div className="absolute right-3 top-3 rounded-lg bg-white/90 p-1 shadow-sm backdrop-blur dark:bg-zinc-900/90">
             <DanishRoadSignSVG code={signCode} subPlaque={subPlaque} size={48} />
           </div>

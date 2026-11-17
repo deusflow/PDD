@@ -381,7 +381,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       'Вы едете со скоростью 80 км/ч по сухой загородной дороге за другим автомобилем. Оцените безопасную дистанцию и остановочный путь.',
     visual: {
       type: 'scene',
-      presetId: 'following_distance_2s',
+      presetId: 'pov_stopping_math',
       captionDa: 'Sikkerhedsafstand (2-sekunders reglen) & Standselængde',
       captionRu: 'Дистанция 2 секунды и тормозной путь',
     },
@@ -3344,7 +3344,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       'Вы стоите на красный свет в городе. Сзади приближается машина скорой помощи с синими маячками и сиреной.',
     visual: {
       type: 'scene',
-      presetId: 'traffic_light_yellow',
+      presetId: 'pov_udrykning_letbane',
       captionDa: 'Udrykningskøretøj bagfra ved lyskryds',
       captionRu: 'Приближение спецтранспорта с сиреной к перекрёстку',
     },
@@ -3429,8 +3429,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationRu:
       'Вы проехали знак C51 («Обгон запрещён») на загородной дороге и вскоре догнали медленный мопед (knallert 30).',
     visual: {
-      type: 'sign',
-      presetId: 'sign_C51',
+      type: 'scene',
+      presetId: 'pov_sign_shapes_abcde',
       signCode: 'C51',
       captionDa: 'Tavle C51: Overhaling forbudt – hvem gælder den for?',
       captionRu: 'Знак C51: Обгон запрещён — кого можно обгонять под знаком?',
@@ -4350,10 +4350,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationRu:
       'Идёт дождь, на улице прохладно. Вы замечаете скол в зоне обзора на лобовом стекле, а стёкла начинают запотевать изнутри.',
     visual: {
-      type: 'technical',
-      presetId: 'tech_motorrum',
-      technicalTab: 'motorrum',
-      technicalHotspot: 'sprinklervaeske',
+      type: 'scene',
+      presetId: 'pov_glass_wiper_exhaust',
       captionDa: 'Udsyn, sprinklervæske og afdugning af ruder',
       captionRu: 'Обзорность, бачок омывателя и очистка лобового стекла',
     },
@@ -5919,7 +5917,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       'Тёмным вечером вы вынуждены оставить автомобиль на краю неосвещённой загородной дороги вне города на 20 минут.',
     visual: {
       type: 'scene',
-      presetId: 'night_driving_lights',
+      presetId: 'pov_parking_night_tomgang',
       captionDa: 'Standsning/parkering i mørke på uoplyst landevej',
       captionRu: 'Ночная стоянка на неосвещённой загородной дороге',
     },

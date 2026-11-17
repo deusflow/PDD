@@ -136,11 +136,9 @@ export const MODULES_DATA: ModuleInfo[] = [
         trapRu: 'ДХО (kørelys) днём включают только передние фары — в сумерках, дождь или туннель задние габариты могут не гореть! Переключайте свет на nærlys вручную.',
         trapDa: 'Kørelys tænder ofte kun forlygterne — husk manuelt nærlys i regn, skumring og tunnel.',
         visual: {
-          kind: 'technical',
-          presetId: 'tech_motorrum',
-          technicalTab: 'motorrum',
-          technicalHotspot: 'sprinklervaeske',
-          maneuverBadge: 'Проверка бачка омывателя (sprinklervæske) и состояния стёкол/подтёков',
+          kind: 'pov',
+          presetId: 'pov_glass_wiper_exhaust',
+          maneuverBadge: 'Вид водителя: чистое стекло, омыватель (sprinklervæske) и исправный выхлоп',
         },
       },
       {
@@ -288,8 +286,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         trapDa: 'Håndholdt mobil giver 1 klip og bøde; hornet må kun bruges ved overhængende fare.',
         visual: {
           kind: 'pov',
-          presetId: 'pov_distance_2s',
-          maneuverBadge: 'Вид водителя: 2 секунды дистанции, реакция (~14–22 м) и остановочный путь',
+          presetId: 'pov_stopping_math',
+          maneuverBadge: 'Вид водителя: реакция (~14–22 м за 1 сек) и квадратичный рост тормозного пути (4×)',
         },
       },
       {
@@ -483,9 +481,9 @@ export const MODULES_DATA: ModuleInfo[] = [
         trapRu: 'Даже если на спецмашине включён только синий маячок без сирены (например, ночью), вы всё равно обязаны сразу освободить проезд.',
         trapDa: 'Også ved blåt blink uden sirene skal du give fri bane.',
         visual: {
-          kind: 'scene',
-          presetId: 'traffic_light_yellow',
-          maneuverBadge: 'Светофор и перекрёсток: освободите проезд спецтранспорту и не стойте на путях',
+          kind: 'pov',
+          presetId: 'pov_udrykning_letbane',
+          maneuverBadge: 'Вид водителя: синий маячок в зеркале (принять вправо) и рельсы трамвая Letbane',
         },
       },
     ],
@@ -758,10 +756,10 @@ export const MODULES_DATA: ModuleInfo[] = [
         trapRu: 'Главная ловушка знака C51 («Обгон запрещён»): он запрещает обгон 4-колёсных машин и тракторов, но ДВУХКОЛЁСНЫЕ велосипеды и мопеды-30 под C51 обгонять МОЖНО (если не пересекаете сплошную)!',
         trapDa: 'Under C51 må du gerne overhale 2-hjulede cykler og små knallerter uden at krydse spærrelinje.',
         visual: {
-          kind: 'sign',
-          presetId: 'sign_C51',
+          kind: 'pov',
+          presetId: 'pov_sign_shapes_abcde',
           signCode: 'C51',
-          maneuverBadge: 'C51 (красный круг запрета) vs D15 (синий круг предписания) vs E19 (синий квадрат)',
+          maneuverBadge: 'Вид водителя: 4 семейства датских знаков — A (опасность), C (запрет), D (приказ), E (зона)',
         },
       },
       {
@@ -1086,8 +1084,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         trapDa: 'Sluk motoren, træk håndbremsen og tjek P-skive + undertavler før du forlader bilen.',
         visual: {
           kind: 'pov',
-          presetId: 'pov_parking_meters',
-          maneuverBadge: 'Вид водителя: золотые отступы 5/10/12/30 м и правила парковки',
+          presetId: 'pov_parking_night_tomgang',
+          maneuverBadge: 'Вид водителя: ночная стоянка с габаритами (Positionslys) и запрет холостого хода',
         },
       },
     ],
