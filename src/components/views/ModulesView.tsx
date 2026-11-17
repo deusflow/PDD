@@ -25,6 +25,7 @@ import { SpeakButton } from '../common/SpeakButton';
 import { LessonTheory } from '../course/LessonTheory';
 import { CarTechnicalSVG } from '../visuals/CarTechnicalSVG';
 import { DanishRoadSignSVG } from '../visuals/DanishRoadSignSVG';
+import { LessonHeroIllustration } from '../visuals/LessonHeroIllustration';
 
 interface ModulesViewProps {
   selectedModuleId: number;
@@ -388,6 +389,8 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
 
       {lessonTab === 'sheet' && (
         <div className="space-y-4">
+          <LessonHeroIllustration moduleId={mod.id} languageMode={languageMode} />
+
           {/* Key Metrics */}
           <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
             {mod.keyMetrics.map((metric, i) => (
@@ -457,11 +460,6 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
 
                   <div className="mt-3 border-t border-zinc-200/70 pt-3 dark:border-zinc-800">
                     <RuleVisualBlock rule={rule} languageMode={languageMode} compactVisual />
-                    {languageMode === 'both' && (
-                      <p className="mt-3 border-t border-zinc-200/60 pt-2 text-xs leading-relaxed text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
-                        {rule.bodyDa}
-                      </p>
-                    )}
                   </div>
                 </div>
               ))}

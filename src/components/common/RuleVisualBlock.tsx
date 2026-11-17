@@ -1,5 +1,5 @@
 import React from 'react';
-import { AlertTriangle, CheckCircle2, Info } from 'lucide-react';
+import { AlertTriangle, CheckCircle2, Eye, Info } from 'lucide-react';
 import { LanguageMode, ModuleCheatRule } from '../../types';
 import { CarTechnicalSVG } from '../visuals/CarTechnicalSVG';
 import { DanishRoadSignSVG } from '../visuals/DanishRoadSignSVG';
@@ -70,13 +70,46 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
 
   const pointsRu = rule.pointsRu ?? [];
   const pointsDa = rule.pointsDa ?? [];
+  const hasPoints = pointsRu.length > 0 || pointsDa.length > 0;
 
   return (
     <div className="space-y-4">
       {rule.visual && <div>{renderVisual()}</div>}
 
+      {/* Situation description directly attached to the illustration */}
+      {(rule.bodyRu || rule.bodyDa) && (
+        <div className="flex items-start gap-2.5 rounded-xl border border-zinc-200/80 bg-zinc-50/80 p-3.5 dark:border-zinc-800 dark:bg-zinc-950/60">
+          <Eye className="mt-0.5 h-4 w-4 shrink-0 text-teal-600 dark:text-teal-400" />
+          <div className="min-w-0 flex-1 text-xs leading-relaxed sm:text-sm">
+            <div className="mb-0.5 text-[11px] font-bold uppercase tracking-wider text-teal-700 dark:text-teal-400">
+              {languageMode === 'da_only' ? 'Situation & regel' : 'Описание ситуации'}
+            </div>
+            {languageMode === 'da_only' ? (
+              <p className="text-zinc-800 dark:text-zinc-200">{rule.bodyDa}</p>
+            ) : languageMode === 'spoiler' ? (
+              <BilingualText
+                da={rule.bodyDa}
+                ru={rule.bodyRu}
+                mode="spoiler"
+                daClassName="text-xs sm:text-sm font-normal leading-relaxed"
+                ruClassName="text-xs leading-relaxed"
+              />
+            ) : (
+              <div className="space-y-1">
+                <p className="text-zinc-800 dark:text-zinc-200">{rule.bodyRu}</p>
+                {rule.bodyDa && (
+                  <p className="text-[11px] leading-relaxed text-zinc-500 dark:text-zinc-400">
+                    DA: {rule.bodyDa}
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Main bullet points ("How to do it right") */}
-      {pointsRu.length > 0 || pointsDa.length > 0 ? (
+      {hasPoints && (
         <div className="space-y-2">
           {languageMode === 'da_only' ? (
             <ul className="space-y-2">
@@ -123,10 +156,6 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
             </ul>
           )}
         </div>
-      ) : (
-        <p className="text-[15px] leading-7 text-zinc-800 dark:text-zinc-200">
-          {languageMode === 'da_only' ? rule.bodyDa : rule.bodyRu}
-        </p>
       )}
 
       {/* Exceptions callout */}

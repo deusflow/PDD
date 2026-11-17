@@ -13,14 +13,78 @@ const CockpitFrame: React.FC<{
   skyColor?: string;
   night?: boolean;
   children: React.ReactNode;
-}> = ({ skyColor = '#BAE6FD', night = false, children }) => (
+}> = ({ skyColor, night = false, children }) => (
   <g>
+    <defs>
+      <linearGradient id="povSkyDay" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor={skyColor ?? '#7DD3FC'} />
+        <stop offset="65%" stopColor="#BAE6FD" />
+        <stop offset="100%" stopColor="#F0F9FF" />
+      </linearGradient>
+      <linearGradient id="povSkyNight" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#09090B" />
+        <stop offset="70%" stopColor="#1E293B" />
+        <stop offset="100%" stopColor="#334155" />
+      </linearGradient>
+      <linearGradient id="povDashGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#27272A" />
+        <stop offset="100%" stopColor="#09090B" />
+      </linearGradient>
+      <linearGradient id="povGrassGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#A7F3D0" />
+        <stop offset="100%" stopColor="#6EE7B7" />
+      </linearGradient>
+      <linearGradient id="povAsphaltGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#52525B" />
+        <stop offset="100%" stopColor="#3F3F46" />
+      </linearGradient>
+    </defs>
+
     {/* Sky / background */}
-    <rect x="0" y="0" width="460" height="250" fill={night ? '#09090B' : skyColor} />
+    <rect x="0" y="0" width="460" height="250" fill={night ? 'url(#povSkyNight)' : 'url(#povSkyDay)'} />
+
+    {/* Soft clouds & sun/moon */}
+    {!night ? (
+      <g opacity="0.85">
+        <circle cx="388" cy="34" r="14" fill="#FEF9C3" opacity="0.9" />
+        <g fill="#FFFFFF" opacity="0.72">
+          <ellipse cx="95" cy="32" rx="28" ry="10" />
+          <ellipse cx="114" cy="28" rx="18" ry="9" />
+          <ellipse cx="285" cy="40" rx="24" ry="8" />
+          <ellipse cx="302" cy="37" rx="16" ry="7" />
+        </g>
+        {/* Distant Nordic horizon treeline & cozy gable silhouettes */}
+        <path
+          d="M 0 98 Q 38 82 78 96 T 158 94 T 242 98 L 460 98 L 460 104 L 0 104 Z"
+          fill="#86EFAC"
+          opacity="0.55"
+        />
+        <g opacity="0.68">
+          <rect x="34" y="80" width="22" height="18" fill="#E11D48" opacity="0.45" />
+          <polygon points="32,80 45,70 58,80" fill="#9F1239" opacity="0.55" />
+          <circle cx="74" cy="87" r="11" fill="#22C55E" opacity="0.65" />
+          <circle cx="394" cy="85" r="12" fill="#22C55E" opacity="0.6" />
+          <rect x="412" y="79" width="24" height="19" fill="#F59E0B" opacity="0.4" />
+          <polygon points="410,79 424,69 438,79" fill="#B45309" opacity="0.5" />
+        </g>
+      </g>
+    ) : (
+      <g opacity="0.75">
+        <circle cx="392" cy="32" r="10" fill="#E2E8F0" opacity="0.75" />
+        <circle cx="72" cy="26" r="1.2" fill="#FFFFFF" />
+        <circle cx="148" cy="18" r="1" fill="#FFFFFF" />
+        <circle cx="312" cy="24" r="1.3" fill="#FFFFFF" />
+      </g>
+    )}
+
     {children}
-    {/* Dashboard & hood edge */}
-    <path d="M 0 212 Q 230 194 460 212 L 460 250 L 0 250 Z" fill="#18181B" />
-    {/* Steering wheel top arc */}
+
+    {/* Subtle car hood reflection & dashboard */}
+    <path d="M 0 212 Q 230 192 460 212 L 460 250 L 0 250 Z" fill="url(#povDashGrad)" />
+    <path d="M 0 212 Q 230 192 460 212" fill="none" stroke="#52525B" strokeWidth="1.5" opacity="0.7" />
+    {/* Subtle digital cluster glow */}
+    <ellipse cx="143" cy="233" rx="28" ry="12" fill="#0F172A" stroke="#14B8A6" strokeWidth="1.2" opacity="0.85" />
+    {/* Steering wheel top arc with grip highlight */}
     <path
       d="M 88 250 A 62 62 0 0 1 198 250"
       fill="none"
@@ -28,9 +92,17 @@ const CockpitFrame: React.FC<{
       strokeWidth="12"
       strokeLinecap="round"
     />
-    {/* Windshield top A-pillars subtle */}
-    <polygon points="0,0 24,0 0,165" fill="#18181B" opacity="0.22" />
-    <polygon points="460,0 436,0 460,165" fill="#18181B" opacity="0.22" />
+    <path
+      d="M 96 244 A 56 56 0 0 1 190 244"
+      fill="none"
+      stroke="#71717A"
+      strokeWidth="2"
+      strokeLinecap="round"
+      opacity="0.55"
+    />
+    {/* Windshield top A-pillars */}
+    <polygon points="0,0 22,0 0,170" fill="#18181B" opacity="0.24" />
+    <polygon points="460,0 438,0 460,170" fill="#18181B" opacity="0.24" />
   </g>
 );
 
@@ -49,18 +121,21 @@ const HorizonRoad: React.FC<{
 }) => (
   <g>
     {/* Grass / ground */}
-    <rect x="0" y={horizonY} width="460" height={250 - horizonY} fill="#D9F99D" opacity="0.35" />
+    <rect x="0" y={horizonY} width="460" height={250 - horizonY} fill="url(#povGrassGrad)" opacity="0.58" />
     {/* Main asphalt */}
-    <polygon points={`${vanishX - 42},${horizonY} ${vanishX + 42},${horizonY} 450,220 10,220`} fill="#3F3F46" />
+    <polygon points={`${vanishX - 42},${horizonY} ${vanishX + 42},${horizonY} 450,220 10,220`} fill="url(#povAsphaltGrad)" />
+    {/* Left & right crisp road edge lines */}
+    <line x1={vanishX - 40} y1={horizonY} x2="18" y2="220" stroke="#E4E4E7" strokeWidth="1.8" opacity="0.7" />
     {/* Right sidewalk */}
-    <polygon points={`${vanishX + 42},${horizonY} ${vanishX + 62},${horizonY} 460,220 420,220`} fill="#D4D4D8" />
+    <polygon points={`${vanishX + 42},${horizonY} ${vanishX + 66},${horizonY} 460,220 420,220`} fill="#E4E4E7" />
+    <line x1={vanishX + 42} y1={horizonY} x2="420" y2="220" stroke="#A1A1AA" strokeWidth="2" />
     {/* Cykelsti */}
     {withCykelsti !== 'none' && (
       <g>
         <polygon
           points={`${vanishX + 26},${horizonY} ${vanishX + 42},${horizonY} 420,220 355,220`}
           fill="#0284C7"
-          opacity="0.78"
+          opacity="0.82"
         />
         <line
           x1={vanishX + 26}
@@ -99,18 +174,21 @@ const FrontCar: React.FC<{
   blinkLeft?: boolean;
   blinkRight?: boolean;
   brake?: boolean;
-}> = ({ x, y, scale = 1, color = '#52525B', blinkLeft, blinkRight, brake }) => (
+}> = ({ x, y, scale = 1, color = '#475569', blinkLeft, blinkRight, brake }) => (
   <g transform={`translate(${x}, ${y}) scale(${scale})`}>
-    <rect x="-32" y="-12" width="64" height="24" rx="5" fill={color} stroke="#FFFFFF" strokeWidth="1.5" />
+    <ellipse cx="0" cy="14" rx="34" ry="6" fill="#09090B" opacity="0.32" />
+    <rect x="-32" y="-12" width="64" height="24" rx="6" fill={color} stroke="#FFFFFF" strokeWidth="1.5" />
     <path d="M -22 -12 L -14 -26 L 14 -26 L 22 -12 Z" fill={color} stroke="#FFFFFF" strokeWidth="1.5" />
-    <rect x="-15" y="-23" width="30" height="10" rx="2" fill="#0F172A" />
+    <rect x="-15" y="-23" width="30" height="10" rx="2.5" fill="#0F172A" />
+    <line x1="-11" y1="-21" x2="2" y2="-15" stroke="#38BDF8" strokeWidth="1.2" opacity="0.45" />
+    <rect x="-10" y="3" width="20" height="5" rx="1" fill="#F8FAFC" />
     {/* Taillights */}
-    <rect x="-30" y="-7" width="10" height="5" rx="1" fill={brake ? '#EF4444' : '#991B1B'} />
-    <rect x="20" y="-7" width="10" height="5" rx="1" fill={brake ? '#EF4444' : '#991B1B'} />
+    <rect x="-30" y="-7" width="10" height="5" rx="1.5" fill={brake ? '#EF4444' : '#991B1B'} />
+    <rect x="20" y="-7" width="10" height="5" rx="1.5" fill={brake ? '#EF4444' : '#991B1B'} />
     {blinkLeft && <circle cx="-28" cy="-1" r="4" fill="#F59E0B" />}
     {blinkRight && <circle cx="28" cy="-1" r="4" fill="#F59E0B" />}
-    <circle cx="-22" cy="12" r="5" fill="#18181B" />
-    <circle cx="22" cy="12" r="5" fill="#18181B" />
+    <circle cx="-22" cy="12" r="5.5" fill="#18181B" />
+    <circle cx="22" cy="12" r="5.5" fill="#18181B" />
   </g>
 );
 
@@ -122,18 +200,20 @@ const SideCar: React.FC<{
   color?: string;
 }> = ({ x, y, scale = 1, flip = false, color = '#E11D48' }) => (
   <g transform={`translate(${x}, ${y}) scale(${flip ? -scale : scale}, ${scale})`}>
-    <rect x="-42" y="-14" width="84" height="24" rx="6" fill={color} stroke="#FFFFFF" strokeWidth="1.5" />
+    <ellipse cx="0" cy="15" rx="44" ry="6" fill="#09090B" opacity="0.28" />
+    <rect x="-42" y="-14" width="84" height="24" rx="7" fill={color} stroke="#FFFFFF" strokeWidth="1.5" />
     <path d="M -24 -14 L -12 -28 L 18 -28 L 28 -14 Z" fill={color} stroke="#FFFFFF" strokeWidth="1.5" />
-    <rect x="-13" y="-25" width="28" height="10" rx="2" fill="#0F172A" />
-    <circle cx="-24" cy="11" r="7" fill="#18181B" stroke="#D4D4D8" strokeWidth="2" />
-    <circle cx="24" cy="11" r="7" fill="#18181B" stroke="#D4D4D8" strokeWidth="2" />
+    <rect x="-13" y="-25" width="28" height="10" rx="2.5" fill="#0F172A" />
+    <circle cx="-24" cy="11" r="7.5" fill="#18181B" stroke="#E4E4E7" strokeWidth="2" />
+    <circle cx="24" cy="11" r="7.5" fill="#18181B" stroke="#E4E4E7" strokeWidth="2" />
     {/* Headlight */}
-    <rect x="38" y="-9" width="5" height="6" rx="1" fill="#FEF08A" />
+    <rect x="38" y="-9" width="5" height="6" rx="1.5" fill="#FEF08A" />
   </g>
 );
 
 const CyclistPOV: React.FC<{ x: number; y: number; scale?: number }> = ({ x, y, scale = 1 }) => (
   <g transform={`translate(${x}, ${y}) scale(${scale})`}>
+    <ellipse cx="0" cy="16" rx="11" ry="3.5" fill="#09090B" opacity="0.28" />
     <circle cx="0" cy="-28" r="6" fill="#FACC15" stroke="#18181B" strokeWidth="1.5" />
     <path d="M 0 -22 L 0 -8 M -8 -16 L 8 -16" stroke="#0F172A" strokeWidth="3.5" strokeLinecap="round" />
     <ellipse cx="0" cy="4" rx="4" ry="12" fill="none" stroke="#18181B" strokeWidth="2.5" />
@@ -146,11 +226,22 @@ const BadgePill: React.FC<{ x: number; y: number; text: string; tone?: 'dark' | 
   text,
   tone = 'dark',
 }) => {
-  const bg = tone === 'warn' ? '#B45309' : tone === 'teal' ? '#0D9488' : '#09090B';
-  const width = Math.max(120, text.length * 6.5 + 22);
+  const bg = tone === 'warn' ? '#B45309' : tone === 'teal' ? '#0F766E' : '#18181B';
+  const width = Math.max(120, text.length * 6.5 + 24);
   return (
     <g transform={`translate(${x}, ${y})`}>
-      <rect x="0" y="0" width={width} height="24" rx="12" fill={bg} opacity="0.92" />
+      <rect
+        x="0"
+        y="0"
+        width={width}
+        height="24"
+        rx="12"
+        fill={bg}
+        fillOpacity="0.9"
+        stroke="#FFFFFF"
+        strokeOpacity="0.25"
+        strokeWidth="1"
+      />
       <text x={width / 2} y="15.5" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="700">
         {text}
       </text>

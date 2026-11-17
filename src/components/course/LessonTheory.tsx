@@ -9,6 +9,7 @@ import { RuleVisualBlock } from '../common/RuleVisualBlock';
 import { SpeakButton } from '../common/SpeakButton';
 import { CarTechnicalSVG } from '../visuals/CarTechnicalSVG';
 import { DanishRoadSignSVG } from '../visuals/DanishRoadSignSVG';
+import { LessonHeroIllustration } from '../visuals/LessonHeroIllustration';
 
 interface LessonTheoryProps {
   moduleId: number;
@@ -129,6 +130,8 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
               </p>
             </div>
 
+            <LessonHeroIllustration moduleId={mod.id} languageMode={languageMode} />
+
             <div className="grid grid-cols-2 gap-3">
               {mod.keyMetrics.map((metric, idx) => (
                 <div
@@ -188,17 +191,6 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
             </div>
 
             <RuleVisualBlock rule={rule} languageMode={languageMode} compactVisual />
-
-            {languageMode === 'both' && (
-              <div className="rounded-xl border border-zinc-200/70 bg-zinc-50/70 p-3.5 dark:border-zinc-800 dark:bg-zinc-950/50">
-                <div className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-zinc-400">
-                  На датском (для экзамена)
-                </div>
-                <p className="text-xs leading-relaxed text-zinc-600 dark:text-zinc-400">
-                  {rule.bodyDa}
-                </p>
-              </div>
-            )}
           </div>
         );
       }
