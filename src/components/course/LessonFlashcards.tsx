@@ -79,12 +79,12 @@ export const LessonFlashcards: React.FC<LessonFlashcardsProps> = ({
               setFlipped((f) => !f);
             }
           }}
-          className={`relative min-h-[290px] w-full cursor-pointer rounded-2xl preserve-3d motion-safe:transition-transform motion-safe:duration-300 ${
+          className={`relative grid w-full cursor-pointer rounded-2xl preserve-3d motion-safe:transition-transform motion-safe:duration-300 ${
             flipped ? 'rotate-y-180' : ''
           }`}
         >
           {/* Front face */}
-          <div className="nordic-card absolute inset-0 flex flex-col justify-between p-6 sm:p-8 backface-hidden">
+          <div className="nordic-card col-start-1 row-start-1 flex min-h-[290px] flex-col justify-between p-6 sm:p-8 backface-hidden">
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium text-zinc-400">
                 {card.category === 'sign'
@@ -121,7 +121,7 @@ export const LessonFlashcards: React.FC<LessonFlashcardsProps> = ({
           </div>
 
           {/* Back face */}
-          <div className="nordic-card absolute inset-0 flex flex-col justify-between p-6 sm:p-8 backface-hidden rotate-y-180">
+          <div className="nordic-card col-start-1 row-start-1 flex min-h-[290px] flex-col justify-between p-6 sm:p-8 backface-hidden rotate-y-180">
             <div className="flex items-center justify-between">
               <span className="text-xs font-semibold text-teal-600 dark:text-teal-400">
                 Объяснение

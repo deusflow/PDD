@@ -11,7 +11,14 @@ import {
 } from 'lucide-react';
 
 export interface InterstitialConfig {
-  variant: 'review' | 'fix' | 'checkpoint' | 'mock_exam' | 'lesson_passed' | 'ready';
+  variant:
+    | 'review'
+    | 'fix'
+    | 'retake_quiz'
+    | 'checkpoint'
+    | 'mock_exam'
+    | 'lesson_passed'
+    | 'ready';
   title: string;
   description: string;
   buttonLabel: string;
@@ -44,6 +51,7 @@ export const CourseInterstitial: React.FC<InterstitialConfig> = ({
           </div>
         );
       case 'fix':
+      case 'retake_quiz':
         return (
           <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-rose-100 text-rose-600 dark:bg-rose-950 dark:text-rose-400">
             <Wrench className="h-7 w-7" />

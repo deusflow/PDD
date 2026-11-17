@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { MODULES_DATA } from '../../data/modulesData';
 import {
   CHECKPOINT_MIN_PASS_SCORE,
+  COURSE_MIN_PASS_SCORE,
   CourseStep,
   getCourseOverview,
   getModuleProgress,
@@ -46,13 +47,20 @@ type PendingTransition =
     }
   | null;
 
-function shouldShowInterstitial(step: CourseStep): boolean {
-  return (
+function shouldShowInterstitial(step: CourseStep, state: UserAppState): boolean {
+  if (
     step.kind === 'review' ||
     step.kind === 'fix' ||
     step.kind === 'checkpoint' ||
     step.kind === 'mock_exam'
-  );
+  ) {
+    return true;
+  }
+  if (step.kind === 'quiz') {
+    const modProg = getModuleProgress(state.course, step.moduleId);
+    return modProg.quizAttempts > 0 && !modProg.passed;
+  }
+  return false;
 }
 
 export const CourseView: React.FC<CourseViewProps> = ({
@@ -70,7 +78,7 @@ export const CourseView: React.FC<CourseViewProps> = ({
   const [activeStep, setActiveStep] = useState<CourseStep>(() => getNextCourseStep(appState));
   const [stepKey, setStepKey] = useState<string>(() => `step_${Date.now()}`);
   const [showInterstitial, setShowInterstitial] = useState<boolean>(() =>
-    shouldShowInterstitial(getNextCourseStep(appState))
+    shouldShowInterstitial(getNextCourseStep(appState), appState)
   );
   const [celebrating, setCelebrating] = useState<{
     moduleId: number;
@@ -113,7 +121,7 @@ export const CourseView: React.FC<CourseViewProps> = ({
 
     setActiveStep(nextStep);
     setStepKey(`step_${Date.now()}`);
-    setShowInterstitial(shouldShowInterstitial(nextStep));
+    setShowInterstitial(shouldShowInterstitial(nextStep, appState));
     setPendingTransition(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [appState, pendingTransition]);
@@ -144,6 +152,7 @@ export const CourseView: React.FC<CourseViewProps> = ({
           step={{ kind: 'mock_exam' }}
           celebratingModuleId={null}
           percent={overview.percent}
+          course={appState.course}
           onExit={handleExit}
         />
         <ExamSimulatorView
@@ -156,7 +165,7 @@ export const CourseView: React.FC<CourseViewProps> = ({
             setExtraMockExam(false);
             const next = getNextCourseStep(appState);
             setActiveStep(next);
-            setShowInterstitial(shouldShowInterstitial(next));
+            setShowInterstitial(shouldShowInterstitial(next, appState));
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
         />
@@ -182,6 +191,7 @@ export const CourseView: React.FC<CourseViewProps> = ({
           step={activeStep}
           celebratingModuleId={celebrating.moduleId}
           percent={overview.percent}
+          course={appState.course}
           moduleProgress={getModuleProgress(appState.course, celebrating.moduleId)}
           onExit={handleExit}
         />
@@ -212,12 +222,13 @@ export const CourseView: React.FC<CourseViewProps> = ({
           step={activeStep}
           celebratingModuleId={null}
           percent={100}
+          course={appState.course}
           onExit={handleExit}
         />
         <CourseInterstitial
           variant="ready"
           title="Вы готовы к Teoriprøven"
-          description="Все 8 уроков, контрольная и серия из 3 пробных экзаменов подряд успешно пройдены."
+          description={`Все 8 уроков, контрольная и серия из ${REQUIRED_MOCK_EXAM_STREAK} пробных экзаменов подряд успешно пройдены.`}
           statsText={`Пройдено уроков: 8/8 • Экзаменов сдано: ${passedCount} из ${examsCount}`}
           buttonLabel="Ещё один пробный экзамен"
           onPrimary={() => {
@@ -242,6 +253,7 @@ export const CourseView: React.FC<CourseViewProps> = ({
             step={activeStep}
             celebratingModuleId={null}
             percent={overview.percent}
+            course={appState.course}
             onExit={handleExit}
           />
           <CourseInterstitial
@@ -265,6 +277,7 @@ export const CourseView: React.FC<CourseViewProps> = ({
             step={activeStep}
             celebratingModuleId={null}
             percent={overview.percent}
+            course={appState.course}
             moduleProgress={moduleProgress}
             onExit={handleExit}
           />
@@ -282,6 +295,32 @@ export const CourseView: React.FC<CourseViewProps> = ({
       );
     }
 
+    if (activeStep.kind === 'quiz') {
+      const modProg = getModuleProgress(appState.course, activeStep.moduleId);
+      return (
+        <div className="space-y-6">
+          <CourseProgressBar
+            step={activeStep}
+            celebratingModuleId={null}
+            percent={overview.percent}
+            course={appState.course}
+            moduleProgress={moduleProgress}
+            onExit={handleExit}
+          />
+          <CourseInterstitial
+            variant="retake_quiz"
+            title={`Закрепим Урок ${activeStep.moduleId} ещё раз`}
+            description={`Ошибки разобраны, но с 1-й попытки было ${modProg.bestFirstTryScore} из 7 (нужно минимум ${COURSE_MIN_PASS_SCORE}). Пройдите тест ещё раз без подсказок.`}
+            buttonLabel={`Пройти тест (${activeStep.questions.length} вопр.)`}
+            onPrimary={() => {
+              setShowInterstitial(false);
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+          />
+        </div>
+      );
+    }
+
     if (activeStep.kind === 'checkpoint') {
       return (
         <div className="space-y-6">
@@ -289,6 +328,7 @@ export const CourseView: React.FC<CourseViewProps> = ({
             step={activeStep}
             celebratingModuleId={null}
             percent={overview.percent}
+            course={appState.course}
             onExit={handleExit}
           />
           <CourseInterstitial
@@ -317,6 +357,7 @@ export const CourseView: React.FC<CourseViewProps> = ({
             step={activeStep}
             celebratingModuleId={null}
             percent={overview.percent}
+            course={appState.course}
             onExit={handleExit}
           />
           <CourseInterstitial
@@ -476,7 +517,7 @@ export const CourseView: React.FC<CourseViewProps> = ({
               const next = getNextCourseStep(appState);
               setActiveStep(next);
               setStepKey(`step_${Date.now()}`);
-              setShowInterstitial(shouldShowInterstitial(next));
+              setShowInterstitial(shouldShowInterstitial(next, appState));
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
           />
@@ -490,6 +531,7 @@ export const CourseView: React.FC<CourseViewProps> = ({
         step={activeStep}
         celebratingModuleId={null}
         percent={overview.percent}
+        course={appState.course}
         moduleProgress={moduleProgress}
         onExit={handleExit}
       />

@@ -17,7 +17,7 @@ export const CHECKPOINT_MIN_PASS_SCORE = 10; // out of 12
 export const COURSE_REVIEW_THRESHOLD = 3;
 export const COURSE_REVIEW_MAX_QUESTIONS = 8;
 export const COURSE_FLASHCARDS_MAX = 8;
-export const REQUIRED_MOCK_EXAM_STREAK = 3;
+export const REQUIRED_MOCK_EXAM_STREAK = 2;
 
 export type CourseStep =
   | { kind: 'review'; questions: TeoriQuestion[]; reason: string }

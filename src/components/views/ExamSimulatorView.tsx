@@ -62,6 +62,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
   const [secondsLeft, setSecondsLeft] = useState(EXAM_DURATION_SEC);
   const [lastSummary, setLastSummary] = useState<ExamAttemptSummary | null>(null);
   const [expandedReviewId, setExpandedReviewId] = useState<string | null>(null);
+  const [confirmIncomplete, setConfirmIncomplete] = useState(false);
 
   const answersRef = useRef(answers);
   answersRef.current = answers;
@@ -445,6 +446,16 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
   const answeredCount = examQuestions.filter((q) =>
     q.subQuestions.every((sq) => answers[sq.id] !== undefined)
   ).length;
+  const unansweredCount = examQuestions.length - answeredCount;
+
+  const handleRequestFinish = () => {
+    if (unansweredCount > 0 && !confirmIncomplete) {
+      setConfirmIncomplete(true);
+      return;
+    }
+    setConfirmIncomplete(false);
+    finalizeExam(examQuestions, answers, secondsLeft);
+  };
 
   return (
     <div className="mx-auto max-w-3xl space-y-4 animate-fade-in">
@@ -480,13 +491,40 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
 
         <button
           type="button"
-          onClick={() => finalizeExam(examQuestions, answers, secondsLeft)}
+          onClick={handleRequestFinish}
           className="inline-flex items-center gap-1.5 rounded-xl bg-rose-600 px-3.5 py-1.5 text-xs font-bold text-white transition-colors hover:bg-rose-500"
         >
           <Flag className="h-3.5 w-3.5" />
           Завершить
         </button>
       </div>
+
+      {confirmIncomplete && unansweredCount > 0 && (
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-xs text-amber-900 dark:border-amber-900/60 dark:bg-amber-950/40 dark:text-amber-200">
+          <span>
+            Не заполнено билетов: <strong>{unansweredCount}</strong>. Неотвеченные билеты будут засчитаны как ошибки.
+          </span>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setConfirmIncomplete(false)}
+              className="rounded-lg border border-amber-300 bg-white px-3 py-1 font-semibold text-amber-900 dark:border-amber-700 dark:bg-zinc-900 dark:text-amber-200"
+            >
+              Вернуться
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setConfirmIncomplete(false);
+                finalizeExam(examQuestions, answers, secondsLeft);
+              }}
+              className="rounded-lg bg-rose-600 px-3 py-1 font-semibold text-white hover:bg-rose-500"
+            >
+              Всё равно сдать
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Question Number Strip */}
       <div className="flex flex-wrap gap-1">
@@ -599,7 +637,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
           ) : (
             <button
               type="button"
-              onClick={() => finalizeExam(examQuestions, answers, secondsLeft)}
+              onClick={handleRequestFinish}
               className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-5 py-2 text-xs font-bold text-white transition-colors hover:bg-emerald-500"
             >
               Сдать экзамен ({answeredCount}/{examQuestions.length})

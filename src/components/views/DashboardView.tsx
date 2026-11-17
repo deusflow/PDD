@@ -184,7 +184,11 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200">
                 <FileCheck2 className="h-5 w-5" />
               </div>
-              <span className="text-[11px] font-medium text-zinc-400">25 билетов · 25 мин</span>
+              <span className="text-[11px] font-medium text-zinc-400">
+                {appState.examHistory.length > 0
+                  ? `Лучший: ${Math.max(...appState.examHistory.map((e) => e.score))}/25`
+                  : '25 билетов · 25 мин'}
+              </span>
             </div>
 
             <h2 className="mt-3.5 text-base font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
