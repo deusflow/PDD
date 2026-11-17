@@ -38,7 +38,7 @@ test('module progression flows theory -> flashcards -> quiz -> fix -> pass', () 
   let step = getNextCourseStep(state);
   assert.equal(step.kind, 'flashcards');
 
-  // After flashcards -> quiz (all 12 questions)
+  // After flashcards -> quiz (all 18 questions)
   m1.flashcardsCompleted = true;
   step = getNextCourseStep(state);
   assert.equal(step.kind, 'quiz');
@@ -49,7 +49,7 @@ test('module progression flows theory -> flashcards -> quiz -> fix -> pass', () 
   // Simulate 1 failed question -> fix step before module can pass
   const qs = getModuleQuestions(1);
   const threshold = getModulePassThreshold(1);
-  assert.equal(threshold, 9); // Math.ceil(12 * 0.75)
+  assert.equal(threshold, Math.ceil(qs.length * 0.75)); // 14 out of 18
   state.srs[qs[0].id] = updateSRSRecord(undefined, qs[0].id, false);
   m1.quizAttempts = 1;
   m1.bestFirstTryScore = threshold;

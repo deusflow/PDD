@@ -525,6 +525,134 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
           </g>
         );
 
+      case 'pov_t_kryds':
+        return (
+          <CockpitFrame skyColor="#E0F2FE">
+            <rect x="0" y="96" width="460" height="154" fill="#D9F99D" opacity="0.35" />
+            {/* Straight road continuing ahead + side road from RIGHT (T-intersection, no signs) */}
+            <polygon points="160,96 290,96 420,220 40,220" fill="#3F3F46" />
+            <rect x="290" y="130" width="170" height="62" fill="#52525B" />
+            <line x1="225" y1="96" x2="225" y2="215" stroke="#FFFFFF" strokeWidth="3" strokeDasharray="10 10" />
+            {/* Side car coming from RIGHT leg of T */}
+            <SideCar x={335} y={154} scale={0.78} flip color="#0284C7" />
+            <path d="M 300 156 L 265 156" stroke="#38BDF8" strokeWidth="3.5" strokeLinecap="round" />
+            <BadgePill x={14} y={14} text="T-kryds БЕЗ знаков: помеха СПРАВА!" tone="warn" />
+            <BadgePill x={14} y={44} text="Едешь прямо — ВСЁ РАВНО уступи справа" tone="teal" />
+          </CockpitFrame>
+        );
+
+      case 'pov_knallert_cykelgade':
+        return (
+          <CockpitFrame skyColor="#E0F2FE">
+            <HorizonRoad withCenterDash withCykelsti="dashed" />
+            {/* Knallert 30 on cykelsti vs Knallert 45 in main car lane */}
+            <CyclistPOV x={360} y={176} scale={0.95} />
+            <g transform="translate(265, 164)">
+              <rect x="-12" y="-20" width="24" height="32" rx="6" fill="#0F172A" stroke="#FFFFFF" strokeWidth="1.5" />
+              <circle cx="0" cy="-26" r="6" fill="#EF4444" stroke="#FFFFFF" strokeWidth="1.5" />
+              <rect x="-9" y="10" width="18" height="7" rx="1.5" fill="#FACC15" />
+              <text x="0" y="16" textAnchor="middle" fill="#18181B" fontSize="6" fontWeight="900">
+                45
+              </text>
+            </g>
+            <BadgePill x={14} y={14} text="Knallert 30 → на cykelsti (как вело)" tone="teal" />
+            <BadgePill x={14} y={44} text="Knallert 45 (номер) → ТОЛЬКО на дороге!" tone="warn" />
+          </CockpitFrame>
+        );
+
+      case 'pov_vejarbejde_yellow':
+        return (
+          <CockpitFrame skyColor="#FEF3C7">
+            <HorizonRoad withCenterDash={false} />
+            {/* Old white dashed lines (overridden) + bold YELLOW temporary lines */}
+            <line x1="230" y1="98" x2="230" y2="215" stroke="#FFFFFF" strokeWidth="2.5" strokeDasharray="8 8" opacity="0.45" />
+            <line x1="175" y1="98" x2="120" y2="218" stroke="#FACC15" strokeWidth="4.5" />
+            <line x1="258" y1="98" x2="292" y2="218" stroke="#FACC15" strokeWidth="4.5" />
+            {/* Orange cones */}
+            {[115, 145, 175].map((y, idx) => (
+              <polygon
+                key={idx}
+                points={`${275 + idx * 24},${y} ${269 + idx * 24},${y + 16} ${281 + idx * 24},${y + 16}`}
+                fill="#F97316"
+                stroke="#FFFFFF"
+                strokeWidth="1"
+              />
+            ))}
+            <BadgePill x={14} y={14} text="Vejarbejde: ЖЁЛТАЯ разметка важнее белой!" tone="warn" />
+            <BadgePill x={14} y={44} text="Временные знаки всегда приоритетнее" tone="dark" />
+          </CockpitFrame>
+        );
+
+      case 'pov_motortrafikvej':
+        return (
+          <CockpitFrame skyColor="#DBEAFE">
+            <HorizonRoad withSolidCenter />
+            <FrontCar x={265} y={154} scale={0.75} color="#0284C7" />
+            <SideCar x={170} y={144} scale={0.62} color="#DC2626" />
+            <g transform="translate(362, 74)">
+              <DanishRoadSignSVG code="E43" size={52} />
+            </g>
+            <BadgePill x={14} y={14} text="Motortrafikvej (E43): 80 км/ч (НЕ 130!)" tone="warn" />
+            <BadgePill x={14} y={44} text="Может быть встречка без отбойника · Нет тракторов/вело" tone="dark" />
+          </CockpitFrame>
+        );
+
+      case 'pov_overtake_bans':
+        return (
+          <CockpitFrame skyColor="#E0F2FE">
+            {/* Hill crest curve ahead */}
+            <rect x="0" y="96" width="460" height="154" fill="#D9F99D" opacity="0.35" />
+            <path d="M 80 220 Q 170 118 250 116 L 310 116 Q 350 140 420 220 Z" fill="#3F3F46" />
+            <line x1="210" y1="218" x2="275" y2="118" stroke="#FFFFFF" strokeWidth="3.5" />
+            <FrontCar x={248} y={156} scale={0.85} color="#475569" />
+            {/* Rear car overtaking indicator in left side mirror */}
+            <rect x="16" y="120" width="76" height="44" rx="8" fill="#0F172A" stroke="#F59E0B" strokeWidth="2.5" />
+            <circle cx="52" cy="142" r="8" fill="#EF4444" />
+            <circle cx="38" cy="142" r="3" fill="#F59E0B" />
+            <BadgePill x={14} y={14} text="НЕЛЬЗЯ обгонять: горка, закрытый поворот, переезд" tone="warn" />
+            <BadgePill x={14} y={44} text="И если сзади УЖЕ начали обгонять тебя!" tone="dark" />
+          </CockpitFrame>
+        );
+
+      case 'pov_fatigue_medicine_syn':
+        return (
+          <CockpitFrame night>
+            <HorizonRoad withCenterDash />
+            {/* Medicine red triangle warning + Syn card */}
+            <g transform="translate(26, 36)">
+              <rect x="0" y="0" width="194" height="148" rx="14" fill="#18181B" stroke="#EF4444" strokeWidth="2" />
+              <polygon points="97,22 65,78 129,78" fill="#FFFFFF" stroke="#EF4444" strokeWidth="5" />
+              <text x="97" y="68" textAnchor="middle" fill="#EF4444" fontSize="24" fontWeight="900">
+                !
+              </text>
+              <text x="97" y="106" textAnchor="middle" fill="#FFFFFF" fontSize="11.5" fontWeight="700">
+                Красный треугольник / Усталость
+              </text>
+              <text x="97" y="126" textAnchor="middle" fill="#FCA5A5" fontSize="9.5">
+                Приравнено к § 54 (как алкоголь!)
+              </text>
+            </g>
+            <g transform="translate(240, 36)">
+              <rect x="0" y="0" width="194" height="148" rx="14" fill="#18181B" stroke="#0D9488" strokeWidth="2" />
+              <text x="97" y="34" textAnchor="middle" fill="#5EEAD4" fontSize="12" fontWeight="800">
+                Страховка и Техосмотр
+              </text>
+              <text x="97" y="64" textAnchor="middle" fill="#FFFFFF" fontSize="10.5" fontWeight="600">
+                Ansvarsforsikring = ОБЯЗАТЕЛЬНА
+              </text>
+              <text x="97" y="92" textAnchor="middle" fill="#CBD5E1" fontSize="10">
+                1-й Syn: через 4 года
+              </text>
+              <text x="97" y="112" textAnchor="middle" fill="#CBD5E1" fontSize="10">
+                Далее Syn: каждые 2 года
+              </text>
+              <text x="97" y="132" textAnchor="middle" fill="#FDE047" fontSize="9.5">
+                Новичок 3 года: лишение за 2 klip!
+              </text>
+            </g>
+          </CockpitFrame>
+        );
+
       case 'pov_school_roadmap':
       default:
         return (
@@ -586,6 +714,7 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
         presetId !== 'pov_undertavler' &&
         presetId !== 'pov_speed_limits' &&
         presetId !== 'pov_motorvej_merge' &&
+        presetId !== 'pov_motortrafikvej' &&
         presetId !== 'pov_parking_meters' && (
           <div className="absolute right-3 top-3 rounded-lg bg-white/90 p-1 shadow-sm backdrop-blur dark:bg-zinc-900/90">
             <DanishRoadSignSVG code={signCode} subPlaque={subPlaque} size={48} />

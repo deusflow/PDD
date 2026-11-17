@@ -20,8 +20,8 @@ function extractHotspotIds(): Set<string> {
   return new Set(Array.from(matches, (m) => m[1]));
 }
 
-test('QUESTIONS_BANK has 96 unique questions evenly distributed across modules 1..8', () => {
-  assert.equal(QUESTIONS_BANK.length, 96);
+test('QUESTIONS_BANK has 144 unique questions evenly distributed across modules 1..8', () => {
+  assert.equal(QUESTIONS_BANK.length, 144);
   const qIds = new Set<string>();
   const sqIds = new Set<string>();
   const counts = new Map<number, number>();
@@ -45,7 +45,7 @@ test('QUESTIONS_BANK has 96 unique questions evenly distributed across modules 1
   }
 
   for (let m = 1; m <= 8; m += 1) {
-    assert.equal(counts.get(m), 12, `Expected 12 questions in module ${m}`);
+    assert.equal(counts.get(m), 18, `Expected 18 questions in module ${m}`);
   }
 });
 
@@ -73,7 +73,7 @@ test('all visuals (POV presets, traffic scenes, signs, hotspots) referenced in d
 
   assert.equal(MODULES_DATA.length, 8);
   for (const mod of MODULES_DATA) {
-    assert.ok(mod.cheatSheet.length >= 3);
+    assert.ok(mod.cheatSheet.length >= 5, `Expected at least 5 lecture rules in module ${mod.id}`);
     for (const rule of mod.cheatSheet) {
       assert.ok(rule.visual, `Missing visual in module ${mod.id} rule: ${rule.titleRu}`);
       if (rule.visual.kind === 'pov') {
