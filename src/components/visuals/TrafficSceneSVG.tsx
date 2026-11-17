@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useId } from 'react';
 import { DanishRoadSignSVG } from './DanishRoadSignSVG';
 import { DriverPOVSceneSVG } from './DriverPOVSceneSVG';
 
@@ -149,6 +149,7 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
   maneuverBadge,
   className = '',
 }) => {
+  const uid = useId().replace(/:/g, '');
   if (presetId.startsWith('pov_')) {
     return (
       <DriverPOVSceneSVG
@@ -169,13 +170,13 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
         return (
           <g>
             {/* Sky & road inside windshield */}
-            <rect x="0" y="0" width="440" height="240" fill="url(#tsGrassBg)" />
-            <rect x="0" y="0" width="440" height="105" fill="url(#tsSkyGrad)" />
+            <rect x="0" y="0" width="440" height="240" fill={`url(#${uid}_tsGrassBg)`} />
+            <rect x="0" y="0" width="440" height="105" fill={`url(#${uid}_tsSkyGrad)`} />
             <circle cx="382" cy="28" r="13" fill="#FEF9C3" opacity="0.9" />
             <ellipse cx="82" cy="30" rx="26" ry="9" fill="#FFFFFF" opacity="0.7" />
             <rect x="34" y="84" width="22" height="20" fill="#E11D48" opacity="0.5" />
             <polygon points="32,84 45,74 58,84" fill="#9F1239" opacity="0.6" />
-            <polygon points="110,105 330,105 440,210 0,210" fill="url(#tsAsphalt)" />
+            <polygon points="110,105 330,105 440,210 0,210" fill={`url(#${uid}_tsAsphalt)`} />
             <line x1="220" y1="105" x2="220" y2="210" stroke="#FFFFFF" strokeWidth="3" strokeDasharray="10 8" />
             {/* Blue bike lane on right */}
             <polygon points="315,105 350,105 440,190 400,210" fill="#0284C7" opacity="0.85" />
@@ -232,11 +233,11 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
       case 'curb_departure':
         return (
           <g>
-            <rect x="0" y="0" width="440" height="240" fill="url(#tsGrassBg)" />
+            <rect x="0" y="0" width="440" height="240" fill={`url(#${uid}_tsGrassBg)`} />
             <TreeTop x={28} y={145} r={20} />
             <TreeTop x={418} y={55} r={18} />
             <TreeTop x={418} y={185} r={16} />
-            <rect x="65" y="0" width="310" height="240" fill="url(#tsAsphalt)" />
+            <rect x="65" y="0" width="310" height="240" fill={`url(#${uid}_tsAsphalt)`} />
             {/* Cykelsti */}
             <rect x="315" y="0" width="44" height="240" fill="#0284C7" opacity="0.85" />
             {/* Curb / sidewalk */}
@@ -314,14 +315,14 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
         return (
           <g>
             {/* Grass quadrants + Nordic trees */}
-            <rect x="0" y="0" width="440" height="240" fill="url(#tsGrassBg)" />
+            <rect x="0" y="0" width="440" height="240" fill={`url(#${uid}_tsGrassBg)`} />
             <TreeTop x={44} y={36} r={20} />
             <TreeTop x={392} y={40} r={18} />
             <TreeTop x={402} y={205} r={22} />
             <TreeTop x={46} y={204} r={18} />
             {/* Cross roads */}
-            <rect x="0" y="75" width="440" height="90" fill="url(#tsAsphalt)" />
-            <rect x="165" y="0" width="110" height="240" fill="url(#tsAsphalt)" />
+            <rect x="0" y="75" width="440" height="90" fill={`url(#${uid}_tsAsphalt)`} />
+            <rect x="165" y="0" width="110" height="240" fill={`url(#${uid}_tsAsphalt)`} />
             <line x1="0" y1="120" x2="165" y2="120" stroke="#FFFFFF" strokeWidth="2.5" strokeDasharray="10 8" />
             <line x1="275" y1="120" x2="440" y2="120" stroke="#FFFFFF" strokeWidth="2.5" strokeDasharray="10 8" />
             <line x1="220" y1="0" x2="220" y2="75" stroke="#FFFFFF" strokeWidth="2.5" strokeDasharray="10 8" />
@@ -361,11 +362,11 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
       case 'driveway_overkoersel':
         return (
           <g>
-            <rect x="0" y="0" width="440" height="240" fill="url(#tsGrassBg)" />
+            <rect x="0" y="0" width="440" height="240" fill={`url(#${uid}_tsGrassBg)`} />
             <TreeTop x={42} y={208} r={18} />
             <TreeTop x={398} y={208} r={18} />
             {/* Main road top */}
-            <rect x="0" y="24" width="440" height="96" fill="url(#tsAsphalt)" />
+            <rect x="0" y="24" width="440" height="96" fill={`url(#${uid}_tsAsphalt)`} />
             <line x1="0" y1="72" x2="440" y2="72" stroke="#FFFFFF" strokeWidth="2.5" strokeDasharray="12 10" />
             {/* Cykelsti */}
             <rect x="0" y="120" width="440" height="24" fill="#0284C7" opacity="0.86" />
@@ -394,15 +395,15 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
         const isExit = presetId === 'rundkoersel_exit_cyclist';
         return (
           <g>
-            <rect x="0" y="0" width="440" height="240" fill="url(#tsGrassBg)" />
+            <rect x="0" y="0" width="440" height="240" fill={`url(#${uid}_tsGrassBg)`} />
             <TreeTop x={46} y={40} r={18} />
             <TreeTop x={392} y={40} r={18} />
             <TreeTop x={392} y={200} r={18} />
             {/* Road arms */}
-            <rect x="175" y="0" width="90" height="240" fill="url(#tsAsphalt)" />
-            <rect x="0" y="80" width="440" height="80" fill="url(#tsAsphalt)" />
+            <rect x="175" y="0" width="90" height="240" fill={`url(#${uid}_tsAsphalt)`} />
+            <rect x="0" y="80" width="440" height="80" fill={`url(#${uid}_tsAsphalt)`} />
             {/* Outer roundabout ring */}
-            <circle cx="220" cy="120" r="88" fill="url(#tsAsphalt)" />
+            <circle cx="220" cy="120" r="88" fill={`url(#${uid}_tsAsphalt)`} />
             {/* Cykelsti around roundabout */}
             <circle cx="220" cy="120" r="78" fill="none" stroke="#0284C7" strokeWidth="14" opacity="0.8" />
             {/* Inner island */}
@@ -438,11 +439,11 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
       case 'fletning_b15':
         return (
           <g>
-            <rect x="0" y="0" width="440" height="240" fill="url(#tsGrassBg)" />
+            <rect x="0" y="0" width="440" height="240" fill={`url(#${uid}_tsGrassBg)`} />
             <TreeTop x={55} y={32} r={18} />
             <TreeTop x={385} y={208} r={18} />
             {/* Merging road shape */}
-            <polygon points="0,70 250,70 440,95 440,145 250,170 0,170" fill="url(#tsAsphalt)" />
+            <polygon points="0,70 250,70 440,95 440,145 250,170 0,170" fill={`url(#${uid}_tsAsphalt)`} />
             {/* Dashed line ends early -> fletning! */}
             <line x1="0" y1="120" x2="175" y2="120" stroke="#FFFFFF" strokeWidth="3" strokeDasharray="12 10" />
             <TopCar x="125" y="146" angle={90} isPlayer />
@@ -484,12 +485,12 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
       case 'right_turn_cykelsti':
         return (
           <g>
-            <rect x="0" y="0" width="440" height="240" fill="url(#tsTownBg)" />
+            <rect x="0" y="0" width="440" height="240" fill={`url(#${uid}_tsTownBg)`} />
             <TreeTop x={48} y={202} r={19} />
             <TreeTop x={388} y={202} r={19} />
             {/* Roads */}
-            <rect x="155" y="0" width="130" height="240" fill="url(#tsAsphalt)" />
-            <rect x="0" y="70" width="440" height="90" fill="url(#tsAsphalt)" />
+            <rect x="155" y="0" width="130" height="240" fill={`url(#${uid}_tsAsphalt)`} />
+            <rect x="0" y="70" width="440" height="90" fill={`url(#${uid}_tsAsphalt)`} />
             {/* Cykelsti */}
             <rect x="255" y="0" width="28" height="240" fill="#0284C7" opacity="0.85" />
             <line x1="255" y1="0" x2="255" y2="70" stroke="#FFFFFF" strokeWidth="2.5" />
@@ -516,10 +517,10 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
       case 'bus_stop_byzone':
         return (
           <g>
-            <rect x="0" y="0" width="440" height="240" fill="url(#tsTownBg)" />
+            <rect x="0" y="0" width="440" height="240" fill={`url(#${uid}_tsTownBg)`} />
             <TreeTop x={48} y={208} r={16} />
             <TreeTop x={388} y={208} r={18} />
-            <rect x="0" y="65" width="440" height="110" fill="url(#tsAsphalt)" />
+            <rect x="0" y="65" width="440" height="110" fill={`url(#${uid}_tsAsphalt)`} />
             <line x1="0" y1="120" x2="440" y2="120" stroke="#FFFFFF" strokeWidth="2.5" strokeDasharray="12 10" />
             {/* Bus */}
             <rect x="215" y="138" width="96" height="34" rx="6" fill="#FACC15" stroke="#18181B" strokeWidth="2" />
@@ -547,10 +548,10 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
       case 'fodgaengerfelt_zebra':
         return (
           <g>
-            <rect x="0" y="0" width="440" height="240" fill="url(#tsTownBg)" />
+            <rect x="0" y="0" width="440" height="240" fill={`url(#${uid}_tsTownBg)`} />
             <TreeTop x={402} y={56} r={19} />
             <TreeTop x={402} y={196} r={19} />
-            <rect x="85" y="0" width="270" height="240" fill="url(#tsAsphalt)" />
+            <rect x="85" y="0" width="270" height="240" fill={`url(#${uid}_tsAsphalt)`} />
             <line x1="220" y1="0" x2="220" y2="240" stroke="#FFFFFF" strokeWidth="2.5" strokeDasharray="12 10" />
             {/* Zebra stripes */}
             {[95, 125, 155, 185, 215, 245, 275, 305, 335].map((x) => (
@@ -574,11 +575,11 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
       case 'children_school_a22':
         return (
           <g>
-            <rect x="0" y="0" width="440" height="240" fill="url(#tsGrassBg)" />
+            <rect x="0" y="0" width="440" height="240" fill={`url(#${uid}_tsGrassBg)`} />
             <TreeTop x={46} y={136} r={18} />
             <TreeTop x={392} y={56} r={20} />
             <TreeTop x={392} y={196} r={18} />
-            <rect x="100" y="0" width="240" height="240" fill="url(#tsAsphalt)" />
+            <rect x="100" y="0" width="240" height="240" fill={`url(#${uid}_tsAsphalt)`} />
             <line x1="220" y1="0" x2="220" y2="240" stroke="#FFFFFF" strokeWidth="2.5" strokeDasharray="10 8" />
             <TopCar x="312" y="110" color="#64748B" />
             <TopCar x="312" y="178" color="#64748B" />
@@ -635,10 +636,10 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
       case 'traffic_light_yellow':
         return (
           <g>
-            <rect x="0" y="0" width="440" height="240" fill="url(#tsTownBg)" />
+            <rect x="0" y="0" width="440" height="240" fill={`url(#${uid}_tsTownBg)`} />
             <TreeTop x={46} y={196} r={18} />
             <TreeTop x={392} y={196} r={18} />
-            <rect x="130" y="0" width="180" height="240" fill="url(#tsAsphalt)" />
+            <rect x="130" y="0" width="180" height="240" fill={`url(#${uid}_tsAsphalt)`} />
             {/* Stop line */}
             <line x1="220" y1="125" x2="310" y2="125" stroke="#FFFFFF" strokeWidth="6" />
             {/* Traffic light */}
@@ -673,7 +674,7 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
       case 'railway_crossing':
         return (
           <g>
-            <rect x="0" y="0" width="440" height="240" fill="url(#tsGrassBg)" />
+            <rect x="0" y="0" width="440" height="240" fill={`url(#${uid}_tsGrassBg)`} />
             <TreeTop x={48} y={32} r={16} />
             <TreeTop x={392} y={32} r={16} />
             <TreeTop x={392} y={204} r={18} />
@@ -786,9 +787,9 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
       case 'overtaking_hill_curve':
         return (
           <g>
-            <rect x="0" y="0" width="440" height="240" fill="url(#tsSkyGrad)" />
+            <rect x="0" y="0" width="440" height="240" fill={`url(#${uid}_tsSkyGrad)`} />
             {/* Hill profile */}
-            <path d="M 0 185 Q 220 65 440 185 L 440 240 L 0 240 Z" fill="url(#tsGrassBg)" />
+            <path d="M 0 185 Q 220 65 440 185 L 440 240 L 0 240 Z" fill={`url(#${uid}_tsGrassBg)`} />
             <path d="M 0 190 Q 220 80 440 190" fill="none" stroke="#3F3F46" strokeWidth="26" />
             <path d="M 0 190 Q 220 80 440 190" fill="none" stroke="#FFFFFF" strokeWidth="2.5" strokeDasharray="10 8" />
             <TopCar x="125" y="150" angle={68} isPlayer />
@@ -810,12 +811,12 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
       case 'parking_5m_10m_rules':
         return (
           <g>
-            <rect x="0" y="0" width="440" height="240" fill="url(#tsTownBg)" />
+            <rect x="0" y="0" width="440" height="240" fill={`url(#${uid}_tsTownBg)`} />
             <TreeTop x={42} y={208} r={16} />
             <TreeTop x={392} y={145} r={19} />
             <TreeTop x={392} y={205} r={16} />
-            <rect x="145" y="0" width="150" height="240" fill="url(#tsAsphalt)" />
-            <rect x="0" y="30" width="440" height="70" fill="url(#tsAsphalt)" />
+            <rect x="145" y="0" width="150" height="240" fill={`url(#${uid}_tsAsphalt)`} />
+            <rect x="0" y="30" width="440" height="70" fill={`url(#${uid}_tsAsphalt)`} />
             {/* Zebra */}
             {[160, 185, 210, 235, 260].map((x) => (
               <rect key={x} x={x} y="106" width="14" height="32" rx="2" fill="#FFFFFF" />
@@ -845,9 +846,9 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
       case 'parking_bus_driveway':
         return (
           <g>
-            <rect x="0" y="0" width="440" height="240" fill="url(#tsTownBg)" />
+            <rect x="0" y="0" width="440" height="240" fill={`url(#${uid}_tsTownBg)`} />
             <TreeTop x={392} y={202} r={19} />
-            <rect x="0" y="45" width="440" height="105" fill="url(#tsAsphalt)" />
+            <rect x="0" y="45" width="440" height="105" fill={`url(#${uid}_tsAsphalt)`} />
             <line x1="0" y1="97" x2="440" y2="97" stroke="#FFFFFF" strokeWidth="2.5" strokeDasharray="12 10" />
             {/* Driveway on bottom */}
             <rect x="65" y="150" width="75" height="90" fill="#64748B" />
@@ -876,10 +877,10 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
       case 'parking_oneway_ensrettet':
         return (
           <g>
-            <rect x="0" y="0" width="440" height="240" fill="url(#tsTownBg)" />
+            <rect x="0" y="0" width="440" height="240" fill={`url(#${uid}_tsTownBg)`} />
             <TreeTop x={388} y={48} r={20} />
             <TreeTop x={388} y={192} r={20} />
-            <rect x="110" y="0" width="220" height="240" fill="url(#tsAsphalt)" />
+            <rect x="110" y="0" width="220" height="240" fill={`url(#${uid}_tsAsphalt)`} />
             {/* One-way arrows */}
             <path d="M 220 190 L 220 50" stroke="#FFFFFF" strokeWidth="5" strokeOpacity="0.45" />
             <polygon points="208,58 220,34 232,58" fill="#FFFFFF" fillOpacity="0.45" />
@@ -992,10 +993,10 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
       case 'accident_triangle_112':
         return (
           <g>
-            <rect x="0" y="0" width="440" height="240" fill="url(#tsGrassBg)" />
+            <rect x="0" y="0" width="440" height="240" fill={`url(#${uid}_tsGrassBg)`} />
             <TreeTop x={46} y={204} r={18} />
             <TreeTop x={386} y={204} r={20} />
-            <rect x="0" y="60" width="440" height="110" fill="url(#tsAsphalt)" />
+            <rect x="0" y="60" width="440" height="110" fill={`url(#${uid}_tsAsphalt)`} />
             <line x1="0" y1="115" x2="440" y2="115" stroke="#FFFFFF" strokeWidth="2.5" strokeDasharray="14 10" />
             {/* Broken car with hazard */}
             <TopCar x="340" y="146" angle={90} color="#EF4444" blinkLeft blinkRight label="STOP" />
@@ -1060,19 +1061,19 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
     <div className={`relative overflow-hidden rounded-xl border border-zinc-200 bg-zinc-100 dark:border-zinc-700/80 dark:bg-zinc-900 ${className}`}>
       <svg viewBox="0 0 440 240" className="h-auto w-full select-none" role="img" aria-label={`Trafiksituation ${presetId}`}>
         <defs>
-          <linearGradient id="tsSkyGrad" x1="0" y1="0" x2="0" y2="1">
+          <linearGradient id={`${uid}_tsSkyGrad`} x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#7DD3FC" />
             <stop offset="100%" stopColor="#E0F2FE" />
           </linearGradient>
-          <linearGradient id="tsGrassBg" x1="0" y1="0" x2="1" y2="1">
+          <linearGradient id={`${uid}_tsGrassBg`} x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stopColor="#DCFCE7" />
             <stop offset="100%" stopColor="#BBF7D0" />
           </linearGradient>
-          <linearGradient id="tsTownBg" x1="0" y1="0" x2="1" y2="1">
+          <linearGradient id={`${uid}_tsTownBg`} x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stopColor="#F4F4F5" />
             <stop offset="100%" stopColor="#E4E4E7" />
           </linearGradient>
-          <linearGradient id="tsAsphalt" x1="0" y1="0" x2="0" y2="1">
+          <linearGradient id={`${uid}_tsAsphalt`} x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#475569" />
             <stop offset="100%" stopColor="#334155" />
           </linearGradient>

@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { createContext, useContext, useId } from 'react';
 import { DanishRoadSignSVG, PSkiveSVG } from './DanishRoadSignSVG';
+
+const SvgIdContext = createContext('pov');
 
 interface DriverPOVSceneSVGProps {
   presetId: string;
@@ -13,35 +15,43 @@ const CockpitFrame: React.FC<{
   skyColor?: string;
   night?: boolean;
   children: React.ReactNode;
-}> = ({ skyColor, night = false, children }) => (
-  <g>
-    <defs>
-      <linearGradient id="povSkyDay" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor={skyColor ?? '#7DD3FC'} />
-        <stop offset="65%" stopColor="#BAE6FD" />
-        <stop offset="100%" stopColor="#F0F9FF" />
-      </linearGradient>
-      <linearGradient id="povSkyNight" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor="#09090B" />
-        <stop offset="70%" stopColor="#1E293B" />
-        <stop offset="100%" stopColor="#334155" />
-      </linearGradient>
-      <linearGradient id="povDashGrad" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor="#27272A" />
-        <stop offset="100%" stopColor="#09090B" />
-      </linearGradient>
-      <linearGradient id="povGrassGrad" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor="#A7F3D0" />
-        <stop offset="100%" stopColor="#6EE7B7" />
-      </linearGradient>
-      <linearGradient id="povAsphaltGrad" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor="#52525B" />
-        <stop offset="100%" stopColor="#3F3F46" />
-      </linearGradient>
-    </defs>
+}> = ({ skyColor, night = false, children }) => {
+  const uid = useContext(SvgIdContext);
+  return (
+    <g>
+      <defs>
+        <linearGradient id={`${uid}_skyDay`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={skyColor ?? '#7DD3FC'} />
+          <stop offset="65%" stopColor="#BAE6FD" />
+          <stop offset="100%" stopColor="#F0F9FF" />
+        </linearGradient>
+        <linearGradient id={`${uid}_skyNight`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#09090B" />
+          <stop offset="70%" stopColor="#1E293B" />
+          <stop offset="100%" stopColor="#334155" />
+        </linearGradient>
+        <linearGradient id={`${uid}_dash`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#27272A" />
+          <stop offset="100%" stopColor="#09090B" />
+        </linearGradient>
+        <linearGradient id={`${uid}_grass`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#A7F3D0" />
+          <stop offset="100%" stopColor="#6EE7B7" />
+        </linearGradient>
+        <linearGradient id={`${uid}_asphalt`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#52525B" />
+          <stop offset="100%" stopColor="#3F3F46" />
+        </linearGradient>
+      </defs>
 
-    {/* Sky / background */}
-    <rect x="0" y="0" width="460" height="250" fill={night ? 'url(#povSkyNight)' : 'url(#povSkyDay)'} />
+      {/* Sky / background */}
+      <rect
+        x="0"
+        y="0"
+        width="460"
+        height="250"
+        fill={night ? `url(#${uid}_skyNight)` : `url(#${uid}_skyDay)`}
+      />
 
     {/* Soft clouds & sun/moon */}
     {!night ? (
@@ -80,7 +90,7 @@ const CockpitFrame: React.FC<{
     {children}
 
     {/* Subtle car hood reflection & dashboard */}
-    <path d="M 0 212 Q 230 192 460 212 L 460 250 L 0 250 Z" fill="url(#povDashGrad)" />
+    <path d="M 0 212 Q 230 192 460 212 L 460 250 L 0 250 Z" fill={`url(#${uid}_dash)`} />
     <path d="M 0 212 Q 230 192 460 212" fill="none" stroke="#52525B" strokeWidth="1.5" opacity="0.7" />
     {/* Subtle digital cluster glow */}
     <ellipse cx="143" cy="233" rx="28" ry="12" fill="#0F172A" stroke="#14B8A6" strokeWidth="1.2" opacity="0.85" />
@@ -104,7 +114,8 @@ const CockpitFrame: React.FC<{
     <polygon points="0,0 22,0 0,170" fill="#18181B" opacity="0.24" />
     <polygon points="460,0 438,0 460,170" fill="#18181B" opacity="0.24" />
   </g>
-);
+  );
+};
 
 const HorizonRoad: React.FC<{
   vanishX?: number;
@@ -118,12 +129,14 @@ const HorizonRoad: React.FC<{
   withCenterDash = true,
   withSolidCenter = false,
   withCykelsti = 'none',
-}) => (
+}) => {
+  const uid = useContext(SvgIdContext);
+  return (
   <g>
     {/* Grass / ground */}
-    <rect x="0" y={horizonY} width="460" height={250 - horizonY} fill="url(#povGrassGrad)" opacity="0.58" />
+    <rect x="0" y={horizonY} width="460" height={250 - horizonY} fill={`url(#${uid}_grass)`} opacity="0.58" />
     {/* Main asphalt */}
-    <polygon points={`${vanishX - 42},${horizonY} ${vanishX + 42},${horizonY} 450,220 10,220`} fill="url(#povAsphaltGrad)" />
+    <polygon points={`${vanishX - 42},${horizonY} ${vanishX + 42},${horizonY} 450,220 10,220`} fill={`url(#${uid}_asphalt)`} />
     {/* Left & right crisp road edge lines */}
     <line x1={vanishX - 40} y1={horizonY} x2="18" y2="220" stroke="#E4E4E7" strokeWidth="1.8" opacity="0.7" />
     {/* Right sidewalk */}
@@ -164,7 +177,8 @@ const HorizonRoad: React.FC<{
       />
     )}
   </g>
-);
+  );
+};
 
 const FrontCar: React.FC<{
   x: number;
@@ -285,6 +299,7 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
   maneuverBadge,
   className = '',
 }) => {
+  const uid = useId().replace(/:/g, '');
   const renderContent = () => {
     switch (presetId) {
       case 'pov_spejl_skulder':
@@ -935,12 +950,12 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
         return (
           <g>
             <defs>
-              <linearGradient id="roadmapBg" x1="0" y1="0" x2="1" y2="1">
+              <linearGradient id={`${uid}_roadmap`} x1="0" y1="0" x2="1" y2="1">
                 <stop offset="0%" stopColor="#0F172A" />
                 <stop offset="100%" stopColor="#134E4A" />
               </linearGradient>
             </defs>
-            <rect x="0" y="0" width="460" height="250" fill="url(#roadmapBg)" />
+            <rect x="0" y="0" width="460" height="250" fill={`url(#${uid}_roadmap)`} />
             <text x="230" y="38" textAnchor="middle" fill="#FFFFFF" fontSize="14.5" fontWeight="800">
               Путь в датской автошколе (Lovpakke B)
             </text>
@@ -978,34 +993,36 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
   };
 
   return (
-    <div className={`relative overflow-hidden rounded-xl border border-zinc-200 bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-950 ${className}`}>
-      <svg viewBox="0 0 460 250" className="h-auto w-full select-none" role="img" aria-label={presetId}>
-        {renderContent()}
-      </svg>
+    <SvgIdContext.Provider value={uid}>
+      <div className={`relative overflow-hidden rounded-xl border border-zinc-200 bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-950 ${className}`}>
+        <svg viewBox="0 0 460 250" className="h-auto w-full select-none" role="img" aria-label={presetId}>
+          {renderContent()}
+        </svg>
 
-      {maneuverBadge && (
-        <div className="border-t border-zinc-200/80 bg-zinc-50 px-3.5 py-2 text-xs font-semibold text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300">
-          {maneuverBadge}
-        </div>
-      )}
-
-      {signCode &&
-        presetId !== 'pov_hajtaender_b11' &&
-        presetId !== 'pov_rundkoersel' &&
-        presetId !== 'pov_fletning_vs_skift' &&
-        presetId !== 'pov_bus_byzone' &&
-        presetId !== 'pov_zebra_trap' &&
-        presetId !== 'pov_undertavler' &&
-        presetId !== 'pov_speed_limits' &&
-        presetId !== 'pov_motorvej_merge' &&
-        presetId !== 'pov_motortrafikvej' &&
-        presetId !== 'pov_parking_meters' &&
-        presetId !== 'pov_sign_shapes_abcde' &&
-        !presetId.startsWith('pov_sign_') && (
-          <div className="absolute right-3 top-3 rounded-lg bg-white/90 p-1 shadow-sm backdrop-blur dark:bg-zinc-900/90">
-            <DanishRoadSignSVG code={signCode} subPlaque={subPlaque} size={48} />
+        {maneuverBadge && (
+          <div className="border-t border-zinc-200/80 bg-zinc-50 px-3.5 py-2 text-xs font-semibold text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300">
+            {maneuverBadge}
           </div>
         )}
-    </div>
+
+        {signCode &&
+          presetId !== 'pov_hajtaender_b11' &&
+          presetId !== 'pov_rundkoersel' &&
+          presetId !== 'pov_fletning_vs_skift' &&
+          presetId !== 'pov_bus_byzone' &&
+          presetId !== 'pov_zebra_trap' &&
+          presetId !== 'pov_undertavler' &&
+          presetId !== 'pov_speed_limits' &&
+          presetId !== 'pov_motorvej_merge' &&
+          presetId !== 'pov_motortrafikvej' &&
+          presetId !== 'pov_parking_meters' &&
+          presetId !== 'pov_sign_shapes_abcde' &&
+          !presetId.startsWith('pov_sign_') && (
+            <div className="absolute right-3 top-3 rounded-lg bg-white/90 p-1 shadow-sm backdrop-blur dark:bg-zinc-900/90">
+              <DanishRoadSignSVG code={signCode} subPlaque={subPlaque} size={48} />
+            </div>
+          )}
+      </div>
+    </SvgIdContext.Provider>
   );
 };

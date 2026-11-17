@@ -574,11 +574,11 @@ export const DanishRoadSignSVG: React.FC<DanishRoadSignSVGProps> = ({
     >
       {renderSignBody()}
       {subPlaque && (
-        <g transform="translate(8, 118)">
+        <g transform="translate(3, 118)">
           <rect
             x="0"
             y="0"
-            width="104"
+            width="114"
             height="32"
             rx="5"
             fill="#FFFFFF"
@@ -586,11 +586,13 @@ export const DanishRoadSignSVG: React.FC<DanishRoadSignSVGProps> = ({
             strokeWidth="2.5"
           />
           <text
-            x="52"
+            x="57"
             y="20.5"
             textAnchor="middle"
             fill={DARK}
-            fontSize={subPlaque.length > 14 ? '10.5' : '12.5'}
+            fontSize={
+              subPlaque.length > 18 ? '8.5' : subPlaque.length > 13 ? '10' : '12.5'
+            }
             fontWeight="700"
           >
             {subPlaque}
