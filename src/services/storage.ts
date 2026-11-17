@@ -59,7 +59,7 @@ function sanitizeCourseState(raw: unknown): CourseState {
             : 0,
         bestFirstTryScore:
           typeof mp.bestFirstTryScore === 'number' && Number.isFinite(mp.bestFirstTryScore)
-            ? Math.max(0, Math.min(7, Math.floor(mp.bestFirstTryScore)))
+            ? Math.max(0, Math.min(20, Math.floor(mp.bestFirstTryScore)))
             : 0,
         passed: Boolean(mp.passed),
         passedAt:

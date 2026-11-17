@@ -14,6 +14,8 @@ interface CourseProgressBarProps {
   percent: number;
   course: CourseState;
   moduleProgress?: ModuleCourseProgress;
+  browsingModuleId?: number | null;
+  onSelectModuleInMap?: (moduleId: number) => void;
   onExit: () => void;
 }
 
@@ -23,11 +25,17 @@ export const CourseProgressBar: React.FC<CourseProgressBarProps> = ({
   percent,
   course,
   moduleProgress,
+  browsingModuleId = null,
+  onSelectModuleInMap,
   onExit,
 }) => {
   const [showMap, setShowMap] = useState(false);
 
   const getHeaderTitle = (): string => {
+    if (browsingModuleId !== null) {
+      const mod = MODULES_DATA.find((m) => m.id === browsingModuleId);
+      return `Просмотр теории · Урок ${browsingModuleId} из 8 · ${mod?.titleRu ?? ''}`;
+    }
     if (celebratingModuleId !== null) {
       const mod = MODULES_DATA.find((m) => m.id === celebratingModuleId);
       return `Урок ${celebratingModuleId} из 8 · ${mod?.titleRu ?? ''}`;
@@ -144,87 +152,91 @@ export const CourseProgressBar: React.FC<CourseProgressBarProps> = ({
       </div>
 
       {/* Collapsible Course Map */}
-      {showMap && (
-        <div className="nordic-card p-4 animate-slide-up">
-          <div className="mb-2.5 text-xs font-semibold text-zinc-700 dark:text-zinc-300">
-            Маршрут курса (8 тем → Контрольная → {REQUIRED_MOCK_EXAM_STREAK} экзамена)
-          </div>
-          <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-5">
-            {MODULES_DATA.slice(0, 4).map((m) => {
-              const p = getModuleProgress(course, m.id);
-              const isCurr = currentModuleId === m.id;
-              return (
-                <div
-                  key={m.id}
-                  className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-[11px] font-medium ${
-                    p.passed
-                      ? 'border-teal-200 bg-teal-50/70 text-teal-800 dark:border-teal-900/60 dark:bg-teal-950/40 dark:text-teal-300'
-                      : isCurr
-                        ? 'border-zinc-900 bg-zinc-900 text-white dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-900'
-                        : 'border-zinc-200/80 bg-zinc-50 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-950/50 dark:text-zinc-400'
-                  }`}
-                >
-                  {p.passed && <Check className="h-3 w-3 shrink-0" />}
-                  <span className="truncate">Урок {m.id}</span>
-                </div>
-              );
-            })}
-
-            <div
-              className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-[11px] font-medium ${
-                course.checkpointMidPassed
-                  ? 'border-teal-200 bg-teal-50/70 text-teal-800 dark:border-teal-900/60 dark:bg-teal-950/40 dark:text-teal-300'
-                  : step.kind === 'checkpoint'
-                    ? 'border-zinc-900 bg-zinc-900 text-white dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-900'
-                    : 'border-zinc-200/80 bg-zinc-50 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-950/50 dark:text-zinc-400'
+      {showMap && (() => {
+        const renderModuleTile = (m: (typeof MODULES_DATA)[number]) => {
+          const p = getModuleProgress(course, m.id);
+          const isCurr = currentModuleId === m.id && browsingModuleId === null;
+          const isBrowsing = browsingModuleId === m.id;
+          return (
+            <button
+              key={m.id}
+              type="button"
+              onClick={() => {
+                onSelectModuleInMap?.(m.id);
+                setShowMap(false);
+              }}
+              title={`Открыть теорию урока ${m.id}: ${m.titleRu}`}
+              className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-left text-[11px] font-medium transition-all ${
+                onSelectModuleInMap ? 'cursor-pointer hover:ring-2 hover:ring-teal-500/40' : ''
+              } ${
+                isBrowsing
+                  ? 'border-teal-600 bg-teal-600 text-white shadow-sm dark:border-teal-400 dark:bg-teal-500 dark:text-zinc-950'
+                  : p.passed
+                    ? 'border-teal-200 bg-teal-50/70 text-teal-800 dark:border-teal-900/60 dark:bg-teal-950/40 dark:text-teal-300'
+                    : isCurr
+                      ? 'border-zinc-900 bg-zinc-900 text-white dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-900'
+                      : 'border-zinc-200/80 bg-zinc-50 text-zinc-600 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-950/50 dark:text-zinc-300 dark:hover:bg-zinc-900'
               }`}
             >
-              {course.checkpointMidPassed && <Check className="h-3 w-3 shrink-0" />}
-              <span className="truncate">Контр. 1–4</span>
-            </div>
+              {p.passed && <Check className="h-3 w-3 shrink-0" />}
+              <span className="truncate">Урок {m.id}</span>
+            </button>
+          );
+        };
 
-            {MODULES_DATA.slice(4, 8).map((m) => {
-              const p = getModuleProgress(course, m.id);
-              const isCurr = currentModuleId === m.id;
-              return (
-                <div
-                  key={m.id}
-                  className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-[11px] font-medium ${
-                    p.passed
-                      ? 'border-teal-200 bg-teal-50/70 text-teal-800 dark:border-teal-900/60 dark:bg-teal-950/40 dark:text-teal-300'
-                      : isCurr
-                        ? 'border-zinc-900 bg-zinc-900 text-white dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-900'
-                        : 'border-zinc-200/80 bg-zinc-50 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-950/50 dark:text-zinc-400'
-                  }`}
-                >
-                  {p.passed && <Check className="h-3 w-3 shrink-0" />}
-                  <span className="truncate">Урок {m.id}</span>
-                </div>
-              );
-            })}
-
-            <div
-              className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-[11px] font-medium ${
-                course.mockExamStreak >= REQUIRED_MOCK_EXAM_STREAK
-                  ? 'border-teal-200 bg-teal-50/70 text-teal-800 dark:border-teal-900/60 dark:bg-teal-950/40 dark:text-teal-300'
-                  : step.kind === 'mock_exam'
-                    ? 'border-zinc-900 bg-zinc-900 text-white dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-900'
-                    : 'border-zinc-200/80 bg-zinc-50 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-950/50 dark:text-zinc-400'
-              }`}
-            >
-              {course.mockExamStreak >= REQUIRED_MOCK_EXAM_STREAK && (
-                <Check className="h-3 w-3 shrink-0" />
-              )}
-              <span className="truncate">
-                Экзамен ({course.mockExamStreak}/{REQUIRED_MOCK_EXAM_STREAK})
+        return (
+          <div className="nordic-card p-4 animate-slide-up">
+            <div className="mb-2.5 flex items-center justify-between gap-2 text-xs font-semibold text-zinc-700 dark:text-zinc-300">
+              <span>
+                Маршрут курса (8 тем → Контрольная → {REQUIRED_MOCK_EXAM_STREAK} экзамена)
               </span>
+              {onSelectModuleInMap && (
+                <span className="text-[11px] font-normal text-zinc-400">
+                  Нажмите на любой урок, чтобы открыть теорию
+                </span>
+              )}
+            </div>
+            <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-5">
+              {MODULES_DATA.slice(0, 4).map(renderModuleTile)}
+
+              <div
+                className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-[11px] font-medium ${
+                  course.checkpointMidPassed
+                    ? 'border-teal-200 bg-teal-50/70 text-teal-800 dark:border-teal-900/60 dark:bg-teal-950/40 dark:text-teal-300'
+                    : step.kind === 'checkpoint'
+                      ? 'border-zinc-900 bg-zinc-900 text-white dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-900'
+                      : 'border-zinc-200/80 bg-zinc-50 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-950/50 dark:text-zinc-400'
+                }`}
+              >
+                {course.checkpointMidPassed && <Check className="h-3 w-3 shrink-0" />}
+                <span className="truncate">Контр. 1–4</span>
+              </div>
+
+              {MODULES_DATA.slice(4, 8).map(renderModuleTile)}
+
+              <div
+                className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-[11px] font-medium ${
+                  course.mockExamStreak >= REQUIRED_MOCK_EXAM_STREAK
+                    ? 'border-teal-200 bg-teal-50/70 text-teal-800 dark:border-teal-900/60 dark:bg-teal-950/40 dark:text-teal-300'
+                    : step.kind === 'mock_exam'
+                      ? 'border-zinc-900 bg-zinc-900 text-white dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-900'
+                      : 'border-zinc-200/80 bg-zinc-50 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-950/50 dark:text-zinc-400'
+                }`}
+              >
+                {course.mockExamStreak >= REQUIRED_MOCK_EXAM_STREAK && (
+                  <Check className="h-3 w-3 shrink-0" />
+                )}
+                <span className="truncate">
+                  Экзамен ({course.mockExamStreak}/{REQUIRED_MOCK_EXAM_STREAK})
+                </span>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
 
       {/* 3-dot lesson stepper */}
-      {isLessonStep && (
+      {isLessonStep && browsingModuleId === null && (
         <div className="flex items-center justify-center gap-2 pt-1 sm:gap-3">
           {stepperItems.map((item, idx) => (
             <React.Fragment key={item.id}>

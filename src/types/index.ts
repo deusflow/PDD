@@ -64,6 +64,21 @@ export interface ModuleCheatRule {
   titleRu: string;
   bodyDa: string;
   bodyRu: string;
+  pointsRu?: string[];
+  pointsDa?: string[];
+  exceptionsRu?: string;
+  exceptionsDa?: string;
+  trapRu?: string;
+  trapDa?: string;
+  visual?: {
+    kind: 'pov' | 'scene' | 'sign' | 'technical';
+    presetId: string;
+    signCode?: string;
+    subPlaque?: string;
+    technicalTab?: TechnicalTabId;
+    technicalHotspot?: string;
+    maneuverBadge?: string;
+  };
 }
 
 export interface ModuleInfo {

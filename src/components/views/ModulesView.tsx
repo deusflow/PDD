@@ -19,6 +19,7 @@ import { DICTIONARY_ENTRIES } from '../../data/signsAndGlossary';
 import { BOX_META, computeProgressStats, getSRSRecord } from '../../services/srsEngine';
 import { LanguageMode, SRSRecord, TeoriQuestion } from '../../types';
 import { BilingualText } from '../common/BilingualText';
+import { RuleVisualBlock } from '../common/RuleVisualBlock';
 import { SpeakButton } from '../common/SpeakButton';
 import { CarTechnicalSVG } from '../visuals/CarTechnicalSVG';
 import { DanishRoadSignSVG } from '../visuals/DanishRoadSignSVG';
@@ -424,24 +425,12 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
                 <SpeakButton id={`cheat_${mod.id}_${idx}`} text={`${rule.titleDa}. ${rule.bodyDa}`} />
               </div>
 
-              <div className="mt-2.5 border-t border-zinc-200/70 pt-2.5 dark:border-zinc-800">
-                {languageMode === 'both' ? (
-                  <div className="space-y-1.5">
-                    <p className="text-sm leading-relaxed text-zinc-800 dark:text-zinc-200">
-                      {rule.bodyRu}
-                    </p>
-                    <p className="text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">
-                      {rule.bodyDa}
-                    </p>
-                  </div>
-                ) : (
-                  <BilingualText
-                    da={rule.bodyDa}
-                    ru={rule.bodyRu}
-                    mode={languageMode}
-                    daClassName="text-xs sm:text-sm font-normal leading-relaxed"
-                    ruClassName="text-xs leading-relaxed"
-                  />
+              <div className="mt-3 border-t border-zinc-200/70 pt-3 dark:border-zinc-800">
+                <RuleVisualBlock rule={rule} languageMode={languageMode} compactVisual />
+                {languageMode === 'both' && (
+                  <p className="mt-3 border-t border-zinc-200/60 pt-2 text-xs leading-relaxed text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
+                    {rule.bodyDa}
+                  </p>
                 )}
               </div>
             </div>

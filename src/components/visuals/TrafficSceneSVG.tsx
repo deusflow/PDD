@@ -1,5 +1,6 @@
 import React from 'react';
 import { DanishRoadSignSVG } from './DanishRoadSignSVG';
+import { DriverPOVSceneSVG } from './DriverPOVSceneSVG';
 
 interface TrafficSceneSVGProps {
   presetId: string;
@@ -135,6 +136,17 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
   subPlaque,
   className = '',
 }) => {
+  if (presetId.startsWith('pov_')) {
+    return (
+      <DriverPOVSceneSVG
+        presetId={presetId}
+        signCode={signCode}
+        subPlaque={subPlaque}
+        className={className}
+      />
+    );
+  }
+
   const renderScene = () => {
     switch (presetId) {
       case 'cockpit_blind_spot':

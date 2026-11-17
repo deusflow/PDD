@@ -87,6 +87,7 @@ export const CourseView: React.FC<CourseViewProps> = ({
   const [checkpointRetryBanner, setCheckpointRetryBanner] = useState<string | null>(null);
   const [extraMockExam, setExtraMockExam] = useState<boolean>(false);
   const [pendingTransition, setPendingTransition] = useState<PendingTransition>(null);
+  const [browsingModuleId, setBrowsingModuleId] = useState<number | null>(null);
 
   useEffect(() => {
     if (!pendingTransition) return;
@@ -533,9 +534,47 @@ export const CourseView: React.FC<CourseViewProps> = ({
         percent={overview.percent}
         course={appState.course}
         moduleProgress={moduleProgress}
+        browsingModuleId={browsingModuleId}
+        onSelectModuleInMap={(mId) => {
+          danishSpeech.stop();
+          setBrowsingModuleId(mId);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
         onExit={handleExit}
       />
-      {renderStepContent()}
+      {browsingModuleId !== null ? (
+        <div className="space-y-4 animate-slide-up">
+          <div className="nordic-card flex flex-wrap items-center justify-between gap-3 border-teal-200/80 bg-teal-50/50 px-4 py-3 dark:border-teal-900/50 dark:bg-teal-950/20">
+            <div className="text-xs font-medium text-teal-900 dark:text-teal-200">
+              Режим повторения теории · прогресс основного курса сохранён
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                danishSpeech.stop();
+                setBrowsingModuleId(null);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="rounded-lg bg-zinc-900 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-white"
+            >
+              ← Вернуться к текущему шагу курса
+            </button>
+          </div>
+          <LessonTheory
+            key={`browse_${browsingModuleId}`}
+            moduleId={browsingModuleId}
+            languageMode={appState.languageMode}
+            nextButtonLabel="Вернуться к текущему шагу"
+            onComplete={() => {
+              danishSpeech.stop();
+              setBrowsingModuleId(null);
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+          />
+        </div>
+      ) : (
+        renderStepContent()
+      )}
     </div>
   );
 };

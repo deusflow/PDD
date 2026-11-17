@@ -5,10 +5,10 @@ import { QUESTIONS_BANK } from '../../data/questionsBank';
 import { DICTIONARY_ENTRIES } from '../../data/signsAndGlossary';
 import { LanguageMode, ModuleCheatRule } from '../../types';
 import { BilingualText } from '../common/BilingualText';
+import { RuleVisualBlock } from '../common/RuleVisualBlock';
 import { SpeakButton } from '../common/SpeakButton';
 import { CarTechnicalSVG } from '../visuals/CarTechnicalSVG';
 import { DanishRoadSignSVG } from '../visuals/DanishRoadSignSVG';
-import { TrafficSceneSVG } from '../visuals/TrafficSceneSVG';
 
 interface LessonTheoryProps {
   moduleId: number;
@@ -40,11 +40,6 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
     [mod.id]
   );
 
-  const firstSceneQuestion = useMemo(
-    () => modQuestions.find((q) => q.visual.type === 'scene'),
-    [modQuestions]
-  );
-
   const moduleSigns = useMemo(
     () =>
       DICTIONARY_ENTRIES.filter(
@@ -58,7 +53,7 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
     mod.cheatSheet.forEach((rule, index) => {
       list.push({ kind: 'rule', rule, index });
     });
-    if (mod.id === 1 || mod.id === 5 || firstSceneQuestion) {
+    if (mod.id === 1 || mod.id === 5) {
       list.push({ kind: 'visual' });
     }
     if (mod.algorithms && mod.algorithms.length > 0) {
@@ -66,7 +61,7 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
     }
     list.push({ kind: 'summary' });
     return list;
-  }, [mod, firstSceneQuestion]);
+  }, [mod]);
 
   const [slideIndex, setSlideIndex] = useState(0);
 
@@ -160,86 +155,49 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
       case 'rule': {
         const { rule, index } = currentSlide;
         return (
-          <div className="space-y-5">
-            {languageMode === 'both' && (
-              <>
-                <div className="flex items-start justify-between gap-3">
-                  <h2 className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-100">
+          <div className="space-y-4">
+            <div className="flex items-start justify-between gap-3">
+              {languageMode === 'both' ? (
+                <div>
+                  <h2 className="text-xl font-semibold tracking-tight text-zinc-900 sm:text-2xl dark:text-zinc-100">
                     {rule.titleRu}
                   </h2>
-                  <SpeakButton
-                    id={`course_rule_${mod.id}_${index}`}
-                    text={`${rule.titleDa}. ${rule.bodyDa}`}
-                    size="md"
-                  />
-                </div>
-
-                <p className="text-[15px] leading-7 text-zinc-800 sm:text-base dark:text-zinc-200">
-                  {rule.bodyRu}
-                </p>
-
-                <div className="rounded-2xl border border-zinc-200/70 bg-zinc-50/80 p-4 dark:border-zinc-800 dark:bg-zinc-950/50">
-                  <div className="mb-1.5 flex items-center justify-between gap-2">
-                    <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400">
-                      Оригинал на датском
-                    </span>
-                    <SpeakButton
-                      id={`course_rule_da_${mod.id}_${index}`}
-                      text={`${rule.titleDa}. ${rule.bodyDa}`}
-                    />
-                  </div>
-                  <div className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+                  <div className="mt-0.5 text-xs font-medium text-zinc-500 dark:text-zinc-400">
                     {rule.titleDa}
                   </div>
-                  <p className="mt-1 text-xs leading-relaxed text-zinc-500 sm:text-sm dark:text-zinc-400">
-                    {rule.bodyDa}
-                  </p>
                 </div>
-              </>
-            )}
-
-            {languageMode === 'spoiler' && (
-              <>
-                <div className="flex items-start justify-between gap-3">
-                  <BilingualText
-                    da={rule.titleDa}
-                    ru={rule.titleRu}
-                    mode="spoiler"
-                    daClassName="text-2xl sm:text-3xl font-semibold tracking-tight"
-                    ruClassName="text-sm"
-                  />
-                  <SpeakButton
-                    id={`course_rule_${mod.id}_${index}`}
-                    text={`${rule.titleDa}. ${rule.bodyDa}`}
-                    size="md"
-                  />
-                </div>
+              ) : languageMode === 'spoiler' ? (
                 <BilingualText
-                  da={rule.bodyDa}
-                  ru={rule.bodyRu}
+                  da={rule.titleDa}
+                  ru={rule.titleRu}
                   mode="spoiler"
-                  daClassName="text-[15px] sm:text-base leading-7 font-normal"
-                  ruClassName="text-sm leading-relaxed"
+                  daClassName="text-xl sm:text-2xl font-semibold tracking-tight"
+                  ruClassName="text-xs"
                 />
-              </>
-            )}
+              ) : (
+                <h2 className="text-xl font-semibold tracking-tight text-zinc-900 sm:text-2xl dark:text-zinc-100">
+                  {rule.titleDa}
+                </h2>
+              )}
 
-            {languageMode === 'da_only' && (
-              <>
-                <div className="flex items-start justify-between gap-3">
-                  <h2 className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-100">
-                    {rule.titleDa}
-                  </h2>
-                  <SpeakButton
-                    id={`course_rule_${mod.id}_${index}`}
-                    text={`${rule.titleDa}. ${rule.bodyDa}`}
-                    size="md"
-                  />
+              <SpeakButton
+                id={`course_rule_${mod.id}_${index}`}
+                text={`${rule.titleDa}. ${rule.bodyDa}`}
+                size="md"
+              />
+            </div>
+
+            <RuleVisualBlock rule={rule} languageMode={languageMode} compactVisual />
+
+            {languageMode === 'both' && (
+              <div className="rounded-xl border border-zinc-200/70 bg-zinc-50/70 p-3.5 dark:border-zinc-800 dark:bg-zinc-950/50">
+                <div className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-zinc-400">
+                  На датском (для экзамена)
                 </div>
-                <p className="text-[15px] leading-7 text-zinc-700 sm:text-base dark:text-zinc-300">
+                <p className="text-xs leading-relaxed text-zinc-600 dark:text-zinc-400">
                   {rule.bodyDa}
                 </p>
-              </>
+              </div>
             )}
           </div>
         );
@@ -248,12 +206,8 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
       case 'visual':
         return (
           <div className="space-y-4">
-            <h2 className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-100">
-              {mod.id === 1
-                ? 'Устройство авто для Kontrolprøven'
-                : mod.id === 5
-                  ? 'Знаки этого урока'
-                  : 'Наглядная дорожная схема'}
+            <h2 className="text-xl font-semibold tracking-tight text-zinc-900 sm:text-2xl dark:text-zinc-100">
+              {mod.id === 1 ? 'Интерактивная схема авто для Kontrolprøven' : 'Все знаки этого урока'}
             </h2>
 
             {mod.id === 1 && (
@@ -285,21 +239,6 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
                     )}
                   </div>
                 ))}
-              </div>
-            )}
-
-            {mod.id !== 1 && mod.id !== 5 && firstSceneQuestion && (
-              <div className="space-y-3">
-                <TrafficSceneSVG
-                  presetId={firstSceneQuestion.visual.presetId}
-                  signCode={firstSceneQuestion.visual.signCode}
-                  subPlaque={firstSceneQuestion.visual.subPlaque}
-                />
-                <p className="text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
-                  {languageMode !== 'da_only'
-                    ? firstSceneQuestion.keyRuleRu
-                    : firstSceneQuestion.keyRuleDa}
-                </p>
               </div>
             )}
           </div>
@@ -427,40 +366,38 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
         {renderSlideBody()}
       </div>
 
-      {/* Sticky mobile-friendly bottom navigation bar */}
-      <div className="sticky bottom-0 z-10 -mx-4 border-t border-zinc-200/70 bg-zinc-50/90 px-4 py-3 backdrop-blur-md pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:static sm:mx-0 sm:border-0 sm:bg-transparent sm:p-0 sm:backdrop-blur-none dark:border-zinc-800/80 dark:bg-zinc-950/90">
-        <div className="flex items-center gap-3">
-          {!isFirst && (
-            <button
-              type="button"
-              onClick={() => goToSlide(slideIndex - 1)}
-              className="inline-flex h-12 items-center justify-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-4 text-sm font-semibold text-zinc-700 transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              <span>Назад</span>
-            </button>
-          )}
+      {/* Navigation bar */}
+      <div className="flex items-center gap-3">
+        {!isFirst && (
+          <button
+            type="button"
+            onClick={() => goToSlide(slideIndex - 1)}
+            className="inline-flex h-12 items-center justify-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-4 text-sm font-semibold text-zinc-700 transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            <span>Назад</span>
+          </button>
+        )}
 
-          {!isLast ? (
-            <button
-              type="button"
-              onClick={() => goToSlide(slideIndex + 1)}
-              className="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-xl bg-teal-600 px-6 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-teal-500"
-            >
-              <span>Дальше</span>
-              <ArrowRight className="h-4 w-4" />
-            </button>
-          ) : (
-            <button
-              type="button"
-              onClick={onComplete}
-              className="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-xl bg-teal-600 px-6 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-teal-500"
-            >
-              <span>{nextButtonLabel}</span>
-              <ArrowRight className="h-4 w-4" />
-            </button>
-          )}
-        </div>
+        {!isLast ? (
+          <button
+            type="button"
+            onClick={() => goToSlide(slideIndex + 1)}
+            className="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-xl bg-teal-600 px-6 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-teal-500"
+          >
+            <span>Дальше</span>
+            <ArrowRight className="h-4 w-4" />
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={onComplete}
+            className="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-xl bg-teal-600 px-6 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-teal-500"
+          >
+            <span>{nextButtonLabel}</span>
+            <ArrowRight className="h-4 w-4" />
+          </button>
+        )}
       </div>
     </div>
   );

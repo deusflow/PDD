@@ -6,10 +6,12 @@ import {
   ChevronDown,
   ChevronUp,
   FileCheck2,
+  Hash,
   Layers,
   Play,
   RefreshCw,
   Signpost,
+  Wrench,
   Zap,
 } from 'lucide-react';
 import { QUESTIONS_BANK } from '../../data/questionsBank';
@@ -24,6 +26,8 @@ import {
   getSRSRecord,
 } from '../../services/srsEngine';
 import { BoxLevel, TeoriQuestion, UserAppState } from '../../types';
+import { KontrolSimulatorModal } from './KontrolSimulatorModal';
+import { QuickNumbersModal } from './QuickNumbersModal';
 
 interface DashboardViewProps {
   appState: UserAppState;
@@ -47,6 +51,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   onOpenLessonsReference,
 }) => {
   const [showStats, setShowStats] = useState(false);
+  const [isNumbersOpen, setIsNumbersOpen] = useState(false);
+  const [isKontrolOpen, setIsKontrolOpen] = useState(false);
 
   const overview = getCourseOverview(appState);
   const dueReviewQuestions = getDueReviewQuestionsForPassedModules(appState);
@@ -248,6 +254,51 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         </div>
       </section>
 
+      {/* Quick Exam Prep Tools Strip */}
+      <section className="grid gap-3 md:grid-cols-2">
+        <button
+          type="button"
+          onClick={() => setIsNumbersOpen(true)}
+          className="nordic-card group flex items-center justify-between gap-3 px-5 py-3.5 text-left transition-colors hover:border-teal-300/90 hover:bg-teal-50/30 dark:hover:border-teal-800 dark:hover:bg-teal-950/20"
+        >
+          <div className="flex items-center gap-3">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-teal-50 text-teal-700 dark:bg-teal-950/60 dark:text-teal-300">
+              <Hash className="h-4 w-4" />
+            </div>
+            <div>
+              <div className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
+                Все цифры ПДД за 2 минуты
+              </div>
+              <div className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                Отступы 5/10/12/30 м, скорости, прицеп 3.500 kg, свет, алкоголь и Lovpakke B
+              </div>
+            </div>
+          </div>
+          <ArrowRight className="h-4 w-4 shrink-0 text-zinc-400 transition-transform group-hover:translate-x-0.5 group-hover:text-teal-600 dark:group-hover:text-teal-400" />
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setIsKontrolOpen(true)}
+          className="nordic-card group flex items-center justify-between gap-3 px-5 py-3.5 text-left transition-colors hover:border-amber-300/90 hover:bg-amber-50/30 dark:hover:border-amber-800 dark:hover:bg-amber-950/20"
+        >
+          <div className="flex items-center gap-3">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300">
+              <Wrench className="h-4 w-4" />
+            </div>
+            <div>
+              <div className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
+                Опрос инспектора · Kontrolprøven
+              </div>
+              <div className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                10 устных заданий перед выездом: капот, вакуум тормозов, шины 1,6 мм, фары и лампы
+              </div>
+            </div>
+          </div>
+          <ArrowRight className="h-4 w-4 shrink-0 text-zinc-400 transition-transform group-hover:translate-x-0.5 group-hover:text-amber-600 dark:group-hover:text-amber-400" />
+        </button>
+      </section>
+
       {/* Collapsible Detailed Statistics */}
       <section className="nordic-card overflow-hidden">
         <button
@@ -340,6 +391,17 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </div>
         )}
       </section>
+
+      <QuickNumbersModal
+        isOpen={isNumbersOpen}
+        languageMode={appState.languageMode}
+        onClose={() => setIsNumbersOpen(false)}
+      />
+      <KontrolSimulatorModal
+        isOpen={isKontrolOpen}
+        languageMode={appState.languageMode}
+        onClose={() => setIsKontrolOpen(false)}
+      />
     </div>
   );
 };
