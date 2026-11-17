@@ -21,12 +21,19 @@ interface QuizSessionViewProps {
   title: string;
   subtitle?: string;
   moduleId?: number;
+  mode?: 'free' | 'course';
   initialQuestions: TeoriQuestion[];
   srsMap: Record<string, SRSRecord>;
   languageMode: LanguageMode;
   requeueFailuresInSession?: boolean;
   onRecordResult: (questionId: string, isAllCorrect: boolean) => SRSRecord;
   onCompleteSession: () => void;
+  onFreeQuizComplete?: (moduleId: number, firstTryScore: number) => void;
+  onCourseFinish?: (result: {
+    firstTryScore: number;
+    total: number;
+    failedQuestionIds: string[];
+  }) => void;
   onContinueToNextModule?: (nextModuleId: number) => void;
   onReturnToLessons?: () => void;
   onRestartWithQuestions?: (
@@ -48,12 +55,15 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
   title,
   subtitle,
   moduleId,
+  mode = 'free',
   initialQuestions,
   srsMap,
   languageMode,
   requeueFailuresInSession = true,
   onRecordResult,
   onCompleteSession,
+  onFreeQuizComplete,
+  onCourseFinish,
   onContinueToNextModule,
   onReturnToLessons,
   onRestartWithQuestions,
@@ -181,11 +191,13 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
                           : item.question.situationDa}
                       </span>
                     </div>
-                    <span
-                      className={`shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-semibold ${meta.badgeClass}`}
-                    >
-                      Box {rec.box} • {meta.labelRu}
-                    </span>
+                    {mode !== 'course' && (
+                      <span
+                        className={`shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-semibold ${meta.badgeClass}`}
+                      >
+                        Box {rec.box} • {meta.labelRu}
+                      </span>
+                    )}
                   </div>
                 );
               })}
@@ -193,57 +205,76 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
           </div>
 
           {/* Guided Next Step Actions */}
-          <div className="mt-6 space-y-2.5">
-            {hasNextModule && moduleId !== undefined && onContinueToNextModule && (
-              <button
-                type="button"
-                onClick={() => onContinueToNextModule(moduleId + 1)}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-emerald-600 py-3.5 text-sm font-bold text-white shadow-sm transition-colors hover:bg-emerald-500"
-              >
-                <span>Перейти к следующему уроку (Урок {moduleId + 1})</span>
-                <ArrowRight className="h-4 w-4" />
-              </button>
-            )}
-
-            {failedInThisSession.length > 0 && onRestartWithQuestions && (
+          {mode === 'course' && onCourseFinish ? (
+            <div className="mt-6">
               <button
                 type="button"
                 onClick={() =>
-                  onRestartWithQuestions(
-                    moduleId
-                      ? `Исправление ошибок Урока ${moduleId}`
-                      : 'Повтор билетов с ошибками',
-                    `Повторное закрепление (${failedInThisSession.length} вопр.)`,
-                    failedInThisSession,
-                    moduleId
-                  )
+                  onCourseFinish({
+                    firstTryScore: passedCount,
+                    total: totalCount,
+                    failedQuestionIds: failedInThisSession.map((q) => q.id),
+                  })
                 }
-                className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-rose-200 bg-rose-50 py-3 text-sm font-bold text-rose-700 transition-colors hover:bg-rose-100 dark:border-rose-900/60 dark:bg-rose-950/40 dark:text-rose-300"
+                className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-teal-600 px-6 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-teal-500"
               >
-                <RotateCcw className="h-4 w-4" />
-                <span>Повторить только билеты с ошибками ({failedInThisSession.length})</span>
-              </button>
-            )}
-
-            <div className="flex flex-col gap-2 sm:flex-row">
-              {onReturnToLessons && (
-                <button
-                  type="button"
-                  onClick={onReturnToLessons}
-                  className="flex-1 rounded-2xl border border-zinc-200 bg-white py-3 text-xs font-semibold text-zinc-800 transition-colors hover:bg-zinc-50 sm:text-sm dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
-                >
-                  К списку уроков
-                </button>
-              )}
-              <button
-                type="button"
-                onClick={onExit}
-                className="flex-1 rounded-2xl bg-zinc-900 py-3 text-xs font-semibold text-white transition-colors hover:bg-zinc-800 sm:text-sm dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
-              >
-                В главное меню
+                <span>Продолжить</span>
+                <ArrowRight className="h-4 w-4" />
               </button>
             </div>
-          </div>
+          ) : (
+            <div className="mt-6 space-y-2.5">
+              {hasNextModule && moduleId !== undefined && onContinueToNextModule && (
+                <button
+                  type="button"
+                  onClick={() => onContinueToNextModule(moduleId + 1)}
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-emerald-600 py-3.5 text-sm font-bold text-white shadow-sm transition-colors hover:bg-emerald-500"
+                >
+                  <span>Перейти к следующему уроку (Урок {moduleId + 1})</span>
+                  <ArrowRight className="h-4 w-4" />
+                </button>
+              )}
+
+              {failedInThisSession.length > 0 && onRestartWithQuestions && (
+                <button
+                  type="button"
+                  onClick={() =>
+                    onRestartWithQuestions(
+                      moduleId
+                        ? `Исправление ошибок Урока ${moduleId}`
+                        : 'Повтор билетов с ошибками',
+                      `Повторное закрепление (${failedInThisSession.length} вопр.)`,
+                      failedInThisSession,
+                      moduleId
+                    )
+                  }
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-rose-200 bg-rose-50 py-3 text-sm font-bold text-rose-700 transition-colors hover:bg-rose-100 dark:border-rose-900/60 dark:bg-rose-950/40 dark:text-rose-300"
+                >
+                  <RotateCcw className="h-4 w-4" />
+                  <span>Повторить только билеты с ошибками ({failedInThisSession.length})</span>
+                </button>
+              )}
+
+              <div className="flex flex-col gap-2 sm:flex-row">
+                {onReturnToLessons && (
+                  <button
+                    type="button"
+                    onClick={onReturnToLessons}
+                    className="flex-1 rounded-2xl border border-zinc-200 bg-white py-3 text-xs font-semibold text-zinc-800 transition-colors hover:bg-zinc-50 sm:text-sm dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
+                  >
+                    К списку уроков
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={onExit}
+                  className="flex-1 rounded-2xl bg-zinc-900 py-3 text-xs font-semibold text-white transition-colors hover:bg-zinc-800 sm:text-sm dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+                >
+                  В главное меню
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     );
@@ -289,6 +320,10 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
       setSubmittedRecord(null);
     } else {
       onCompleteSession();
+      if (mode === 'free' && moduleId !== undefined && onFreeQuizComplete) {
+        const firstPassCorrect = history.filter((h) => !h.wasRetry && h.passed).length;
+        onFreeQuizComplete(moduleId, firstPassCorrect);
+      }
       setFinished(true);
     }
   };
@@ -334,41 +369,59 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
 
   return (
     <div className="mx-auto max-w-3xl space-y-4 animate-fade-in">
-      {/* Top session bar */}
-      <div className="flex items-center justify-between gap-3">
-        <button
-          type="button"
-          onClick={onExit}
-          className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-xs font-semibold text-zinc-700 transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
-        >
-          <ArrowLeft className="h-3.5 w-3.5" />
-          Выйти
-        </button>
+      {/* Top session bar (hidden in course mode to keep focus) */}
+      {mode !== 'course' && (
+        <div className="flex items-center justify-between gap-3">
+          <button
+            type="button"
+            onClick={onExit}
+            className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-xs font-semibold text-zinc-700 transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
+          >
+            <ArrowLeft className="h-3.5 w-3.5" />
+            Выйти
+          </button>
 
-        <div className="text-center">
-          <div className="text-xs font-semibold text-zinc-900 dark:text-zinc-100">{title}</div>
-          {subtitle && (
-            <div className="text-[11px] text-zinc-500 dark:text-zinc-400">{subtitle}</div>
-          )}
-        </div>
+          <div className="text-center">
+            <div className="text-xs font-semibold text-zinc-900 dark:text-zinc-100">{title}</div>
+            {subtitle && (
+              <div className="text-[11px] text-zinc-500 dark:text-zinc-400">{subtitle}</div>
+            )}
+          </div>
 
-        <div className="flex items-center gap-2">
-          {currentItem.isRetry && (
-            <span className="inline-flex items-center gap-1 rounded-full bg-rose-100 px-2 py-0.5 text-[10px] font-bold text-rose-700 dark:bg-rose-950 dark:text-rose-300">
-              <RotateCcw className="h-3 w-3" />
-              Повтор Box 1
+          <div className="flex items-center gap-2">
+            {currentItem.isRetry && (
+              <span className="inline-flex items-center gap-1 rounded-full bg-rose-100 px-2 py-0.5 text-[10px] font-bold text-rose-700 dark:bg-rose-950 dark:text-rose-300">
+                <RotateCcw className="h-3 w-3" />
+                Повтор Box 1
+              </span>
+            )}
+            <span className="rounded-xl border border-zinc-200 bg-white px-2.5 py-1 text-xs font-bold tabular-nums text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200">
+              {currentIndex + 1} / {queue.length}
             </span>
-          )}
-          <span className="rounded-xl border border-zinc-200 bg-white px-2.5 py-1 text-xs font-bold tabular-nums text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200">
-            {currentIndex + 1} / {queue.length}
-          </span>
+          </div>
         </div>
-      </div>
+      )}
+
+      {mode === 'course' && (
+        <div className="flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
+          <span className="font-medium text-zinc-700 dark:text-zinc-300">{title}</span>
+          <div className="flex items-center gap-2">
+            {currentItem.isRetry && (
+              <span className="rounded-full bg-rose-100 px-2 py-0.5 text-[10px] font-semibold text-rose-700 dark:bg-rose-950 dark:text-rose-300">
+                Повтор ошибки
+              </span>
+            )}
+            <span className="font-semibold tabular-nums text-zinc-700 dark:text-zinc-300">
+              Вопрос {currentIndex + 1} из {queue.length}
+            </span>
+          </div>
+        </div>
+      )}
 
       {/* Progress bar */}
       <div className="h-1.5 w-full overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-800">
         <div
-          className="h-full rounded-full bg-zinc-900 transition-all duration-300 dark:bg-zinc-100"
+          className="h-full rounded-full bg-teal-600 transition-all duration-300 dark:bg-teal-400"
           style={{ width: `${((currentIndex + (isSubmitted ? 1 : 0)) / queue.length) * 100}%` }}
         />
       </div>
@@ -377,11 +430,13 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
       <div className="nordic-card overflow-hidden p-4 sm:p-6">
         <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
           <span className="nordic-pill">Урок {question.moduleId}</span>
-          <span
-            className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[11px] font-semibold ${boxMeta.badgeClass}`}
-          >
-            Box {currentRecord.box} • {boxMeta.labelRu}
-          </span>
+          {mode !== 'course' && (
+            <span
+              className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[11px] font-semibold ${boxMeta.badgeClass}`}
+            >
+              Box {currentRecord.box} • {boxMeta.labelRu}
+            </span>
+          )}
         </div>
 
         {/* Visual */}
@@ -540,10 +595,16 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
                   </div>
                   <div className="mt-0.5 text-xs opacity-90">
                     {isQuestionPassed
-                      ? `Перемещено в Box ${currentRecord.box} (${boxMeta.intervalRu}).`
-                      : requeueFailuresInSession && !currentItem.isRetry
-                        ? 'Отправлено в Box 1 (Критическая зона) и добавлено на повтор в конце этой сессии.'
-                        : 'Отправлено в Box 1 (Критическая зона) для немедленного повторения.'}
+                      ? mode === 'course'
+                        ? 'Верно! Билет зачтён.'
+                        : `Перемещено в Box ${currentRecord.box} (${boxMeta.intervalRu}).`
+                      : mode === 'course'
+                        ? !currentItem.isRetry
+                          ? 'Допущена ошибка — мы вернём этот билет в конце теста.'
+                          : 'Разберите пояснение и двигайтесь дальше.'
+                        : requeueFailuresInSession && !currentItem.isRetry
+                          ? 'Отправлено в Box 1 (Критическая зона) и добавлено на повтор в конце этой сессии.'
+                          : 'Отправлено в Box 1 (Критическая зона) для немедленного повторения.'}
                   </div>
                 </div>
               </div>

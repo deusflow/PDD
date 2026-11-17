@@ -25,6 +25,8 @@ import { TrafficSceneSVG } from '../visuals/TrafficSceneSVG';
 interface ExamSimulatorViewProps {
   languageMode: LanguageMode;
   examHistory: ExamAttemptSummary[];
+  autoStart?: boolean;
+  onBackToCourse?: () => void;
   onFinishExam: (
     summary: ExamAttemptSummary,
     results: Array<{ questionId: string; passed: boolean }>
@@ -44,11 +46,17 @@ function formatTimer(sec: number): string {
 export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
   languageMode,
   examHistory,
+  autoStart = false,
+  onBackToCourse,
   onFinishExam,
   onTrainFailedQuestions,
 }) => {
-  const [phase, setPhase] = useState<'intro' | 'active' | 'review'>('intro');
-  const [examQuestions, setExamQuestions] = useState<TeoriQuestion[]>([]);
+  const [phase, setPhase] = useState<'intro' | 'active' | 'review'>(() =>
+    autoStart ? 'active' : 'intro'
+  );
+  const [examQuestions, setExamQuestions] = useState<TeoriQuestion[]>(() =>
+    autoStart ? buildExamQuestions(QUESTIONS_BANK, 25) : []
+  );
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, boolean | undefined>>({});
   const [secondsLeft, setSecondsLeft] = useState(EXAM_DURATION_SEC);
@@ -283,7 +291,16 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
             </div>
 
             <div className="flex flex-wrap gap-2">
-              {failedQuestions.length > 0 && (
+              {onBackToCourse && (
+                <button
+                  type="button"
+                  onClick={onBackToCourse}
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-teal-600 px-5 py-2.5 text-xs font-bold text-white shadow-sm transition-colors hover:bg-teal-500"
+                >
+                  Вернуться к курсу
+                </button>
+              )}
+              {failedQuestions.length > 0 && !onBackToCourse && (
                 <button
                   type="button"
                   onClick={() => onTrainFailedQuestions(failedQuestions)}
@@ -293,13 +310,15 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
                   Разобрать ошибки ({failedQuestions.length})
                 </button>
               )}
-              <button
-                type="button"
-                onClick={startExam}
-                className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-4 py-2.5 text-xs font-bold text-zinc-800 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200"
-              >
-                Новый экзамен
-              </button>
+              {!onBackToCourse && (
+                <button
+                  type="button"
+                  onClick={startExam}
+                  className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-4 py-2.5 text-xs font-bold text-zinc-800 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200"
+                >
+                  Новый экзамен
+                </button>
+              )}
             </div>
           </div>
         </div>

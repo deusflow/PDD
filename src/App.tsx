@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { BackupSyncModal } from './components/layout/BackupSyncModal';
 import { Header } from './components/layout/Header';
 import { OnboardingModal } from './components/layout/OnboardingModal';
+import { CourseView } from './components/views/CourseView';
 import { DashboardView } from './components/views/DashboardView';
 import { CategoryFilter, DictionaryView } from './components/views/DictionaryView';
 import { ExamSimulatorView } from './components/views/ExamSimulatorView';
@@ -9,6 +10,12 @@ import { ModulesView } from './components/views/ModulesView';
 import { QuizSessionView } from './components/views/QuizSessionView';
 import { QUESTIONS_BANK } from './data/questionsBank';
 import { DICTIONARY_ENTRIES } from './data/signsAndGlossary';
+import {
+  canModulePass,
+  getModuleProgress,
+  getModuleQuestions,
+  getPendingFlashcardIdsForModule,
+} from './services/coursePlanner';
 import { danishSpeech } from './services/speech';
 import {
   buildSmartSession,
@@ -20,6 +27,7 @@ import {
   ActiveTab,
   ExamAttemptSummary,
   LanguageMode,
+  ModuleCourseProgress,
   SRSRecord,
   TeoriQuestion,
   UserAppState,
@@ -52,6 +60,44 @@ function syncRelatedDictionaryItems(
       srsMap[entry.id] = updateSRSRecord(srsMap[entry.id], entry.id, isAllCorrect, now);
     }
   }
+}
+
+function applyModuleQuizUpdate(
+  prev: UserAppState,
+  moduleId: number,
+  isFullQuiz: boolean,
+  firstTryScore: number,
+  now: number
+): UserAppState {
+  const prevMod = getModuleProgress(prev.course, moduleId);
+  const nextBestScore = isFullQuiz
+    ? Math.max(prevMod.bestFirstTryScore, firstTryScore)
+    : prevMod.bestFirstTryScore;
+
+  const candidateMod: ModuleCourseProgress = {
+    ...prevMod,
+    quizAttempts: prevMod.quizAttempts + 1,
+    bestFirstTryScore: nextBestScore,
+  };
+
+  const nowPassed = prevMod.passed || canModulePass(candidateMod, prev.srs, moduleId);
+  const updatedMod: ModuleCourseProgress = {
+    ...candidateMod,
+    passed: nowPassed,
+    passedAt: nowPassed ? (prevMod.passedAt ?? now) : null,
+  };
+
+  return {
+    ...prev,
+    course: {
+      ...prev.course,
+      lastActiveAt: now,
+      modules: {
+        ...prev.course.modules,
+        [moduleId]: updatedMod,
+      },
+    },
+  };
 }
 
 export const App: React.FC = () => {
@@ -174,6 +220,79 @@ export const App: React.FC = () => {
     }));
   };
 
+  const handleFreeQuizComplete = (moduleId: number, firstTryScore: number) => {
+    const now = Date.now();
+    const fullCount = getModuleQuestions(moduleId).length;
+    const isFullQuiz = (activeSession?.questions.length ?? 0) >= fullCount;
+    setAppState((prev) => applyModuleQuizUpdate(prev, moduleId, isFullQuiz, firstTryScore, now));
+  };
+
+  const handleCompleteTheory = (moduleId: number) => {
+    const now = Date.now();
+    setAppState((prev) => {
+      const prevMod = getModuleProgress(prev.course, moduleId);
+      const pendingFlashcards = getPendingFlashcardIdsForModule(prev.srs, moduleId);
+      return {
+        ...prev,
+        course: {
+          ...prev.course,
+          lastActiveAt: now,
+          modules: {
+            ...prev.course.modules,
+            [moduleId]: {
+              ...prevMod,
+              theoryCompleted: true,
+              flashcardsCompleted:
+                prevMod.flashcardsCompleted || pendingFlashcards.length === 0,
+            },
+          },
+        },
+      };
+    });
+  };
+
+  const handleCompleteFlashcards = (moduleId: number) => {
+    const now = Date.now();
+    setAppState((prev) => {
+      const prevMod = getModuleProgress(prev.course, moduleId);
+      return {
+        ...prev,
+        course: {
+          ...prev.course,
+          lastActiveAt: now,
+          modules: {
+            ...prev.course.modules,
+            [moduleId]: {
+              ...prevMod,
+              flashcardsCompleted: true,
+            },
+          },
+        },
+      };
+    });
+  };
+
+  const handleCompleteCourseQuiz = (
+    moduleId: number,
+    isFullQuiz: boolean,
+    firstTryScore: number
+  ) => {
+    const now = Date.now();
+    setAppState((prev) => applyModuleQuizUpdate(prev, moduleId, isFullQuiz, firstTryScore, now));
+  };
+
+  const handleCompleteCheckpoint = (passed: boolean) => {
+    const now = Date.now();
+    setAppState((prev) => ({
+      ...prev,
+      course: {
+        ...prev.course,
+        checkpointMidPassed: prev.course.checkpointMidPassed || passed,
+        lastActiveAt: now,
+      },
+    }));
+  };
+
   const handleFinishExam = (
     summary: ExamAttemptSummary,
     results: Array<{ questionId: string; passed: boolean }>
@@ -190,21 +309,25 @@ export const App: React.FC = () => {
         srs: nextSrs,
         examHistory: [summary, ...prev.examHistory].slice(0, 50),
         sessionsCompleted: prev.sessionsCompleted + 1,
+        course: {
+          ...prev.course,
+          mockExamStreak: summary.passed ? prev.course.mockExamStreak + 1 : 0,
+          lastActiveAt: now,
+        },
       };
     });
+  };
+
+  const handleOpenCourse = () => {
+    danishSpeech.stop();
+    setActiveSession(null);
+    setActiveTab('course');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleOpenLessonsList = () => {
     danishSpeech.stop();
     setModulesViewMode('list');
-    setActiveTab('modules');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleContinueLesson = (moduleId: number) => {
-    danishSpeech.stop();
-    setSelectedModuleId(moduleId);
-    setModulesViewMode('lesson');
     setActiveTab('modules');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -254,6 +377,7 @@ export const App: React.FC = () => {
     const fresh = StorageManager.clear();
     setAppState(fresh);
     setActiveSession(null);
+    setActiveTab('dashboard');
   };
 
   return (
@@ -275,6 +399,7 @@ export const App: React.FC = () => {
         {activeSession ? (
           <QuizSessionView
             key={activeSession.key}
+            mode="free"
             title={activeSession.title}
             subtitle={activeSession.subtitle}
             moduleId={activeSession.moduleId}
@@ -284,6 +409,7 @@ export const App: React.FC = () => {
             requeueFailuresInSession={activeSession.requeueFailures}
             onRecordResult={handleRecordResult}
             onCompleteSession={handleCompleteSession}
+            onFreeQuizComplete={handleFreeQuizComplete}
             onContinueToNextModule={handleContinueToNextModule}
             onReturnToLessons={
               activeSession.moduleId !== undefined ? handleReturnToLessons : undefined
@@ -299,15 +425,32 @@ export const App: React.FC = () => {
           <>
             {activeTab === 'dashboard' && (
               <DashboardView
-                srsMap={appState.srs}
-                sessionsCompleted={appState.sessionsCompleted}
+                appState={appState}
+                onStartCourse={handleOpenCourse}
                 onStartSmartSession={handleStartSmartSession}
                 onStartCustomSession={handleStartCustomSession}
-                onOpenLessonsList={handleOpenLessonsList}
-                onContinueLesson={handleContinueLesson}
                 onOpenExam={handleOpenExam}
                 onOpenSignsAndKontrol={handleOpenSignsAndKontrol}
                 onOpenDictionary={handleOpenDictionary}
+                onOpenLessonsReference={handleOpenLessonsList}
+              />
+            )}
+
+            {activeTab === 'course' && (
+              <CourseView
+                appState={appState}
+                onRecordResult={handleRecordResult}
+                onCompleteSession={handleCompleteSession}
+                onCompleteTheory={handleCompleteTheory}
+                onCompleteFlashcards={handleCompleteFlashcards}
+                onCompleteCourseQuiz={handleCompleteCourseQuiz}
+                onCompleteCheckpoint={handleCompleteCheckpoint}
+                onFinishExam={handleFinishExam}
+                onOpenSmartTraining={() => {
+                  setActiveTab('dashboard');
+                  handleStartSmartSession(10);
+                }}
+                onExit={() => handleTabChange('dashboard')}
               />
             )}
 
@@ -322,6 +465,7 @@ export const App: React.FC = () => {
                 onRecordEntryReview={(entryId, passed) => {
                   handleRecordResult(entryId, passed);
                 }}
+                onOpenCourse={handleOpenCourse}
               />
             )}
 

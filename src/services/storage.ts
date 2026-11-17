@@ -1,7 +1,90 @@
-import { BoxLevel, LanguageMode, SRSRecord, ThemeMode, UserAppState } from '../types';
+import {
+  BoxLevel,
+  CourseState,
+  LanguageMode,
+  ModuleCourseProgress,
+  SRSRecord,
+  ThemeMode,
+  UserAppState,
+} from '../types';
 
 const STORAGE_KEY = 'dk_korekort_state_v1';
 const SYNC_PREFIX = 'DKK1:';
+
+export function createEmptyModuleProgress(): ModuleCourseProgress {
+  return {
+    theoryCompleted: false,
+    flashcardsCompleted: false,
+    quizAttempts: 0,
+    bestFirstTryScore: 0,
+    passed: false,
+    passedAt: null,
+  };
+}
+
+export function createDefaultCourseState(): CourseState {
+  const modules: Record<number, ModuleCourseProgress> = {};
+  for (let m = 1; m <= 8; m += 1) {
+    modules[m] = createEmptyModuleProgress();
+  }
+  return {
+    modules,
+    checkpointMidPassed: false,
+    mockExamStreak: 0,
+    lastActiveAt: null,
+  };
+}
+
+function sanitizeCourseState(raw: unknown): CourseState {
+  const defaults = createDefaultCourseState();
+  if (!raw || typeof raw !== 'object') return defaults;
+
+  const obj = raw as Partial<CourseState>;
+  const modules: Record<number, ModuleCourseProgress> = {};
+
+  for (let m = 1; m <= 8; m += 1) {
+    const rawMod =
+      obj.modules && typeof obj.modules === 'object'
+        ? (obj.modules as Record<string, unknown>)[String(m)]
+        : undefined;
+
+    if (rawMod && typeof rawMod === 'object') {
+      const mp = rawMod as Partial<ModuleCourseProgress>;
+      modules[m] = {
+        theoryCompleted: Boolean(mp.theoryCompleted),
+        flashcardsCompleted: Boolean(mp.flashcardsCompleted),
+        quizAttempts:
+          typeof mp.quizAttempts === 'number' && Number.isFinite(mp.quizAttempts)
+            ? Math.max(0, Math.floor(mp.quizAttempts))
+            : 0,
+        bestFirstTryScore:
+          typeof mp.bestFirstTryScore === 'number' && Number.isFinite(mp.bestFirstTryScore)
+            ? Math.max(0, Math.min(7, Math.floor(mp.bestFirstTryScore)))
+            : 0,
+        passed: Boolean(mp.passed),
+        passedAt:
+          typeof mp.passedAt === 'number' && Number.isFinite(mp.passedAt)
+            ? mp.passedAt
+            : null,
+      };
+    } else {
+      modules[m] = createEmptyModuleProgress();
+    }
+  }
+
+  return {
+    modules,
+    checkpointMidPassed: Boolean(obj.checkpointMidPassed),
+    mockExamStreak:
+      typeof obj.mockExamStreak === 'number' && Number.isFinite(obj.mockExamStreak)
+        ? Math.max(0, Math.floor(obj.mockExamStreak))
+        : 0,
+    lastActiveAt:
+      typeof obj.lastActiveAt === 'number' && Number.isFinite(obj.lastActiveAt)
+        ? obj.lastActiveAt
+        : null,
+  };
+}
 
 export function getDefaultState(): UserAppState {
   const prefersDark =
@@ -17,6 +100,7 @@ export function getDefaultState(): UserAppState {
     srs: {},
     examHistory: [],
     sessionsCompleted: 0,
+    course: createDefaultCourseState(),
   };
 }
 
@@ -79,6 +163,7 @@ function validateAndMigrateState(raw: unknown): UserAppState | null {
     examHistory,
     sessionsCompleted:
       typeof obj.sessionsCompleted === 'number' ? Math.max(0, obj.sessionsCompleted) : 0,
+    course: sanitizeCourseState(obj.course),
   };
 }
 
@@ -129,7 +214,6 @@ export const StorageManager = {
    * Compact Base64 Sync String (UTF-8 safe) prefixed with DKK1:
    */
   encodeSyncString(state: UserAppState): string {
-    // Store compact srs array tuples when box > 0 or attempts > 0 to keep code short
     const compactSrs: Record<string, [number, number, number | null, number | null, number, number]> = {};
     for (const [id, rec] of Object.entries(state.srs)) {
       if (rec.box === 0 && rec.totalAttempts === 0) continue;
@@ -143,6 +227,30 @@ export const StorageManager = {
       ];
     }
 
+    // Compact course modules: only non-empty modules
+    const compactModules: Record<string, [number, number, number, number, number, number | null]> = {};
+    for (let m = 1; m <= 8; m += 1) {
+      const mp = state.course?.modules?.[m];
+      if (!mp) continue;
+      if (
+        !mp.theoryCompleted &&
+        !mp.flashcardsCompleted &&
+        mp.quizAttempts === 0 &&
+        mp.bestFirstTryScore === 0 &&
+        !mp.passed
+      ) {
+        continue;
+      }
+      compactModules[String(m)] = [
+        mp.theoryCompleted ? 1 : 0,
+        mp.flashcardsCompleted ? 1 : 0,
+        mp.quizAttempts,
+        mp.bestFirstTryScore,
+        mp.passed ? 1 : 0,
+        mp.passedAt,
+      ];
+    }
+
     const payload = {
       v: 1,
       o: state.hasSeenOnboarding ? 1 : 0,
@@ -151,6 +259,12 @@ export const StorageManager = {
       sc: state.sessionsCompleted,
       eh: state.examHistory,
       s: compactSrs,
+      c: {
+        m: compactModules,
+        cm: state.course?.checkpointMidPassed ? 1 : 0,
+        ms: state.course?.mockExamStreak ?? 0,
+        la: state.course?.lastActiveAt ?? null,
+      },
     };
 
     const json = JSON.stringify(payload);
@@ -196,6 +310,33 @@ export const StorageManager = {
       };
     }
 
+    let course: CourseState | undefined;
+    if (payload.c && typeof payload.c === 'object') {
+      const modules: Record<number, ModuleCourseProgress> = {};
+      const rawMods = payload.c.m && typeof payload.c.m === 'object' ? payload.c.m : {};
+      for (let m = 1; m <= 8; m += 1) {
+        const tuple = (rawMods as Record<string, unknown>)[String(m)];
+        if (Array.isArray(tuple) && tuple.length >= 6) {
+          modules[m] = {
+            theoryCompleted: Boolean(tuple[0]),
+            flashcardsCompleted: Boolean(tuple[1]),
+            quizAttempts: Number(tuple[2]) || 0,
+            bestFirstTryScore: Number(tuple[3]) || 0,
+            passed: Boolean(tuple[4]),
+            passedAt: typeof tuple[5] === 'number' ? tuple[5] : null,
+          };
+        } else {
+          modules[m] = createEmptyModuleProgress();
+        }
+      }
+      course = {
+        modules,
+        checkpointMidPassed: Boolean(payload.c.cm),
+        mockExamStreak: Number(payload.c.ms) || 0,
+        lastActiveAt: typeof payload.c.la === 'number' ? payload.c.la : null,
+      };
+    }
+
     const reconstructed = validateAndMigrateState({
       version: 1,
       hasSeenOnboarding: Boolean(payload.o),
@@ -204,6 +345,7 @@ export const StorageManager = {
       sessionsCompleted: payload.sc,
       examHistory: payload.eh,
       srs,
+      course,
     });
 
     if (!reconstructed) {

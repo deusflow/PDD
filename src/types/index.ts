@@ -1,7 +1,7 @@
 export type LanguageMode = 'both' | 'spoiler' | 'da_only';
 export type ThemeMode = 'light' | 'dark';
 export type BoxLevel = 0 | 1 | 2 | 3 | 4 | 5;
-export type ActiveTab = 'dashboard' | 'modules' | 'exam' | 'dictionary';
+export type ActiveTab = 'dashboard' | 'course' | 'modules' | 'exam' | 'dictionary';
 
 export type TechnicalTabId = 'motorrum' | 'daek_bremser' | 'lygter' | 'instrumentpanel';
 
@@ -95,6 +95,22 @@ export interface ExamAttemptSummary {
   durationSeconds: number;
 }
 
+export interface ModuleCourseProgress {
+  theoryCompleted: boolean;
+  flashcardsCompleted: boolean;
+  quizAttempts: number;
+  bestFirstTryScore: number;
+  passed: boolean;
+  passedAt: number | null;
+}
+
+export interface CourseState {
+  modules: Record<number, ModuleCourseProgress>; // keys 1..8
+  checkpointMidPassed: boolean;
+  mockExamStreak: number;
+  lastActiveAt: number | null;
+}
+
 export interface UserAppState {
   version: 1;
   hasSeenOnboarding: boolean;
@@ -103,4 +119,5 @@ export interface UserAppState {
   srs: Record<string, SRSRecord>;
   examHistory: ExamAttemptSummary[];
   sessionsCompleted: number;
+  course: CourseState;
 }

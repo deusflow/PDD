@@ -36,6 +36,7 @@ interface ModulesViewProps {
     moduleId?: number
   ) => void;
   onRecordEntryReview: (entryId: string, passed: boolean) => void;
+  onOpenCourse: () => void;
 }
 
 export const ModulesView: React.FC<ModulesViewProps> = ({
@@ -46,6 +47,7 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
   languageMode,
   onStartModuleQuiz,
   onRecordEntryReview,
+  onOpenCourse,
 }) => {
   const [activeId, setActiveId] = useState<number>(selectedModuleId);
   const [viewMode, setViewMode] = useState<'list' | 'lesson'>(initialViewMode);
@@ -70,13 +72,23 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
   if (viewMode === 'list') {
     return (
       <div className="mx-auto max-w-5xl space-y-5 animate-fade-in">
-        <section className="nordic-card p-5 sm:p-6">
-          <h1 className="text-xl font-bold tracking-tight text-zinc-900 sm:text-2xl dark:text-zinc-100">
-            Программа курса: 8 обязательных тем
-          </h1>
-          <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-            Проходите уроки по порядку: внутри каждого урока сначала краткая шпаргалка, а в конце — кнопка перехода к тесту по этой теме.
-          </p>
+        <section className="nordic-card flex flex-col justify-between gap-4 p-5 sm:flex-row sm:items-center sm:p-6">
+          <div>
+            <h1 className="text-xl font-bold tracking-tight text-zinc-900 sm:text-2xl dark:text-zinc-100">
+              Справочник курса: 8 обязательных тем
+            </h1>
+            <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+              Свободное чтение любого модуля или последовательное прохождение в управляемом курсе.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={onOpenCourse}
+            className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-teal-600 px-5 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-teal-500 sm:text-sm"
+          >
+            <span>Пройти в режиме курса</span>
+            <ArrowRight className="h-4 w-4" />
+          </button>
         </section>
 
         <div className="grid gap-4 sm:grid-cols-2">
@@ -290,6 +302,17 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
           <p className="text-sm text-zinc-600 dark:text-zinc-400">
             {languageMode !== 'da_only' ? mod.subtitleRu : mod.subtitleDa}
           </p>
+
+          <div className="pt-1">
+            <button
+              type="button"
+              onClick={onOpenCourse}
+              className="inline-flex items-center gap-1.5 rounded-xl bg-teal-50 px-3 py-1.5 text-xs font-semibold text-teal-700 transition-colors hover:bg-teal-100 dark:bg-teal-950/60 dark:text-teal-300 dark:hover:bg-teal-900/60"
+            >
+              <span>Пройти в режиме курса</span>
+              <ArrowRight className="h-3.5 w-3.5" />
+            </button>
+          </div>
         </div>
 
         {/* Key Metrics */}
