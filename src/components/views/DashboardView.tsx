@@ -82,12 +82,28 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   const unseenQuestions = QUESTIONS_BANK.filter((q) => getSRSRecord(appState.srs, q.id).box === 0);
   const isFreshUser =
     overview.percent === 0 && overallStats.seenItems === 0 && appState.sessionsCompleted === 0;
+  const heroModuleId = Math.min(8, Math.max(1, overview.currentModuleId));
+  const heroImageSrc = `./images/lessons/module-${heroModuleId}.jpg`;
 
   return (
     <div className="mx-auto max-w-4xl space-y-5 animate-fade-in">
       {/* Hero Card: Guided Course */}
-      <section className="nordic-card overflow-hidden p-6 sm:p-8">
-        <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-center">
+      <section className="nordic-card relative overflow-hidden p-6 sm:p-8">
+        {/* Partial faded road illustration backdrop matching the lesson theme */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-y-0 right-0 w-full select-none overflow-hidden sm:w-[64%]"
+        >
+          <img
+            src={heroImageSrc}
+            alt=""
+            className="h-full w-full object-cover object-center opacity-25 saturate-[0.9] sm:opacity-35 dark:opacity-20 sm:dark:opacity-25"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-white/25 dark:from-zinc-900 dark:via-zinc-900/90 dark:to-zinc-900/30" />
+          <div className="absolute inset-0 bg-gradient-to-t from-white/85 via-transparent to-white/50 sm:hidden dark:from-zinc-900/85 dark:to-zinc-900/50" />
+        </div>
+
+        <div className="relative z-10 flex flex-col justify-between gap-6 sm:flex-row sm:items-center">
           <div className="space-y-3">
             <div className="flex flex-wrap items-center gap-2">
               <span className="inline-flex items-center gap-1.5 rounded-full bg-teal-50 px-3 py-1 text-xs font-semibold text-teal-700 dark:bg-teal-950/60 dark:text-teal-300">
@@ -138,7 +154,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             <button
               type="button"
               onClick={onOpenLessonsReference}
-              className="text-xs font-medium text-zinc-500 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
+              className="rounded-lg bg-white/75 px-2.5 py-1 text-xs font-medium text-zinc-700 backdrop-blur-sm transition-colors hover:bg-white hover:text-zinc-950 dark:bg-zinc-900/75 dark:text-zinc-300 dark:hover:bg-zinc-900 dark:hover:text-zinc-100"
             >
               Открыть справочник 8 тем
             </button>
