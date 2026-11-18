@@ -1,13 +1,18 @@
 import React, { createContext, useContext, useId } from 'react';
 import { DanishRoadSignSVG, PSkiveSVG } from './DanishRoadSignSVG';
 
-const SvgIdContext = createContext('pov');
+const SvgIdContext = createContext<{ uid: string; hideHints: boolean }>({
+  uid: 'pov',
+  hideHints: false,
+});
 
 interface DriverPOVSceneSVGProps {
   presetId: string;
+  imageSrc?: string;
   signCode?: string;
   subPlaque?: string;
   maneuverBadge?: string;
+  hideHints?: boolean;
   className?: string;
 }
 
@@ -16,7 +21,7 @@ const CockpitFrame: React.FC<{
   night?: boolean;
   children: React.ReactNode;
 }> = ({ skyColor, night = false, children }) => {
-  const uid = useContext(SvgIdContext);
+  const { uid } = useContext(SvgIdContext);
   return (
     <g>
       <defs>
@@ -130,7 +135,7 @@ const HorizonRoad: React.FC<{
   withSolidCenter = false,
   withCykelsti = 'none',
 }) => {
-  const uid = useContext(SvgIdContext);
+  const { uid } = useContext(SvgIdContext);
   return (
   <g>
     {/* Grass / ground */}
@@ -240,6 +245,8 @@ const BadgePill: React.FC<{ x: number; y: number; text: string; tone?: 'dark' | 
   text,
   tone = 'dark',
 }) => {
+  const { hideHints } = useContext(SvgIdContext);
+  if (hideHints) return null;
   const bg = tone === 'warn' ? '#B45309' : tone === 'teal' ? '#0F766E' : '#18181B';
   const width = Math.max(120, text.length * 6.5 + 24);
   return (
@@ -294,9 +301,11 @@ const MountedRoadSignPost: React.FC<{
 
 export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
   presetId,
+  imageSrc,
   signCode,
   subPlaque,
   maneuverBadge,
+  hideHints = false,
   className = '',
 }) => {
   const uid = useId().replace(/:/g, '');
@@ -535,27 +544,27 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
         return (
           <CockpitFrame skyColor="#BAE6FD">
             <HorizonRoad withCenterDash />
-            {/* Side illustration of car + trailer pulling down scenic road */}
-            <rect x="34" y="138" width="392" height="58" rx="14" fill="#0F172A" fillOpacity="0.88" stroke="#38BDF8" strokeOpacity="0.45" strokeWidth="1.5" />
-            {/* Mini car + trailer side silhouette */}
-            <g transform="translate(88, 166)">
-              {/* Trailer */}
-              <rect x="-42" y="-16" width="38" height="20" rx="4" fill="#94A3B8" stroke="#FFFFFF" strokeWidth="1.4" />
-              <circle cx="-23" cy="6" r="5.5" fill="#18181B" stroke="#E2E8F0" strokeWidth="1.5" />
-              {/* Hitch */}
-              <line x1="-4" y1="0" x2="10" y2="0" stroke="#E2E8F0" strokeWidth="2.5" />
-              {/* Car */}
-              <rect x="10" y="-12" width="54" height="16" rx="5" fill="#0D9488" stroke="#FFFFFF" strokeWidth="1.4" />
-              <path d="M 18 -12 L 26 -22 L 46 -22 L 54 -12 Z" fill="#0D9488" stroke="#FFFFFF" strokeWidth="1.4" />
-              <circle cx="22" cy="6" r="5.5" fill="#18181B" stroke="#E2E8F0" strokeWidth="1.5" />
-              <circle cx="52" cy="6" r="5.5" fill="#18181B" stroke="#E2E8F0" strokeWidth="1.5" />
-            </g>
-            <text x="292" y="160" textAnchor="middle" fill="#FFFFFF" fontSize="11.5" fontWeight="800">
-              Bil + Påhængsvogn ≤ 3.500 kg
-            </text>
-            <text x="292" y="178" textAnchor="middle" fill="#5EEAD4" fontSize="9.8" fontWeight="600">
-              Лёгкий прицеп ≤ 750 kg → итого до 4.250 kg
-            </text>
+            <FrontCar x={230} y={136} scale={0.78} color="#0D9488" />
+            {!hideHints && (
+              <>
+                <rect x="34" y="138" width="392" height="58" rx="14" fill="#0F172A" fillOpacity="0.88" stroke="#38BDF8" strokeOpacity="0.45" strokeWidth="1.5" />
+                <g transform="translate(88, 166)">
+                  <rect x="-42" y="-16" width="38" height="20" rx="4" fill="#94A3B8" stroke="#FFFFFF" strokeWidth="1.4" />
+                  <circle cx="-23" cy="6" r="5.5" fill="#18181B" stroke="#E2E8F0" strokeWidth="1.5" />
+                  <line x1="-4" y1="0" x2="10" y2="0" stroke="#E2E8F0" strokeWidth="2.5" />
+                  <rect x="10" y="-12" width="54" height="16" rx="5" fill="#0D9488" stroke="#FFFFFF" strokeWidth="1.4" />
+                  <path d="M 18 -12 L 26 -22 L 46 -22 L 54 -12 Z" fill="#0D9488" stroke="#FFFFFF" strokeWidth="1.4" />
+                  <circle cx="22" cy="6" r="5.5" fill="#18181B" stroke="#E2E8F0" strokeWidth="1.5" />
+                  <circle cx="52" cy="6" r="5.5" fill="#18181B" stroke="#E2E8F0" strokeWidth="1.5" />
+                </g>
+                <text x="292" y="160" textAnchor="middle" fill="#FFFFFF" fontSize="11.5" fontWeight="800">
+                  Bil + Påhængsvogn ≤ 3.500 kg
+                </text>
+                <text x="292" y="178" textAnchor="middle" fill="#5EEAD4" fontSize="9.8" fontWeight="600">
+                  Лёгкий прицеп ≤ 750 kg → итого до 4.250 kg
+                </text>
+              </>
+            )}
             <BadgePill x={16} y={18} text="Сверяйте max påhængsvægt в Registreringsattest!" tone="teal" />
             <BadgePill x={16} y={48} text="Категория B: общий потолок по техпаспорту" tone="dark" />
           </CockpitFrame>
@@ -616,48 +625,60 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
               <rect x="0" y="0" width="130" height="162" rx="14" fill="#0F172A" fillOpacity="0.9" stroke="#EF4444" strokeWidth="1.8" />
               <circle cx="65" cy="36" r="18" fill="#7F1D1D" stroke="#EF4444" strokeWidth="2" />
               <text x="65" y="41" textAnchor="middle" fill="#FFFFFF" fontSize="12" fontWeight="800">
-                0,50‰
+                ‰
               </text>
               <text x="65" y="76" textAnchor="middle" fill="#FFFFFF" fontSize="11.5" fontWeight="700">
                 Алкоголь
               </text>
-              <text x="65" y="102" textAnchor="middle" fill="#CBD5E1" fontSize="9.8">
-                ≥ 0,51‰ = лишение
-              </text>
-              <text x="65" y="122" textAnchor="middle" fill="#FCA5A5" fontSize="9.5">
-                &gt; 2,00‰ = конфискация
-              </text>
+              {!hideHints && (
+                <>
+                  <text x="65" y="102" textAnchor="middle" fill="#CBD5E1" fontSize="9.8">
+                    ≥ 0,51‰ = лишение
+                  </text>
+                  <text x="65" y="122" textAnchor="middle" fill="#FCA5A5" fontSize="9.5">
+                    &gt; 2,00‰ = конфискация
+                  </text>
+                </>
+              )}
             </g>
 
             <g transform="translate(165, 26)">
               <rect x="0" y="0" width="130" height="162" rx="14" fill="#0F172A" fillOpacity="0.9" stroke="#F59E0B" strokeWidth="1.8" />
               <rect x="33" y="20" width="64" height="30" rx="8" fill="#78350F" stroke="#F59E0B" strokeWidth="2" />
               <text x="65" y="40" textAnchor="middle" fill="#FDE68A" fontSize="12" fontWeight="800">
-                2 KLIP
+                KLIP
               </text>
               <text x="65" y="76" textAnchor="middle" fill="#FFFFFF" fontSize="11.5" fontWeight="700">
                 Новичок (0–3 г.)
               </text>
-              <text x="65" y="102" textAnchor="middle" fill="#FDE68A" fontSize="9.8">
-                = Kørselsforbud!
-              </text>
-              <text x="65" y="122" textAnchor="middle" fill="#CBD5E1" fontSize="9.5">
-                Опытный: 3 klip / 3 г.
-              </text>
+              {!hideHints && (
+                <>
+                  <text x="65" y="102" textAnchor="middle" fill="#FDE68A" fontSize="9.8">
+                    2 klip = Kørselsforbud!
+                  </text>
+                  <text x="65" y="122" textAnchor="middle" fill="#CBD5E1" fontSize="9.5">
+                    Опытный: 3 klip / 3 г.
+                  </text>
+                </>
+              )}
             </g>
 
             <g transform="translate(308, 26)">
               <rect x="0" y="0" width="130" height="162" rx="14" fill="#0F172A" fillOpacity="0.9" stroke="#14B8A6" strokeWidth="1.8" />
               <polygon points="65,18 45,52 85,52" fill="#0F172A" stroke="#EF4444" strokeWidth="3.5" strokeLinejoin="round" />
               <text x="65" y="76" textAnchor="middle" fill="#FFFFFF" fontSize="11.5" fontWeight="700">
-                ДТП: 112 / 114
+                ДТП и помощь
               </text>
-              <text x="65" y="102" textAnchor="middle" fill="#5EEAD4" fontSize="9.8">
-                Треугольник: 50 / 100 м
-              </text>
-              <text x="65" y="122" textAnchor="middle" fill="#CBD5E1" fontSize="9.5">
-                112 травмы · 114 полиция
-              </text>
+              {!hideHints && (
+                <>
+                  <text x="65" y="102" textAnchor="middle" fill="#5EEAD4" fontSize="9.8">
+                    Треугольник: 50 / 100 м
+                  </text>
+                  <text x="65" y="122" textAnchor="middle" fill="#CBD5E1" fontSize="9.5">
+                    112 травмы · 114 полиция
+                  </text>
+                </>
+              )}
             </g>
           </CockpitFrame>
         );
@@ -765,9 +786,11 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
               <text x="97" y="108" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="700">
                 Лекарства / Усталость
               </text>
-              <text x="97" y="128" textAnchor="middle" fill="#FCA5A5" fontSize="9.5">
-                Приравнено к § 54 (как алкоголь!)
-              </text>
+              {!hideHints && (
+                <text x="97" y="128" textAnchor="middle" fill="#FCA5A5" fontSize="9.5">
+                  Приравнено к § 54 (как алкоголь!)
+                </text>
+              )}
             </g>
             <g transform="translate(240, 32)">
               <rect x="0" y="0" width="194" height="152" rx="14" fill="#0F172A" fillOpacity="0.9" stroke="#14B8A6" strokeWidth="1.8" />
@@ -778,15 +801,19 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
               <text x="97" y="64" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="700">
                 Страховка + Техосмотр
               </text>
-              <text x="97" y="86" textAnchor="middle" fill="#5EEAD4" fontSize="9.8" fontWeight="600">
-                Ansvarsforsikring = ОБЯЗАТЕЛЬНА
-              </text>
-              <text x="97" y="108" textAnchor="middle" fill="#CBD5E1" fontSize="9.8">
-                1-й Syn: 4 года · Далее: каждые 2 г.
-              </text>
-              <text x="97" y="128" textAnchor="middle" fill="#FDE68A" fontSize="9.5">
-                Новичок 3 года: лишение за 2 klip!
-              </text>
+              {!hideHints && (
+                <>
+                  <text x="97" y="86" textAnchor="middle" fill="#5EEAD4" fontSize="9.8" fontWeight="600">
+                    Ansvarsforsikring = ОБЯЗАТЕЛЬНА
+                  </text>
+                  <text x="97" y="108" textAnchor="middle" fill="#CBD5E1" fontSize="9.8">
+                    1-й Syn: 4 года · Далее: каждые 2 г.
+                  </text>
+                  <text x="97" y="128" textAnchor="middle" fill="#FDE68A" fontSize="9.5">
+                    Новичок 3 года: лишение за 2 klip!
+                  </text>
+                </>
+              )}
             </g>
           </CockpitFrame>
         );
@@ -816,16 +843,19 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
           <CockpitFrame skyColor="#BAE6FD">
             <HorizonRoad withCenterDash />
             <FrontCar x={230} y={122} scale={0.76} color="#475569" brake />
-            {/* Braking distance bar */}
-            <rect x="28" y="138" width="404" height="58" rx="14" fill="#0F172A" fillOpacity="0.9" stroke="#F59E0B" strokeOpacity="0.55" strokeWidth="1.5" />
-            <rect x="46" y="152" width="110" height="12" rx="6" fill="#38BDF8" />
-            <text x="166" y="162" fill="#E0F2FE" fontSize="10" fontWeight="700">
-              Реакция (~1 сек): 2× скорость → 2× м
-            </text>
-            <rect x="46" y="172" width="215" height="12" rx="6" fill="#F59E0B" />
-            <text x="270" y="182" fill="#FDE68A" fontSize="10" fontWeight="700">
-              Торможение: 2× скорость → 4× м!
-            </text>
+            {!hideHints && (
+              <>
+                <rect x="28" y="138" width="404" height="58" rx="14" fill="#0F172A" fillOpacity="0.9" stroke="#F59E0B" strokeOpacity="0.55" strokeWidth="1.5" />
+                <rect x="46" y="152" width="110" height="12" rx="6" fill="#38BDF8" />
+                <text x="166" y="162" fill="#E0F2FE" fontSize="10" fontWeight="700">
+                  Реакция (~1 сек): 2× скорость → 2× м
+                </text>
+                <rect x="46" y="172" width="215" height="12" rx="6" fill="#F59E0B" />
+                <text x="270" y="182" fill="#FDE68A" fontSize="10" fontWeight="700">
+                  Торможение: 2× скорость → 4× м!
+                </text>
+              </>
+            )}
             <BadgePill x={14} y={16} text="40 → 80 км/ч: тормозной путь растёт в 4 РАЗА!" tone="warn" />
           </CockpitFrame>
         );
@@ -1063,19 +1093,31 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
         return (
           <CockpitFrame night>
             <HorizonRoad withCenterDash />
-            <rect x="44" y="34" width="372" height="148" rx="16" fill="#0F172A" fillOpacity="0.92" stroke="#EF4444" strokeWidth="2" />
-            <text x="230" y="64" textAnchor="middle" fill="#FCA5A5" fontSize="13.5" fontWeight="800">
-              VANVIDSKØRSEL = КОНФИСКАЦИЯ АВТО!
+            <FrontCar x={230} y={144} scale={0.78} color="#EF4444" brake />
+            <rect x="315" y="84" width="60" height="44" rx="10" fill="#0F172A" stroke="#EF4444" strokeWidth="2.5" />
+            <text x="345" y="104" textAnchor="middle" fill="#EF4444" fontSize="13" fontWeight="900">
+              200+
             </text>
-            <text x="230" y="96" textAnchor="middle" fill="#FFFFFF" fontSize="11.5" fontWeight="700">
-              • Скорость &gt; 200 км/ч ИЛИ ≥ +100% (при &gt;100 км/ч)
+            <text x="345" y="119" textAnchor="middle" fill="#CBD5E1" fontSize="9">
+              km/t
             </text>
-            <text x="230" y="122" textAnchor="middle" fill="#FFFFFF" fontSize="11.5" fontWeight="700">
-              • Алкоголь &gt; 2,00‰ (даже на чужой машине!)
-            </text>
-            <text x="230" y="152" textAnchor="middle" fill="#FDE68A" fontSize="10.5" fontWeight="600">
-              Штраф + тюрьма + лишение прав + продажа авто на аукционе
-            </text>
+            {!hideHints && (
+              <>
+                <rect x="44" y="34" width="372" height="148" rx="16" fill="#0F172A" fillOpacity="0.92" stroke="#EF4444" strokeWidth="2" />
+                <text x="230" y="64" textAnchor="middle" fill="#FCA5A5" fontSize="13.5" fontWeight="800">
+                  VANVIDSKØRSEL = КОНФИСКАЦИЯ АВТО!
+                </text>
+                <text x="230" y="96" textAnchor="middle" fill="#FFFFFF" fontSize="11.5" fontWeight="700">
+                  • Скорость &gt; 200 км/ч ИЛИ ≥ +100% (при &gt;100 км/ч)
+                </text>
+                <text x="230" y="122" textAnchor="middle" fill="#FFFFFF" fontSize="11.5" fontWeight="700">
+                  • Алкоголь &gt; 2,00‰ (даже на чужой машине!)
+                </text>
+                <text x="230" y="152" textAnchor="middle" fill="#FDE68A" fontSize="10.5" fontWeight="600">
+                  Штраф + тюрьма + лишение прав + продажа авто на аукционе
+                </text>
+              </>
+            )}
           </CockpitFrame>
         );
 
@@ -1083,19 +1125,32 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
         return (
           <CockpitFrame skyColor="#BAE6FD">
             <HorizonRoad withCenterDash />
-            <rect x="34" y="32" width="392" height="156" rx="16" fill="#0F172A" fillOpacity="0.9" stroke="#38BDF8" strokeWidth="1.8" />
-            <text x="230" y="62" textAnchor="middle" fill="#5EEAD4" fontSize="13.5" fontWeight="800">
-              Дети (&lt; 135 см) и подушка безопасности
+            {/* Dashboard passenger airbag OFF icon + baby seat outline */}
+            <rect x="330" y="136" width="84" height="52" rx="10" fill="#0F172A" stroke="#F59E0B" strokeWidth="2" />
+            <circle cx="354" cy="156" r="10" fill="#F59E0B" />
+            <text x="386" y="160" textAnchor="middle" fill="#FDE68A" fontSize="10" fontWeight="800">
+              AIRBAG
             </text>
-            <text x="230" y="94" textAnchor="middle" fill="#FFFFFF" fontSize="11.5" fontWeight="700">
-              Автокресло / бустер обязательны до роста 135 см
+            <text x="372" y="177" textAnchor="middle" fill="#CBD5E1" fontSize="8.5" fontWeight="700">
+              &lt; 135 cm
             </text>
-            <text x="230" y="122" textAnchor="middle" fill="#FCA5A5" fontSize="11.5" fontWeight="700">
-              Спереди спиной вперёд = AIRBAG ОБЯЗАТЕЛЬНО ОТКЛЮЧИТЬ!
-            </text>
-            <text x="230" y="152" textAnchor="middle" fill="#CBD5E1" fontSize="10.5" fontWeight="600">
-              Водитель отвечает за пристёгивание всех пассажиров до 15 лет
-            </text>
+            {!hideHints && (
+              <>
+                <rect x="34" y="32" width="392" height="156" rx="16" fill="#0F172A" fillOpacity="0.9" stroke="#38BDF8" strokeWidth="1.8" />
+                <text x="230" y="62" textAnchor="middle" fill="#5EEAD4" fontSize="13.5" fontWeight="800">
+                  Дети (&lt; 135 см) и подушка безопасности
+                </text>
+                <text x="230" y="94" textAnchor="middle" fill="#FFFFFF" fontSize="11.5" fontWeight="700">
+                  Автокресло / бустер обязательны до роста 135 см
+                </text>
+                <text x="230" y="122" textAnchor="middle" fill="#FCA5A5" fontSize="11.5" fontWeight="700">
+                  Спереди спиной вперёд = AIRBAG ОБЯЗАТЕЛЬНО ОТКЛЮЧИТЬ!
+                </text>
+                <text x="230" y="152" textAnchor="middle" fill="#CBD5E1" fontSize="10.5" fontWeight="600">
+                  Водитель отвечает за пристёгивание всех пассажиров до 15 лет
+                </text>
+              </>
+            )}
           </CockpitFrame>
         );
 
@@ -1156,6 +1211,170 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
           </CockpitFrame>
         );
 
+      case 'pov_cockpit_seat_mirror':
+        return (
+          <CockpitFrame skyColor="#BAE6FD">
+            <HorizonRoad withCenterDash withCykelsti="dashed" />
+            {/* Mirror horizon check */}
+            <rect x="200" y="12" width="60" height="22" rx="4" fill="#1E293B" stroke="#38BDF8" strokeWidth="1.6" />
+            <rect x="219" y="18" width="22" height="10" rx="2" fill="#94A3B8" />
+            {/* Left & Right mirror view hints */}
+            <rect x="4" y="114" width="44" height="28" rx="6" fill="#0F172A" stroke="#38BDF8" strokeWidth="1.6" />
+            <rect x="412" y="114" width="44" height="28" rx="6" fill="#0F172A" stroke="#38BDF8" strokeWidth="1.6" />
+            <circle cx="428" cy="128" r="4" fill="#FACC15" />
+            {/* Driver headrest diagram indicator on left */}
+            <g transform="translate(22, 20)">
+              <rect x="0" y="0" width="118" height="72" rx="10" fill="#0F172A" fillOpacity="0.88" stroke="#5EEAD4" strokeWidth="1.4" />
+              <circle cx="28" cy="30" r="10" fill="#CBD5E1" />
+              <rect x="42" y="16" width="12" height="24" rx="4" fill="#0D9488" />
+              <line x1="16" y1="20" x2="60" y2="20" stroke="#5EEAD4" strokeWidth="1.5" strokeDasharray="3 2" />
+              <rect x="64" y="20" width="42" height="20" rx="4" fill="#1E293B" stroke="#5EEAD4" strokeWidth="1" />
+              <line x1="66" y1="30" x2="104" y2="30" stroke="#38BDF8" strokeWidth="1.2" />
+              {!hideHints && (
+                <text x="59" y="60" textAnchor="middle" fill="#5EEAD4" fontSize="8.8" fontWeight="700">
+                  Подголовник = верх
+                </text>
+              )}
+            </g>
+            <BadgePill x={154} y={16} text="1. Посадка · 2. Подголовник · 3. 3 зеркала" tone="teal" />
+          </CockpitFrame>
+        );
+
+      case 'pov_cockpit_blind_spot':
+        return (
+          <CockpitFrame skyColor="#BAE6FD">
+            <HorizonRoad withCenterDash withCykelsti="dashed" />
+            <FrontCar x={208} y={142} scale={0.72} color="#64748B" />
+            {/* Cyclist right in the blind spot just beside right mirror/A-pillar */}
+            <CyclistPOV x={365} y={178} scale={1.15} />
+            <circle cx="385" cy="154" r="14" fill="none" stroke="#EF4444" strokeWidth="2.5" strokeDasharray="4 3" />
+            {/* Right mirror warning dot */}
+            <rect x="404" y="116" width="50" height="32" rx="6" fill="#0F172A" stroke="#F59E0B" strokeWidth="1.8" />
+            <circle cx="426" cy="132" r="5" fill="#FACC15" />
+            <BadgePill x={14} y={16} text="Правое зеркало + SKULDERKIG через плечо!" tone="warn" />
+            <BadgePill x={14} y={46} text="Велосипедист в слепой зоне перед поворотом/дверью" tone="dark" />
+          </CockpitFrame>
+        );
+
+      case 'pov_curb_departure':
+        return (
+          <CockpitFrame skyColor="#BAE6FD">
+            <HorizonRoad withCenterDash withCykelsti="solid" />
+            {/* Sidewalk curb right next to bumper */}
+            <polygon points="392,98 424,98 460,220 408,220" fill="#CBD5E1" />
+            {/* Parked car ahead & cyclist passing on cykelsti */}
+            <FrontCar x={332} y={146} scale={0.76} color="#475569" />
+            <CyclistPOV x={374} y={176} scale={1.05} />
+            {/* Approaching car visible in left wing mirror */}
+            <rect x="6" y="114" width="60" height="36" rx="7" fill="#0F172A" stroke="#38BDF8" strokeWidth="2" />
+            <circle cx="28" cy="134" r="4" fill="#FEF08A" />
+            <circle cx="42" cy="134" r="4" fill="#FEF08A" />
+            {/* Left blinker arrow on cockpit cluster */}
+            <polygon points="122,232 132,226 132,238" fill="#22C55E" />
+            <BadgePill x={14} y={16} text="Старт от бордюра: пропустите ВСЕХ (авто + вело)!" tone="warn" />
+            <BadgePill x={14} y={46} text="Включите левый поворотник и сделайте skulderkig" tone="dark" />
+          </CockpitFrame>
+        );
+
+      case 'pov_school_children_a22':
+        return (
+          <CockpitFrame skyColor="#BAE6FD">
+            <HorizonRoad withCenterDash />
+            {/* Parked cars along right curb hiding view */}
+            <FrontCar x={324} y={166} scale={0.85} color="#475569" />
+            <FrontCar x={294} y={132} scale={0.56} color="#64748B" />
+            {/* Child darting out between parked cars */}
+            <circle cx="278" cy="160" r="6" fill="#EF4444" stroke="#FFFFFF" strokeWidth="1.4" />
+            <rect x="273" y="166" width="10" height="16" rx="3" fill="#EF4444" />
+            <path d="M 272 174 L 245 174" stroke="#FACC15" strokeWidth="2.5" strokeDasharray="4 3" />
+            <MountedRoadSignPost signCode="A22" x={392} baseY={184} />
+            <BadgePill x={14} y={16} text="A22 Дети! Снизьте скорость и уберите ногу с газа" tone="warn" />
+            <BadgePill x={14} y={46} text="Школьный патруль обязателен для остановки" tone="dark" />
+          </CockpitFrame>
+        );
+
+      case 'pov_yellow_traffic_light':
+        return (
+          <CockpitFrame skyColor="#BAE6FD">
+            <HorizonRoad withCenterDash />
+            {/* Cross street & white stop line */}
+            <line x1="88" y1="162" x2="386" y2="162" stroke="#FFFFFF" strokeWidth="5.5" />
+            {/* Signal pole with illuminated yellow lamp */}
+            <rect x="334" y="54" width="24" height="62" rx="6" fill="#18181B" stroke="#71717A" strokeWidth="1.5" />
+            <line x1="346" y1="116" x2="346" y2="178" stroke="#94A3B8" strokeWidth="4" />
+            <circle cx="346" cy="70" r="6" fill="#450A0A" />
+            <circle cx="346" cy="85" r="7" fill="#FACC15" />
+            <circle cx="346" cy="100" r="6" fill="#052E16" />
+            <BadgePill x={14} y={16} text="Жёлтый свет: СТОП перед линией, если безопасно (≥ 35 м)" tone="warn" />
+            <BadgePill x={14} y={46} text="Приоритет: 1. Полиция → 2. Светофор → 3. Знаки → 4. Правила" tone="dark" />
+          </CockpitFrame>
+        );
+
+      case 'pov_parking_5m_10m':
+        return (
+          <CockpitFrame skyColor="#BAE6FD">
+            <HorizonRoad withCenterDash withCykelsti="solid" />
+            {/* Crosswalk zebra ahead */}
+            {[172, 198, 224, 250, 276, 302].map((zx) => (
+              <rect key={zx} x={zx} y="142" width="14" height="18" rx="1.5" fill="#FFFFFF" opacity="0.92" />
+            ))}
+            {/* Red curb zone right before crosswalk */}
+            <line x1="358" y1="158" x2="418" y2="216" stroke="#EF4444" strokeWidth="6" opacity="0.82" />
+            {!hideHints && (
+              <text x="360" y="192" fill="#FCA5A5" fontSize="11" fontWeight="900">
+                5 m
+              </text>
+            )}
+            <BadgePill x={14} y={16} text="Запрет остановки/стоянки: 5 м перед зеброй и велопереездом" tone="warn" />
+            <BadgePill x={14} y={46} text="10 м от ближайшего края пересекаемой проезжей части" tone="dark" />
+          </CockpitFrame>
+        );
+
+      case 'pov_parking_oneway_ensrettet':
+        return (
+          <CockpitFrame skyColor="#E0F2FE">
+            <HorizonRoad withCenterDash={false} />
+            {/* Parked car on left side and parked car on right side both facing forward */}
+            <FrontCar x={126} y={156} scale={0.76} color="#0D9488" />
+            <FrontCar x={334} y={156} scale={0.76} color="#64748B" />
+            <MountedRoadSignPost signCode="E19" x={392} baseY={184} />
+            <BadgePill x={14} y={16} text="Односторонняя улица (E19): парковка слева и справа OK!" tone="teal" />
+            <BadgePill x={14} y={46} text="Следите за шириной проезда (3 м+) и знаками C61/C62" tone="dark" />
+          </CockpitFrame>
+        );
+
+      case 'pov_parking_bus_driveway':
+        return (
+          <CockpitFrame skyColor="#BAE6FD">
+            <HorizonRoad withCenterDash />
+            {/* Bus stop sign on right */}
+            <rect x="366" y="72" width="18" height="24" rx="4" fill="#FACC15" stroke="#18181B" strokeWidth="1.5" />
+            <text x="375" y="88" textAnchor="middle" fill="#18181B" fontSize="8" fontWeight="800">
+              BUS
+            </text>
+            <line x1="375" y1="96" x2="375" y2="174" stroke="#64748B" strokeWidth="3.5" />
+            {/* Red bus stop restriction curb zone */}
+            <line x1="342" y1="154" x2="412" y2="212" stroke="#EF4444" strokeWidth="5.5" opacity="0.85" />
+            {/* Driveway cutout ahead on right */}
+            <polygon points="295,126 340,126 355,140 298,140" fill="#CBD5E1" opacity="0.7" />
+            <BadgePill x={14} y={16} text="Остановка автобуса: 12 м до и 12 м после запрет парковки" tone="warn" />
+            <BadgePill x={14} y={46} text="Перед выездом (Indkørsel): остановка ≤ 3 мин разрешена" tone="dark" />
+          </CockpitFrame>
+        );
+
+      case 'pov_accident_triangle_112':
+        return (
+          <CockpitFrame skyColor="#BAE6FD">
+            <HorizonRoad withCenterDash />
+            {/* Broken car ahead with hazard blinkers */}
+            <FrontCar x={294} y={136} scale={0.68} color="#DC2626" blinkLeft blinkRight />
+            {/* Warning triangle placed on road behind broken car */}
+            <polygon points="348,166 334,190 362,190" fill="#FACC15" stroke="#EF4444" strokeWidth="3" strokeLinejoin="round" />
+            <BadgePill x={14} y={16} text="ДТП: аварийка + треугольник на 50 м (100 м на автомагистрали)" tone="warn" />
+            <BadgePill x={14} y={46} text="Травмы / угроза → 112 · Нет травм → обмен данными (114)" tone="dark" />
+          </CockpitFrame>
+        );
+
       case 'pov_school_roadmap':
       default:
         return (
@@ -1204,31 +1423,45 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
   };
 
   return (
-    <SvgIdContext.Provider value={uid}>
+    <SvgIdContext.Provider value={{ uid, hideHints }}>
       <div className={`relative overflow-hidden rounded-xl border border-zinc-200 bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-950 ${className}`}>
-        <svg viewBox="0 0 460 250" className="h-auto w-full select-none" role="img" aria-label={presetId}>
-          {renderContent()}
-        </svg>
+        {imageSrc ? (
+          <div className="aspect-[16/9] w-full overflow-hidden bg-zinc-100 dark:bg-zinc-950">
+            <img
+              src={imageSrc}
+              alt={maneuverBadge ?? presetId}
+              loading="lazy"
+              className="h-full w-full object-cover"
+            />
+          </div>
+        ) : (
+          <svg viewBox="0 0 460 250" className="h-auto w-full select-none" role="img" aria-label={presetId}>
+            {renderContent()}
+          </svg>
+        )}
 
-        {maneuverBadge && (
+        {!hideHints && maneuverBadge && (
           <div className="border-t border-zinc-200/80 bg-zinc-50 px-3.5 py-2 text-xs font-semibold text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300">
             {maneuverBadge}
           </div>
         )}
 
         {signCode &&
-          presetId !== 'pov_hajtaender_b11' &&
-          presetId !== 'pov_rundkoersel' &&
-          presetId !== 'pov_fletning_vs_skift' &&
-          presetId !== 'pov_bus_byzone' &&
-          presetId !== 'pov_zebra_trap' &&
-          presetId !== 'pov_undertavler' &&
-          presetId !== 'pov_speed_limits' &&
-          presetId !== 'pov_motorvej_merge' &&
-          presetId !== 'pov_motortrafikvej' &&
-          presetId !== 'pov_parking_meters' &&
-          presetId !== 'pov_sign_shapes_abcde' &&
-          !presetId.startsWith('pov_sign_') && (
+          (Boolean(imageSrc) ||
+            (presetId !== 'pov_hajtaender_b11' &&
+              presetId !== 'pov_rundkoersel' &&
+              presetId !== 'pov_fletning_vs_skift' &&
+              presetId !== 'pov_bus_byzone' &&
+              presetId !== 'pov_zebra_trap' &&
+              presetId !== 'pov_undertavler' &&
+              presetId !== 'pov_speed_limits' &&
+              presetId !== 'pov_motorvej_merge' &&
+              presetId !== 'pov_motortrafikvej' &&
+              presetId !== 'pov_parking_meters' &&
+              presetId !== 'pov_sign_shapes_abcde' &&
+              presetId !== 'pov_school_children_a22' &&
+              presetId !== 'pov_parking_oneway_ensrettet' &&
+              !presetId.startsWith('pov_sign_'))) && (
             <div className="absolute right-3 top-3 rounded-lg bg-white/90 p-1 shadow-sm backdrop-blur dark:bg-zinc-900/90">
               <DanishRoadSignSVG code={signCode} subPlaque={subPlaque} size={48} />
             </div>

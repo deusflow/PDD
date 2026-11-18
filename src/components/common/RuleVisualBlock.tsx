@@ -1,5 +1,5 @@
 import React from 'react';
-import { AlertTriangle, CheckCircle2, Eye, Info } from 'lucide-react';
+import { AlertTriangle, ArrowLeftRight, CheckCircle2, Compass, Eye, Info } from 'lucide-react';
 import { LanguageMode, ModuleCheatRule } from '../../types';
 import { CarTechnicalSVG } from '../visuals/CarTechnicalSVG';
 import { DanishRoadSignSVG } from '../visuals/DanishRoadSignSVG';
@@ -26,6 +26,7 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
       return (
         <DriverPOVSceneSVG
           presetId={visual.presetId}
+          imageSrc={visual.imageSrc}
           signCode={visual.signCode}
           subPlaque={visual.subPlaque}
           maneuverBadge={visual.maneuverBadge}
@@ -56,6 +57,7 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
       <div className="overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800">
         <TrafficSceneSVG
           presetId={visual.presetId}
+          imageSrc={visual.imageSrc}
           signCode={visual.signCode}
           subPlaque={visual.subPlaque}
         />
@@ -71,6 +73,9 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
   const pointsRu = rule.pointsRu ?? [];
   const pointsDa = rule.pointsDa ?? [];
   const hasPoints = pointsRu.length > 0 || pointsDa.length > 0;
+  const attentionRu = rule.attentionStepsRu ?? [];
+  const attentionDa = rule.attentionStepsDa ?? [];
+  const hasAttention = attentionRu.length > 0 || attentionDa.length > 0;
 
   return (
     <div className="space-y-4">
@@ -105,6 +110,54 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
               </div>
             )}
           </div>
+        </div>
+      )}
+
+      {/* Visual scan order markers (1 -> 2 -> 3): "Where to look" */}
+      {hasAttention && (
+        <div className="rounded-xl border border-indigo-200/80 bg-indigo-50/60 p-3.5 dark:border-indigo-900/50 dark:bg-indigo-950/25">
+          <div className="mb-2.5 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-indigo-700 dark:text-indigo-300">
+            <Compass className="h-3.5 w-3.5" />
+            <span>
+              {languageMode === 'da_only'
+                ? 'Orientering på billedet (1 → 2 → 3)'
+                : 'Куда смотреть на картинке (1 → 2 → 3)'}
+            </span>
+          </div>
+          <ol className="grid gap-2 sm:grid-cols-3">
+            {(languageMode === 'da_only' ? attentionDa : attentionRu.length > 0 ? attentionRu : attentionDa).map(
+              (step, idx) => (
+                <li
+                  key={idx}
+                  className="flex items-start gap-2 rounded-lg border border-indigo-200/60 bg-white/80 p-2.5 text-xs leading-snug dark:border-indigo-900/40 dark:bg-zinc-900/70"
+                >
+                  <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-indigo-600 text-[11px] font-bold text-white dark:bg-indigo-500">
+                    {idx + 1}
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    {languageMode === 'spoiler' && attentionDa[idx] ? (
+                      <BilingualText
+                        da={attentionDa[idx]}
+                        ru={attentionRu[idx] ?? ''}
+                        mode="spoiler"
+                        daClassName="text-xs font-medium leading-snug"
+                        ruClassName="text-[11px] leading-snug"
+                      />
+                    ) : (
+                      <>
+                        <p className="font-medium text-zinc-800 dark:text-zinc-200">{step}</p>
+                        {languageMode === 'both' && attentionDa[idx] && (
+                          <p className="mt-0.5 text-[11px] text-zinc-500 dark:text-zinc-400">
+                            DA: {attentionDa[idx]}
+                          </p>
+                        )}
+                      </>
+                    )}
+                  </div>
+                </li>
+              )
+            )}
+          </ol>
         </div>
       )}
 
@@ -155,6 +208,59 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
               ))}
             </ul>
           )}
+        </div>
+      )}
+
+      {/* Side-by-side comparison card ("Don't confuse!") */}
+      {rule.comparePair && (
+        <div className="rounded-xl border border-zinc-200 bg-zinc-50/70 p-3.5 dark:border-zinc-800 dark:bg-zinc-950/60">
+          <div className="mb-2.5 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
+            <ArrowLeftRight className="h-3.5 w-3.5 text-teal-600 dark:text-teal-400" />
+            <span>
+              {languageMode === 'da_only' ? rule.comparePair.headingDa : rule.comparePair.headingRu}
+            </span>
+          </div>
+          <div className="grid gap-2.5 sm:grid-cols-2">
+            {[rule.comparePair.left, rule.comparePair.right].map((side, idx) => (
+              <div
+                key={idx}
+                className="flex items-start gap-2.5 rounded-lg border border-zinc-200/80 bg-white p-2.5 dark:border-zinc-800 dark:bg-zinc-900"
+              >
+                {side.signCode && (
+                  <div className="shrink-0">
+                    <DanishRoadSignSVG code={side.signCode} size={42} />
+                  </div>
+                )}
+                <div className="min-w-0 flex-1">
+                  <div className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
+                    {languageMode === 'da_only' ? side.labelDa : side.labelRu}
+                  </div>
+                  {languageMode === 'spoiler' ? (
+                    <BilingualText
+                      da={side.summaryDa}
+                      ru={side.summaryRu}
+                      mode="spoiler"
+                      daClassName="text-xs font-normal leading-snug mt-0.5"
+                      ruClassName="text-[11px] leading-snug"
+                    />
+                  ) : languageMode === 'da_only' ? (
+                    <p className="mt-0.5 text-xs leading-snug text-zinc-600 dark:text-zinc-400">
+                      {side.summaryDa}
+                    </p>
+                  ) : (
+                    <>
+                      <p className="mt-0.5 text-xs leading-snug text-zinc-600 dark:text-zinc-400">
+                        {side.summaryRu}
+                      </p>
+                      <p className="mt-0.5 text-[11px] leading-snug text-zinc-400 dark:text-zinc-500">
+                        DA: {side.summaryDa}
+                      </p>
+                    </>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 

@@ -77,7 +77,7 @@ const LESSON_HERO_META: Record<number, HeroSceneMeta> = {
       'Ved byparkering gælder 5 m afstand før fodgængerfelt og 10 m fra vejkryds; ved tidsbegrænset parkering indstilles P-skiven til nærmeste kvarter frem.',
   },
   8: {
-    imageSrc: './images/lessons/module-8.svg',
+    imageSrc: './images/lessons/module-8.jpg',
     titleRu: 'Ситуация: сумерки, переключение фар и знак аварийной остановки',
     titleDa: 'Mørke, tåge og nødsituation ved vejkanten',
     captionRu:

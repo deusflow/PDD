@@ -4,9 +4,11 @@ import { DriverPOVSceneSVG } from './DriverPOVSceneSVG';
 
 interface TrafficSceneSVGProps {
   presetId: string;
+  imageSrc?: string;
   signCode?: string;
   subPlaque?: string;
   maneuverBadge?: string;
+  hideHints?: boolean;
   className?: string;
 }
 
@@ -144,9 +146,11 @@ const HajtaenderRow: React.FC<{ x1: number; y1: number; count: number; horizonta
 
 export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
   presetId,
+  imageSrc,
   signCode,
   subPlaque,
   maneuverBadge,
+  hideHints = false,
   className = '',
 }) => {
   const uid = useId().replace(/:/g, '');
@@ -154,9 +158,11 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
     return (
       <DriverPOVSceneSVG
         presetId={presetId}
+        imageSrc={imageSrc}
         signCode={signCode}
         subPlaque={subPlaque}
         maneuverBadge={maneuverBadge}
+        hideHints={hideHints}
         className={className}
       />
     );
@@ -190,41 +196,53 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
             <rect x="168" y="14" width="104" height="32" rx="8" fill="#0F172A" stroke="#71717A" strokeWidth="2.5" />
             <rect x="174" y="19" width="92" height="22" rx="4" fill="#334155" />
             <rect x="208" y="25" width="22" height="11" rx="2" fill="#94A3B8" />
-            <rect x="176" y="48" width="88" height="17" rx="8.5" fill="#0F172A" fillOpacity="0.85" />
-            <text x="220" y="59.5" textAnchor="middle" fill="#FFFFFF" fontSize="9.5" fontWeight="700">
-              1. Bakspejl
-            </text>
+            {!hideHints && (
+              <>
+                <rect x="176" y="48" width="88" height="17" rx="8.5" fill="#0F172A" fillOpacity="0.85" />
+                <text x="220" y="59.5" textAnchor="middle" fill="#FFFFFF" fontSize="9.5" fontWeight="700">
+                  1. Bakspejl
+                </text>
+              </>
+            )}
             {/* Right side mirror */}
             <rect x="336" y="102" width="84" height="44" rx="8" fill="#0F172A" stroke="#71717A" strokeWidth="2.5" />
             <rect x="342" y="108" width="72" height="32" rx="4" fill="#334155" />
             <rect x="345" y="114" width="12" height="22" rx="2" fill="#0D9488" />
-            <rect x="335" y="149" width="86" height="17" rx="8.5" fill="#0F172A" fillOpacity="0.85" />
-            <text x="378" y="160.5" textAnchor="middle" fill="#FFFFFF" fontSize="9.5" fontWeight="700">
-              2. Sidespejl
-            </text>
+            {!hideHints && (
+              <>
+                <rect x="335" y="149" width="86" height="17" rx="8.5" fill="#0F172A" fillOpacity="0.85" />
+                <text x="378" y="160.5" textAnchor="middle" fill="#FFFFFF" fontSize="9.5" fontWeight="700">
+                  2. Sidespejl
+                </text>
+              </>
+            )}
             {isBlindSpot ? (
-              <g>
-                {/* Blind spot cyclist badge */}
-                <rect x="298" y="168" width="136" height="26" rx="13" fill="#DC2626" stroke="#FFFFFF" strokeOpacity="0.25" />
-                <text x="366" y="184" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="700">
-                  3. SKULDERKIG! (Cyklist)
-                </text>
-                <circle cx="385" cy="84" r="16" fill="#FEF08A" stroke="#DC2626" strokeWidth="2.5" />
-                <text x="385" y="88.5" textAnchor="middle" fill="#DC2626" fontSize="12" fontWeight="900">
-                  !
-                </text>
-              </g>
+              !hideHints && (
+                <g>
+                  {/* Blind spot cyclist badge */}
+                  <rect x="298" y="168" width="136" height="26" rx="13" fill="#DC2626" stroke="#FFFFFF" strokeOpacity="0.25" />
+                  <text x="366" y="184" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="700">
+                    3. SKULDERKIG! (Cyklist)
+                  </text>
+                  <circle cx="385" cy="84" r="16" fill="#FEF08A" stroke="#DC2626" strokeWidth="2.5" />
+                  <text x="385" y="88.5" textAnchor="middle" fill="#DC2626" fontSize="12" fontWeight="900">
+                    !
+                  </text>
+                </g>
+              )
             ) : (
-              <g>
-                {/* Headrest alignment callout */}
-                <rect x="16" y="16" width="136" height="42" rx="10" fill="#0F172A" fillOpacity="0.9" stroke="#38BDF8" strokeWidth="1.6" />
-                <text x="84" y="34" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="700">
-                  Nakkestøtte =
-                </text>
-                <text x="84" y="49" textAnchor="middle" fill="#5EEAD4" fontSize="10" fontWeight="700">
-                  hovedets top
-                </text>
-              </g>
+              !hideHints && (
+                <g>
+                  {/* Headrest alignment callout */}
+                  <rect x="16" y="16" width="136" height="42" rx="10" fill="#0F172A" fillOpacity="0.9" stroke="#38BDF8" strokeWidth="1.6" />
+                  <text x="84" y="34" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="700">
+                    Nakkestøtte =
+                  </text>
+                  <text x="84" y="49" textAnchor="middle" fill="#5EEAD4" fontSize="10" fontWeight="700">
+                    hovedets top
+                  </text>
+                </g>
+              )
             )}
           </g>
         );
@@ -249,13 +267,17 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
             {/* Approaching car + cyclist */}
             <TopCar x="242" y="210" color="#64748B" />
             <CyclistTop x="337" y="205" />
-            <rect x="12" y="14" width="164" height="44" rx="10" fill="#0F172A" fillOpacity="0.9" stroke="#FFFFFF" strokeOpacity="0.2" />
-            <text x="94" y="32" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="700">
-              Igangsætning fra kantsten
-            </text>
-            <text x="94" y="48" textAnchor="middle" fill="#FDE047" fontSize="9.5" fontWeight="600">
-              Vigepligt for bil + cyklist!
-            </text>
+            {!hideHints && (
+              <>
+                <rect x="12" y="14" width="164" height="44" rx="10" fill="#0F172A" fillOpacity="0.9" stroke="#FFFFFF" strokeOpacity="0.2" />
+                <text x="94" y="32" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="700">
+                  Igangsætning fra kantsten
+                </text>
+                <text x="94" y="48" textAnchor="middle" fill="#FDE047" fontSize="9.5" fontWeight="600">
+                  Vigepligt for bil + cyklist!
+                </text>
+              </>
+            )}
           </g>
         );
 
@@ -274,14 +296,18 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
             <TopCar x="115" y="148" angle={90} isPlayer />
             {/* 2s brace */}
             <line x1="150" y1="95" x2="279" y2="95" stroke="#38BDF8" strokeWidth="3" />
-            <rect x="160" y="75" width="108" height="22" rx="6" fill="#0F172A" />
-            <text x="214" y="89" textAnchor="middle" fill="#38BDF8" fontSize="10.5" fontWeight="800">
-              Min. 2 sekunder!
-            </text>
-            <rect x="16" y="190" width="408" height="36" rx="8" fill="#18181B" opacity="0.9" />
-            <text x="220" y="212" textAnchor="middle" fill="#FFFFFF" fontSize="10.5" fontWeight="700">
-              2× fart (40 → 80 km/t) = 2× reaktionslængde, men 4× bremselængde!
-            </text>
+            {!hideHints && (
+              <>
+                <rect x="160" y="75" width="108" height="22" rx="6" fill="#0F172A" />
+                <text x="214" y="89" textAnchor="middle" fill="#38BDF8" fontSize="10.5" fontWeight="800">
+                  Min. 2 sekunder!
+                </text>
+                <rect x="16" y="190" width="408" height="36" rx="8" fill="#18181B" opacity="0.9" />
+                <text x="220" y="212" textAnchor="middle" fill="#FFFFFF" fontSize="10.5" fontWeight="700">
+                  2× fart (40 → 80 km/t) = 2× reaktionslængde, men 4× bremselængde!
+                </text>
+              </>
+            )}
           </g>
         );
 
@@ -302,10 +328,14 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
             <polygon points="160,82 145,90 160,98" fill="#F59E0B" />
             <TopCar x="155" y="152" angle={90} isPlayer blinkLeft />
             <TopCar x="340" y="88" angle={-90} color="#EF4444" label="MOD" />
-            <rect x="16" y="12" width="245" height="32" rx="7" fill="#18181B" />
-            <text x="138" y="32" textAnchor="middle" fill="#FFFFFF" fontSize="10.5" fontWeight="700">
-              Vending / bakning: Aldrig til fare eller ulempe
-            </text>
+            {!hideHints && (
+              <>
+                <rect x="16" y="12" width="245" height="32" rx="7" fill="#18181B" />
+                <text x="138" y="32" textAnchor="middle" fill="#FFFFFF" fontSize="10.5" fontWeight="700">
+                  Vending / bakning: Aldrig til fare eller ulempe
+                </text>
+              </>
+            )}
           </g>
         );
 
@@ -342,17 +372,21 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
               <>
                 {/* Unmarked equal intersection */}
                 <TopCar x="247" y="202" angle={0} isPlayer />
-                <TopCar x="345" y="98" angle={-90} color="#16A34A" label="HØJRE" />
-                <TopCar x="95" y="142" angle={90} color="#71717A" label="VENSTRE" />
-                {/* Priority arc */}
-                <path d="M 305 100 Q 275 100 265 150" fill="none" stroke="#FACC15" strokeWidth="3" strokeDasharray="5 4" />
-                <rect x="12" y="12" width="142" height="44" rx="8" fill="#18181B" opacity="0.9" />
-                <text x="83" y="30" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="700">
-                  Ingen skilte/striber
-                </text>
-                <text x="83" y="45" textAnchor="middle" fill="#4ADE80" fontSize="10" fontWeight="800">
-                  → HØJREVIGEPLIGT
-                </text>
+                <TopCar x="345" y="98" angle={-90} color="#16A34A" label={hideHints ? undefined : 'HØJRE'} />
+                <TopCar x="95" y="142" angle={90} color="#71717A" label={hideHints ? undefined : 'VENSTRE'} />
+                {!hideHints && (
+                  <>
+                    {/* Priority arc */}
+                    <path d="M 305 100 Q 275 100 265 150" fill="none" stroke="#FACC15" strokeWidth="3" strokeDasharray="5 4" />
+                    <rect x="12" y="12" width="142" height="44" rx="8" fill="#18181B" opacity="0.9" />
+                    <text x="83" y="30" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="700">
+                      Ingen skilte/striber
+                    </text>
+                    <text x="83" y="45" textAnchor="middle" fill="#4ADE80" fontSize="10" fontWeight="800">
+                      → HØJREVIGEPLIGT
+                    </text>
+                  </>
+                )}
               </>
             )}
           </g>
@@ -380,13 +414,17 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
             <TopCar x="220" y="202" isPlayer />
             <CyclistTop x="120" y="132" angle={90} />
             <TopCar x="350" y="96" angle={-90} color="#E11D48" label="BIL" />
-            <rect x="14" y="182" width="150" height="44" rx="10" fill="#0F172A" fillOpacity="0.92" stroke="#FFFFFF" strokeOpacity="0.2" />
-            <text x="89" y="200" textAnchor="middle" fill="#FFFFFF" fontSize="9.5" fontWeight="700">
-              Over fortov / kantsten
-            </text>
-            <text x="89" y="216" textAnchor="middle" fill="#F87171" fontSize="9.5" fontWeight="800">
-              Ubetinget vigepligt!
-            </text>
+            {!hideHints && (
+              <>
+                <rect x="14" y="182" width="150" height="44" rx="10" fill="#0F172A" fillOpacity="0.92" stroke="#FFFFFF" strokeOpacity="0.2" />
+                <text x="89" y="200" textAnchor="middle" fill="#FFFFFF" fontSize="9.5" fontWeight="700">
+                  Over fortov / kantsten
+                </text>
+                <text x="89" y="216" textAnchor="middle" fill="#F87171" fontSize="9.5" fontWeight="800">
+                  Ubetinget vigepligt!
+                </text>
+              </>
+            )}
           </g>
         );
 
@@ -413,13 +451,17 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
                 <TopCar x="242" y="170" angle={70} isPlayer blinkRight />
                 <CyclistTop x="294" y="138" angle={12} />
                 <path d="M 252 162 Q 295 145 340 135" fill="none" stroke="#F59E0B" strokeWidth="3" strokeDasharray="5 4" />
-                <rect x="12" y="12" width="150" height="44" rx="8" fill="#18181B" opacity="0.9" />
-                <text x="87" y="30" textAnchor="middle" fill="#FFFFFF" fontSize="9.5" fontWeight="700">
-                  Udkørsel + Blink højre
-                </text>
-                <text x="87" y="45" textAnchor="middle" fill="#38BDF8" fontSize="9.5" fontWeight="700">
-                  Skulderkig for cyklist!
-                </text>
+                {!hideHints && (
+                  <>
+                    <rect x="12" y="12" width="150" height="44" rx="8" fill="#18181B" opacity="0.9" />
+                    <text x="87" y="30" textAnchor="middle" fill="#FFFFFF" fontSize="9.5" fontWeight="700">
+                      Udkørsel + Blink højre
+                    </text>
+                    <text x="87" y="45" textAnchor="middle" fill="#38BDF8" fontSize="9.5" fontWeight="700">
+                      Skulderkig for cyklist!
+                    </text>
+                  </>
+                )}
               </>
             ) : (
               <>
@@ -454,10 +496,14 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
             <g transform="translate(335, 16) scale(0.55)">
               <DanishRoadSignSVG code="B15" size={110} />
             </g>
-            <rect x="14" y="188" width="295" height="36" rx="8" fill="#18181B" />
-            <text x="161" y="210" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="700">
-              Ingen stribe = FLETNING (lynlås). Over stribe = Vognbaneskift!
-            </text>
+            {!hideHints && (
+              <>
+                <rect x="14" y="188" width="295" height="36" rx="8" fill="#18181B" />
+                <text x="161" y="210" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="700">
+                  Ingen stribe = FLETNING (lynlås). Over stribe = Vognbaneskift!
+                </text>
+              </>
+            )}
           </g>
         );
 
@@ -504,13 +550,17 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
             <CyclistTop x="269" y="175" />
             <line x1="269" y1="160" x2="269" y2="45" stroke="#38BDF8" strokeWidth="3.5" />
             <polygon points="262,50 269,36 276,50" fill="#38BDF8" />
-            <rect x="12" y="12" width="132" height="44" rx="8" fill="#18181B" />
-            <text x="78" y="30" textAnchor="middle" fill="#FFFFFF" fontSize="9.5" fontWeight="700">
-              Cyklist ligeud =
-            </text>
-            <text x="78" y="45" textAnchor="middle" fill="#38BDF8" fontSize="9.5" fontWeight="800">
-              ALTID FØRST!
-            </text>
+            {!hideHints && (
+              <>
+                <rect x="12" y="12" width="132" height="44" rx="8" fill="#18181B" />
+                <text x="78" y="30" textAnchor="middle" fill="#FFFFFF" fontSize="9.5" fontWeight="700">
+                  Cyklist ligeud =
+                </text>
+                <text x="78" y="45" textAnchor="middle" fill="#38BDF8" fontSize="9.5" fontWeight="800">
+                  ALTID FØRST!
+                </text>
+              </>
+            )}
           </g>
         );
 
@@ -535,13 +585,17 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
             <g transform="translate(18, 10) scale(0.45)">
               <DanishRoadSignSVG code="E55" size={110} />
             </g>
-            <rect x="135" y="14" width="285" height="38" rx="8" fill="#18181B" />
-            <text x="277" y="31" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="700">
-              I byzone: Hold tilbage for rutebus fra stoppested!
-            </text>
-            <text x="277" y="45" textAnchor="middle" fill="#A1A1AA" fontSize="9.5">
-              Uden for byzone (80 km/t): bussen har vigepligt
-            </text>
+            {!hideHints && (
+              <>
+                <rect x="135" y="14" width="285" height="38" rx="8" fill="#18181B" />
+                <text x="277" y="31" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="700">
+                  I byzone: Hold tilbage for rutebus fra stoppested!
+                </text>
+                <text x="277" y="45" textAnchor="middle" fill="#A1A1AA" fontSize="9.5">
+                  Uden for byzone (80 km/t): bussen har vigepligt
+                </text>
+              </>
+            )}
           </g>
         );
 
@@ -565,10 +619,14 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
             <g transform="translate(16, 16) scale(0.55)">
               <DanishRoadSignSVG code="E17" size={110} />
             </g>
-            <rect x="16" y="186" width="168" height="38" rx="8" fill="#991B1B" />
-            <text x="100" y="209" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="800">
-              OVERHALING FORBUDT!
-            </text>
+            {!hideHints && (
+              <>
+                <rect x="16" y="186" width="168" height="38" rx="8" fill="#991B1B" />
+                <text x="100" y="209" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="800">
+                  OVERHALING FORBUDT!
+                </text>
+              </>
+            )}
           </g>
         );
 
@@ -590,13 +648,17 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
             <g transform="translate(14, 16) scale(0.6)">
               <DanishRoadSignSVG code="A22" size={110} />
             </g>
-            <rect x="14" y="180" width="154" height="42" rx="10" fill="#0F172A" fillOpacity="0.92" stroke="#FFFFFF" strokeOpacity="0.2" />
-            <text x="91" y="198" textAnchor="middle" fill="#FFFFFF" fontSize="9.5" fontWeight="700">
-              Børn mellem biler:
-            </text>
-            <text x="91" y="213" textAnchor="middle" fill="#FACC15" fontSize="9.5" fontWeight="800">
-              Sænk farten + beredskab!
-            </text>
+            {!hideHints && (
+              <>
+                <rect x="14" y="180" width="154" height="42" rx="10" fill="#0F172A" fillOpacity="0.92" stroke="#FFFFFF" strokeOpacity="0.2" />
+                <text x="91" y="198" textAnchor="middle" fill="#FFFFFF" fontSize="9.5" fontWeight="700">
+                  Børn mellem biler:
+                </text>
+                <text x="91" y="213" textAnchor="middle" fill="#FACC15" fontSize="9.5" fontWeight="800">
+                  Sænk farten + beredskab!
+                </text>
+              </>
+            )}
           </g>
         );
 
@@ -613,23 +675,31 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
             {/* 3. Spærrelinje (solid) */}
             <line x1="295" y1="80" x2="425" y2="80" stroke="#FFFFFF" strokeWidth="4.5" />
             {/* Labels */}
-            <text x="75" y="64" textAnchor="middle" fill="#4ADE80" fontSize="10" fontWeight="700">
-              1. Vognbanelinje
-            </text>
-            <text x="218" y="64" textAnchor="middle" fill="#FACC15" fontSize="10" fontWeight="700">
-              2. Varslingslinje
-            </text>
-            <text x="360" y="64" textAnchor="middle" fill="#F87171" fontSize="10" fontWeight="700">
-              3. Spærrelinje
-            </text>
+            {!hideHints && (
+              <>
+                <text x="75" y="64" textAnchor="middle" fill="#4ADE80" fontSize="10" fontWeight="700">
+                  1. Vognbanelinje
+                </text>
+                <text x="218" y="64" textAnchor="middle" fill="#FACC15" fontSize="10" fontWeight="700">
+                  2. Varslingslinje
+                </text>
+                <text x="360" y="64" textAnchor="middle" fill="#F87171" fontSize="10" fontWeight="700">
+                  3. Spærrelinje
+                </text>
+              </>
+            )}
             {/* Double line demo */}
             <line x1="40" y1="165" x2="400" y2="165" stroke="#FFFFFF" strokeWidth="4" />
             <line x1="40" y1="175" x2="400" y2="175" stroke="#FFFFFF" strokeWidth="4" strokeDasharray="16 12" />
             <TopCar x="160" y="196" angle={90} isPlayer />
-            <rect x="85" y="122" width="270" height="30" rx="6" fill="#18181B" opacity="0.9" />
-            <text x="220" y="141" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="700">
-              Dobbeltlinje: Den linje NÆRMEST din bane gælder!
-            </text>
+            {!hideHints && (
+              <>
+                <rect x="85" y="122" width="270" height="30" rx="6" fill="#18181B" opacity="0.9" />
+                <text x="220" y="141" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="700">
+                  Dobbeltlinje: Den linje NÆRMEST din bane gælder!
+                </text>
+              </>
+            )}
           </g>
         );
 
@@ -649,25 +719,29 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
             <circle cx="351" cy="106" r="11" fill="#052E16" />
             <TopCar x="265" y="185" isPlayer brakeLights />
             <line x1="265" y1="158" x2="265" y2="128" stroke="#FACC15" strokeWidth="2.5" strokeDasharray="4 3" />
-            <text x="295" y="148" fill="#FACC15" fontSize="10" fontWeight="800">
-              35 m
-            </text>
-            <rect x="12" y="16" width="110" height="90" rx="8" fill="#18181B" />
-            <text x="67" y="34" textAnchor="middle" fill="#FACC15" fontSize="10" fontWeight="800">
-              HIERARKI:
-            </text>
-            <text x="67" y="51" textAnchor="middle" fill="#FFFFFF" fontSize="9.5">
-              1. Politiets tegn
-            </text>
-            <text x="67" y="66" textAnchor="middle" fill="#FFFFFF" fontSize="9.5">
-              2. Lyssignal
-            </text>
-            <text x="67" y="81" textAnchor="middle" fill="#FFFFFF" fontSize="9.5">
-              3. Færdselstavler
-            </text>
-            <text x="67" y="96" textAnchor="middle" fill="#FFFFFF" fontSize="9.5">
-              4. Færdselsregler
-            </text>
+            {!hideHints && (
+              <>
+                <text x="295" y="148" fill="#FACC15" fontSize="10" fontWeight="800">
+                  35 m
+                </text>
+                <rect x="12" y="16" width="110" height="90" rx="8" fill="#18181B" />
+                <text x="67" y="34" textAnchor="middle" fill="#FACC15" fontSize="10" fontWeight="800">
+                  HIERARKI:
+                </text>
+                <text x="67" y="51" textAnchor="middle" fill="#FFFFFF" fontSize="9.5">
+                  1. Politiets tegn
+                </text>
+                <text x="67" y="66" textAnchor="middle" fill="#FFFFFF" fontSize="9.5">
+                  2. Lyssignal
+                </text>
+                <text x="67" y="81" textAnchor="middle" fill="#FFFFFF" fontSize="9.5">
+                  3. Færdselstavler
+                </text>
+                <text x="67" y="96" textAnchor="middle" fill="#FFFFFF" fontSize="9.5">
+                  4. Færdselsregler
+                </text>
+              </>
+            )}
           </g>
         );
 
@@ -693,13 +767,17 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
             <circle cx="307" cy="121" r="7" fill="#EF4444" />
             <circle cx="307" cy="138" r="5" fill="#FFFFFF" />
             <TopCar x="250" y="185" isPlayer brakeLights />
-            <rect x="14" y="140" width="136" height="44" rx="8" fill="#991B1B" />
-            <text x="82" y="159" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="800">
-              Rødt blink = STOP!
-            </text>
-            <text x="82" y="174" textAnchor="middle" fill="#FECACA" fontSize="9">
-              Vent til lyset er slukket
-            </text>
+            {!hideHints && (
+              <>
+                <rect x="14" y="140" width="136" height="44" rx="8" fill="#991B1B" />
+                <text x="82" y="159" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="800">
+                  Rødt blink = STOP!
+                </text>
+                <text x="82" y="174" textAnchor="middle" fill="#FECACA" fontSize="9">
+                  Vent til lyset er slukket
+                </text>
+              </>
+            )}
           </g>
         );
 
@@ -722,13 +800,17 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
             <g transform="translate(82, 12) scale(0.45)">
               <DanishRoadSignSVG code="E42" size={110} />
             </g>
-            <rect x="150" y="14" width="274" height="42" rx="8" fill="#18181B" />
-            <text x="287" y="31" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="700">
-              Motortrafikvej (blå E43): max 80 km/t
-            </text>
-            <text x="287" y="46" textAnchor="middle" fill="#38BDF8" fontSize="9.5" fontWeight="700">
-              Personbil + trailer: max 80 km/t (100 med Tempo 100)
-            </text>
+            {!hideHints && (
+              <>
+                <rect x="150" y="14" width="274" height="42" rx="8" fill="#18181B" />
+                <text x="287" y="31" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="700">
+                  Motortrafikvej (blå E43): max 80 km/t
+                </text>
+                <text x="287" y="46" textAnchor="middle" fill="#38BDF8" fontSize="9.5" fontWeight="700">
+                  Personbil + trailer: max 80 km/t (100 med Tempo 100)
+                </text>
+              </>
+            )}
           </g>
         );
 
@@ -753,9 +835,11 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
             <g transform="translate(16, 10) scale(0.42)">
               <DanishRoadSignSVG code="E42" size={110} />
             </g>
-            <text x="90" y="172" textAnchor="middle" fill="#FCA5A5" fontSize="9" fontWeight="800">
-              NØDSPOR (Kun havari!)
-            </text>
+            {!hideHints && (
+              <text x="90" y="172" textAnchor="middle" fill="#FCA5A5" fontSize="9" fontWeight="800">
+                NØDSPOR (Kun havari!)
+              </text>
+            )}
           </g>
         );
 
@@ -774,13 +858,17 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
             <TopCar x="305" y="165" isPlayer />
             <path d="M 305 135 L 305 35" fill="none" stroke="#4ADE80" strokeWidth="3" strokeDasharray="5 4" />
             <polygon points="299,40 305,26 311,40" fill="#4ADE80" />
-            <rect x="10" y="176" width="150" height="48" rx="8" fill="#18181B" />
-            <text x="85" y="195" textAnchor="middle" fill="#4ADE80" fontSize="9.5" fontWeight="800">
-              Forbikørsel til højre OK:
-            </text>
-            <text x="85" y="210" textAnchor="middle" fill="#FFFFFF" fontSize="9">
-              Når forankørende blinker venstre!
-            </text>
+            {!hideHints && (
+              <>
+                <rect x="10" y="176" width="150" height="48" rx="8" fill="#18181B" />
+                <text x="85" y="195" textAnchor="middle" fill="#4ADE80" fontSize="9.5" fontWeight="800">
+                  Forbikørsel til højre OK:
+                </text>
+                <text x="85" y="210" textAnchor="middle" fill="#FFFFFF" fontSize="9">
+                  Når forankørende blinker venstre!
+                </text>
+              </>
+            )}
           </g>
         );
 
@@ -798,13 +886,17 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
             <g transform="translate(18, 16) scale(0.55)">
               <DanishRoadSignSVG code="C51" size={110} />
             </g>
-            <rect x="115" y="18" width="305" height="38" rx="8" fill="#18181B" />
-            <text x="267" y="34" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="700">
-              C51: Forbudt for biler (tohjulede cykler må overhales)
-            </text>
-            <text x="267" y="48" textAnchor="middle" fill="#F87171" fontSize="9.5" fontWeight="700">
-              Aldrig overhale op mod bakketop uden frit udsyn!
-            </text>
+            {!hideHints && (
+              <>
+                <rect x="115" y="18" width="305" height="38" rx="8" fill="#18181B" />
+                <text x="267" y="34" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="700">
+                  C51: Forbudt for biler (tohjulede cykler må overhales)
+                </text>
+                <text x="267" y="48" textAnchor="middle" fill="#F87171" fontSize="9.5" fontWeight="700">
+                  Aldrig overhale op mod bakketop uden frit udsyn!
+                </text>
+              </>
+            )}
           </g>
         );
 
@@ -824,22 +916,30 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
             {/* 5m danger zone */}
             <rect x="270" y="138" width="25" height="40" fill="#EF4444" opacity="0.45" />
             <line x1="302" y1="138" x2="302" y2="178" stroke="#EF4444" strokeWidth="2.5" />
-            <text x="326" y="162" fill="#DC2626" fontSize="11" fontWeight="800">
-              5 m
-            </text>
+            {!hideHints && (
+              <text x="326" y="162" fill="#DC2626" fontSize="11" fontWeight="800">
+                5 m
+              </text>
+            )}
             {/* 10m junction zone */}
             <line x1="125" y1="100" x2="125" y2="188" stroke="#D97706" strokeWidth="2.5" />
-            <text x="84" y="148" fill="#B45309" fontSize="11" fontWeight="800">
-              10 m (kryds)
-            </text>
+            {!hideHints && (
+              <text x="84" y="148" fill="#B45309" fontSize="11" fontWeight="800">
+                10 m (kryds)
+              </text>
+            )}
             <TopCar x="275" y="210" isPlayer />
-            <rect x="14" y="184" width="126" height="42" rx="10" fill="#0F172A" fillOpacity="0.92" stroke="#FFFFFF" strokeOpacity="0.2" />
-            <text x="77" y="201" textAnchor="middle" fill="#FFFFFF" fontSize="9.5" fontWeight="700">
-              5 m før felt/cykelsti
-            </text>
-            <text x="77" y="216" textAnchor="middle" fill="#FACC15" fontSize="9.5" fontWeight="700">
-              10 m fra vejskæring
-            </text>
+            {!hideHints && (
+              <>
+                <rect x="14" y="184" width="126" height="42" rx="10" fill="#0F172A" fillOpacity="0.92" stroke="#FFFFFF" strokeOpacity="0.2" />
+                <text x="77" y="201" textAnchor="middle" fill="#FFFFFF" fontSize="9.5" fontWeight="700">
+                  5 m før felt/cykelsti
+                </text>
+                <text x="77" y="216" textAnchor="middle" fill="#FACC15" fontSize="9.5" fontWeight="700">
+                  10 m fra vejskæring
+                </text>
+              </>
+            )}
           </g>
         );
 
@@ -855,22 +955,26 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
             <text x="102" y="198" textAnchor="middle" fill="#FFFFFF" fontSize="9.5" fontWeight="700">
               INDKØRSEL
             </text>
-            <TopCar x="102" y="128" angle={90} isPlayer label="≤3m" />
+            <TopCar x="102" y="128" angle={90} isPlayer label={hideHints ? undefined : '≤3m'} />
             {/* Bus stop zone */}
             <rect x="260" y="150" width="12" height="35" fill="#0284C7" />
             <circle cx="266" cy="150" r="8" fill="#FACC15" stroke="#18181B" strokeWidth="1.5" />
             <line x1="190" y1="158" x2="266" y2="158" stroke="#EF4444" strokeWidth="3" />
             <line x1="266" y1="158" x2="342" y2="158" stroke="#EF4444" strokeWidth="3" />
-            <text x="228" y="176" textAnchor="middle" fill="#DC2626" fontSize="10" fontWeight="800">
-              12 m
-            </text>
-            <text x="304" y="176" textAnchor="middle" fill="#DC2626" fontSize="10" fontWeight="800">
-              12 m
-            </text>
-            <rect x="14" y="10" width="412" height="28" rx="10" fill="#0F172A" fillOpacity="0.92" stroke="#FFFFFF" strokeOpacity="0.2" />
-            <text x="220" y="28" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="700">
-              Indkørsel: standsning OK (≤3 min). Busstop: 12 m før/efter forbudt!
-            </text>
+            {!hideHints && (
+              <>
+                <text x="228" y="176" textAnchor="middle" fill="#DC2626" fontSize="10" fontWeight="800">
+                  12 m
+                </text>
+                <text x="304" y="176" textAnchor="middle" fill="#DC2626" fontSize="10" fontWeight="800">
+                  12 m
+                </text>
+                <rect x="14" y="10" width="412" height="28" rx="10" fill="#0F172A" fillOpacity="0.92" stroke="#FFFFFF" strokeOpacity="0.2" />
+                <text x="220" y="28" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="700">
+                  Indkørsel: standsning OK (≤3 min). Busstop: 12 m før/efter forbudt!
+                </text>
+              </>
+            )}
           </g>
         );
 
@@ -885,18 +989,22 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
             <path d="M 220 190 L 220 50" stroke="#FFFFFF" strokeWidth="5" strokeOpacity="0.45" />
             <polygon points="208,58 220,34 232,58" fill="#FFFFFF" fillOpacity="0.45" />
             {/* Legal parking on BOTH left and right */}
-            <TopCar x="138" y="120" isPlayer label="OK" />
-            <TopCar x="302" y="120" color="#16A34A" label="OK" />
+            <TopCar x="138" y="120" isPlayer label={hideHints ? undefined : 'OK'} />
+            <TopCar x="302" y="120" color="#16A34A" label={hideHints ? undefined : 'OK'} />
             <g transform="translate(18, 18) scale(0.55)">
               <DanishRoadSignSVG code="E19" size={110} />
             </g>
-            <rect x="14" y="174" width="84" height="46" rx="10" fill="#0F172A" fillOpacity="0.92" stroke="#FFFFFF" strokeOpacity="0.2" />
-            <text x="56" y="194" textAnchor="middle" fill="#4ADE80" fontSize="9.5" fontWeight="800">
-              Ensrettet:
-            </text>
-            <text x="56" y="209" textAnchor="middle" fill="#FFFFFF" fontSize="9">
-              Venstre side OK!
-            </text>
+            {!hideHints && (
+              <>
+                <rect x="14" y="174" width="84" height="46" rx="10" fill="#0F172A" fillOpacity="0.92" stroke="#FFFFFF" strokeOpacity="0.2" />
+                <text x="56" y="194" textAnchor="middle" fill="#4ADE80" fontSize="9.5" fontWeight="800">
+                  Ensrettet:
+                </text>
+                <text x="56" y="209" textAnchor="middle" fill="#FFFFFF" fontSize="9">
+                  Venstre side OK!
+                </text>
+              </>
+            )}
           </g>
         );
 
@@ -912,13 +1020,17 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
             {/* Player beam */}
             <polygon points="246,195 292,195 340,95 215,95" fill="#FEF08A" opacity="0.22" />
             <TopCar x="268" y="202" isPlayer />
-            <rect x="14" y="14" width="210" height="44" rx="8" fill="#1E293B" stroke="#38BDF8" strokeWidth="1.5" />
-            <text x="119" y="32" textAnchor="middle" fill="#FFFFFF" fontSize="9.5" fontWeight="700">
-              Blænd ned: 200–300 m (modkørende)
-            </text>
-            <text x="119" y="47" textAnchor="middle" fill="#38BDF8" fontSize="9.5" fontWeight="700">
-              100–150 m (forankørende)
-            </text>
+            {!hideHints && (
+              <>
+                <rect x="14" y="14" width="210" height="44" rx="8" fill="#1E293B" stroke="#38BDF8" strokeWidth="1.5" />
+                <text x="119" y="32" textAnchor="middle" fill="#FFFFFF" fontSize="9.5" fontWeight="700">
+                  Blænd ned: 200–300 m (modkørende)
+                </text>
+                <text x="119" y="47" textAnchor="middle" fill="#38BDF8" fontSize="9.5" fontWeight="700">
+                  100–150 m (forankørende)
+                </text>
+              </>
+            )}
           </g>
         );
 
@@ -932,13 +1044,17 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
             <TopCar x="255" y="185" isPlayer />
             {/* Fog overlay */}
             <rect x="0" y="0" width="440" height="90" fill="#F1F5F9" opacity="0.72" />
-            <rect x="14" y="14" width="412" height="44" rx="8" fill="#0F172A" opacity="0.9" />
-            <text x="220" y="32" textAnchor="middle" fill="#38BDF8" fontSize="10" fontWeight="800">
-              Akvaplaning: Slip speederen + hold rattet lige!
-            </text>
-            <text x="220" y="47" textAnchor="middle" fill="#FFFFFF" fontSize="9.5">
-              Tågebaglygte KUN ved tæt tåge/kraftig nedbør (sluk når bil er bag dig)
-            </text>
+            {!hideHints && (
+              <>
+                <rect x="14" y="14" width="412" height="44" rx="8" fill="#0F172A" opacity="0.9" />
+                <text x="220" y="32" textAnchor="middle" fill="#38BDF8" fontSize="10" fontWeight="800">
+                  Akvaplaning: Slip speederen + hold rattet lige!
+                </text>
+                <text x="220" y="47" textAnchor="middle" fill="#FFFFFF" fontSize="9.5">
+                  Tågebaglygte KUN ved tæt tåge/kraftig nedbør (sluk når bil er bag dig)
+                </text>
+              </>
+            )}
           </g>
         );
 
@@ -948,45 +1064,57 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
             <rect x="0" y="0" width="440" height="240" fill="#18181B" />
             <rect x="20" y="24" width="124" height="190" rx="12" fill="#27272A" stroke="#EF4444" strokeWidth="2" />
             <text x="82" y="64" textAnchor="middle" fill="#EF4444" fontSize="26" fontWeight="800">
-              0,50‰
+              ‰
             </text>
             <text x="82" y="92" textAnchor="middle" fill="#FFFFFF" fontSize="10.5" fontWeight="700">
               Promillegrænse
             </text>
-            <text x="82" y="114" textAnchor="middle" fill="#A1A1AA" fontSize="9.5">
-              ≥ 0,51‰ = Spiritus
-            </text>
-            <text x="82" y="132" textAnchor="middle" fill="#FCA5A5" fontSize="9.5">
-              &gt; 2,00‰ = Konfiskation
-            </text>
+            {!hideHints && (
+              <>
+                <text x="82" y="114" textAnchor="middle" fill="#A1A1AA" fontSize="9.5">
+                  ≥ 0,51‰ = Spiritus
+                </text>
+                <text x="82" y="132" textAnchor="middle" fill="#FCA5A5" fontSize="9.5">
+                  &gt; 2,00‰ = Konfiskation
+                </text>
+              </>
+            )}
 
             <rect x="158" y="24" width="124" height="190" rx="12" fill="#27272A" stroke="#F59E0B" strokeWidth="2" />
             <text x="220" y="64" textAnchor="middle" fill="#F59E0B" fontSize="24" fontWeight="800">
-              2 KLIP
+              KLIP
             </text>
             <text x="220" y="92" textAnchor="middle" fill="#FFFFFF" fontSize="10.5" fontWeight="700">
               Ny bilist (0–3 år)
             </text>
-            <text x="220" y="116" textAnchor="middle" fill="#FDE68A" fontSize="9.5">
-              = Kørselsforbud!
-            </text>
-            <text x="220" y="140" textAnchor="middle" fill="#A1A1AA" fontSize="9">
-              Erfaren: 3 klip / 3 år
-            </text>
+            {!hideHints && (
+              <>
+                <text x="220" y="116" textAnchor="middle" fill="#FDE68A" fontSize="9.5">
+                  2 klip = Kørselsforbud!
+                </text>
+                <text x="220" y="140" textAnchor="middle" fill="#A1A1AA" fontSize="9">
+                  Erfaren: 3 klip / 3 år
+                </text>
+              </>
+            )}
 
             <rect x="296" y="24" width="124" height="190" rx="12" fill="#27272A" stroke="#38BDF8" strokeWidth="2" />
             <text x="358" y="64" textAnchor="middle" fill="#38BDF8" fontSize="22" fontWeight="800">
               MOBIL
             </text>
             <text x="358" y="92" textAnchor="middle" fill="#FFFFFF" fontSize="10.5" fontWeight="700">
-              Håndholdt =
+              Håndholdt
             </text>
-            <text x="358" y="116" textAnchor="middle" fill="#BAE6FD" fontSize="9.5">
-              1 klip + bøde
-            </text>
-            <text x="358" y="140" textAnchor="middle" fill="#A1A1AA" fontSize="9">
-              Også ved rødt lys!
-            </text>
+            {!hideHints && (
+              <>
+                <text x="358" y="116" textAnchor="middle" fill="#BAE6FD" fontSize="9.5">
+                  1 klip + bøde
+                </text>
+                <text x="358" y="140" textAnchor="middle" fill="#A1A1AA" fontSize="9">
+                  Også ved rødt lys!
+                </text>
+              </>
+            )}
           </g>
         );
 
@@ -1009,14 +1137,18 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
               strokeLinejoin="round"
             />
             <line x1="125" y1="146" x2="310" y2="146" stroke="#FACC15" strokeWidth="2.5" strokeDasharray="5 4" />
-            <rect x="155" y="122" width="132" height="22" rx="8" fill="#0F172A" fillOpacity="0.92" />
-            <text x="221" y="137" textAnchor="middle" fill="#FACC15" fontSize="10" fontWeight="800">
-              50 m (100 m motorvej)
-            </text>
-            <rect x="16" y="14" width="408" height="32" rx="10" fill="#991B1B" stroke="#FFFFFF" strokeOpacity="0.2" />
-            <text x="220" y="34" textAnchor="middle" fill="#FFFFFF" fontSize="10.5" fontWeight="800">
-              112 = Personskade / Akut • 114 = Politi (ej akut)
-            </text>
+            {!hideHints && (
+              <>
+                <rect x="155" y="122" width="132" height="22" rx="8" fill="#0F172A" fillOpacity="0.92" />
+                <text x="221" y="137" textAnchor="middle" fill="#FACC15" fontSize="10" fontWeight="800">
+                  50 m (100 m motorvej)
+                </text>
+                <rect x="16" y="14" width="408" height="32" rx="10" fill="#991B1B" stroke="#FFFFFF" strokeOpacity="0.2" />
+                <text x="220" y="34" textAnchor="middle" fill="#FFFFFF" fontSize="10.5" fontWeight="800">
+                  112 = Personskade / Akut • 114 = Politi (ej akut)
+                </text>
+              </>
+            )}
           </g>
         );
 
@@ -1026,32 +1158,40 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
           <g>
             <rect x="0" y="0" width="440" height="240" fill="#1E293B" />
             <rect x="24" y="28" width="184" height="184" rx="14" fill="#0F172A" stroke="#38BDF8" strokeWidth="2" />
-            <text x="116" y="70" textAnchor="middle" fill="#38BDF8" fontSize="24" fontWeight="800">
-              &lt; 135 cm
+            <text x="116" y="70" textAnchor="middle" fill="#38BDF8" fontSize="22" fontWeight="800">
+              AUTOSTOL
             </text>
             <text x="116" y="100" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="700">
-              Godkendt autostol / pude
+              Børn &amp; sele / airbag
             </text>
-            <text x="116" y="128" textAnchor="middle" fill="#94A3B8" fontSize="9.5">
-              Fører har ansvaret for børn &lt; 15 år
-            </text>
-            <text x="116" y="148" textAnchor="middle" fill="#FCA5A5" fontSize="9.5">
-              Bagudvendt foran = Airbag FRA!
-            </text>
+            {!hideHints && (
+              <>
+                <text x="116" y="128" textAnchor="middle" fill="#94A3B8" fontSize="9.5">
+                  Under 135 cm: autostol / pude
+                </text>
+                <text x="116" y="148" textAnchor="middle" fill="#FCA5A5" fontSize="9.5">
+                  Bagudvendt foran = Airbag FRA!
+                </text>
+              </>
+            )}
 
             <rect x="232" y="28" width="184" height="184" rx="14" fill="#0F172A" stroke="#F59E0B" strokeWidth="2" />
             <text x="324" y="70" textAnchor="middle" fill="#F59E0B" fontSize="22" fontWeight="800">
               TRÆTHED
             </text>
-            <text x="324" y="100" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="700">
-              Hold ind og sov!
-            </text>
-            <text x="324" y="128" textAnchor="middle" fill="#94A3B8" fontSize="9.5">
-              Åbent vindue / høj musik
-            </text>
-            <text x="324" y="146" textAnchor="middle" fill="#FCA5A5" fontSize="9.5">
-              fjerner IKKE mikrosøvn!
-            </text>
+            {!hideHints && (
+              <>
+                <text x="324" y="100" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="700">
+                  Hold ind og sov!
+                </text>
+                <text x="324" y="128" textAnchor="middle" fill="#94A3B8" fontSize="9.5">
+                  Åbent vindue / høj musik
+                </text>
+                <text x="324" y="146" textAnchor="middle" fill="#FCA5A5" fontSize="9.5">
+                  fjerner IKKE mikrosøvn!
+                </text>
+              </>
+            )}
           </g>
         );
     }
@@ -1059,32 +1199,60 @@ export const TrafficSceneSVG: React.FC<TrafficSceneSVGProps> = ({
 
   return (
     <div className={`relative overflow-hidden rounded-xl border border-zinc-200 bg-zinc-100 dark:border-zinc-700/80 dark:bg-zinc-900 ${className}`}>
-      <svg viewBox="0 0 440 240" className="h-auto w-full select-none" role="img" aria-label={`Trafiksituation ${presetId}`}>
-        <defs>
-          <linearGradient id={`${uid}_tsSkyGrad`} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#7DD3FC" />
-            <stop offset="100%" stopColor="#E0F2FE" />
-          </linearGradient>
-          <linearGradient id={`${uid}_tsGrassBg`} x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#DCFCE7" />
-            <stop offset="100%" stopColor="#BBF7D0" />
-          </linearGradient>
-          <linearGradient id={`${uid}_tsTownBg`} x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#F4F4F5" />
-            <stop offset="100%" stopColor="#E4E4E7" />
-          </linearGradient>
-          <linearGradient id={`${uid}_tsAsphalt`} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#475569" />
-            <stop offset="100%" stopColor="#334155" />
-          </linearGradient>
-        </defs>
-        {renderScene()}
-      </svg>
-      {signCode && presetId !== 'intersection_hajtaender' && presetId !== 'rundkoersel_entry' && presetId !== 'fletning_b15' && presetId !== 'narrow_bridge_b18' && presetId !== 'fodgaengerfelt_zebra' && presetId !== 'children_school_a22' && presetId !== 'bus_stop_byzone' && presetId !== 'motorway_trailer' && presetId !== 'motorway_merge_nodspor' && presetId !== 'overtaking_hill_curve' && presetId !== 'parking_oneway_ensrettet' && (
-        <div className="absolute right-3 top-3 rounded-lg bg-white/90 p-1.5 shadow-md backdrop-blur dark:bg-zinc-900/90">
-          <DanishRoadSignSVG code={signCode} subPlaque={subPlaque} size={56} />
+      {imageSrc ? (
+        <div className="aspect-[16/9] w-full overflow-hidden bg-zinc-100 dark:bg-zinc-950">
+          <img
+            src={imageSrc}
+            alt={maneuverBadge ?? presetId}
+            loading="lazy"
+            className="h-full w-full object-cover"
+          />
+        </div>
+      ) : (
+        <svg viewBox="0 0 440 240" className="h-auto w-full select-none" role="img" aria-label={`Trafiksituation ${presetId}`}>
+          <defs>
+            <linearGradient id={`${uid}_tsSkyGrad`} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#7DD3FC" />
+              <stop offset="100%" stopColor="#E0F2FE" />
+            </linearGradient>
+            <linearGradient id={`${uid}_tsGrassBg`} x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#DCFCE7" />
+              <stop offset="100%" stopColor="#BBF7D0" />
+            </linearGradient>
+            <linearGradient id={`${uid}_tsTownBg`} x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#F4F4F5" />
+              <stop offset="100%" stopColor="#E4E4E7" />
+            </linearGradient>
+            <linearGradient id={`${uid}_tsAsphalt`} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#475569" />
+              <stop offset="100%" stopColor="#334155" />
+            </linearGradient>
+          </defs>
+          {renderScene()}
+        </svg>
+      )}
+      {!hideHints && maneuverBadge && (
+        <div className="border-t border-zinc-200/80 bg-zinc-50 px-3.5 py-2 text-xs font-semibold text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300">
+          {maneuverBadge}
         </div>
       )}
+      {signCode &&
+        (Boolean(imageSrc) ||
+          (presetId !== 'intersection_hajtaender' &&
+            presetId !== 'rundkoersel_entry' &&
+            presetId !== 'fletning_b15' &&
+            presetId !== 'narrow_bridge_b18' &&
+            presetId !== 'fodgaengerfelt_zebra' &&
+            presetId !== 'children_school_a22' &&
+            presetId !== 'bus_stop_byzone' &&
+            presetId !== 'motorway_trailer' &&
+            presetId !== 'motorway_merge_nodspor' &&
+            presetId !== 'overtaking_hill_curve' &&
+            presetId !== 'parking_oneway_ensrettet')) && (
+          <div className="absolute right-3 top-3 rounded-lg bg-white/90 p-1.5 shadow-md backdrop-blur dark:bg-zinc-900/90">
+            <DanishRoadSignSVG code={signCode} subPlaque={subPlaque} size={56} />
+          </div>
+        )}
     </div>
   );
 };

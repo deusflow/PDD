@@ -379,9 +379,11 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
     return (
       <TrafficSceneSVG
         presetId={visual.presetId}
+        imageSrc={visual.imageSrc}
         signCode={visual.signCode}
         subPlaque={visual.subPlaque}
-        maneuverBadge={visual.maneuverBadge}
+        maneuverBadge={isSubmitted ? visual.maneuverBadge : undefined}
+        hideHints={!isSubmitted}
       />
     );
   };

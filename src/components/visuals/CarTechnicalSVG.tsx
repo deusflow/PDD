@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useId, useState } from 'react';
 import { LanguageMode, TechnicalTabId } from '../../types';
 import { BilingualText } from '../common/BilingualText';
 import { SpeakButton } from '../common/SpeakButton';
@@ -204,6 +204,7 @@ export const CarTechnicalSVG: React.FC<CarTechnicalSVGProps> = ({
   compact = false,
   className = '',
 }) => {
+  const uid = useId().replace(/:/g, '');
   const [tab, setTab] = useState<TechnicalTabId>(initialTab);
   const [selectedId, setSelectedId] = useState<string>(() => {
     if (activeHotspot) return activeHotspot;
@@ -265,95 +266,189 @@ export const CarTechnicalSVG: React.FC<CarTechnicalSVGProps> = ({
       case 'motorrum':
         return (
           <g>
-            {/* Engine bay background */}
-            <rect x="0" y="0" width="440" height="220" fill="#18181B" />
-            <rect x="24" y="18" width="392" height="184" rx="16" fill="#27272A" stroke="#3F3F46" strokeWidth="2" />
-            {/* Engine block */}
-            <rect x="135" y="42" width="165" height="122" rx="12" fill="#3F3F46" stroke="#52525B" strokeWidth="2" />
-            <text x="218" y="98" textAnchor="middle" fill="#A1A1AA" fontSize="13" fontWeight="800">
-              MOTORBLOK
+            <defs>
+              <linearGradient id={`${uid}_bay`} x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#18181B" />
+                <stop offset="100%" stopColor="#09090B" />
+              </linearGradient>
+              <linearGradient id={`${uid}_metal`} x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stopColor="#64748B" />
+                <stop offset="100%" stopColor="#334155" />
+              </linearGradient>
+            </defs>
+            <rect x="0" y="0" width="440" height="220" fill={`url(#${uid}_bay)`} />
+            {/* Windshield cowl top + front bumper/radiator grille bottom */}
+            <path d="M 16 14 Q 220 4 424 14 L 414 202 Q 220 212 26 202 Z" fill="#27272A" stroke="#52525B" strokeWidth="2" />
+            <rect x="112" y="192" width="216" height="12" rx="4" fill="#0F172A" stroke="#475569" strokeWidth="1.2" />
+            <line x1="126" y1="198" x2="314" y2="198" stroke="#64748B" strokeWidth="1.5" strokeDasharray="8 6" />
+            {/* Open hood prop rod */}
+            <line x1="406" y1="186" x2="424" y2="28" stroke="#FACC15" strokeWidth="3" strokeLinecap="round" />
+
+            {/* Realistic ribbed engine block + intake manifold + dipstick */}
+            <rect x="136" y="42" width="166" height="126" rx="14" fill="#1E293B" stroke="#475569" strokeWidth="2" />
+            <rect x="150" y="54" width="138" height="72" rx="10" fill={`url(#${uid}_metal)`} stroke="#94A3B8" strokeWidth="1.4" />
+            {[164, 184, 204, 224, 244, 264].map((x) => (
+              <rect key={x} x={x} y="62" width="8" height="54" rx="3" fill="#1E293B" opacity="0.65" />
+            ))}
+            <text x="219" y="49" textAnchor="middle" fill="#CBD5E1" fontSize="8.5" fontWeight="800" letterSpacing="1">
+              MOTORBLOK &amp; OLIE
             </text>
-            {/* Battery */}
-            <rect x="38" y="128" width="76" height="56" rx="6" fill="#09090B" stroke="#71717A" strokeWidth="2" />
-            <text x="76" y="160" textAnchor="middle" fill="#D4D4D8" fontSize="10" fontWeight="700">
-              12V +/-
+            {/* Oil filler cap + bright yellow dipstick ring */}
+            <circle cx="176" cy="144" r="10" fill="#0F172A" stroke="#FACC15" strokeWidth="2" />
+            <line x1="219" y1="126" x2="219" y2="146" stroke="#FACC15" strokeWidth="3" />
+            <circle cx="219" cy="150" r="8" fill="none" stroke="#FACC15" strokeWidth="3" />
+            <text x="255" y="152" fill="#FDE047" fontSize="8" fontWeight="700">
+              Oliepind
             </text>
-            {/* Reservoirs */}
-            <rect x="36" y="34" width="64" height="50" rx="8" fill="#451A03" stroke="#F59E0B" strokeWidth="2" />
-            <text x="68" y="76" textAnchor="middle" fill="#FDE68A" fontSize="8.5" fontWeight="700">
-              BREMSE
+
+            {/* 12V Battery */}
+            <rect x="34" y="122" width="84" height="62" rx="7" fill="#09090B" stroke="#71717A" strokeWidth="2" />
+            <rect x="44" y="128" width="16" height="10" rx="2" fill="#DC2626" />
+            <text x="52" y="136" textAnchor="middle" fill="#FFFFFF" fontSize="8" fontWeight="900">+</text>
+            <rect x="92" y="128" width="16" height="10" rx="2" fill="#3F3F46" />
+            <text x="100" y="136" textAnchor="middle" fill="#FFFFFF" fontSize="8" fontWeight="900">-</text>
+            <text x="76" y="164" textAnchor="middle" fill="#D4D4D8" fontSize="9.5" fontWeight="700">
+              12V Batteri
             </text>
-            <rect x="328" y="34" width="70" height="58" rx="10" fill="#4C0519" stroke="#FB7185" strokeWidth="2" />
-            <text x="363" y="84" textAnchor="middle" fill="#FECDD3" fontSize="8.5" fontWeight="700">
+
+            {/* 1. Bremsevæske reservoir with visible MIN/MAX */}
+            <rect x="36" y="28" width="76" height="68" rx="9" fill="#1E293B" stroke="#F59E0B" strokeWidth="1.8" />
+            <rect x="42" y="54" width="64" height="22" rx="4" fill="#D97706" opacity="0.55" />
+            <line x1="42" y1="54" x2="106" y2="54" stroke="#FDE68A" strokeWidth="1" strokeDasharray="3 2" />
+            <line x1="42" y1="74" x2="106" y2="74" stroke="#FDE68A" strokeWidth="1" strokeDasharray="3 2" />
+            <text x="100" y="52" textAnchor="end" fill="#FDE68A" fontSize="6.5" fontWeight="700">MAX</text>
+            <text x="100" y="72" textAnchor="end" fill="#FDE68A" fontSize="6.5" fontWeight="700">MIN</text>
+            <text x="74" y="88" textAnchor="middle" fill="#FDE68A" fontSize="8" fontWeight="800">
+              BREMSEVÆSKE
+            </text>
+
+            {/* 3. Kølervæske pressurized sphere */}
+            <rect x="322" y="28" width="84" height="72" rx="14" fill="#1E293B" stroke="#FB7185" strokeWidth="1.8" />
+            <ellipse cx="364" cy="64" rx="28" ry="18" fill="#E11D48" opacity="0.45" />
+            <line x1="336" y1="54" x2="392" y2="54" stroke="#FECDD3" strokeWidth="1" strokeDasharray="3 2" />
+            <line x1="336" y1="74" x2="392" y2="74" stroke="#FECDD3" strokeWidth="1" strokeDasharray="3 2" />
+            <text x="364" y="92" textAnchor="middle" fill="#FECDD3" fontSize="7.8" fontWeight="800">
               KØLER (VARM!)
             </text>
-            <rect x="330" y="124" width="66" height="58" rx="10" fill="#0C4A6E" stroke="#38BDF8" strokeWidth="2" />
-            <text x="363" y="174" textAnchor="middle" fill="#BAE6FD" fontSize="8.5" fontWeight="700">
+
+            {/* 4. Sprinklervæske tank */}
+            <rect x="324" y="118" width="80" height="66" rx="10" fill="#0C4A6E" stroke="#38BDF8" strokeWidth="1.8" />
+            <rect x="330" y="138" width="68" height="28" rx="5" fill="#0284C7" opacity="0.55" />
+            <text x="364" y="176" textAnchor="middle" fill="#BAE6FD" fontSize="8" fontWeight="800">
               SPRINKLER
             </text>
+
             {/* Hotspots */}
-            {hotspotCircle('bremsevaeske', 68, 52, '1', '#F59E0B')}
-            {hotspotCircle('motorolie', 218, 134, '2', '#10B981')}
-            {hotspotCircle('koelervaeske', 363, 56, '3', '#E11D48')}
-            {hotspotCircle('sprinklervaeske', 363, 146, '4', '#0284C7')}
+            {hotspotCircle('bremsevaeske', 74, 52, '1', '#F59E0B')}
+            {hotspotCircle('motorolie', 219, 102, '2', '#10B981')}
+            {hotspotCircle('koelervaeske', 364, 58, '3', '#E11D48')}
+            {hotspotCircle('sprinklervaeske', 364, 146, '4', '#0284C7')}
           </g>
         );
 
       case 'daek_bremser':
         return (
           <g>
-            <rect x="0" y="0" width="440" height="220" fill="#18181B" />
-            {/* Chassis side silhouette */}
+            <defs>
+              <linearGradient id={`${uid}_carBody`} x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#475569" />
+                <stop offset="100%" stopColor="#1E293B" />
+              </linearGradient>
+            </defs>
+            <rect x="0" y="0" width="440" height="220" fill="#09090B" />
+            {/* Road ground line */}
+            <line x1="16" y1="190" x2="424" y2="190" stroke="#3F3F46" strokeWidth="2.5" />
+            {/* Realistic Hatchback side cutaway */}
             <path
-              d="M 48 135 L 72 95 L 150 62 L 295 62 L 365 98 L 402 110 L 402 152 L 48 152 Z"
-              fill="#27272A"
-              stroke="#52525B"
-              strokeWidth="2.5"
+              d="M 46 148 Q 48 116 74 102 L 138 66 Q 198 54 276 58 L 352 94 L 392 104 Q 404 114 404 148 L 372 152 A 36 36 0 0 0 296 152 L 160 152 A 36 36 0 0 0 84 152 Z"
+              fill={`url(#${uid}_carBody)`}
+              stroke="#94A3B8"
+              strokeWidth="1.8"
             />
-            {/* Wheels */}
-            <circle cx="118" cy="154" r="34" fill="#09090B" stroke="#71717A" strokeWidth="5" />
-            <circle cx="118" cy="154" r="16" fill="#52525B" />
-            <circle cx="326" cy="154" r="34" fill="#09090B" stroke="#71717A" strokeWidth="5" />
-            <circle cx="326" cy="154" r="16" fill="#52525B" />
-            {/* TWI Callout */}
-            <rect x="16" y="16" width="118" height="36" rx="8" fill="#0F172A" stroke="#10B981" strokeWidth="1.5" />
-            <text x="75" y="33" textAnchor="middle" fill="#34D399" fontSize="10" fontWeight="800">
-              Min. 1,6 mm (TWI)
-            </text>
-            <text x="75" y="45" textAnchor="middle" fill="#94A3B8" fontSize="8.5">
-              Ens dæk på 4 hjul
-            </text>
-            {hotspotCircle('daek', 118, 154, 'DÆK', '#10B981')}
-            {hotspotCircle('styretoej', 155, 102, 'RAT', '#38BDF8')}
-            {hotspotCircle('bremser', 210, 128, 'PEDAL', '#EF4444')}
-            {hotspotCircle('haandbremse', 265, 128, 'HÅND', '#F59E0B')}
-            {hotspotCircle('stoddaempere', 355, 106, 'STØD', '#8B5CF6')}
+            {/* Side windows */}
+            <path d="M 142 74 L 222 68 L 222 100 L 116 100 Z" fill="#0F172A" opacity="0.85" />
+            <path d="M 230 68 L 274 68 L 330 96 L 230 100 Z" fill="#0F172A" opacity="0.85" />
+            {/* Steering column + vacuum brake booster + handbrake cable */}
+            <line x1="148" y1="98" x2="122" y2="148" stroke="#38BDF8" strokeWidth="2.5" strokeDasharray="4 2" />
+            <path d="M 206 128 L 122 154 M 266 132 L 334 154" stroke="#F59E0B" strokeWidth="2" strokeDasharray="4 3" />
+            {/* Shock absorber coil over rear wheel */}
+            <path d="M 352 98 L 344 112 L 358 118 L 344 124 L 358 130 L 348 142" fill="none" stroke="#A78BFA" strokeWidth="2.5" strokeLinecap="round" />
+
+            {/* Front & Rear Alloy Wheels with Brake Disc + Red Caliper */}
+            {[122, 334].map((cx) => (
+              <g key={cx}>
+                <circle cx={cx} cy="154" r="35" fill="#18181B" stroke="#71717A" strokeWidth="4" />
+                <circle cx={cx} cy="154" r="24" fill="#334155" stroke="#94A3B8" strokeWidth="1.5" />
+                <circle cx={cx} cy="154" r="15" fill="#CBD5E1" opacity="0.7" />
+                <path d={`M ${cx + 8} 142 A 14 14 0 0 1 ${cx + 12} 162`} fill="none" stroke="#EF4444" strokeWidth="4.5" strokeLinecap="round" />
+                <circle cx={cx} cy="154" r="5" fill="#0F172A" />
+              </g>
+            ))}
+
+            {/* Zoomed TWI Tread Callout */}
+            <g transform="translate(14, 14)">
+              <rect x="0" y="0" width="132" height="48" rx="10" fill="#0F172A" stroke="#10B981" strokeWidth="1.5" />
+              <rect x="10" y="10" width="28" height="28" rx="4" fill="#27272A" />
+              <rect x="16" y="10" width="4" height="22" fill="#09090B" />
+              <rect x="26" y="10" width="4" height="22" fill="#09090B" />
+              <rect x="16" y="25" width="4" height="4" fill="#34D399" />
+              <text x="46" y="23" fill="#34D399" fontSize="9.5" fontWeight="800">
+                Min. 1,6 mm
+              </text>
+              <text x="46" y="36" fill="#CBD5E1" fontSize="8">
+                TWI · 4 ens dæk
+              </text>
+            </g>
+
+            {hotspotCircle('daek', 122, 154, 'DÆK', '#10B981')}
+            {hotspotCircle('styretoej', 152, 96, 'RAT', '#38BDF8')}
+            {hotspotCircle('bremser', 206, 128, 'PEDAL', '#EF4444')}
+            {hotspotCircle('haandbremse', 266, 128, 'HÅND', '#F59E0B')}
+            {hotspotCircle('stoddaempere', 354, 102, 'STØD', '#8B5CF6')}
           </g>
         );
 
       case 'lygter':
         return (
           <g>
-            <rect x="0" y="0" width="440" height="220" fill="#18181B" />
-            {/* Top-down car outline */}
-            <rect x="125" y="54" width="190" height="112" rx="28" fill="#27272A" stroke="#52525B" strokeWidth="2.5" />
-            <rect x="165" y="68" width="108" height="84" rx="14" fill="#09090B" />
-            {/* Front left beams */}
-            <polygon points="125,74 35,44 35,104" fill="#FEF08A" opacity="0.28" />
-            <polygon points="125,146 35,116 35,176" fill="#FEF08A" opacity="0.28" />
-            <text x="58" y="32" fill="#FEF08A" fontSize="10" fontWeight="700">
-              FORAN (Hvid)
+            <rect x="0" y="0" width="440" height="220" fill="#09090B" />
+            {/* Headlight & Taillight cones */}
+            <polygon points="122,74 16,32 16,104" fill="#FEF08A" opacity="0.22" />
+            <polygon points="122,146 16,116 16,188" fill="#FEF08A" opacity="0.22" />
+            <polygon points="122,74 42,60 42,88" fill="#FEF9C3" opacity="0.34" />
+            <polygon points="122,146 42,132 42,160" fill="#FEF9C3" opacity="0.34" />
+            <polygon points="322,110 385,92 385,128" fill="#FFFFFF" opacity="0.22" />
+            {/* Tapered top-down car silhouette */}
+            <path
+              d="M 122 72 Q 124 54 148 54 L 300 54 Q 322 54 322 74 L 322 146 Q 322 166 300 166 L 148 166 Q 124 166 122 148 Z"
+              fill="#334155"
+              stroke="#94A3B8"
+              strokeWidth="1.8"
+            />
+            <rect x="164" y="66" width="114" height="88" rx="14" fill="#0F172A" />
+            <rect x="192" y="72" width="66" height="76" rx="8" fill="#475569" opacity="0.65" />
+            {/* Side mirrors */}
+            <rect x="172" y="47" width="14" height="7" rx="3" fill="#475569" />
+            <rect x="172" y="166" width="14" height="7" rx="3" fill="#475569" />
+            {/* Tail & brake lamps */}
+            <rect x="316" y="64" width="6" height="18" rx="2" fill="#EF4444" />
+            <rect x="316" y="138" width="6" height="18" rx="2" fill="#EF4444" />
+            {/* Horn sound arcs */}
+            <path d="M 146 102 A 10 10 0 0 0 146 118 M 138 96 A 16 16 0 0 0 138 124" fill="none" stroke="#34D399" strokeWidth="2" strokeLinecap="round" />
+
+            <text x="16" y="24" fill="#FEF08A" fontSize="10" fontWeight="700">
+              FORAN (Hvid / Gul)
             </text>
-            <text x="382" y="32" textAnchor="end" fill="#FCA5A5" fontSize="10" fontWeight="700">
-              BAGPÅ (Rød)
+            <text x="424" y="24" textAnchor="end" fill="#FCA5A5" fontSize="10" fontWeight="700">
+              BAGPÅ (Rød + Hvid nr.plade)
             </text>
-            {hotspotCircle('positionslys', 132, 74, 'POS', '#94A3B8')}
-            {hotspotCircle('naerlys', 102, 110, '30m', '#FACC15')}
-            {hotspotCircle('fjernlys', 54, 110, '100m', '#3B82F6')}
+            {hotspotCircle('positionslys', 132, 68, 'POS', '#94A3B8')}
+            {hotspotCircle('naerlys', 96, 110, '30m', '#FACC15')}
+            {hotspotCircle('fjernlys', 46, 110, '100m', '#3B82F6')}
             {hotspotCircle('horn', 180, 110, 'HORN', '#10B981')}
-            {hotspotCircle('blinklys', 220, 56, '60-120', '#F59E0B')}
-            {hotspotCircle('stoplys', 310, 84, 'STOP', '#EF4444')}
-            {hotspotCircle('nummerplade', 330, 134, '20m', '#EC4899')}
+            {hotspotCircle('blinklys', 224, 54, '60-120', '#F59E0B')}
+            {hotspotCircle('stoplys', 316, 78, 'STOP', '#EF4444')}
+            {hotspotCircle('nummerplade', 348, 128, '20m', '#EC4899')}
           </g>
         );
 
@@ -361,29 +456,42 @@ export const CarTechnicalSVG: React.FC<CarTechnicalSVGProps> = ({
         return (
           <g>
             <rect x="0" y="0" width="440" height="220" fill="#09090B" />
-            <rect x="24" y="20" width="392" height="180" rx="22" fill="#18181B" stroke="#3F3F46" strokeWidth="3" />
-            {/* Gauges */}
-            <circle cx="115" cy="110" r="56" fill="#09090B" stroke="#3F3F46" strokeWidth="3" />
-            <text x="115" y="106" textAnchor="middle" fill="#A1A1AA" fontSize="14" fontWeight="800">
+            <path d="M 18 198 L 36 42 Q 220 8 404 42 L 422 198 Z" fill="#18181B" stroke="#3F3F46" strokeWidth="2.5" />
+            {/* Analog-style Speedometer */}
+            <circle cx="106" cy="116" r="56" fill="#09090B" stroke="#475569" strokeWidth="3" />
+            <path d="M 64 142 A 50 50 0 1 1 148 142" fill="none" stroke="#38BDF8" strokeWidth="3" strokeDasharray="4 6" opacity="0.6" />
+            <line x1="106" y1="116" x2="82" y2="82" stroke="#EF4444" strokeWidth="3" strokeLinecap="round" />
+            <circle cx="106" cy="116" r="6" fill="#CBD5E1" />
+            <text x="106" y="142" textAnchor="middle" fill="#38BDF8" fontSize="10" fontWeight="800">
+              50 · 80 · 130
+            </text>
+            <text x="106" y="156" textAnchor="middle" fill="#94A3B8" fontSize="8.5" fontWeight="700">
               km/t
             </text>
-            <text x="115" y="126" textAnchor="middle" fill="#38BDF8" fontSize="11" fontWeight="700">
-              50 / 80 / 130
-            </text>
-            <circle cx="325" cy="110" r="56" fill="#09090B" stroke="#3F3F46" strokeWidth="3" />
-            <text x="325" y="108" textAnchor="middle" fill="#A1A1AA" fontSize="12" fontWeight="700">
-              o/min
-            </text>
-            <text x="325" y="126" textAnchor="middle" fill="#4ADE80" fontSize="10" fontWeight="700">
+
+            {/* Analog-style Tachometer */}
+            <circle cx="334" cy="116" r="56" fill="#09090B" stroke="#475569" strokeWidth="3" />
+            <path d="M 294 140 A 48 48 0 0 1 322 72" fill="none" stroke="#22C55E" strokeWidth="5" opacity="0.7" />
+            <line x1="334" y1="116" x2="310" y2="86" stroke="#F8FAFC" strokeWidth="3" strokeLinecap="round" />
+            <circle cx="334" cy="116" r="6" fill="#CBD5E1" />
+            <text x="334" y="142" textAnchor="middle" fill="#4ADE80" fontSize="9.5" fontWeight="800">
               Øko ~2.000
             </text>
-            {/* Warning lights center */}
-            <rect x="180" y="42" width="80" height="136" rx="12" fill="#09090B" stroke="#27272A" strokeWidth="2" />
-            {hotspotCircle('olie_lampe', 202, 74, 'OLIE', '#DC2626')}
-            {hotspotCircle('bremse_lampe', 238, 74, '(!)', '#DC2626')}
-            {hotspotCircle('temp_lampe', 202, 114, 'TEMP', '#EF4444')}
-            {hotspotCircle('abs_lampe', 238, 114, 'ABS', '#F59E0B')}
-            <text x="220" y="160" textAnchor="middle" fill="#FCA5A5" fontSize="8.5" fontWeight="800">
+            <text x="334" y="156" textAnchor="middle" fill="#94A3B8" fontSize="8.5" fontWeight="700">
+              o/min
+            </text>
+
+            {/* Center Warning Cluster */}
+            <rect x="174" y="38" width="92" height="148" rx="14" fill="#09090B" stroke="#334155" strokeWidth="2" />
+            <circle cx="220" cy="150" r="9" fill="#1D4ED8" opacity="0.35" stroke="#60A5FA" strokeWidth="1" />
+            <text x="220" y="153" textAnchor="middle" fill="#93C5FD" fontSize="7" fontWeight="800">
+              FJERN
+            </text>
+            {hotspotCircle('olie_lampe', 200, 72, 'OLIE', '#DC2626')}
+            {hotspotCircle('bremse_lampe', 240, 72, '(!)', '#DC2626')}
+            {hotspotCircle('temp_lampe', 200, 114, 'TEMP', '#EF4444')}
+            {hotspotCircle('abs_lampe', 240, 114, 'ABS', '#F59E0B')}
+            <text x="220" y="176" textAnchor="middle" fill="#FCA5A5" fontSize="8" fontWeight="800">
               RØD = STANDS STRAKS!
             </text>
           </g>

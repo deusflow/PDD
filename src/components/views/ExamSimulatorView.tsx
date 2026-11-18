@@ -278,9 +278,11 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
     return (
       <TrafficSceneSVG
         presetId={visual.presetId}
+        imageSrc={visual.imageSrc}
         signCode={visual.signCode}
         subPlaque={visual.subPlaque}
-        maneuverBadge={visual.maneuverBadge}
+        maneuverBadge={phase !== 'active' ? visual.maneuverBadge : undefined}
+        hideHints={phase === 'active'}
       />
     );
   };

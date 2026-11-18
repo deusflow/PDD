@@ -295,7 +295,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       'Вы едете по городу и планируете перестроиться на правую полосу или повернуть направо на ближайшем перекрёстке. Оцените обзор в зеркалах.',
     visual: {
       type: 'scene',
-      presetId: 'cockpit_blind_spot',
+      presetId: 'pov_cockpit_blind_spot',
       captionDa: 'Kabineudsigt: Bakspejl, sidespejl og skulderkig',
       captionRu: 'Вид из кабины: зеркала и слепая зона (cyklist)',
     },
@@ -338,7 +338,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       'Вы припаркованы вдоль правого бордюра на городской улице и собираетесь начать движение в поток.',
     visual: {
       type: 'scene',
-      presetId: 'curb_departure',
+      presetId: 'pov_curb_departure',
       captionDa: 'Igangsætning fra kantsten i byzone',
       captionRu: 'Начало движения от бордюра в городе',
     },
@@ -381,7 +381,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       'Вы едете со скоростью 80 км/ч по сухой загородной дороге за другим автомобилем. Оцените безопасную дистанцию и остановочный путь.',
     visual: {
       type: 'scene',
-      presetId: 'pov_stopping_math',
+      presetId: 'pov_distance_2s',
+      imageSrc: './images/rules/country-lanes.jpg',
       captionDa: 'Sikkerhedsafstand (2-sekunders reglen) & Standselængde',
       captionRu: 'Дистанция 2 секунды и тормозной путь',
     },
@@ -467,7 +468,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       'Перед началом поездки на незнакомом автомобиле вы настраиваете водительское сиденье, подголовник и зеркала.',
     visual: {
       type: 'scene',
-      presetId: 'cockpit_seat_mirror',
+      presetId: 'pov_cockpit_seat_mirror',
       captionDa: 'Korrekt ergonomi & indstilling før kørsel',
       captionRu: 'Правильная настройка сиденья, подголовника и зеркал',
     },
@@ -644,7 +645,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       'Вы приближаетесь к перекрёстку с круговым движением (знаки D12 + B11 и hajtænder). По кольцу уже едут автомобиль и велосипедист.',
     visual: {
       type: 'scene',
-      presetId: 'rundkoersel_entry',
+      presetId: 'pov_rundkoersel',
+      imageSrc: './images/rules/roundabout.jpg',
       signCode: 'D12',
       captionDa: 'Indkørsel i rundkørsel (Vigepligt & Blink)',
       captionRu: 'Въезд на круговое движение (уступка и поворотники)',
@@ -781,6 +783,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_right_turn_solid_cykelsti',
+      imageSrc: './images/rules/right-turn-cykelsti.jpg',
       captionDa: 'Højresving over cykelsti — cyklister har forkørselsret',
       captionRu: 'Поворот направо через велодорожку',
     },
@@ -953,7 +956,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       'Вы видите предупреждающий знак A22 («Дети») в жилом районе рядом со школой, где вдоль тротуара припаркованы машины.',
     visual: {
       type: 'scene',
-      presetId: 'children_school_a22',
+      presetId: 'pov_school_children_a22',
       signCode: 'A22',
       captionDa: 'Børn på vejen (A22) — skjulte farer mellem biler',
       captionRu: 'Знак A22 («Дети») — риск внезапного выхода из-за машин',
@@ -1134,7 +1137,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       'Вы подъезжаете к регулируемому перекрёстку на скорости 50 км/ч. Свет переключается с зелёного на постоянный жёлтый, когда до стоп-линии около 35 м. На следующем перекрёстке регулирует полицейский.',
     visual: {
       type: 'scene',
-      presetId: 'traffic_light_yellow',
+      presetId: 'pov_yellow_traffic_light',
       captionDa: 'Lyssignal & Politiets tegn (Hierarki)',
       captionRu: 'Жёлтый сигнал светофора и сигналы регулировщика',
     },
@@ -1313,7 +1316,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       'Вы управляете легковым автомобилем с обычным прицепом (без сертификата Tempo 100) и движетесь сначала по загородной дороге, затем по motortrafikvej (E43) и автомагистрали (E42).',
     visual: {
       type: 'scene',
-      presetId: 'motorway_trailer',
+      presetId: 'pov_trailer_weight',
+      imageSrc: './images/rules/trailer.jpg',
       signCode: 'E43',
       captionDa: 'Motortrafikvej (E43) & Kørsel med påhængsvogn',
       captionRu: 'Скоростная дорога (E43) и правила для авто с прицепом',
@@ -1444,7 +1448,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       'Вы приближаетесь к вершине подъёма на загородной дороге. Перед подъёмом установлен знак C51 («Обгон запрещён»). Впереди едет велосипедист, а дальше — грузовик.',
     visual: {
       type: 'scene',
-      presetId: 'overtaking_hill_curve',
+      presetId: 'pov_overtake_bans',
+      imageSrc: './images/rules/hill-tractor.jpg',
       signCode: 'C51',
       captionDa: 'Overhalingsforbud (C51) & Dårligt udsyn på bakke',
       captionRu: 'Знак C51 («Обгон запрещён») и подъём с ограниченной видимостью',
@@ -1536,7 +1541,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       'Вы ищете место для парковки в городе рядом с перекрёстком, пешеходным переходом и выездом с велодорожки.',
     visual: {
       type: 'scene',
-      presetId: 'parking_5m_10m_rules',
+      presetId: 'pov_parking_5m_10m',
       captionDa: 'Afstandskrav: 5 m før felt/cykelsti & 10 m fra kryds',
       captionRu: 'Золотые отступы: 5 м до перехода/веловыезда и 10 м от перекрёстка',
     },
@@ -1579,7 +1584,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       'Вы хотите высадить пассажира напротив въезда в частный двор, а позже припарковаться неподалёку от автобусной остановки.',
     visual: {
       type: 'scene',
-      presetId: 'parking_bus_driveway',
+      presetId: 'pov_parking_bus_driveway',
       captionDa: 'Ind- og udkørsel til ejendom vs. Busstoppested (12 m)',
       captionRu: 'Выезд из двора (остановка можно, стоянка нет) и остановка автобуса (12 м)',
     },
@@ -1667,7 +1672,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       'Вы въезжаете на улицу с односторонним движением в городе (знак E19). Запрещающих знаков вдоль улицы нет.',
     visual: {
       type: 'scene',
-      presetId: 'parking_oneway_ensrettet',
+      presetId: 'pov_parking_oneway_ensrettet',
       signCode: 'E19',
       captionDa: 'Ensrettet gade (E19) — Parkering i højre & venstre side',
       captionRu: 'Односторонняя улица (E19) — парковка справа и слева',
@@ -1844,7 +1849,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       'Вы стали свидетелем или участником ДТП на автомагистрали, в котором пострадал человек.',
     visual: {
       type: 'scene',
-      presetId: 'accident_triangle_112',
+      presetId: 'pov_accident_triangle_112',
       captionDa: 'Færdselsuheld: Sikring, advarselstrekant & alarm 112',
       captionRu: 'Действия при ДТП: безопасность, треугольник 100 м, вызов 112',
     },
@@ -2728,6 +2733,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_trailer_weight',
+      imageSrc: './images/rules/trailer.jpg',
       captionDa: 'Registreringsattest & beregning af totalvægt (3.500 kg)',
       captionRu: 'Расчёт массы прицепа по техпаспорту (3.500 кг)',
     },
@@ -4529,7 +4535,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       'Вы едете в городе 50 км/ч (а затем за городом 80 км/ч). Внезапно пешеход выходит на дорогу из-за припаркованного авто.',
     visual: {
       type: 'scene',
-      presetId: 'following_distance_2s',
+      presetId: 'pov_stopping_math',
       captionDa: 'Reaktionslængde, bremselængde og samlet standselængde',
       captionRu: 'Путь реакции, тормозной путь и полный остановочный путь',
     },
@@ -5529,6 +5535,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_police_signal',
+      imageSrc: './images/rules/police-signal.jpg',
       captionDa: 'Politiets tegngivning står altid over lyssignaler og tavler',
       captionRu: 'Сигналы полицейского отменяют светофор и знаки',
     },
@@ -5615,6 +5622,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_overtake_bans',
+      imageSrc: './images/rules/hill-tractor.jpg',
       captionDa: 'Overhaling forbudt før sving/bakke og når man selv bliver overhalet',
       captionRu: 'Запрет обгона в закрытом повороте и при обгоне вас сзади',
     },
@@ -6003,7 +6011,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       'Вы ищете парковку в городе рядом с пешеходным переходом (E17) и выездом с велодорожки на улице без знаков C61/C62.',
     visual: {
       type: 'scene',
-      presetId: 'parking_5m_10m_rules',
+      presetId: 'pov_parking_5m_10m',
       captionDa: '5-meter reglen: KUN FØR fodgængerfelt og cykelstiudkørsel!',
       captionRu: 'Правило 5 метров действует только ДО пешеходного перехода',
     },
@@ -6219,6 +6227,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_child_seat_airbag',
+      imageSrc: './images/rules/child-airbag.jpg',
       captionDa: 'Bagudvendt barnestol på forsædet og passagerairbag',
       captionRu: 'Установка детского кресла спереди и отключение подушки безопасности',
     },
@@ -6261,7 +6270,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       'При маневрировании на парковке вы слегка задели бампер другой машины: есть вмятина и царапина, пострадавших людей нет (materiel skade).',
     visual: {
       type: 'scene',
-      presetId: 'accident_triangle_112',
+      presetId: 'pov_accident_triangle_112',
       captionDa: 'Færdselsuheld med kun materiel skade (og holdt parkeret bil)',
       captionRu: 'Действия при мелком ДТП без пострадавших (материальный ущерб)',
     },
@@ -6305,6 +6314,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_winter_glatbane_esp',
+      imageSrc: './images/rules/winter-ice.jpg',
       captionDa: 'Understyring, overstyring, ESP & ABS på glat vej',
       captionRu: 'Поведение авто при заносе (сносе), работа систем ABS и ESP',
     },

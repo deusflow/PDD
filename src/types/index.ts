@@ -32,6 +32,7 @@ export interface TeoriQuestion {
   visual: {
     type: 'scene' | 'sign' | 'technical';
     presetId: string;
+    imageSrc?: string;
     signCode?: string;
     subPlaque?: string;
     technicalTab?: TechnicalTabId;
@@ -60,6 +61,21 @@ export interface DictionaryEntry {
   technicalHotspot?: string;
 }
 
+export interface ModuleComparePairSide {
+  signCode?: string;
+  labelRu: string;
+  labelDa: string;
+  summaryRu: string;
+  summaryDa: string;
+}
+
+export interface ModuleComparePair {
+  headingRu: string;
+  headingDa: string;
+  left: ModuleComparePairSide;
+  right: ModuleComparePairSide;
+}
+
 export interface ModuleCheatRule {
   titleDa: string;
   titleRu: string;
@@ -67,6 +83,9 @@ export interface ModuleCheatRule {
   bodyRu: string;
   pointsRu?: string[];
   pointsDa?: string[];
+  attentionStepsRu?: string[];
+  attentionStepsDa?: string[];
+  comparePair?: ModuleComparePair;
   exceptionsRu?: string;
   exceptionsDa?: string;
   trapRu?: string;
@@ -74,6 +93,7 @@ export interface ModuleCheatRule {
   visual?: {
     kind: 'pov' | 'scene' | 'sign' | 'technical';
     presetId: string;
+    imageSrc?: string;
     signCode?: string;
     subPlaque?: string;
     technicalTab?: TechnicalTabId;
