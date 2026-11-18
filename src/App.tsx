@@ -399,21 +399,55 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100">
-      <Header
-        activeTab={activeTab}
-        inActiveSession={Boolean(activeSession)}
-        onTabChange={handleTabChange}
-        languageMode={appState.languageMode}
-        onLanguageModeChange={handleLanguageChange}
-        theme={appState.theme}
-        onThemeToggle={handleThemeToggle}
-        onOpenOnboarding={() => setIsOnboardingOpen(true)}
-        onOpenBackup={() => setIsBackupOpen(true)}
-        dueBadgeCount={questionStats.dueCount}
-      />
+    <div className="relative min-h-screen overflow-x-clip bg-[#F7F8F7] text-zinc-900 dark:bg-[#0B1117] dark:text-zinc-100">
+      {/* Partial atmospheric site background matching Danish driving-school visuals */}
+      <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-0 overflow-hidden select-none">
+        {/* Soft Nordic teal & warm sunlight ambient glows */}
+        <div className="absolute -left-32 -top-24 h-96 w-96 rounded-full bg-teal-400/15 blur-3xl dark:bg-teal-500/[0.08]" />
+        <div className="absolute -bottom-32 right-0 h-[28rem] w-[28rem] rounded-full bg-amber-300/15 blur-3xl dark:bg-amber-400/[0.05]" />
 
-      <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8">
+        {/* Partial faded country-road illustration in top-right */}
+        <div
+          className="absolute right-0 top-0 h-[58vh] w-full sm:w-[68%] lg:w-[56%]"
+          style={{
+            WebkitMaskImage: 'radial-gradient(ellipse at top right, rgba(0,0,0,0.95) 8%, rgba(0,0,0,0.4) 42%, transparent 74%)',
+            maskImage: 'radial-gradient(ellipse at top right, rgba(0,0,0,0.95) 8%, rgba(0,0,0,0.4) 42%, transparent 74%)',
+          }}
+        >
+          <img
+            src="./images/rules/country-lanes.jpg"
+            alt=""
+            className="h-full w-full object-cover object-center opacity-[0.14] saturate-[0.85] dark:opacity-[0.18]"
+          />
+        </div>
+
+        {/* Subtle minimalist road-lane perspective accent in bottom-left */}
+        <svg
+          viewBox="0 0 600 220"
+          className="absolute bottom-0 left-0 h-44 w-[480px] opacity-[0.04] dark:opacity-[0.06]"
+          fill="none"
+        >
+          <path d="M 30 220 L 210 20" stroke="currentColor" strokeWidth="2" />
+          <path d="M 380 220 L 290 20" stroke="currentColor" strokeWidth="2" />
+          <path d="M 205 220 L 250 20" stroke="currentColor" strokeWidth="3" strokeDasharray="16 14" />
+        </svg>
+      </div>
+
+      <div className="relative z-10">
+        <Header
+          activeTab={activeTab}
+          inActiveSession={Boolean(activeSession)}
+          onTabChange={handleTabChange}
+          languageMode={appState.languageMode}
+          onLanguageModeChange={handleLanguageChange}
+          theme={appState.theme}
+          onThemeToggle={handleThemeToggle}
+          onOpenOnboarding={() => setIsOnboardingOpen(true)}
+          onOpenBackup={() => setIsBackupOpen(true)}
+          dueBadgeCount={questionStats.dueCount}
+        />
+
+        <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8">
         <Suspense
           fallback={
             <div className="nordic-card mx-auto max-w-3xl p-8 text-center text-sm text-zinc-500 dark:text-zinc-400">
@@ -534,6 +568,7 @@ export const App: React.FC = () => {
         )}
         </Suspense>
       </main>
+      </div>
 
       <Suspense fallback={null}>
         {isOnboardingOpen && (
