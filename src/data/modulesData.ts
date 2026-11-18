@@ -47,12 +47,13 @@ export const MODULES_DATA: ModuleInfo[] = [
         bodyRu: 'Законный минимум глубины протектора — 1,6 мм по всей рабочей поверхности (ориентируйтесь по индикатору износа TWI).',
         pointsRu: [
           'Минимальная глубина протектора по закону — 1,6 мм (смотрите перемычки TWI в канавках).',
-          'Для зимы настоятельно рекомендуется минимум 3 мм (хотя по закону всё ещё 1,6 мм).',
-          'Все 4 шины должны быть одного типа (либо все летние, либо все зимние).',
+          'Для зимы настоятельно рекомендуется минимум 3 мм. При снеге, льде или слякоти (vinterføre) с 01.07.2025 запрещена летняя резина («åbenbart uegnede dæk» — штраф 1.000 kr за колесо!): требуются шины минимум M+S, а лучше со снежинкой 3PMSF.',
+          'Все 4 шины должны быть одного типа (либо все летние, либо все зимние/всесезонные).',
           'Надавите на угол кузова и отпустите: машина должна подняться 1 раз и сразу замереть.',
         ],
         pointsDa: [
-          'Mindst 1,6 mm dækmønster på hele slidbanen (TWI-mærker).',
+          'Mindst 1,6 mm dækmønster på hele slidbanen (TWI-mærker); ≥ 3 mm anbefales om vinteren.',
+          'I vinterføre (sne, is, sjap) er sommerdæk ulovlige («åbenbart uegnede dæk» — 1.000 kr. bøde pr. dæk): brug min. M+S og gerne 3PMSF.',
           'Samme dæktype på alle 4 hjul.',
           'Støddæmpere: bilen skal straks gå i ro efter tryk på hjørnet.',
         ],
@@ -1386,7 +1387,7 @@ export const MODULES_DATA: ModuleInfo[] = [
     subtitleDa: 'Mørkekørsel, glatføre, 0,5‰, klippekort, kørselsforbud, uheld og køreskole.',
     subtitleRu: 'Ночь, туман, гололёд, 0,5‰, баллы (klip), ДТП и этапы датской автошколы.',
     keyMetrics: [
-      { labelDa: 'Promillegrænse (maks.)', labelRu: 'Лимит алкоголя', value: '0,50 ‰' },
+      { labelDa: 'Promille (ny / erfaren)', labelRu: 'Лимит (новичок / опытный)', value: '0,20 / 0,50 ‰' },
       { labelDa: 'Klippekort (erfaren / ny)', labelRu: 'Баллы (опытный / новичок)', value: '3 / 2 klip' },
       { labelDa: 'Advarselstrekant', labelRu: 'Знак при ДТП / трасса', value: '50 m / 100 m' },
       { labelDa: 'Lovpakke B', labelRu: 'Курс в автошколе', value: '29+4+16+4' },
@@ -1429,16 +1430,17 @@ export const MODULES_DATA: ModuleInfo[] = [
       {
         titleDa: 'Alkohol, Klippekort, Vanvidskørsel & Uheld',
         titleRu: 'Алкоголь, баллы (Klip), конфискация и алгоритм ДТП',
-        bodyDa: 'Promillegrænse 0,50 ‰. Ny bilist: 2 klip = kørselsforbud. Vanvidskørsel = konfiskation. Ved uheld: sikr sted, 50/100 m trekant, ring 112/114.',
-        bodyRu: 'Жёсткие датские санкции для водителей и обязательный порядок действий при аварии.',
+        bodyDa: 'Promillegrænse: 0,20 ‰ for nye bilister i de første 3 år (ellers 0,50 ‰). Ny bilist: 2 klip = kørselsforbud. Vanvidskørsel = konfiskation. Ved uheld: sikr sted, 50/100 m trekant, ring 112/114.',
+        bodyRu: 'Жёсткие датские санкции для водителей (включая порог 0,20 ‰ для новичков с 01.07.2025) и обязательный порядок действий при аварии.',
         pointsRu: [
-          'Алкоголь: законный порог строго ниже 0,50‰. Телефон в руках за рулём (даже на красном свете) = штраф + 1 балл (klip).',
+          'Алкоголь: для новичков (первые 3 года после получения первых прав B) с 01.07.2025 действует лимит 0,20‰ (фактически ноль алкоголя → нарушение даёт kørselsforbud + курс ANT!). Для опытных водителей лимит — 0,50‰. Телефон в руках = штраф + 1 балл (klip).',
           'Система Klip: опытный водитель теряет права (условно) при 3 баллах за 3 года; новичок в первые 3 года получает немедленный KØRSELSFORBUD уже при 2 баллах!',
           'Vanvidskørsel (конфискация авто независимо от владельца!): >2,00‰ алкоголя, скорость >200 км/ч или >100% превышения (при ≥100 км/ч).',
           'При ДТП: 1) аварийка + жилет → 2) знак аварийной остановки (мин. 50 м / 100 м на автомагистрали) → 3) помощь и звонок 112 (травмы) или 114 (полиция без травм).',
         ],
         pointsDa: [
-          'Max 0,50 ‰ · Ny bilist (0–3 år): 2 klip = kørselsforbud!',
+          'Ny bilist (første 3 år): max 0,20 ‰ (nultolerance → kørselsforbud + ANT-kursus)! Erfaren: max 0,50 ‰.',
+          'Ny bilist (0–3 år): 2 klip = kørselsforbud! (Erfaren: 3 klip på 3 år).',
           'Vanvidskørsel (>2,00 ‰, >200 km/t, >100% over grænsen) = konfiskation af bilen.',
           'Uheld: Advarselstrekant 50 m / 100 m motorvej · Ring 112 / 114.',
         ],

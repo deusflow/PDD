@@ -192,10 +192,10 @@ const NUMBER_GROUPS: NumberGroup[] = [
     items: [
       {
         id: 'a_050',
-        value: '0,50 ‰',
-        daTerm: 'Promillegrænse 0,50',
+        value: '0,20 / 0,50 ‰',
+        daTerm: 'Promillegrænse: 0,20 (ny bilist 3 år) / 0,50 (erfaren)',
         labelRu: 'Допустимый порог алкоголя',
-        noteRu: 'Выше 0,50 ‰ — штраф (1 мес. зарплата × промилле) и условное/безусловное лишение прав.',
+        noteRu: 'Новичкам первые 3 года (с 01.07.2025): макс. 0,20 ‰ (фактически 0,0 → kørselsforbud + курс ANT!). Опытным: 0,50 ‰.',
       },
       {
         id: 'a_200',

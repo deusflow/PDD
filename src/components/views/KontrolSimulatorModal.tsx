@@ -160,9 +160,9 @@ const KONTROL_QUESTIONS: KontrolQuestion[] = [
     ],
     correctIndex: 1,
     normRu:
-      'Закон Дании требует минимум 1,6 мм по всему главному рисунку протектора (легко видно по перемычкам TWI). Для зимы и сильного дождя рекомендуют от 3 мм. Обязательно осматриваем боковины на трещины и вздутия.',
+      'Закон Дании требует минимум 1,6 мм по всему главному рисунку протектора (перемычки TWI). В зимних условиях (снег/лёд) летняя резина запрещена (штраф 1.000 kr за колесо): нужна маркировка минимум M+S, а лучше 3PMSF и ≥ 3 мм.',
     normDa:
-      'Lovkravet er mindst 1,6 mm dækmønster i hovedrillerne (TWI). Tjek også dæktryk og at der ikke er revner eller buler.',
+      'Lovkravet er mindst 1,6 mm dækmønster (TWI). I vinterføre (sne/is) er sommerdæk forbudt (1.000 kr. bøde pr. dæk) — brug min. M+S / 3PMSF og helst ≥ 3 mm.',
   },
   {
     id: 'k6_stoddaempere',
