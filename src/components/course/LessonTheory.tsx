@@ -128,6 +128,25 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
               <p className="pt-1 text-[15px] leading-7 text-zinc-600 sm:text-base dark:text-zinc-300">
                 {languageMode !== 'da_only' ? mod.subtitleRu : mod.subtitleDa}
               </p>
+
+              {(mod.schoolStageLabelRu || (mod.officialGoals && mod.officialGoals.length > 0)) && (
+                <div className="flex flex-wrap items-center gap-1.5 pt-2">
+                  {mod.schoolStageLabelRu && (
+                    <span className="inline-flex items-center rounded-lg border border-teal-200/80 bg-teal-50/80 px-2.5 py-1 text-[11px] font-semibold text-teal-800 dark:border-teal-900/60 dark:bg-teal-950/40 dark:text-teal-300">
+                      {languageMode === 'da_only' ? mod.schoolStageLabelDa : mod.schoolStageLabelRu}
+                    </span>
+                  )}
+                  {mod.officialGoals?.map((goal) => (
+                    <span
+                      key={goal.code}
+                      title={languageMode === 'da_only' ? goal.titleDa : `${goal.titleRu} (${goal.titleDa})`}
+                      className="inline-flex items-center rounded-lg border border-zinc-200/80 bg-zinc-100/80 px-2 py-1 text-[11px] font-medium text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
+                    >
+                      🎯 {goal.code}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
 
             <LessonHeroIllustration moduleId={mod.id} languageMode={languageMode} />

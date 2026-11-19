@@ -363,3 +363,49 @@ export function buildExamQuestions(
 
   return selected;
 }
+
+const HARDCORE_TRAP_MODULES = new Set([3, 4, 6, 7, 8]);
+
+/**
+ * Selects 25 high-difficulty exam questions for the serious "Hardcore Traps" simulator:
+ * prioritizes Box 1 errors, unseen advanced items, and high-trap Færdselsloven topics
+ * (vigepligt, vulnerable road users, tunnels/motorway, parking distances, glatbane/laws).
+ */
+export function buildHardcoreExamQuestions(
+  allQuestions: TeoriQuestion[],
+  count: number = 25,
+  srsMap?: Record<string, SRSRecord>
+): TeoriQuestion[] {
+  const scored = allQuestions.map((q) => {
+    const rec = srsMap ? getSRSRecord(srsMap, q.id) : null;
+    let weight = 0;
+
+    if (rec) {
+      if (rec.box === 1) weight += 100 + rec.totalFailures * 15;
+      else if (rec.box === 0) weight += 45;
+      else if (rec.box <= 3) weight += 25;
+      else weight += 5;
+    }
+
+    if (HARDCORE_TRAP_MODULES.has(q.moduleId)) {
+      weight += 30;
+    }
+    if (/_2[1-5]$/.test(q.id)) {
+      weight += 20;
+    }
+
+    // Add bounded jitter for variety between attempts while keeping priority tiers meaningful
+    weight += Math.random() * 18;
+    return { q, weight };
+  });
+
+  scored.sort((a, b) => b.weight - a.weight);
+  const picked = scored.slice(0, count).map((item) => item.q);
+
+  for (let i = picked.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [picked[i], picked[j]] = [picked[j], picked[i]];
+  }
+
+  return picked;
+}

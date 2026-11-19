@@ -2,11 +2,14 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   AlertTriangle,
   Award,
+  BarChart3,
+  Bookmark,
   CheckCircle2,
   ChevronLeft,
   ChevronRight,
   Clock,
   Flag,
+  Flame,
   Play,
   RotateCcw,
   Scale,
@@ -14,9 +17,10 @@ import {
   Volume2,
   XCircle,
 } from 'lucide-react';
+import { MODULES_DATA } from '../../data/modulesData';
 import { QUESTIONS_BANK } from '../../data/questionsBank';
 import { danishSpeech } from '../../services/speech';
-import { buildExamQuestions } from '../../services/srsEngine';
+import { buildExamQuestions, buildHardcoreExamQuestions } from '../../services/srsEngine';
 import { ExamAttemptSummary, LanguageMode, SRSRecord, TeoriQuestion } from '../../types';
 import { BilingualText } from '../common/BilingualText';
 import { SpeakButton } from '../common/SpeakButton';
@@ -37,16 +41,22 @@ interface ExamSimulatorViewProps {
   onTrainFailedQuestions: (questions: TeoriQuestion[]) => void;
 }
 
-const EXAM_DURATION_SEC = 25 * 60; // 25 minutes
-const PASS_THRESHOLD = 20; // minimum 20 / 25
+type ExamIntensity = 'standard' | 'hardcore';
+
+const EXAM_CONFIG: Record<ExamIntensity, { durationSec: number; passThreshold: number }> = {
+  standard: { durationSec: 25 * 60, passThreshold: 20 },
+  hardcore: { durationSec: 20 * 60, passThreshold: 22 },
+};
 const EXAM_DRAFT_KEY = 'dk_exam_draft_v1';
 
 interface ExamDraft {
   questionIds: string[];
   answers: Record<string, boolean | undefined>;
+  flaggedIds?: Record<string, boolean>;
   currentIndex: number;
   secondsLeft: number;
   officialMode: boolean;
+  examIntensity?: ExamIntensity;
   savedAt: number;
 }
 
@@ -98,12 +108,15 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
     autoStart ? 'active' : 'intro'
   );
   const [officialMode, setOfficialMode] = useState(false);
+  const [examIntensity, setExamIntensity] = useState<ExamIntensity>('standard');
+  const activeConfig = EXAM_CONFIG[examIntensity];
   const [examQuestions, setExamQuestions] = useState<TeoriQuestion[]>(() =>
     autoStart ? buildExamQuestions(QUESTIONS_BANK, 25, srsMap) : []
   );
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, boolean | undefined>>({});
-  const [secondsLeft, setSecondsLeft] = useState(EXAM_DURATION_SEC);
+  const [flaggedIds, setFlaggedIds] = useState<Record<string, boolean>>({});
+  const [secondsLeft, setSecondsLeft] = useState(EXAM_CONFIG.standard.durationSec);
   const [lastSummary, setLastSummary] = useState<ExamAttemptSummary | null>(null);
   const [expandedReviewId, setExpandedReviewId] = useState<string | null>(null);
   const [confirmIncomplete, setConfirmIncomplete] = useState(false);
@@ -117,6 +130,10 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
 
   const examQuestionsRef = useRef(examQuestions);
   examQuestionsRef.current = examQuestions;
+
+  const toggleFlag = useCallback((qId: string) => {
+    setFlaggedIds((prev) => ({ ...prev, [qId]: !prev[qId] }));
+  }, []);
 
   const finalizeExam = useCallback(
     (
@@ -139,8 +156,8 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
         date: Date.now(),
         score,
         total: questionsList.length,
-        passed: score >= PASS_THRESHOLD,
-        durationSeconds: EXAM_DURATION_SEC - remainingSec,
+        passed: score >= activeConfig.passThreshold,
+        durationSeconds: activeConfig.durationSec - remainingSec,
       };
 
       setLastSummary(summary);
@@ -148,7 +165,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
       window.scrollTo({ top: 0, behavior: 'smooth' });
       onFinishExam(summary, results);
     },
-    [onFinishExam]
+    [onFinishExam, activeConfig]
   );
 
   useEffect(() => {
@@ -171,16 +188,28 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
       const payload: ExamDraft = {
         questionIds: examQuestions.map((q) => q.id),
         answers,
+        flaggedIds,
         currentIndex,
         secondsLeft,
         officialMode,
+        examIntensity,
         savedAt: Date.now(),
       };
       sessionStorage.setItem(EXAM_DRAFT_KEY, JSON.stringify(payload));
     } catch {
       // ignore storage quota errors
     }
-  }, [autoStart, phase, examQuestions, answers, currentIndex, secondsLeft, officialMode]);
+  }, [
+    autoStart,
+    phase,
+    examQuestions,
+    answers,
+    flaggedIds,
+    currentIndex,
+    secondsLeft,
+    officialMode,
+    examIntensity,
+  ]);
 
   useEffect(() => {
     if (phase !== 'active' || !officialMode) return;
@@ -243,11 +272,14 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
       } else if (e.key === 'ArrowLeft' && !officialMode && currentIndex > 0) {
         e.preventDefault();
         goToQuestion(currentIndex - 1);
+      } else if (lowerKey === 'f' && !officialMode && currentQ) {
+        e.preventDefault();
+        toggleFlag(currentQ.id);
       }
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [phase, officialMode, currentIndex, examQuestions.length]);
+  }, [phase, officialMode, currentIndex, examQuestions.length, toggleFlag]);
 
   const goToQuestion = (nextIndex: number) => {
     setCurrentIndex(nextIndex);
@@ -290,11 +322,16 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
   const startExam = () => {
     clearExamDraft();
     setPendingDraft(null);
-    const selected = buildExamQuestions(QUESTIONS_BANK, 25, srsMap);
+    const cfg = EXAM_CONFIG[examIntensity];
+    const selected =
+      examIntensity === 'hardcore'
+        ? buildHardcoreExamQuestions(QUESTIONS_BANK, 25, srsMap)
+        : buildExamQuestions(QUESTIONS_BANK, 25, srsMap);
     setExamQuestions(selected);
     setCurrentIndex(0);
     setAnswers({});
-    setSecondsLeft(EXAM_DURATION_SEC);
+    setFlaggedIds({});
+    setSecondsLeft(cfg.durationSec);
     setLastSummary(null);
     setExpandedReviewId(null);
     setConfirmIncomplete(false);
@@ -305,8 +342,10 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
     if (!pendingDraft) return;
     const { draft, questions } = pendingDraft;
     setOfficialMode(Boolean(draft.officialMode));
+    setExamIntensity(draft.examIntensity ?? 'standard');
     setExamQuestions(questions);
     setAnswers(draft.answers ?? {});
+    setFlaggedIds(draft.flaggedIds ?? {});
     setCurrentIndex(Math.min(Math.max(0, draft.currentIndex ?? 0), questions.length - 1));
     setSecondsLeft(Math.max(1, draft.secondsLeft));
     setLastSummary(null);
@@ -340,23 +379,72 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
                 Симулятор реального экзамена (Teoriprøven)
               </h1>
               <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                Официальный формат Færdselsstyrelsen • Kategori B
+                Официальный формат Færdselsstyrelsen • Kategori B ({QUESTIONS_BANK.length} билетов в базе)
               </p>
             </div>
           </div>
 
-          <div className="mt-6 grid grid-cols-3 gap-3">
+          <div className="mt-5 grid gap-2.5 sm:grid-cols-2">
+            <button
+              type="button"
+              onClick={() => setExamIntensity('standard')}
+              className={`rounded-2xl border p-3.5 text-left transition-all ${
+                examIntensity === 'standard'
+                  ? 'border-zinc-900 bg-zinc-900/5 ring-1 ring-zinc-900 dark:border-zinc-100 dark:bg-zinc-100/10 dark:ring-zinc-100'
+                  : 'border-zinc-200 bg-zinc-50/70 hover:bg-zinc-100/70 dark:border-zinc-800 dark:bg-zinc-950/50'
+              }`}
+            >
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
+                  Стандартный Teoriprøven
+                </span>
+                <span className="rounded-md bg-emerald-100 px-1.5 py-0.5 text-[10px] font-bold text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+                  25:00 · ≥ 20/25
+                </span>
+              </div>
+              <p className="mt-1 text-[11px] leading-relaxed text-zinc-500 dark:text-zinc-400">
+                Официальный баланс по всем 8 модулям программы, приоритет на слабые темы Box 1.
+              </p>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setExamIntensity('hardcore')}
+              className={`rounded-2xl border p-3.5 text-left transition-all ${
+                examIntensity === 'hardcore'
+                  ? 'border-rose-500 bg-rose-50/80 ring-1 ring-rose-500 dark:border-rose-500 dark:bg-rose-950/35'
+                  : 'border-zinc-200 bg-zinc-50/70 hover:bg-zinc-100/70 dark:border-zinc-800 dark:bg-zinc-950/50'
+              }`}
+            >
+              <div className="flex items-center justify-between gap-2">
+                <span className="inline-flex items-center gap-1 text-xs font-bold text-rose-700 dark:text-rose-300">
+                  <Flame className="h-3.5 w-3.5" />
+                  Ловушки и сложные билеты
+                </span>
+                <span className="rounded-md bg-rose-100 px-1.5 py-0.5 text-[10px] font-bold text-rose-800 dark:bg-rose-950 dark:text-rose-300">
+                  20:00 · ≥ 22/25
+                </span>
+              </div>
+              <p className="mt-1 text-[11px] leading-relaxed text-zinc-500 dark:text-zinc-400">
+                Упор на vigepligt, 5м/10м/12м парковки, Glatbane, 0,20‰, тоннель и ваши ошибки Box 1.
+              </p>
+            </button>
+          </div>
+
+          <div className="mt-4 grid grid-cols-3 gap-3">
             <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-3.5 text-center dark:border-zinc-800 dark:bg-zinc-950/60">
               <div className="text-xl font-extrabold text-zinc-900 dark:text-zinc-100">25</div>
               <div className="text-[11px] text-zinc-500 dark:text-zinc-400">Билетов</div>
             </div>
             <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-3.5 text-center dark:border-zinc-800 dark:bg-zinc-950/60">
-              <div className="text-xl font-extrabold text-zinc-900 dark:text-zinc-100">25:00</div>
+              <div className="text-xl font-extrabold text-zinc-900 dark:text-zinc-100">
+                {formatTimer(activeConfig.durationSec)}
+              </div>
               <div className="text-[11px] text-zinc-500 dark:text-zinc-400">Лимит времени</div>
             </div>
             <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-3.5 text-center dark:border-zinc-800 dark:bg-zinc-950/60">
               <div className="text-xl font-extrabold text-emerald-600 dark:text-emerald-400">
-                ≥ 20 / 25
+                ≥ {activeConfig.passThreshold} / 25
               </div>
               <div className="text-[11px] text-zinc-500 dark:text-zinc-400">Для сдачи</div>
             </div>
@@ -483,6 +571,14 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
       (q) => !q.subQuestions.every((sq) => answers[sq.id] === sq.correctAnswer)
     );
 
+    const moduleBreakdown = MODULES_DATA.map((mod) => {
+      const qs = examQuestions.filter((q) => q.moduleId === mod.id);
+      const passedCount = qs.filter((q) =>
+        q.subQuestions.every((sq) => answers[sq.id] === sq.correctAnswer)
+      ).length;
+      return { mod, total: qs.length, passedCount };
+    }).filter((item) => item.total > 0);
+
     return (
       <div className="mx-auto max-w-3xl space-y-5 animate-slide-up">
         <div className="nordic-card p-6 sm:p-8">
@@ -503,7 +599,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
               </div>
               <div>
                 <div className="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-                  Результат экзамена
+                  Результат экзамена {examIntensity === 'hardcore' ? '• Ловушки и сложные билеты' : ''}
                 </div>
                 <h2 className="text-2xl font-extrabold text-zinc-900 dark:text-zinc-100">
                   {lastSummary.passed
@@ -512,7 +608,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
                 </h2>
                 <p className="text-xs text-zinc-500 dark:text-zinc-400">
                   Верных билетов: <strong>{lastSummary.score}</strong> из {lastSummary.total}{' '}
-                  (минимум {PASS_THRESHOLD}) • Время: {formatTimer(lastSummary.durationSeconds)}
+                  (минимум {activeConfig.passThreshold}) • Время: {formatTimer(lastSummary.durationSeconds)}
                 </p>
               </div>
             </div>
@@ -547,6 +643,56 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
                 </button>
               )}
             </div>
+          </div>
+        </div>
+
+        {/* 8-Module Accuracy Diagnostic */}
+        <div className="nordic-card p-5">
+          <div className="mb-3 flex items-center gap-2">
+            <BarChart3 className="h-4 w-4 text-teal-600 dark:text-teal-400" />
+            <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+              Разбор точности по темам автошколы (M1–M8)
+            </h3>
+          </div>
+          <div className="grid gap-2.5 sm:grid-cols-2">
+            {moduleBreakdown.map(({ mod, total, passedCount }) => {
+              const ratio = total > 0 ? passedCount / total : 0;
+              const barColor =
+                ratio === 1
+                  ? 'bg-emerald-500'
+                  : ratio >= 0.5
+                    ? 'bg-amber-500'
+                    : 'bg-rose-500';
+              return (
+                <div
+                  key={mod.id}
+                  className="rounded-xl border border-zinc-200/80 bg-zinc-50/70 p-2.5 dark:border-zinc-800 dark:bg-zinc-950/40"
+                >
+                  <div className="flex items-center justify-between gap-2 text-xs">
+                    <span className="truncate font-semibold text-zinc-800 dark:text-zinc-200">
+                      {mod.id}. {mod.titleRu}
+                    </span>
+                    <span
+                      className={`shrink-0 font-bold tabular-nums ${
+                        ratio === 1
+                          ? 'text-emerald-600 dark:text-emerald-400'
+                          : ratio >= 0.5
+                            ? 'text-amber-600 dark:text-amber-400'
+                            : 'text-rose-600 dark:text-rose-400'
+                      }`}
+                    >
+                      {passedCount}/{total}
+                    </span>
+                  </div>
+                  <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-800">
+                    <div
+                      className={`h-full rounded-full transition-all ${barColor}`}
+                      style={{ width: `${Math.round(ratio * 100)}%` }}
+                    />
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
 
@@ -736,9 +882,26 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
           </span>
         </div>
 
-        <div className="text-xs font-semibold text-zinc-600 dark:text-zinc-400">
-          Вопрос {currentIndex + 1} из {examQuestions.length} • Заполнено: {answeredCount}/
-          {examQuestions.length}
+        <div className="flex items-center gap-2 text-xs font-semibold text-zinc-600 dark:text-zinc-400">
+          <span>
+            Вопрос {currentIndex + 1} из {examQuestions.length} • Заполнено: {answeredCount}/
+            {examQuestions.length}
+          </span>
+          {!officialMode && (
+            <button
+              type="button"
+              onClick={() => toggleFlag(question.id)}
+              title="Отметить билет для перепроверки (клавиша F)"
+              className={`inline-flex items-center gap-1 rounded-lg border px-2 py-1 text-[11px] font-bold transition-colors ${
+                flaggedIds[question.id]
+                  ? 'border-amber-400 bg-amber-50 text-amber-800 dark:border-amber-600 dark:bg-amber-950/60 dark:text-amber-300'
+                  : 'border-zinc-200 bg-zinc-50 text-zinc-600 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300'
+              }`}
+            >
+              <Bookmark className={`h-3 w-3 ${flaggedIds[question.id] ? 'fill-current' : ''}`} />
+              {flaggedIds[question.id] ? 'Отмечен' : 'На проверку'}
+            </button>
+          )}
         </div>
 
         <button
@@ -783,6 +946,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
         {examQuestions.map((q, idx) => {
           const isComplete = q.subQuestions.every((sq) => answers[sq.id] !== undefined);
           const isCurrent = idx === currentIndex;
+          const isFlagged = Boolean(flaggedIds[q.id]);
           const lockedBack = officialMode && idx < currentIndex;
           return (
             <button
@@ -790,18 +954,29 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
               type="button"
               disabled={lockedBack}
               onClick={() => goToQuestion(idx)}
-              title={lockedBack ? 'В официальном режиме возврат назад отключён' : undefined}
-              className={`h-7 min-w-[28px] rounded-lg border text-[11px] font-bold transition-all ${
+              title={
+                lockedBack
+                  ? 'В официальном режиме возврат назад отключён'
+                  : isFlagged
+                    ? 'Отмечен для проверки'
+                    : undefined
+              }
+              className={`relative h-7 min-w-[28px] rounded-lg border text-[11px] font-bold transition-all ${
                 lockedBack
                   ? 'cursor-not-allowed border-zinc-200/50 bg-zinc-100/70 text-zinc-400 opacity-60 dark:border-zinc-800/60 dark:bg-zinc-900/40'
                   : isCurrent
                     ? 'border-zinc-900 bg-zinc-900 text-white dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-900'
-                    : isComplete
-                      ? 'border-emerald-300 bg-emerald-50 text-emerald-800 dark:border-emerald-900 dark:bg-emerald-950/60 dark:text-emerald-300'
-                      : 'border-zinc-200 bg-white text-zinc-500 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400'
+                    : isFlagged
+                      ? 'border-amber-400 bg-amber-50 text-amber-900 dark:border-amber-600 dark:bg-amber-950/60 dark:text-amber-200'
+                      : isComplete
+                        ? 'border-emerald-300 bg-emerald-50 text-emerald-800 dark:border-emerald-900 dark:bg-emerald-950/60 dark:text-emerald-300'
+                        : 'border-zinc-200 bg-white text-zinc-500 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400'
               }`}
             >
               {idx + 1}
+              {isFlagged && !isCurrent && (
+                <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-amber-500" />
+              )}
             </button>
           );
         })}
@@ -921,7 +1096,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
           )}
         </div>
         <p className="mt-2.5 text-center text-[11px] text-zinc-400 dark:text-zinc-500">
-          Клавиатура: 1 / J = Ja · 2 / N = Nej · → / Enter = Далее
+          Клавиатура: 1 / J = Ja · 2 / N = Nej {!officialMode ? '· F = На проверку ' : ''}· → / Enter = Далее
         </p>
       </div>
     </div>

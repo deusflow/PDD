@@ -1375,6 +1375,112 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
           </CockpitFrame>
         );
 
+      case 'pov_motorcycle_junction':
+        return (
+          <CockpitFrame skyColor="#BAE6FD">
+            <HorizonRoad withCenterDash />
+            {/* Side junction opening on left */}
+            <polygon points="0,126 168,126 142,158 0,158" fill="#475569" />
+            {/* Approaching narrow motorcycle silhouette with bright headlight */}
+            <g transform="translate(178, 122)">
+              <circle cx="0" cy="-16" r="5" fill="#18181B" />
+              <rect x="-4" y="-10" width="8" height="14" rx="2" fill="#334155" />
+              <line x1="-10" y1="-4" x2="10" y2="-4" stroke="#0F172A" strokeWidth="2.5" strokeLinecap="round" />
+              <circle cx="0" cy="4" r="6" fill="#FEF08A" stroke="#F59E0B" strokeWidth="1.5" />
+              <rect x="-2.5" y="10" width="5" height="10" rx="2" fill="#18181B" />
+            </g>
+            <BadgePill x={14} y={16} text="Мотоцикл: узкий силуэт → скорость кажется ниже!" tone="warn" />
+            <BadgePill x={14} y={46} text="Высокий тормозной путь в наклоне · Не резать дистанцию" tone="dark" />
+          </CockpitFrame>
+        );
+
+      case 'pov_narrow_bridge_b18':
+        return (
+          <CockpitFrame skyColor="#BAE6FD">
+            <HorizonRoad withCenterDash={false} />
+            {/* Bridge parapets narrowing road */}
+            <polygon points="105,112 182,112 162,175 18,175" fill="#94A3B8" opacity="0.85" />
+            <polygon points="278,112 355,112 442,175 298,175" fill="#94A3B8" opacity="0.85" />
+            <FrontCar x={225} y={126} scale={0.56} color="#16A34A" />
+            <MountedRoadSignPost signCode="B18" x={368} baseY={184} />
+            <BadgePill x={14} y={16} text="Узкий проезд: красная стрелка B18 = ВЫ уступаете!" tone="warn" />
+            <BadgePill x={14} y={46} text="Белая стрелка B19 = приоритет у вас (но не рискуйте)" tone="dark" />
+          </CockpitFrame>
+        );
+
+      case 'pov_railway_crossing':
+        return (
+          <CockpitFrame skyColor="#BAE6FD">
+            <HorizonRoad withCenterDash />
+            {/* Steel railway rails crossing road */}
+            <rect x="30" y="132" width="400" height="16" fill="#78716C" />
+            <line x1="20" y1="135" x2="440" y2="135" stroke="#18181B" strokeWidth="2.5" />
+            <line x1="20" y1="145" x2="440" y2="145" stroke="#18181B" strokeWidth="2.5" />
+            {/* White stop line */}
+            <line x1="115" y1="168" x2="345" y2="168" stroke="#FFFFFF" strokeWidth="5.5" />
+            {/* Flashing red railway signal mast */}
+            <rect x="364" y="64" width="22" height="44" rx="4" fill="#18181B" stroke="#71717A" strokeWidth="1.5" />
+            <line x1="375" y1="108" x2="375" y2="176" stroke="#CBD5E1" strokeWidth="4" />
+            <circle cx="375" cy="79" r="6" fill="#EF4444" />
+            <circle cx="375" cy="95" r="5" fill="#FEF2F2" />
+            <MountedRoadSignPost signCode="A74" x={338} baseY={176} />
+            <BadgePill x={14} y={16} text="Ж/д переезд: красный мигающий свет = АБСОЛЮТНЫЙ СТОП!" tone="warn" />
+            <BadgePill x={14} y={46} text="Не ехать после 1-го поезда, пока красный огонь не погаснет" tone="dark" />
+          </CockpitFrame>
+        );
+
+      case 'pov_u_turn_city':
+        return (
+          <CockpitFrame skyColor="#E0F2FE">
+            <HorizonRoad withCenterDash />
+            <FrontCar x={182} y={128} scale={0.58} color="#EF4444" />
+            <CyclistPOV x={366} y={176} scale={1.0} />
+            <rect x="6" y="114" width="56" height="34" rx="6" fill="#0F172A" stroke="#38BDF8" strokeWidth="1.8" />
+            <circle cx="34" cy="131" r="4" fill="#FEF08A" />
+            <BadgePill x={14} y={16} text="Разворот / задний ход: уступите ВСЕМ (вперед и назад)" tone="warn" />
+            <BadgePill x={14} y={46} text="Запрещено на переходе, перекрёстке с плохим обзором и на Motorvej" tone="dark" />
+          </CockpitFrame>
+        );
+
+      case 'pov_overtake_right_exception':
+        return (
+          <CockpitFrame skyColor="#BAE6FD">
+            <HorizonRoad withCenterDash />
+            {/* Front car shifted toward center blinking LEFT */}
+            <FrontCar x={198} y={142} scale={0.82} color="#64748B" blinkLeft brake />
+            <BadgePill x={14} y={16} text="Справа можно объехать: машина спереди мигает НАЛЕВО" tone="teal" />
+            <BadgePill x={14} y={46} text="Нельзя выезжать на велодорожку (Cykelsti) или тротуар!" tone="dark" />
+          </CockpitFrame>
+        );
+
+      case 'pov_soft_shoulder_rabat':
+        return (
+          <CockpitFrame skyColor="#BAE6FD">
+            <HorizonRoad withCenterDash={false} />
+            {/* Highlighted steep drop-off grass/gravel verge on the right side */}
+            <polygon points="274,98 330,98 460,220 356,220" fill="#A16207" opacity="0.65" />
+            <line x1="274" y1="98" x2="356" y2="220" stroke="#FDE047" strokeWidth="3.5" strokeDasharray="6 4" />
+            <FrontCar x={192} y={132} scale={0.62} color="#475569" />
+            <BadgePill x={14} y={16} text="Съезд на высокую/мягкую обочину (Høj rabat):" tone="warn" />
+            <BadgePill x={14} y={46} text="НЕ крутите руль резко влево! Плавно газ ↓ → выровняйтесь → вернитесь" tone="dark" />
+          </CockpitFrame>
+        );
+
+      case 'pov_doorzone_passing':
+        return (
+          <CockpitFrame skyColor="#BAE6FD">
+            <HorizonRoad withCenterDash withCykelsti="none" />
+            {/* Parked cars lining right side with door opening threat */}
+            <FrontCar x={338} y={168} scale={0.95} color="#0284C7" />
+            <FrontCar x={312} y={132} scale={0.58} color="#475569" />
+            {/* Open door swing zone highlight */}
+            <path d="M 294 176 L 268 164 L 274 156" fill="none" stroke="#EF4444" strokeWidth="3" />
+            <FrontCar x={175} y={128} scale={0.58} color="#E11D48" />
+            <BadgePill x={14} y={16} text="Объезд припаркованных авто: держите ≥ 1 м (дверная зона!)" tone="warn" />
+            <BadgePill x={14} y={46} text="Препятствие на вашей полосе → пропускаете встречного!" tone="dark" />
+          </CockpitFrame>
+        );
+
       case 'pov_school_roadmap':
       default:
         return (
@@ -1391,10 +1497,10 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
             </text>
             <line x1="65" y1="114" x2="395" y2="114" stroke="#5EEAD4" strokeWidth="3" strokeDasharray="6 6" opacity="0.45" />
             {[
-              { x: 24, n: '1', t: '29 ч теории', s: 'Правила + тесты' },
-              { x: 130, n: '2', t: '4 ч Manøvre', s: 'Площадка' },
-              { x: 236, n: '3', t: '16 ч город', s: '+ ночное вожд.' },
-              { x: 342, n: '4', t: '4 ч Glatbane', s: 'Лёд и заносы' },
+              { x: 24, n: '1', t: hideHints ? 'Теория' : '29 ч теории', s: 'Правила + тесты' },
+              { x: 130, n: '2', t: hideHints ? 'Площадка' : '4 ч Manøvre', s: 'Manøvrebane' },
+              { x: 236, n: '3', t: hideHints ? 'Город' : '16 ч город', s: '+ ночное вожд.' },
+              { x: 342, n: '4', t: hideHints ? 'Glatbane' : '4 ч Glatbane', s: 'KTA заносы' },
             ].map((item) => (
               <g key={item.n} transform={`translate(${item.x}, 66)`}>
                 <rect x="0" y="0" width="94" height="92" rx="14" fill="#0F172A" fillOpacity="0.82" stroke="#14B8A6" strokeWidth="1.6" />
@@ -1410,13 +1516,17 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
                 </text>
               </g>
             ))}
-            <rect x="24" y="176" width="412" height="48" rx="12" fill="#0F172A" fillOpacity="0.88" stroke="#5EEAD4" strokeOpacity="0.35" strokeWidth="1.4" />
-            <text x="230" y="196" textAnchor="middle" fill="#5EEAD4" fontSize="11" fontWeight="700">
-              Lægeattest + Førstehjælp (8 ч) + Tolk (при надобности)
-            </text>
-            <text x="230" y="213" textAnchor="middle" fill="#E2E8F0" fontSize="10.5">
-              Финал: Teoriprøve (≥20/25) → Kontrolprøve + Praktisk køreprøve
-            </text>
+            {!hideHints && (
+              <>
+                <rect x="24" y="176" width="412" height="48" rx="12" fill="#0F172A" fillOpacity="0.88" stroke="#5EEAD4" strokeOpacity="0.35" strokeWidth="1.4" />
+                <text x="230" y="196" textAnchor="middle" fill="#5EEAD4" fontSize="11" fontWeight="700">
+                  Pasfoto + Lægeattest + Førstehjælp (8 ч) + Fuldmagt
+                </text>
+                <text x="230" y="213" textAnchor="middle" fill="#E2E8F0" fontSize="10.5">
+                  Финал: Teoriprøve (≥20/25) → Kontrolprøve + Praktisk køreprøve
+                </text>
+              </>
+            )}
           </g>
         );
     }
@@ -1461,6 +1571,8 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
               presetId !== 'pov_sign_shapes_abcde' &&
               presetId !== 'pov_school_children_a22' &&
               presetId !== 'pov_parking_oneway_ensrettet' &&
+              presetId !== 'pov_narrow_bridge_b18' &&
+              presetId !== 'pov_railway_crossing' &&
               !presetId.startsWith('pov_sign_'))) && (
             <div className="absolute right-3 top-3 rounded-lg bg-white/90 p-1 shadow-sm backdrop-blur dark:bg-zinc-900/90">
               <DanishRoadSignSVG code={signCode} subPlaque={subPlaque} size={48} />

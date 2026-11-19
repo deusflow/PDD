@@ -4,6 +4,7 @@ import { QUESTIONS_BANK } from '../src/data/questionsBank';
 import {
   BOX_INTERVALS_MS,
   buildExamQuestions,
+  buildHardcoreExamQuestions,
   buildSmartSession,
   computeProgressStats,
   updateSRSRecord,
@@ -147,4 +148,35 @@ test('buildExamQuestions prioritizes Box 1 / unseen questions over Box 5 when sr
 
   const exam = buildExamQuestions(QUESTIONS_BANK, 25, srs);
   assert.ok(exam.some((q) => q.id === priorityTarget.id));
+});
+
+test('buildHardcoreExamQuestions prioritizes Box 1 and trap modules cleanly', () => {
+  const now = 1_700_000_000_000;
+  const srs: Record<string, SRSRecord> = {};
+  for (const q of QUESTIONS_BANK) {
+    srs[q.id] = {
+      id: q.id,
+      box: 5,
+      streak: 5,
+      lastReviewedAt: now,
+      nextReviewAt: now + 999_999,
+      totalAttempts: 5,
+      totalFailures: 0,
+    };
+  }
+  const trapFail = QUESTIONS_BANK.find((q) => q.id === 'q_m8_21')!;
+  srs[trapFail.id] = {
+    id: trapFail.id,
+    box: 1,
+    streak: 0,
+    lastReviewedAt: now,
+    nextReviewAt: now,
+    totalAttempts: 3,
+    totalFailures: 3,
+  };
+
+  const hardcore = buildHardcoreExamQuestions(QUESTIONS_BANK, 25, srs);
+  assert.equal(hardcore.length, 25);
+  assert.equal(new Set(hardcore.map((q) => q.id)).size, 25);
+  assert.ok(hardcore.some((q) => q.id === trapFail.id));
 });

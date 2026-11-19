@@ -20,8 +20,8 @@ function extractHotspotIds(): Set<string> {
   return new Set(Array.from(matches, (m) => m[1]));
 }
 
-test('QUESTIONS_BANK has 160 unique questions evenly distributed across modules 1..8 with balanced Ja/Nej', () => {
-  assert.equal(QUESTIONS_BANK.length, 160);
+test('QUESTIONS_BANK has 200 unique questions evenly distributed across modules 1..8 with balanced Ja/Nej', () => {
+  assert.equal(QUESTIONS_BANK.length, 200);
   const qIds = new Set<string>();
   const sqIds = new Set<string>();
   const counts = new Map<number, number>();
@@ -49,7 +49,7 @@ test('QUESTIONS_BANK has 160 unique questions evenly distributed across modules 
   }
 
   for (let m = 1; m <= 8; m += 1) {
-    assert.equal(counts.get(m), 20, `Expected 20 questions in module ${m}`);
+    assert.equal(counts.get(m), 25, `Expected 25 questions in module ${m}`);
   }
 
   const trueRatio = trueCount / (trueCount + falseCount);

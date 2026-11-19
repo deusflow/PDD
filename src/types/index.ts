@@ -102,9 +102,19 @@ export interface ModuleCheatRule {
   };
 }
 
+export interface OfficialGoalRef {
+  code: string;
+  titleDa: string;
+  titleRu: string;
+}
+
 export interface ModuleInfo {
   id: number;
   code: string;
+  schoolStage?: number;
+  schoolStageLabelDa?: string;
+  schoolStageLabelRu?: string;
+  officialGoals?: OfficialGoalRef[];
   titleDa: string;
   titleRu: string;
   subtitleDa: string;

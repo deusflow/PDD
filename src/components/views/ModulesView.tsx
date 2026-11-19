@@ -63,6 +63,27 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
   const [activeId, setActiveId] = useState<number>(selectedModuleId);
   const [viewMode, setViewMode] = useState<'list' | 'lesson'>(initialViewMode);
   const [lessonTab, setLessonTab] = useState<LessonTab>('slides');
+  const [showSchoolPlan, setShowSchoolPlan] = useState(false);
+  const [docChecks, setDocChecks] = useState<Record<string, boolean>>(() => {
+    try {
+      const raw = localStorage.getItem('dk_pdd_doc_checklist_v1');
+      return raw ? (JSON.parse(raw) as Record<string, boolean>) : {};
+    } catch {
+      return {};
+    }
+  });
+
+  const toggleDocCheck = (key: string) => {
+    setDocChecks((prev) => {
+      const next = { ...prev, [key]: !prev[key] };
+      try {
+        localStorage.setItem('dk_pdd_doc_checklist_v1', JSON.stringify(next));
+      } catch {
+        // ignore storage errors
+      }
+      return next;
+    });
+  };
 
   useEffect(() => {
     setActiveId(selectedModuleId);
@@ -92,15 +113,101 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
               Свободное чтение любого модуля или последовательное прохождение в управляемом курсе.
             </p>
           </div>
-          <button
-            type="button"
-            onClick={onOpenCourse}
-            className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-teal-600 px-5 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-teal-500 sm:text-sm"
-          >
-            <span>Пройти в режиме курса</span>
-            <ArrowRight className="h-4 w-4" />
-          </button>
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setShowSchoolPlan((v) => !v)}
+              className="inline-flex h-11 shrink-0 items-center justify-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-4 text-xs font-semibold text-zinc-800 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
+            >
+              <ShieldCheck className="h-4 w-4 text-teal-600 dark:text-teal-400" />
+              <span>План автошколы (M1–M5)</span>
+            </button>
+            <button
+              type="button"
+              onClick={onOpenCourse}
+              className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-teal-600 px-5 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-teal-500 sm:text-sm"
+            >
+              <span>Пройти в режиме курса</span>
+              <ArrowRight className="h-4 w-4" />
+            </button>
+          </div>
         </section>
+
+        {showSchoolPlan && (
+          <section className="nordic-card space-y-5 p-5 sm:p-6 animate-fade-in">
+            <div className="grid gap-5 lg:grid-cols-2">
+              <div>
+                <h2 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+                  Структура датской автошколы (Undervisningsplan B • Forløbsplan)
+                </h2>
+                <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+                  Как 8 тем курса соответствуют 5 обязательным модулям датской автошколы (29 теория + 4 площадка + 16 дорога + 4 KTA):
+                </p>
+                <div className="mt-3 space-y-2 text-xs">
+                  {[
+                    { code: 'M1', da: 'Grundlæggende trafikforståelse', ru: 'Поведение, § 3, восприятие, манёвренность ТС (Уроки 1, 2, 5)', lessons: 'Mål 3, 4, 5.1, 6.1–6.2' },
+                    { code: 'M2', da: 'Forberedende teori + Manøvrebane', ru: 'Устройство авто, документы + 3–4 ч площадка (Уроки 1, 2)', lessons: 'Mål 1.1–1.3, 2.1–2.9' },
+                    { code: 'M3', da: 'Grundlæggende kørsel på vej', ru: 'Базовая езда: перекрёстки, круги, велосипедисты (Уроки 3, 4)', lessons: 'Mål 7.1–7.4, 7.6–7.15' },
+                    { code: 'M4', da: 'Udvidet kørsel på vej', ru: 'Обгон, Motorvej, E43, туннель, Letbane, ночь и парковка (Уроки 3, 5, 6, 7)', lessons: 'Mål 7.5, 7.9, 7.16–7.21, 8' },
+                    { code: 'M5', da: 'Afsluttende + Glatbane (KTA)', ru: 'Скользкая площадка, обочина rabat, экзамены (Уроки 8 + Контроль)', lessons: 'Mål 9.1–9.5, 7.22, 10' },
+                  ].map((st) => (
+                    <div key={st.code} className="flex items-start gap-2.5 rounded-xl border border-zinc-200/80 bg-zinc-50/70 p-2.5 dark:border-zinc-800 dark:bg-zinc-950/60">
+                      <span className="shrink-0 rounded-md bg-teal-600 px-2 py-0.5 text-[11px] font-bold text-white">
+                        {st.code}
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <div className="font-semibold text-zinc-900 dark:text-zinc-100">{st.da}</div>
+                        <div className="text-[11px] text-zinc-600 dark:text-zinc-400">{st.ru}</div>
+                        <div className="mt-0.5 text-[10px] font-medium text-teal-700 dark:text-teal-400">{st.lessons}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <h2 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+                  Чек-лист допуска к экзамену (Tjekliste)
+                </h2>
+                <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+                  Обязательные документы, без которых автошкола не сможет записать вас на Teoriprøve:
+                </p>
+                <div className="mt-3 space-y-2">
+                  {[
+                    { id: 'pasfoto', title: '📷 Pasfoto (фото 35×45 мм)', desc: 'Строгие требования полиции (лучше фотоателье / Fotoportalen, автоматы часто отклоняют).' },
+                    { id: 'laegeattest', title: '🩺 Digital Lægeattest (справка от врача)', desc: 'Сначала заполните Del A на Borger.dk, затем семейный врач оформит Del B.' },
+                    { id: 'forstehjaelp', title: '⛑️ Førstehjælpsbevis (8 ч первой помощи)', desc: 'Сертификат Færdselsrelateret førstehjælp (не старше 12 мес при подаче!).' },
+                    { id: 'fuldmagt', title: '✍️ Fuldmagt (доверенность школе)', desc: 'Подписывается через MitID на Borger.dk, чтобы школа могла бронировать экзамены.' },
+                  ].map((doc) => {
+                    const checked = Boolean(docChecks[doc.id]);
+                    return (
+                      <button
+                        key={doc.id}
+                        type="button"
+                        onClick={() => toggleDocCheck(doc.id)}
+                        className={`flex w-full items-start gap-3 rounded-xl border p-3 text-left transition-colors ${
+                          checked
+                            ? 'border-emerald-300 bg-emerald-50/70 dark:border-emerald-900/60 dark:bg-emerald-950/30'
+                            : 'border-zinc-200/80 bg-white hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:bg-zinc-800/70'
+                        }`}
+                      >
+                        <CheckCircle2
+                          className={`mt-0.5 h-4 w-4 shrink-0 ${
+                            checked ? 'text-emerald-600 dark:text-emerald-400' : 'text-zinc-300 dark:text-zinc-600'
+                          }`}
+                        />
+                        <div>
+                          <div className="text-xs font-bold text-zinc-900 dark:text-zinc-100">{doc.title}</div>
+                          <div className="mt-0.5 text-[11px] text-zinc-600 dark:text-zinc-400">{doc.desc}</div>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
 
         <div className="grid gap-4 sm:grid-cols-2">
           {MODULES_DATA.map((item) => {
@@ -122,10 +229,17 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
                 className="nordic-card flex flex-col justify-between p-5 transition-all hover:border-zinc-300 dark:hover:border-zinc-700"
               >
                 <div>
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="rounded-lg bg-zinc-900 px-2.5 py-0.5 text-xs font-bold text-white dark:bg-zinc-100 dark:text-zinc-900">
-                      Урок {item.id}
-                    </span>
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      <span className="rounded-lg bg-zinc-900 px-2.5 py-0.5 text-xs font-bold text-white dark:bg-zinc-100 dark:text-zinc-900">
+                        Урок {item.id}
+                      </span>
+                      {item.schoolStage && (
+                        <span className="rounded-lg border border-teal-200 bg-teal-50 px-2 py-0.5 text-[11px] font-semibold text-teal-800 dark:border-teal-900/60 dark:bg-teal-950/40 dark:text-teal-300">
+                          Школа M{item.schoolStage}
+                        </span>
+                      )}
+                    </div>
 
                     {hasErrors ? (
                       <span className="inline-flex items-center gap-1 rounded-full bg-rose-100 px-2.5 py-0.5 text-[11px] font-semibold text-rose-700 dark:bg-rose-950 dark:text-rose-300">

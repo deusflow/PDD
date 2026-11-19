@@ -4,6 +4,14 @@ export const MODULES_DATA: ModuleInfo[] = [
   {
     id: 1,
     code: 'M1',
+    schoolStage: 2,
+    schoolStageLabelDa: 'Skolemodul 1–2 · Bil, manøvrebane & køretøjer',
+    schoolStageLabelRu: 'Этап школы 1–2 · Устройство авто, площадка и ТС',
+    officialGoals: [
+      { code: 'Mål 1.1–1.3', titleDa: 'Betjeningsudstyr, lovkrav & dokumenter', titleRu: 'Органы управления, шины/тормоза, документы' },
+      { code: 'Mål 2.1–2.9', titleDa: 'Manøvrebane & forberedelse før kørsel', titleRu: 'Посадка, зеркала и база на площадке' },
+      { code: 'Mål 3.1–3.2', titleDa: 'Forskellige køretøjers manøvreegenskaber', titleRu: 'Физика авто и манёвренность разных ТС' },
+    ],
     titleDa: 'Kontrolprøven & Bilens udstyr',
     titleRu: 'Техосмотр перед практикой и устройство авто',
     subtitleDa: 'Teknisk kontrol af bremser, styretøj, dæk, lygter og motorrum før køreprøven.',
@@ -191,6 +199,55 @@ export const MODULES_DATA: ModuleInfo[] = [
           maneuverBadge: 'Вид водителя: настройка посадки, подголовника и 3 зеркал перед стартом',
         },
       },
+      {
+        titleDa: 'Manøvreegenskaber & Forskellige køretøjer (Mål 3.1–3.2)',
+        titleRu: 'Физика манёвра и поведение разных ТС (Mål 3.1–3.2 из DriveLogger)',
+        bodyDa: 'Ethvert køretøj opfører sig forskelligt afhængigt af tyngdepunkt, belæsning, akselafstand og størrelse. Motorcykler ses sent pga. smal silhuet; lastbiler/busser svinger bagenden ud.',
+        bodyRu: 'Официальный блок Самообучения 1 в датских автошколах: как вес, центр тяжести и тип транспорта меняют радиус поворота, устойчивость и тормозной путь.',
+        pointsRu: [
+          'Центр тяжести (tyngdepunkt) и загрузка (Mål 3.1): тяжёлый багаж на крыше повышает крен и удлиняет тормозной путь; на льду возможны снос передка (understyring — авто «едет прямо») или занос зада (overstyring).',
+          'Мотоцикл (Mål 3.2): узкий силуэт — мозг ошибочно оценивает его скорость и расстояние (кажется, что он дальше, чем есть!). Уязвим к боковому ветру и разметке, хуже тормозит в наклоне.',
+          'Грузовик и автобус (Lastbil/Bus): при резком повороте задний свес выносится наружу (bagende svinger ud!), перед правым поворотом они смещаются левее — никогда не подлезайте справа!',
+          'Трактор и сельхозтехника: низкая скорость (30–40 км/ч), широкое навесное оборудование, плохая обзорность сзади.',
+        ],
+        pointsDa: [
+          'Mål 3.1: Tagbagage og tung last ændrer tyngdepunktet; kend forskel på understyring (forhjul skrider) og overstyring (bagende skrider).',
+          'Mål 3.2 Motorcykel: Smal silhuet gør afstand og fart svær at vurdere!',
+          'Mål 3.2 Lastbil/Bus: Lang bremselængde, store blinde vinkler, og bagenden svinger ud i skarpe sving.',
+        ],
+        attentionStepsRu: [
+          'На загородном перекрёстке ищите узкую одиночную фару мотоцикла',
+          'Оставьте больший запас времени: скорость мотоцикла почти всегда выше, чем кажется',
+          'Возле длинных автобусов/фур следите за траекторией и заднего свеса, и прицепа',
+        ],
+        attentionStepsDa: [
+          'Kig aktivt efter smalle trafikanter med én forlygte i vejkryds',
+          'Giv ekstra tidsmargen — motorcyklers fart bliver ofte undervurderet',
+          'Hold afstand til store køretøjer, hvor både forende og bagende fylder ekstra',
+        ],
+        comparePair: {
+          headingRu: 'Не путай! Understyring (Снос передка) vs Overstyring (Занос зада)',
+          headingDa: 'Forveksl ikke! Understyring vs. Overstyring',
+          left: {
+            labelRu: 'Understyring (Снос передней оси)',
+            labelDa: 'Understyring (Forhjul mister greb)',
+            summaryRu: 'Вы крутите руль в поворот, а нос машины упрямо едет прямо. Сбросьте газ и уменьшите угол руля, чтобы вернуть сцепление.',
+            summaryDa: 'Bilen vil fortsætte ligeud trods ratudslag. Slip speederen/træd koblingen og ret lidt op.',
+          },
+          right: {
+            labelRu: 'Overstyring (Занос задней оси)',
+            labelDa: 'Overstyring (Bagende skrider ud)',
+            summaryRu: 'Заднюю часть авто разворачивает наружу поворота. Выжмите сцепление/отпустите газ и мягко подрулите в сторону заноса.',
+            summaryDa: 'Bagvognen bryder ud. Træd kobling ned/slip gas og styr roligt med udskridningen (modstyr).',
+          },
+        },
+        visual: {
+          kind: 'pov',
+          presetId: 'pov_motorcycle_junction',
+          imageSrc: './images/rules/motorcycle-oncoming.jpg',
+          maneuverBadge: 'Вид водителя (Mål 3.2): встречный мотоцикл на перекрёстке — опасность недооценки скорости',
+        },
+      },
     ],
     algorithms: [
       {
@@ -213,6 +270,14 @@ export const MODULES_DATA: ModuleInfo[] = [
   {
     id: 2,
     code: 'M2',
+    schoolStage: 1,
+    schoolStageLabelDa: 'Skolemodul 1 & 3 · Orientering, adfærd & øvelseskørsel',
+    schoolStageLabelRu: 'Этап школы 1 и 3 · Восприятие, обзор и базовые манёвры',
+    officialGoals: [
+      { code: 'Mål 4.1–4.7', titleDa: 'Opfattelse, tunnelsyn, reaktionstid & bedømmelse', titleRu: 'Зрение, туннельный взгляд, реакция и психология' },
+      { code: 'Mål 6.2(1)', titleDa: 'Grundregler (§ 3 Hensyn og agtpågivenhed)', titleRu: 'Золотое правило § 3: осторожность и бережность' },
+      { code: 'Mål 7.1–7.8', titleDa: 'Orientering, møde & passage af holdende køretøjer', titleRu: 'Обзор, встречный разъезд и объезд припаркованных' },
+    ],
     titleDa: 'Manøvrer & Orientering',
     titleRu: 'Манёвры, обзор и дистанция',
     subtitleDa: 'Spejl-spejl-skulder, blinde vinkler, igangsætning, bremse- og reaktionslængde.',
@@ -371,6 +436,30 @@ export const MODULES_DATA: ModuleInfo[] = [
           maneuverBadge: 'Вид водителя: слепая зона справа и skulderkig перед поворотом/выходом',
         },
       },
+      {
+        titleDa: 'Grundregler (§ 3), Tunnelsyn & Passage af parkerede biler (Mål 4.1–4.7, 6.2, 7.6)',
+        titleRu: 'Базовое правило § 3, «туннельное зрение» и объезд припаркованных авто',
+        bodyDa: 'Færdselsloven § 3 pålægger dig altid at optræde hensynsfuldt og agtpågivende. Ved høj fart indsnævres dit synsfelt (tunnelsyn). Hold min. 1 m dørzone ved parkerede biler.',
+        bodyRu: 'Ключевые цели из Модуля 1 и 3 датских автошкол: психофизиология внимания водителя и безопасный разъезд с препятствиями и припаркованными машинами.',
+        pointsRu: [
+          '§ 3 Grundregler (Mål 6.2): нельзя «настаивать на приоритете» ценой аварии! Если видите, что другой ошибся — тормозите и избегайте столкновения. Особая бережность к детям, пожилым и инвалидам.',
+          'Туннельное зрение (Tunnelsyn, Mål 4.1–4.2): чем выше скорость (напр. 110–130 км/ч), тем уже угол периферического зрения — смотрите дальше вперёд и активно сканируйте зеркала и обочины.',
+          'Дверная зона (Dørzone, Mål 7.6): проезжая мимо припаркованных вдоль обочины машин, оставляйте минимум ~1 метр интервала (внезапно открытая дверь или выходящий ребёнок!).',
+          'Встречный разъезд (Møde, Mål 7.7): если препятствие (ремонт/припаркованная машина) на ВАШЕЙ стороне полосы — пропускаете встречного ВЫ (если нет знака приоритета B19).',
+        ],
+        pointsDa: [
+          '§ 3 Færdselsloven: Vis hensyn, skab aldrig unødig fare/ulempe, og "kør aldrig på din ret".',
+          'Ved høj fart opstår tunnelsyn — flyt blikket langt frem og bevæg øjnene aktivt.',
+          'Hold mindst 1 meter afstand ved passage af parkerede biler (dørzone); den med hindringen i sin bane viger ved møde.',
+        ],
+        trapRu: 'Мозг человека плохо оценивает скорость встречного автомобиля на расстоянии! Если сомневаетесь, успеете ли обогнать до встречной фары — НЕ начинайте обгон.',
+        trapDa: 'Det menneskelige øje har meget svært ved at bedømme modkørende bilers fart på lang afstand.',
+        visual: {
+          kind: 'pov',
+          presetId: 'pov_doorzone_passing',
+          maneuverBadge: 'Вид водителя (Mål 7.6–7.7): объезд припаркованных авто (≥1 м дверная зона) и встречный разъезд',
+        },
+      },
     ],
     algorithms: [
       {
@@ -393,6 +482,14 @@ export const MODULES_DATA: ModuleInfo[] = [
   {
     id: 3,
     code: 'M3',
+    schoolStage: 3,
+    schoolStageLabelDa: 'Skolemodul 3–4 · Kryds, rundkørsel & letbane',
+    schoolStageLabelRu: 'Этап школы 3–4 · Перекрёстки, круги и трамвай Letbane',
+    officialGoals: [
+      { code: 'Mål 6.2(2)', titleDa: 'Vigepligt & hensyn ved kryds', titleRu: 'Правила уступки на перекрёстках' },
+      { code: 'Mål 7.11–7.15', titleDa: 'Fremkørsel, ligeud, sving & rundkørsel', titleRu: 'Подъезд, правый/левый поворот и круги' },
+      { code: 'Mål 7.21', titleDa: 'Kørsel ved letbane & udrykning', titleRu: 'Трамвай Letbane и спецтранспорт' },
+    ],
     titleDa: 'Vigepligt — Hovedreglen i Danmark',
     titleRu: 'Правила приоритета (главный фильтр экзамена)',
     subtitleDa: 'Ubetinget vigepligt, hajtænder, højrevigepligt, rundkørsel, fletning og venstresving.',
@@ -597,7 +694,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         visual: {
           kind: 'pov',
           presetId: 'pov_udrykning_letbane',
-          maneuverBadge: 'Вид водителя: синий маячок в зеркале (принять вправо) и рельсы трамвая Letbane',
+          imageSrc: './images/rules/letbane-crossing.jpg',
+          maneuverBadge: 'Вид водителя (Mål 7.21): пересечение трамвайных путей Letbane — красный мигающий сигнал и стоп-линия',
         },
       },
     ],
@@ -622,6 +720,14 @@ export const MODULES_DATA: ModuleInfo[] = [
   {
     id: 4,
     code: 'M4',
+    schoolStage: 3,
+    schoolStageLabelDa: 'Skolemodul 3–4 · Bløde trafikanter & særlige områder',
+    schoolStageLabelRu: 'Этап школы 3–4 · Велосипедисты, пешеходы и жилые зоны',
+    officialGoals: [
+      { code: 'Mål 4.5–4.6', titleDa: 'Børn, ældre, cyklister, knallerter & heste', titleRu: 'Поведение детей, велосипедистов и мопедов' },
+      { code: 'Mål 7.10', titleDa: 'Trafiksanerede områder (E51, gågade, cykelgade)', titleRu: 'Жилые зоны 15 км/ч, пешеходные и велоулицы' },
+      { code: 'Mål 7.13 / 7.17', titleDa: 'Højresving over cykelsti, bus & fodgængerfelt', titleRu: 'Поворот через Cykelsti, автобус и зебра' },
+    ],
     titleDa: 'Bløde trafikanter (Cyklister & Fodgængere)',
     titleRu: 'Велосипедисты, пешеходы и автобусы',
     subtitleDa: 'Højresving over cykelsti (2 typer!), busser fra stoppested, fodgængerfelter og børn.',
@@ -701,7 +807,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         visual: {
           kind: 'pov',
           presetId: 'pov_bus_byzone',
-          maneuverBadge: 'Вид водителя: автобус мигает левым поворотником в городе (E55)',
+          imageSrc: './images/rules/bus-byzone.jpg',
+          maneuverBadge: 'Вид водителя: городской автобус мигает левым поворотником в зоне Byzone (E55)',
         },
       },
       {
@@ -724,7 +831,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         visual: {
           kind: 'pov',
           presetId: 'pov_zebra_trap',
-          maneuverBadge: 'Вид водителя: соседняя полоса тормозит перед переходом E17',
+          imageSrc: './images/rules/zebra-crosswalk.jpg',
+          maneuverBadge: 'Вид водителя: соседняя машина остановилась перед переходом E17 — опережение ЗАПРЕЩЕНО',
         },
       },
       {
@@ -821,6 +929,13 @@ export const MODULES_DATA: ModuleInfo[] = [
   {
     id: 5,
     code: 'M5',
+    schoolStage: 1,
+    schoolStageLabelDa: 'Skolemodul 1 & 4 · Anvisninger, tavler & striber',
+    schoolStageLabelRu: 'Этап школы 1 и 4 · Иерархия сигналов, знаки и разметка',
+    officialGoals: [
+      { code: 'Mål 6.1', titleDa: 'Politi, lyssignaler, tavler & vejarbejde', titleRu: 'Полиция, светофоры, знаки и ремонт' },
+      { code: 'Mål 6.3–6.4', titleDa: 'Afmærkning på kørebanen & undertavler', titleRu: 'Разметка (Spærreflade) и подтаблички' },
+    ],
     titleDa: 'Færdselstavler & Kørebanestriber',
     titleRu: 'Дорожные знаки, разметка и светофоры',
     subtitleDa: 'Advarsel, vigepligt, forbud, påbud, spærreflade, undertavler og vejafmærkning.',
@@ -912,7 +1027,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         visual: {
           kind: 'pov',
           presetId: 'pov_yellow_traffic_light',
-          maneuverBadge: 'Вид водителя: жёлтый сигнал светофора и белая стоп-линия перед перекрёстком',
+          imageSrc: './images/rules/police-signal.jpg',
+          maneuverBadge: 'Вид водителя (Mål 6.1): сигналы полиции отменяют светофор и разметку',
         },
       },
       {
@@ -957,20 +1073,20 @@ export const MODULES_DATA: ModuleInfo[] = [
         trapRu: 'Если при ремонте белая прерывистая линия ведёт прямо в пластиковые блоки, а жёлтая сплошная уводит левее — игнорируйте белую и следуйте жёлтой.',
         trapDa: 'Ved vejarbejde ignoreres de hvide streger, når der er malet gule midlertidige striber.',
         attentionStepsRu: [
-          'Посмотрите на жесты полицейского / регулировщика — они главнее светофора!',
-          'Поднята одна рука вверх → СТОП всем направлениям',
-          'Руки в стороны → едет поток вдоль плеч (в грудь/спину ехать нельзя)',
+          'Ищите временную ЖЁЛТУЮ разметку и жёлтые щиты при ремонте',
+          'Игнорируйте старые белые линии, если жёлтые ведут в другой коридор',
+          'Не обгоняйте широкие грузовики в узких временных полосах ремонта',
         ],
         attentionStepsDa: [
-          'Se først på politibetjentens armstilling (gælder over lyssignal!)',
-          'Én løftet hånd = fuldt stop for alle retninger',
-          'Strakte arme = kørsel langs armene (stop mod bryst og ryg)',
+          'Kig efter midlertidige GULE striber og gule vejarbejdstavler',
+          'Ignorer de hvide linjer, når gule striber viser en ny bane',
+          'Undgå at overhale brede lastbiler i smalle vejarbejdsspor',
         ],
         visual: {
           kind: 'pov',
           presetId: 'pov_vejarbejde_yellow',
-          imageSrc: './images/rules/police-signal.jpg',
-          maneuverBadge: 'Вид водителя: жест регулировщика отменяет светофор и разметку (при ремонте — жёлтые линии)',
+          imageSrc: './images/rules/roadwork-yellow.jpg',
+          maneuverBadge: 'Вид водителя (Mål 6.1): жёлтая разметка ремонта (Vejarbejde) отменяет белую',
         },
       },
     ],
@@ -995,6 +1111,14 @@ export const MODULES_DATA: ModuleInfo[] = [
   {
     id: 6,
     code: 'M6',
+    schoolStage: 4,
+    schoolStageLabelDa: 'Skolemodul 4 · Udvidet kørsel (Motorvej, Tunnel & Overhaling)',
+    schoolStageLabelRu: 'Этап школы 4 · Сложные дороги, обгон, трасса и туннели',
+    officialGoals: [
+      { code: 'Mål 5.1 / 7.9', titleDa: 'Overhaling på landevej & forbud', titleRu: 'Безопасный обгон и 6 запретов' },
+      { code: 'Mål 7.16 / 7.16.6', titleDa: 'Kørsel på motorvej & motortrafikvej', titleRu: 'Motorvej E42 vs Motortrafikvej E43' },
+      { code: 'Mål 7.20', titleDa: 'Kørsel i tunnel & påhængsvogn', titleRu: 'Движение в туннелях и расчёт прицепа' },
+    ],
     titleDa: 'Hastighed, Overhaling & Motorvej',
     titleRu: 'Скорость, прицепы, обгон и автомагистраль',
     subtitleDa: 'Fartgrænser 50/80/130, registreringsattest (3.500 kg), overhaling og nødspor.',
@@ -1086,7 +1210,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         visual: {
           kind: 'pov',
           presetId: 'pov_motorvej_merge',
-          maneuverBadge: 'Вид водителя: полоса разгона и аварийная полоса Nødspor справа',
+          imageSrc: './images/rules/motorway-merge.jpg',
+          maneuverBadge: 'Вид водителя (Mål 7.16): автомагистраль E42/E45 — держите правый ряд, Nødspor только для поломки',
         },
       },
       {
@@ -1166,6 +1291,31 @@ export const MODULES_DATA: ModuleInfo[] = [
           maneuverBadge: 'Вид водителя: E43 Motortrafikvej — лимит 80 км/ч и возможная встречка без отбойника',
         },
       },
+      {
+        titleDa: 'Kørsel i tunnel & nødsituationer (Mål 7.20)',
+        titleRu: 'Вождение в туннелях (Mål 7.20: свет, очки и поломка)',
+        bodyDa: 'Tænd altid nærlys før indkørsel i tunnel, tag solbriller af, hold ekstra afstand og brug kun nødvige ved havari.',
+        bodyRu: 'Обязательная тема из плана датских автошкол (Модуль 4, Mål 7.20): правила освещения, разметки и действий при заторе/аварии в туннеле.',
+        pointsRu: [
+          'Перед въездом в туннель обязательно включите принудительный ближний свет (Nærlys — чтобы горели и задние габариты!) и снимите солнцезащитные очки.',
+          'В туннеле строго запрещены разворот, задний ход, остановка и стоянка вне аварийных карманов (SOS-ниши).',
+          'Увеличьте дистанцию (>2–3 сек); при полной остановке потока в туннеле оставьте ~5 м до передней машины и заглушите мотор при долгом простое.',
+          'При возгорании/сильном задымлении: покиньте авто (ключи оставьте внутри), идите к ближайшему зелёному выходу эвакуации.',
+        ],
+        pointsDa: [
+          'Tænd altid nærlys før tunnel (kørelys er ikke nok!) og tag solbriller af.',
+          'Forbudt at vende, bakke eller standse i tunnel (kun nødlomme med SOS-telefon ved havari).',
+          'Ved kø eller brand: hold ekstra afstand, sluk motor ved stop, forlad bilen ved røg/brand.',
+        ],
+        trapRu: 'Многие машины на режиме «Auto» не включают вовремя задние габариты в коротких или ярко освещённых туннелях — включайте nærlys вручную.',
+        trapDa: 'Stol ikke blindt på "Auto"-lys i tunneler — tænd manuelt nærlys.',
+        visual: {
+          kind: 'pov',
+          presetId: 'pov_tunnel_lights',
+          imageSrc: './images/rules/tunnel-driving.jpg',
+          maneuverBadge: 'Вид водителя (Mål 7.20): въезд в туннель — ближний свет, дистанция и ниша SOS',
+        },
+      },
     ],
     algorithms: [
       {
@@ -1188,6 +1338,13 @@ export const MODULES_DATA: ModuleInfo[] = [
   {
     id: 7,
     code: 'M7',
+    schoolStage: 4,
+    schoolStageLabelDa: 'Skolemodul 4 · Standsning, parkering & P-skive',
+    schoolStageLabelRu: 'Этап школы 4 · Остановка, стоянка и парковочный диск',
+    officialGoals: [
+      { code: 'Mål 7.18', titleDa: 'Standsning (≤3 min) vs. parkering (>3 min)', titleRu: 'Правила остановки и стоянки (§ 28–29)' },
+      { code: 'Mål 6.3–6.4', titleDa: 'C61/C62, gul kantsten, P-skive & skråning', titleRu: 'Знаки C61/C62, бордюр, P-skive и уклон' },
+    ],
     titleDa: 'Standsning og Parkering',
     titleRu: 'Остановка (Standsning) и Стоянка (Parkering)',
     subtitleDa: 'Forskellen på 3 min, 5m / 10m / 12m / 30m regler, C61/C62 og P-skive.',
@@ -1382,6 +1539,14 @@ export const MODULES_DATA: ModuleInfo[] = [
   {
     id: 8,
     code: 'M8',
+    schoolStage: 5,
+    schoolStageLabelDa: 'Skolemodul 5 · Glatbane (KTA), risici, tjekliste & prøve',
+    schoolStageLabelRu: 'Этап школы 5 · Glatbane, риски, документы и экзамен',
+    officialGoals: [
+      { code: 'Mål 7.19 / 8.1–8.2', titleDa: 'Mørke, promille (0,20/0,50‰), træthed & klip', titleRu: 'Ночь, 0,20/0,50‰, усталость и баллы' },
+      { code: 'Mål 9.1–9.5', titleDa: 'KTA Glatbane, udskridning & høj vejkant', titleRu: 'Скользкая площадка KTA, занос и обочина' },
+      { code: 'Mål 10.1–10.3', titleDa: 'Tjekliste (lægeattest/fuldmagt) & Teoriprøve', titleRu: 'Чек-лист документов и формат экзамена' },
+    ],
     titleDa: 'Særlige forhold, Alkohol & Lovgivning',
     titleRu: 'Сложные условия, законы и устройство автошколы',
     subtitleDa: 'Mørkekørsel, glatføre, 0,5‰, klippekort, kørselsforbud, uheld og køreskole.',
@@ -1423,8 +1588,63 @@ export const MODULES_DATA: ModuleInfo[] = [
         visual: {
           kind: 'pov',
           presetId: 'pov_night_fog_lights',
+          imageSrc: './images/rules/night-headlights.jpg',
+          maneuverBadge: 'Вид водителя (Mål 7.19): ночная дорога, столбики kantpæle и переключение на ближний за 200–300 м',
+        },
+      },
+      {
+        titleDa: 'Glatbane (KTA), Udskridning & Høj vejkant (Mål 9.1–9.5)',
+        titleRu: 'Гололёд (Glatbane KTA) и съезд на высокий край обочины (Mål 9.1–9.5)',
+        bodyDa: 'På køreteknisk anlæg træner du bremsning på glat vej, undvigemanøvrer og sikker tilbagekørsel, hvis højre hjul kører ud over en høj eller blød vejkant (rabat).',
+        bodyRu: 'Завершающий практический этап датской автошколы перед экзаменом (Skolemodul 5 / KTA): физика скольжения и спасение машины при съезде с края асфальта.',
+        pointsRu: [
+          'Высокий/мягкий край обочины (Høj/blød rabat, Mål 9.5): если правые колёса съехали с асфальта на обочину — НИКОГДА не дёргайте резко руль влево и не бейте по тормозам! Плавно сбросьте газ, выровняйтесь вдоль дороги, затем под пологим углом вернитесь на асфальт.',
+          'Аквапланирование и чёрный лёд (Mål 9.1–9.2): на мокром льду (0…+2 °C) и в колее тормозной путь длиннее до 4–10 раз. Выжмите сцепление / отпустите газ и смотрите туда, куда хотите направить машину (взгляд ведёт руль!).',
+          'ABS vs ESP (Mål 9.3–9.4): с ABS жмите педаль тормоза максимально сильно до остановки и объезжайте препятствие; ESP подтормаживает отдельные колёса при сносе/заносе.',
+        ],
+        pointsDa: [
+          'Mål 9.5 (Høj vejkant): Brems IKKE hårdt og drej IKKE skarpt tilbage! Slip speederen, stabilisér ligeud og styr blødt ind på asfalten.',
+          'Mål 9.2–9.4: Brug fuldt bremsetryk med ABS; kig derhen, du vil styre hen (ESP hjælper ved udskridning).',
+        ],
+        attentionStepsRu: [
+          'Увидели блестящий зимний асфальт (мост/лес) → плавно снизьте скорость заранее',
+          'Если правое колесо сошло на обочину (rabat) → не тормозите резко и не крутите влево',
+          'При заносе выжмите сцепление / сбросьте газ и мягко стабилизируйте руль',
+        ],
+        attentionStepsDa: [
+          'Blankt føre på broer/skovvej: sænk farten blødt før kurven',
+          'Hjul ude i høj rabat: hold rattet roligt ligeud og sænk farten før blidt returslag',
+          'Ved skrid: kobling ned / slip gas, kig i fri retning og styr blidt med',
+        ],
+        visual: {
+          kind: 'pov',
+          presetId: 'pov_soft_shoulder_rabat',
           imageSrc: './images/rules/winter-ice.jpg',
-          maneuverBadge: 'Вид водителя: скользкий зимний поворот, чёрный лёд и переключение света',
+          maneuverBadge: 'Вид водителя (Mål 9.1–9.5): зимний поворот, чёрный лёд и контроль сцепления (KTA)',
+        },
+      },
+      {
+        titleDa: 'Børn i bilen (< 135 cm) & Passagerairbag (§ 80a)',
+        titleRu: 'Дети в автомобиле (< 135 см) и подушка безопасности',
+        bodyDa: 'Alle børn under 135 cm skal sidde i godkendt autostol eller selepude. En bagudvendt autostol må ALDRIG stå på forsædet med aktiv airbag!',
+        bodyRu: 'Жёсткое правило датского экзамена, за нарушение которого водитель получает 1 балл (klip) и штраф.',
+        pointsRu: [
+          'Рост ребёнка < 135 см → обязательно сертифицированное детское кресло или бустер по весу и росту.',
+          'Если детское кресло установлено СПИНОЙ ВПЕРЁД (bagudvendt) на переднем сиденье — фронтальная подушка безопасности пассажира ОБЯЗАТЕЛЬНО должна быть отключена! Иначе при срабатывании она смертельно травмирует ребёнка.',
+          'Водитель лично отвечает (штраф + 1 klip) за всех непристёгнутых пассажиров младше 15 лет. Держать ребёнка на коленях запрещено даже на заднем сиденье на короткой поездке.',
+        ],
+        pointsDa: [
+          'Børn < 135 cm = godkendt autostol / selepude.',
+          'Bagudvendt foran = passagerairbag SKAL slås fra (dødsfare + 1 klip).',
+          'Fører har ansvaret for alle under 15 år.',
+        ],
+        trapRu: 'С 15 лет пассажир сам отвечает за непристёгнутый ремень, а до 15 лет балл (klip) и штраф получает именно ВОДИТЕЛЬ.',
+        trapDa: 'Føreren får 1 klip for usikrede børn under 15 år (fra 15 år får passageren selv bøde).',
+        visual: {
+          kind: 'pov',
+          presetId: 'pov_child_seat_airbag',
+          imageSrc: './images/rules/child-airbag.jpg',
+          maneuverBadge: 'Вид водителя (§ 80a): детское кресло спиной вперёд — фронтальная подушка ОБЯЗАТЕЛЬНО выключена',
         },
       },
       {
@@ -1458,15 +1678,15 @@ export const MODULES_DATA: ModuleInfo[] = [
         bodyDa: 'Den lovpligtige lovpakke består af mindst 29 teorilektioner, 4 lektioner på manøvrebane, 16 kørelektioner på vej og 4 lektioner på køreteknisk anlæg (glatbane).',
         bodyRu: 'Практическая дорожная карта ученика от первого занятия в køreskole до получения пластиковых прав.',
         pointsRu: [
-          'Обязательный пакет (Lovpakke): 29 уроков теории + 4 урока на закрытой площадке (Manøvrebane) + 16 уроков в городе (вкл. ночное и трассу) + 4 урока на скользкой площадке (Glatbane).',
-          'Документы для допуска: медсправка от семейного врача (Lægeattest) и 8-часовой курс первой помощи (Førstehjælpskursus).',
-          'Теоретический экзамен (Teoriprøve): 25 ситуаций (25 минут), нужно минимум 20 правильных билетов. Можно заказать переводчика (Tolk) или сдавать на английском.',
-          'Практический экзамен (Køreprøve): начинается с устного техопроса Kontrolprøven у машины (5 мин), затем 25–35 минут езды по городу с инспектором.',
+          'Обязательный пакет (Lovpakke B): 29 уроков теории + 4 на площадке (Manøvrebane) + 16 в городе (вкл. ночь и трассу) + 4 на скользкой площадке (KTA Glatbane).',
+          'Чек-лист 4 документов (как в DriveLogger): 1) Pasfoto · 2) Digital Lægeattest (сначала Del A на Borger.dk, затем врач заполняет Del B) · 3) Курс первой помощи 8 ч (не старше 12 мес!) · 4) Fuldmagt автошколе через MitID на Borger.dk для записи на экзамены.',
+          'Цифровая Teoriprøve (Færdselsstyrelsen): 25 ситуаций, 25 минут, нужно ≥ 20/25 (допускается до 5 ошибок). Есть озвучка в наушниках, можно перелистывать вопросы и отмечать сомнительные; доступен переводчик (Tolk) или сдача на английском.',
+          'Практический экзамен (Køreprøve): начинается с устного осмотра Kontrolprøven у машины (~5 мин), затем 25–35 минут вождения с экзаменатором.',
         ],
         pointsDa: [
-          'Lovpakke: 29 teori + 4 manøvrebane + 16 vej + 4 glatbane.',
-          'Krav: Lægeattest + Færdselsrelateret førstehjælp (8 timer).',
-          'Teoriprøve (min. 20/25) → Kontrolprøve + Praktisk køreprøve.',
+          'Lovpakke: 29 teori + 4 manøvrebane + 16 vej + 4 KTA glatbane.',
+          '4 krav i tjeklisten: Pasfoto + Digital Lægeattest (Del A+B) + 8t Førstehjælp (≤12 mdr.) + Fuldmagt via MitID.',
+          'Digital Teoriprøve: 25 billeder / 25 min, min. 20/25 rigtige (max 5 fejl), mulighed for gennemgang & tolk.',
         ],
         trapRu: 'Нельзя сначала пройти все вождения без теории — автошкола обязана вести теорию и практику параллельно, а на Glatbane допускают только в конце курса.',
         trapDa: 'Teori og praksis følges ad i forløbet; glatbane ligger sidst før prøven.',
