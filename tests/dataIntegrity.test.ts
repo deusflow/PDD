@@ -149,4 +149,23 @@ test('all visuals (POV presets, traffic scenes, signs, hotspots) referenced in d
   for (const pov of povPresets) {
     assert.ok(usedPovsInQuestions.has(pov), `POV preset ${pov} is never tested in QUESTIONS_BANK`);
   }
+
+  // Every imageSrc in rules and questions must use relative ./images/... (for Vite base './') and exist on disk
+  const allImageSrcs: Array<{ ref: string; src: string }> = [
+    ...QUESTIONS_BANK.flatMap((q) => (q.visual.imageSrc ? [{ ref: q.id, src: q.visual.imageSrc }] : [])),
+    ...MODULES_DATA.flatMap((m) =>
+      m.cheatSheet.flatMap((r) =>
+        r.visual?.imageSrc ? [{ ref: `m${m.id}:${r.titleRu}`, src: r.visual.imageSrc }] : []
+      )
+    ),
+  ];
+
+  for (const { ref, src } of allImageSrcs) {
+    assert.ok(
+      src.startsWith('./images/'),
+      `imageSrc for ${ref} must start with "./images/" (got "${src}")`
+    );
+    const diskPath = path.resolve(process.cwd(), 'public', src.slice(2));
+    assert.ok(fs.readFileSync(diskPath, 'utf8').length > 0, `Missing image asset ${diskPath} for ${ref}`);
+  }
 });

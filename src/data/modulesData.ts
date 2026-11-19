@@ -1260,7 +1260,7 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleDa: 'Kørsel i tunnel & nødsituationer (Mål 7.20)',
         titleRu: 'Вождение в туннелях (Mål 7.20: свет, очки и поломка)',
         bodyDa: 'Tænd altid nærlys før indkørsel i tunnel, tag solbriller af, hold ekstra afstand og brug kun nødvige ved havari.',
-        bodyRu: 'Обязательная тема из плана датских автошкол (Модуль 4, Mål 7.20): правила освещения, разметки и действий при заторе/аварии в туннеле.',
+        bodyRu: 'Обязательная тема из плана датских автошкол (этап Skolemodul 4, Mål 7.20): правила освещения, разметки и действий при заторе/аварии в туннеле.',
         pointsRu: [
           'Перед въездом в туннель обязательно включите принудительный ближний свет (Nærlys — чтобы горели и задние габариты!) и снимите солнцезащитные очки.',
           'В туннеле строго запрещены разворот, задний ход, остановка и стоянка вне аварийных карманов (SOS-ниши).',
@@ -1692,7 +1692,7 @@ export const MODULES_DATA: ModuleInfo[] = [
         visual: {
           kind: 'pov',
           presetId: 'pov_alcohol_klip_law',
-          maneuverBadge: 'Сводка: 0,50‰ · 2 klip для новичков · 112/114 при ДТП',
+          maneuverBadge: 'Сводка: 0,20 / 0,50‰ · 2 klip для новичков · 112/114 при ДТП',
         },
       },
       {

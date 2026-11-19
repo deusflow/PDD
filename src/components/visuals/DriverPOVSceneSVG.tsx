@@ -632,8 +632,8 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
               </text>
               {!hideHints && (
                 <>
-                  <text x="65" y="102" textAnchor="middle" fill="#CBD5E1" fontSize="9.8">
-                    ≥ 0,51‰ = лишение
+                  <text x="65" y="102" textAnchor="middle" fill="#CBD5E1" fontSize="9.2">
+                    0,20‰ нов. / 0,50‰ общ.
                   </text>
                   <text x="65" y="122" textAnchor="middle" fill="#FCA5A5" fontSize="9.5">
                     &gt; 2,00‰ = конфискация
@@ -1094,15 +1094,15 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
           <CockpitFrame night>
             <HorizonRoad withCenterDash />
             <FrontCar x={230} y={144} scale={0.78} color="#EF4444" brake />
-            <rect x="315" y="84" width="60" height="44" rx="10" fill="#0F172A" stroke="#EF4444" strokeWidth="2.5" />
-            <text x="345" y="104" textAnchor="middle" fill="#EF4444" fontSize="13" fontWeight="900">
-              200+
-            </text>
-            <text x="345" y="119" textAnchor="middle" fill="#CBD5E1" fontSize="9">
-              km/t
-            </text>
             {!hideHints && (
               <>
+                <rect x="315" y="84" width="60" height="44" rx="10" fill="#0F172A" stroke="#EF4444" strokeWidth="2.5" />
+                <text x="345" y="104" textAnchor="middle" fill="#EF4444" fontSize="13" fontWeight="900">
+                  200+
+                </text>
+                <text x="345" y="119" textAnchor="middle" fill="#CBD5E1" fontSize="9">
+                  km/t
+                </text>
                 <rect x="44" y="34" width="372" height="148" rx="16" fill="#0F172A" fillOpacity="0.92" stroke="#EF4444" strokeWidth="2" />
                 <text x="230" y="64" textAnchor="middle" fill="#FCA5A5" fontSize="13.5" fontWeight="800">
                   VANVIDSKØRSEL = КОНФИСКАЦИЯ АВТО!
