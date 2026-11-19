@@ -33,6 +33,15 @@ const LESSON_HERO_META: Record<number, HeroSceneMeta> = {
   },
   3: {
     imageSrc: './images/lessons/module-3.jpg',
+    titleRu: 'Ситуация: регулировщик, светофор, стоп-линия и велодорожка',
+    titleDa: 'Anvisninger: politiets tegn, lyssignal og afmærkning',
+    captionRu:
+      'Иерархия сигналов на дороге: жесты полицейского отменяют зелёный свет светофора, далее действуют знаки A–E и дорожная разметка (стоп-линия, сплошная, spærreflade и велодорожки).',
+    captionDa:
+      'Færdselsreglernes rækkefølge: politiets tegn står altid over lyssignaler, færdselstavler, afmærkning og almindelige regler.',
+  },
+  4: {
+    imageSrc: './images/lessons/module-4.jpg',
     titleRu: 'Ситуация: знак B11 и «акульи зубы» перед главной дорогой',
     titleDa: 'Ubetinget vigepligt ved hajtænder og tavle B11',
     captionRu:
@@ -40,23 +49,14 @@ const LESSON_HERO_META: Record<number, HeroSceneMeta> = {
     captionDa:
       'Tavle B11 og hvide hajtænder på kørebanen betyder ubetinget vigepligt for både biler og cyklister fra højre og venstre.',
   },
-  4: {
-    imageSrc: './images/lessons/module-4.jpg',
+  5: {
+    imageSrc: './images/lessons/module-5.jpg',
     titleRu: 'Ситуация: городская улица, зебра и отъезжающий автобус',
     titleDa: 'Byzone: fodgængerfelt, cykelsti og bus fra stoppested',
     captionRu:
       'В населённом пункте (50 км/ч) впереди пешеходный переход, где важно уступить пешеходам, а справа жёлтый автобус мигает левым поворотником при выезде с остановки — в городе ему уступают.',
     captionDa:
       'I byzone (50 km/t) skal du holde tilbage for fodgængere ved fodgængerfeltet og give plads til bussen, der blinker ud fra stoppestedet.',
-  },
-  5: {
-    imageSrc: './images/lessons/module-5.jpg',
-    titleRu: 'Ситуация: загородная дорога Landevej (до 80 км/ч)',
-    titleDa: 'Landevej uden for tættere bebygget område (80 km/t)',
-    captionRu:
-      'На загородной трассе держите дистанцию минимум 2 секунды, читайте направление поворотов по белым столбикам с жёлтыми отражателями и не обгоняйте перед закрытым изгибом или горкой.',
-    captionDa:
-      'På landevej (op til 80 km/t) skal du holde mindst 2 sekunders afstand, læse kurven via kantpælene og undgå overhaling før uoverskuelige sving.',
   },
   6: {
     imageSrc: './images/lessons/module-6.jpg',
@@ -72,7 +72,7 @@ const LESSON_HERO_META: Record<number, HeroSceneMeta> = {
     titleRu: 'Ситуация: городская парковка, знак запрета, P-skive и отступ 5 м',
     titleDa: 'Standsning og parkering: tavler, 5 m-regel og P-skive',
     captionRu:
-      'Машины припаркованы по правому краю улицы, на стекле выставлен синий парковочный диск P-skive, рядом установлен знак запрета стоянки (C61 — кратковременная остановка ≤3 мин разрешена) и видна разметка зебры (отступ 5 м).',
+      'Машины припаркованы по правому краю улицы, на стекле выставлен синий парковочный диск P-skive, рядом установлен знак запрета стоянки (C62 — кратковременная остановка ≤3 мин разрешена) и видна разметка зебры (отступ 5 м).',
     captionDa:
       'Ved byparkering gælder 5 m afstand før fodgængerfelt og 10 m fra vejkryds; ved tidsbegrænset parkering indstilles P-skiven til nærmeste kvarter frem.',
   },

@@ -158,7 +158,7 @@ export interface CourseState {
 }
 
 export interface UserAppState {
-  version: 1;
+  version: 1 | 2;
   hasSeenOnboarding: boolean;
   languageMode: LanguageMode;
   theme: ThemeMode;

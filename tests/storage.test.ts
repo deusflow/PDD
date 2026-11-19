@@ -56,3 +56,18 @@ test('importFromJson migrates missing course fields cleanly without throwing', (
   assert.equal(Object.keys(migrated.course.modules).length, 8);
   assert.equal(migrated.course.modules[1].passed, false);
 });
+
+test('v1 state remaps old modules 3/4/5 to new progressive M3(signs)/M4(priority)/M5(users) and preserves 25/25 scores', () => {
+  const base = StorageManager.load();
+  base.version = 1;
+  base.course.modules[3].passed = true; // old Priority
+  base.course.modules[3].bestFirstTryScore = 24;
+  base.course.modules[5].passed = true; // old Signs
+  base.course.modules[5].bestFirstTryScore = 25;
+
+  const migrated = StorageManager.importFromJson(JSON.stringify(base));
+  assert.equal(migrated.version, 2);
+  assert.equal(migrated.course.modules[3].bestFirstTryScore, 25); // new M3 Signs
+  assert.equal(migrated.course.modules[4].bestFirstTryScore, 24); // new M4 Priority
+  assert.equal(migrated.course.modules[5].passed, false); // new M5 Users
+});

@@ -6,7 +6,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   // =========================================================================
   {
     id: 'sign_A11',
-    moduleId: 5,
+    moduleId: 3,
     category: 'sign',
     signCode: 'A11',
     da: 'A11 — Farligt vejkryds (med højrevigepligt)',
@@ -16,7 +16,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'sign_A19',
-    moduleId: 5,
+    moduleId: 3,
     category: 'sign',
     signCode: 'A19',
     da: 'A19 — Lyssignal',
@@ -26,7 +26,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'sign_A21',
-    moduleId: 4,
+    moduleId: 5,
     category: 'sign',
     signCode: 'A21',
     da: 'A21 — Cyklister og knallerter',
@@ -36,7 +36,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'sign_A22',
-    moduleId: 4,
+    moduleId: 5,
     category: 'sign',
     signCode: 'A22',
     da: 'A22 — Børn',
@@ -56,7 +56,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'sign_A43',
-    moduleId: 3,
+    moduleId: 4,
     category: 'sign',
     signCode: 'A43',
     da: 'A43 — Indsnævring af vej',
@@ -66,7 +66,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'sign_A73',
-    moduleId: 5,
+    moduleId: 3,
     category: 'sign',
     signCode: 'A73',
     da: 'A73 — Vejarbejde',
@@ -76,7 +76,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'sign_A99',
-    moduleId: 5,
+    moduleId: 3,
     category: 'sign',
     signCode: 'A99',
     da: 'A99 — Anden fare',
@@ -86,7 +86,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'sign_B11',
-    moduleId: 3,
+    moduleId: 4,
     category: 'sign',
     signCode: 'B11',
     da: 'B11 — Ubetinget vigepligt (Hajtænder)',
@@ -96,7 +96,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'sign_B13',
-    moduleId: 3,
+    moduleId: 4,
     category: 'sign',
     signCode: 'B13',
     da: 'B13 — Stop (Fuld standsning)',
@@ -106,7 +106,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'sign_B15',
-    moduleId: 3,
+    moduleId: 4,
     category: 'sign',
     signCode: 'B15',
     da: 'B15 — Sammenfletning',
@@ -116,7 +116,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'sign_B16',
-    moduleId: 3,
+    moduleId: 4,
     category: 'sign',
     signCode: 'B16',
     da: 'B16 — Hovedvej',
@@ -126,7 +126,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'sign_B17',
-    moduleId: 3,
+    moduleId: 4,
     category: 'sign',
     signCode: 'B17',
     da: 'B17 — Hovedvej ophører',
@@ -136,7 +136,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'sign_B18',
-    moduleId: 3,
+    moduleId: 4,
     category: 'sign',
     signCode: 'B18',
     da: 'B18 — Hold tilbage for modkørende',
@@ -146,7 +146,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'sign_B19',
-    moduleId: 3,
+    moduleId: 4,
     category: 'sign',
     signCode: 'B19',
     da: 'B19 — Modkørende skal holde tilbage',
@@ -156,7 +156,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'sign_C11',
-    moduleId: 5,
+    moduleId: 3,
     category: 'sign',
     signCode: 'C11',
     da: 'C11 — Indkørsel forbudt',
@@ -166,7 +166,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'sign_C19',
-    moduleId: 5,
+    moduleId: 3,
     category: 'sign',
     signCode: 'C19',
     da: 'C19 — Kørsel i begge retninger forbudt (Motorkøretøj)',
@@ -256,7 +256,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'sign_D11_right',
-    moduleId: 5,
+    moduleId: 3,
     category: 'sign',
     signCode: 'D11-right',
     da: 'D11 — Påbudt kørselsretning (Højre)',
@@ -266,7 +266,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'sign_D11_straight',
-    moduleId: 5,
+    moduleId: 3,
     category: 'sign',
     signCode: 'D11-straight',
     da: 'D11 — Påbudt kørselsretning (Ligeud)',
@@ -276,7 +276,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'sign_D12',
-    moduleId: 3,
+    moduleId: 4,
     category: 'sign',
     signCode: 'D12',
     da: 'D12 — Påbudt kørselsretning i rundkørsel',
@@ -286,7 +286,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'sign_D15',
-    moduleId: 5,
+    moduleId: 3,
     category: 'sign',
     signCode: 'D15',
     da: 'D15 — Påbudt passage til højre for helle/hindring',
@@ -296,7 +296,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'sign_D21',
-    moduleId: 4,
+    moduleId: 5,
     category: 'sign',
     signCode: 'D21',
     da: 'D21 — Cykelsti',
@@ -306,7 +306,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'sign_E17',
-    moduleId: 4,
+    moduleId: 5,
     category: 'sign',
     signCode: 'E17',
     da: 'E17 — Fodgængerfelt',
@@ -316,7 +316,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'sign_E19',
-    moduleId: 5,
+    moduleId: 3,
     category: 'sign',
     signCode: 'E19',
     da: 'E19 — Ensrettet færdsel',
@@ -605,7 +605,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   // =========================================================================
   {
     id: 'term_ubetinget_vigepligt',
-    moduleId: 3,
+    moduleId: 4,
     category: 'term',
     da: 'Ubetinget vigepligt',
     ru: 'Безусловная уступка дороги (всем на главной с обеих сторон)',
@@ -614,7 +614,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'term_hoejrevigepligt',
-    moduleId: 3,
+    moduleId: 4,
     category: 'term',
     da: 'Højrevigepligt',
     ru: 'Правило правой руки (помеха справа)',
@@ -623,7 +623,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'term_hajtaender',
-    moduleId: 3,
+    moduleId: 4,
     category: 'term',
     da: 'Hajtænder (Vigepligtslinje)',
     ru: '«Акульи зубы» (белые треугольники разметки уступки)',
@@ -632,7 +632,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'term_overkoersel',
-    moduleId: 3,
+    moduleId: 4,
     category: 'term',
     da: 'Overkørsel (over fortov / kantsten / cykelsti)',
     ru: 'Выезд через тротуар, бордюр или прилегающую территорию',
@@ -641,7 +641,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'term_fletning',
-    moduleId: 3,
+    moduleId: 4,
     category: 'term',
     da: 'Sammenfletning (Fletning)',
     ru: 'Слияние потоков (принцип «молнии»)',
@@ -650,7 +650,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'term_vognbaneskift',
-    moduleId: 3,
+    moduleId: 4,
     category: 'term',
     da: 'Vognbaneskift',
     ru: 'Перестроение в другую полосу',
@@ -659,7 +659,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'term_rundkoersel',
-    moduleId: 3,
+    moduleId: 4,
     category: 'term',
     da: 'Rundkørsel',
     ru: 'Круговое движение',
@@ -713,7 +713,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'term_cykelsti',
-    moduleId: 4,
+    moduleId: 5,
     category: 'term',
     da: 'Cykelsti',
     ru: 'Велосипедная дорожка',
@@ -722,7 +722,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'term_fodgaengerfelt',
-    moduleId: 4,
+    moduleId: 5,
     category: 'term',
     da: 'Fodgængerfelt',
     ru: 'Пешеходный переход («зебра»)',
@@ -731,7 +731,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'term_bloede_trafikanter',
-    moduleId: 4,
+    moduleId: 5,
     category: 'term',
     da: 'Bløde trafikanter',
     ru: 'Уязвимые участники движения (пешеходы, велосипедисты, дети)',
@@ -740,7 +740,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'term_spaerrrelinje',
-    moduleId: 5,
+    moduleId: 3,
     category: 'term',
     da: 'Spærrelinje',
     ru: 'Сплошная линия разметки',
@@ -749,7 +749,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'term_varslingslinje',
-    moduleId: 5,
+    moduleId: 3,
     category: 'term',
     da: 'Varslingslinje',
     ru: 'Предупредительная прерывистая линия (длинные штрихи)',
@@ -758,7 +758,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'term_undertavle',
-    moduleId: 5,
+    moduleId: 3,
     category: 'term',
     da: 'Undertavle',
     ru: 'Информационная подтабличка под знаком',
@@ -983,7 +983,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'term_jernbaneoverskaering',
-    moduleId: 5,
+    moduleId: 3,
     category: 'term',
     da: 'Jernbaneoverskæring (Tog)',
     ru: 'Железнодорожный переезд',
@@ -992,7 +992,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'term_vognbanelinje',
-    moduleId: 5,
+    moduleId: 3,
     category: 'term',
     da: 'Vognbanelinje (Punkteret linje)',
     ru: 'Разделительная прерывистая линия полос',
@@ -1012,7 +1012,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'sign_c52',
-    moduleId: 5,
+    moduleId: 3,
     category: 'sign',
     signCode: 'C52',
     da: 'Overhaling forbudt ophører (C52)',
@@ -1022,7 +1022,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'sign_c59',
-    moduleId: 5,
+    moduleId: 3,
     category: 'sign',
     signCode: 'C59',
     da: 'Ophør af lokal begrænsning (C59)',
@@ -1032,7 +1032,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'sign_e49',
-    moduleId: 4,
+    moduleId: 5,
     category: 'sign',
     signCode: 'E49',
     da: 'Cykelgade (E49)',
@@ -1042,7 +1042,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'sign_e51',
-    moduleId: 4,
+    moduleId: 5,
     category: 'sign',
     signCode: 'E51',
     da: 'Opholds- og legeområde (E51)',
@@ -1052,7 +1052,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'sign_e68',
-    moduleId: 5,
+    moduleId: 3,
     category: 'sign',
     signCode: 'E68',
     da: 'Zone-tavle (E68)',
@@ -1062,7 +1062,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'term_knallert_45',
-    moduleId: 4,
+    moduleId: 5,
     category: 'term',
     da: 'Stor knallert (Knallert 45)',
     ru: 'Большой мопед (до 45 км/ч, с номером — едет по дороге)',
@@ -1071,7 +1071,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'term_cykelboks',
-    moduleId: 4,
+    moduleId: 5,
     category: 'term',
     da: 'Cykelboks (Fremskudt stopstreg)',
     ru: 'Велосипедный карман перед светофором',
@@ -1080,7 +1080,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
   },
   {
     id: 'term_blind_vinkel_lastbil',
-    moduleId: 4,
+    moduleId: 5,
     category: 'term',
     da: 'Højresvingsulykke & Lastbilens blinde vinkel',
     ru: 'Слепая зона грузовика при правом повороте',

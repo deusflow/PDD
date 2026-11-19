@@ -508,7 +508,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   // =========================================================================
   {
     id: 'q_m3_1',
-    moduleId: 3,
+    moduleId: 4,
     situationDa:
       'Du nærmer dig et kryds. Foran dig er der hajtænder på kørebanen samt skiltet B11 (Ubetinget vigepligt). Der kommer biler på den tværgående vej.',
     situationRu:
@@ -552,7 +552,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m3_2',
-    moduleId: 3,
+    moduleId: 4,
     situationDa:
       'Du kører i et villakvarter og nærmer dig et vejkryds uden lyssignaler, uden skilte og uden hajtænder på kørebanen. En bil kommer fra højre, og en anden fra venstre.',
     situationRu:
@@ -595,7 +595,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m3_3',
-    moduleId: 3,
+    moduleId: 4,
     situationDa:
       'Du er på vej ud fra en parkeringsplads/tankstation og kører hen over et fortov eller en sænket kantsten (overkørsel) ud på en gade. Der er IKKE opsat hajtænder eller B11-skilt.',
     situationRu:
@@ -638,7 +638,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m3_4',
-    moduleId: 3,
+    moduleId: 4,
     situationDa:
       'Du nærmer dig en rundkørsel (skilt D12 + B11 med hajtænder). Inde i rundkørslen kører der både en personbil og en cyklist.',
     situationRu:
@@ -683,7 +683,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m3_5',
-    moduleId: 3,
+    moduleId: 4,
     situationDa:
       'To vognbaner i samme retning skal blive til én på en strækning med skilt B15 (Sammenfletning), hvor vognbanelinjen mellem dem ophører.',
     situationRu:
@@ -727,7 +727,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m3_6',
-    moduleId: 3,
+    moduleId: 4,
     situationDa:
       'Du nærmer dig en smal bro eller et smalt vejafsnit, hvor skiltet B18 (Hold tilbage for modkørende) står foran dig. Længere fremme i et andet kryds står STOP-skiltet B13.',
     situationRu:
@@ -775,7 +775,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   // =========================================================================
   {
     id: 'q_m4_1',
-    moduleId: 4,
+    moduleId: 5,
     situationDa:
       'Du skal dreje til højre i et lysreguleret kryds, hvor lyset er grønt. Til højre for din vognbane løber en cykelsti langs vejen, og en cyklist er på vej ligeud.',
     situationRu:
@@ -819,7 +819,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m4_2',
-    moduleId: 4,
+    moduleId: 5,
     situationDa:
       'Du kører i en større rundkørsel med en ydre cykelsti langs kanten og skal nu forlade rundkørslen ved næste udkørsel (højresving).',
     situationRu:
@@ -863,7 +863,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m4_3',
-    moduleId: 4,
+    moduleId: 5,
     situationDa:
       'Du kører i byzone (50 km/t) og indhenter en rutebus, der holder ved et stoppested og nu tænder sit venstre blinklys for at køre ud på kørebanen.',
     situationRu:
@@ -907,7 +907,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m4_4',
-    moduleId: 4,
+    moduleId: 5,
     situationDa:
       'Du nærmer dig et ureguleret fodgængerfelt (skilt E17). En fodgænger står på fortovet og tager det første skridt ud mod striberne, og bilen i banen ved siden af er begyndt at bremse.',
     situationRu:
@@ -952,7 +952,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m4_5',
-    moduleId: 4,
+    moduleId: 5,
     situationDa:
       'Du ser advarselstavlen A22 (Børn) i et boligområde tæt ved en skole, hvor biler holder parkeret langs fortovet.',
     situationRu:
@@ -1000,7 +1000,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   // =========================================================================
   {
     id: 'q_m5_1',
-    moduleId: 5,
+    moduleId: 3,
     situationDa:
       'Du kører på en landevej og overvejer at overhale en langsom traktor. På kørebanen ændrer midterlinjen sig fra korte streger til lange streger med korte mellemrum (varslingslinje) og derefter en heltrukken linje (spærrelinje).',
     situationRu:
@@ -1043,7 +1043,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m5_2',
-    moduleId: 5,
+    moduleId: 3,
     situationDa:
       'Du nærmer dig et område med vejarbejde, hvor tavlen A73 har gul baggrund, og der er lagt gule striber hen over de normale hvide vejstriber.',
     situationRu:
@@ -1088,7 +1088,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m5_3',
-    moduleId: 5,
+    moduleId: 3,
     situationDa:
       'For enden af en gade står forbudstavlen C11 (Indkørsel forbudt) med undertavlen "Undtaget cykler".',
     situationRu:
@@ -1133,7 +1133,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m5_4',
-    moduleId: 5,
+    moduleId: 3,
     situationDa:
       'Du nærmer dig et lysreguleret kryds med 50 km/t. Lyset skifter fra grønt til fast gult, da du er ca. 35 meter fra stoplinjen. I et kryds længere fremme dirigerer en politibetjent trafikken.',
     situationRu:
@@ -1176,7 +1176,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m5_5',
-    moduleId: 5,
+    moduleId: 3,
     situationDa:
       'Du ser færdselstavlen A99 (Anden fare) eller et hastighedsskilt med forskellige typer undertavler under.',
     situationRu:
@@ -1221,7 +1221,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m5_6',
-    moduleId: 5,
+    moduleId: 3,
     situationDa:
       'Du nærmer dig en jernbaneoverskæring. Det røde blinklys er tændt, men bommene er endnu ikke begyndt at gå ned.',
     situationRu:
@@ -2072,7 +2072,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m3_7',
-    moduleId: 3,
+    moduleId: 4,
     situationDa:
       'Du kører på en vej med skilt B16 (Hovedvej). Længere fremme passerer du skilt B17 (Hovedvej ophører) og derefter et smalt stykke med skilt B19.',
     situationRu:
@@ -2116,7 +2116,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m4_6',
-    moduleId: 4,
+    moduleId: 5,
     situationDa:
       'Du skal krydse en gågade eller køre i et skiltet opholds- og legeområde (opholdsområde) i byen, hvor der går fodgængere og leger børn på hele vejarealet.',
     situationRu:
@@ -2160,7 +2160,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m4_7',
-    moduleId: 4,
+    moduleId: 5,
     situationDa:
       'På en smal landevej nærmer du dig en rytter på hest samt en person med hvid stok ved vejkanten længere fremme.',
     situationRu:
@@ -2203,7 +2203,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m5_7',
-    moduleId: 5,
+    moduleId: 3,
     situationDa:
       'I et vejkryds ser du den blå påbudstavle D11 (pil ligeud), og lidt længere fremme står tavlen D15 (påbudt passage til højre for helle).',
     situationRu:
@@ -2603,7 +2603,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m3_8',
-    moduleId: 3,
+    moduleId: 4,
     situationDa:
       'Du kører i et almindeligt kryds og vil dreje til venstre. En modkørende bil på den tværgående linje blinker også til venstre (begge skal dreje til venstre).',
     situationRu:
@@ -2646,7 +2646,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m4_8',
-    moduleId: 4,
+    moduleId: 5,
     situationDa:
       'Du skal dreje til højre i det næste lysregulerede kryds. Lige før krydset ophører kantstenen til cykelstien, og der er en punkteret linje mellem din bane og cykelstien (fælles svingbane / opmarchbås).',
     situationRu:
@@ -2689,7 +2689,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m5_8',
-    moduleId: 5,
+    moduleId: 3,
     situationDa:
       'Du kører i byen frem mod et kryds med rødt lys. Midt på vejen er der et skråstribet område omgivet af hvide linjer (spærreflade), og helt fremme før stoplinjen er der en grøn/blå cykelboks.',
     situationRu:
@@ -3219,7 +3219,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m3_9',
-    moduleId: 3,
+    moduleId: 4,
     situationDa:
       'Du kommer ad en mindre sidevej frem til et kryds med den ottekantede stoptavle B13 (Fuldt stop) og en fuldt optrukket stoplinje.',
     situationRu:
@@ -3263,7 +3263,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m3_10',
-    moduleId: 3,
+    moduleId: 4,
     situationDa:
       'Du kører ind på en ensrettet gade med skiltet E19 og skal snart dreje til venstre i det næste vejkryds.',
     situationRu:
@@ -3307,7 +3307,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m3_11',
-    moduleId: 3,
+    moduleId: 4,
     situationDa:
       'Du kører ind i en større tosporet rundkørsel i byen og skal tage 3. afkørsel (til venstre i forhold til din indkørsel).',
     situationRu:
@@ -3351,7 +3351,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m3_12',
-    moduleId: 3,
+    moduleId: 4,
     situationDa:
       'Du holder for rødt lys i byen. Bagfra nærmer sig en ambulance med både blå blink og sirene tændt.',
     situationRu:
@@ -3394,7 +3394,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m4_9',
-    moduleId: 4,
+    moduleId: 5,
     situationDa:
       'Du kører ad en landevej med god sigt, og bilen foran dig har tændt venstre blinklys og sætter farten ned for at dreje ind på en sidevej til venstre.',
     situationRu:
@@ -3437,7 +3437,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m4_10',
-    moduleId: 4,
+    moduleId: 5,
     situationDa:
       'Du passerer forbudstavlen C51 (Overhaling forbudt) på en landevej og indhenter derefter en langsomtkørende lille knallert (knallert 30).',
     situationRu:
@@ -3481,7 +3481,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m4_11',
-    moduleId: 4,
+    moduleId: 5,
     situationDa:
       'Du har overset din sidevej og overvejer at lave en U-vending på en tosporet bygade med parkerede biler.',
     situationRu:
@@ -3524,7 +3524,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m4_12',
-    moduleId: 4,
+    moduleId: 5,
     situationDa:
       'Du nærmer dig et lyskryds med 50 km/t, og lyset skifter fra grønt til gult, ca. 10 meter før stoplinjen.',
     situationRu:
@@ -3567,7 +3567,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m5_9',
-    moduleId: 5,
+    moduleId: 3,
     situationDa:
       'Du møder advarselstavlen A21 (Cyklister) og indhenter en gruppe motionscyklister på en smal landevej uden cykelsti.',
     situationRu:
@@ -3611,7 +3611,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m5_10',
-    moduleId: 5,
+    moduleId: 3,
     situationDa:
       'Foran dig på kørebanen står en helle (trafikø) med den blå påbudstavle D15 med hvid pil skråt nedad til højre.',
     situationRu:
@@ -3655,7 +3655,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m5_11',
-    moduleId: 5,
+    moduleId: 3,
     situationDa:
       'Du kommer frem til en jernbaneoverkørsel uden bomme, hvor det røde blinklys blinker og klokkerne ringer.',
     situationRu:
@@ -3698,7 +3698,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m5_12',
-    moduleId: 5,
+    moduleId: 3,
     situationDa:
       'Midt på landevejen ser du, at den korte punkterede midterlinje pludselig bliver til lange streger med korte mellemrum (varslingslinje), efterfulgt af en heltrukken spærrelinje.',
     situationRu:
@@ -4796,7 +4796,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m3_13',
-    moduleId: 3,
+    moduleId: 4,
     situationDa:
       'Du kører ligeud ad en villavej og nærmer dig et T-kryds, hvor en sidevej støder til fra højre. Der er hverken hajtænder, skilte eller kantstensoverkørsel.',
     situationRu:
@@ -4839,7 +4839,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m3_14',
-    moduleId: 3,
+    moduleId: 4,
     situationDa:
       'Du kører på en hovedvej (B16) og kommer frem til et kryds, hvor en undertavle med tyk sort streg viser, at hovedvejen drejer til venstre (knækket hovedvej). Du vil køre LIGEUD ind på sidevejen.',
     situationRu:
@@ -4883,7 +4883,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m3_15',
-    moduleId: 3,
+    moduleId: 4,
     situationDa:
       'Du kører i en dansk storby (fx Aarhus, Odense eller Københavnsområdet) og nærmer dig et kryds med skinner til letbanen (sporvogn/letbane).',
     situationRu:
@@ -4927,7 +4927,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m3_16',
-    moduleId: 3,
+    moduleId: 4,
     situationDa:
       'Du kører ud fra en grusbelagt markvej (eller fra et skiltet opholds- og legeområde) ud på en almindelig asfalteret vej uden skilte.',
     situationRu:
@@ -4970,7 +4970,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m3_17',
-    moduleId: 3,
+    moduleId: 4,
     situationDa:
       'Du kører i en rundkørsel med cykelsti hele vejen rundt i yderkanten og skal nu forlade rundkørslen ved 2. afkørsel (ligeud).',
     situationRu:
@@ -5014,7 +5014,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m3_18',
-    moduleId: 3,
+    moduleId: 4,
     situationDa:
       'På en smal landevej nærmer du dig en rytter til hest, der rider langs vejkanten i samme retning som dig.',
     situationRu:
@@ -5057,7 +5057,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m4_13',
-    moduleId: 4,
+    moduleId: 5,
     situationDa:
       'Du kører i byen og ser en stor knallert 45 (med gul eller hvid nummerplade bagpå) foran dig på kørebanen, mens en lille knallert 30 kører på cykelstien til højre.',
     situationRu:
@@ -5100,7 +5100,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m4_14',
-    moduleId: 4,
+    moduleId: 5,
     situationDa:
       'Du skal dreje til venstre i et lyskryds på grønt lys, hvor modkørende biler og cyklister på modsatte cykelsti også har grønt samtidig.',
     situationRu:
@@ -5143,7 +5143,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m4_15',
-    moduleId: 4,
+    moduleId: 5,
     situationDa:
       'Uden for byzone (80 km/t landevej) holder en rutebus i en buslomme og tænder nu venstre blinklys for at køre ud. Kort efter ser du en skolebus med gule blinklygter tændt.',
     situationRu:
@@ -5186,7 +5186,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m4_16',
-    moduleId: 4,
+    moduleId: 5,
     situationDa:
       'Du kører ind i et boligkvarter med det blå firkantede skilt "Opholds- og legeområde" (E51).',
     situationRu:
@@ -5230,7 +5230,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m4_17',
-    moduleId: 4,
+    moduleId: 5,
     situationDa:
       'Du kører i skumring ad en mørk landevej uden fortov, og længere fremme går to fodgængere langs vejen. I byen ser du en person med hvid stok ved kantstenen.',
     situationRu:
@@ -5273,7 +5273,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m4_18',
-    moduleId: 4,
+    moduleId: 5,
     situationDa:
       'Du kører 80 km/t på en skovstrækning med advarselstavlen "Vildt" (hjort), og pludselig løber først et lille dyr (hare/hund) og senere et stort rådyr ud foran bilen.',
     situationRu:
@@ -5321,7 +5321,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   // =========================================================================
   {
     id: 'q_m5_13',
-    moduleId: 5,
+    moduleId: 3,
     situationDa:
       'Foran et bykryds ser du den runde blå påbudstavle D11 med pil ligeud (Påbudt kørselsretning), og lidt senere den firkantede blå tavle E19 (Ensrettet).',
     situationRu:
@@ -5365,7 +5365,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m5_14',
-    moduleId: 5,
+    moduleId: 3,
     situationDa:
       'Du kører ind i et vejarbejde, hvor midlertidige gule striber leder banerne skråt til venstre, mens de gamle hvide striber stadig ses nedenunder.',
     situationRu:
@@ -5409,7 +5409,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m5_15',
-    moduleId: 5,
+    moduleId: 3,
     situationDa:
       'I et større bykryds lyser først en rund grøn lampe (uden pil), og senere i et andet kryds lyser en grøn pil skråt til venstre.',
     situationRu:
@@ -5452,7 +5452,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m5_16',
-    moduleId: 5,
+    moduleId: 3,
     situationDa:
       'På en landevej passerer du advarselstavlen A11 (Farligt vejkryds med to lige tykke linjer, der krydser hinanden) uden nogen undertavle.',
     situationRu:
@@ -5496,7 +5496,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m5_17',
-    moduleId: 5,
+    moduleId: 3,
     situationDa:
       'Du kører ind i et boligområde med en stor hvid firkantet zone-tavle ("Zone 40 km/t") og passerer tre mindre vejkryds inde i området.',
     situationRu:
@@ -5540,7 +5540,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m5_18',
-    moduleId: 5,
+    moduleId: 3,
     situationDa:
       'I et lyskryds er strømmen gået, eller politiet står midt i krydset og regulerer trafikken med armbevægelser, mens et rødt/grønt lys stadig lyser.',
     situationRu:
@@ -6546,7 +6546,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m3_19',
-    moduleId: 3,
+    moduleId: 4,
     situationDa:
       'Du kommer ad en sidevej frem til et kryds med hajtænder (B11) på kørebanen. Du har frit udsyn langt til både højre og venstre, og der kommer kun én bil langt borte fra venstre.',
     situationRu:
@@ -6590,7 +6590,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m3_20',
-    moduleId: 3,
+    moduleId: 4,
     situationDa:
       'Du kommer ad en bred og travl villagade uden skilte eller hajtænder, og fra en smallere sidevej til højre kommer en personbil ud i krydset.',
     situationRu:
@@ -6633,7 +6633,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m4_19',
-    moduleId: 4,
+    moduleId: 5,
     situationDa:
       'Langs en vej i byen står den runde blå påbudstavle D21 (Cykelsti) ved en adskilt bane til højre for bilernes kørebane.',
     situationRu:
@@ -6677,7 +6677,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m4_20',
-    moduleId: 4,
+    moduleId: 5,
     situationDa:
       'Du kører ind på en bygade markeret med den blå firkantede tavle E49 "CYKELGADE" (Cykelgade). Flere cyklister cykler midt på gaden foran dig.',
     situationRu:
@@ -6721,7 +6721,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m5_19',
-    moduleId: 5,
+    moduleId: 3,
     situationDa:
       'Foran en bygade står den runde hvide forbudstavle med rød kant C19 ("Kørsel i begge retninger forbudt"), og længere henne står C11 ("Indkørsel forbudt" – rød cirkel med hvid bjælke).',
     situationRu:
@@ -6765,7 +6765,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m5_20',
-    moduleId: 5,
+    moduleId: 3,
     situationDa:
       'Uden for byzone på en 80 km/t landevej passerer du advarselstavlen A19 (Lyssignal) ca. 200 meter før en svingning.',
     situationRu:
@@ -7513,7 +7513,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m3_21',
-    moduleId: 3,
+    moduleId: 4,
     situationDa:
       'Du kører i byen hen mod et lysreguleret kryds med skinner til Letbane lige foran, hvor det gule/røde blink ved skinnerne tændes (Mål 7.21).',
     situationRu:
@@ -7557,7 +7557,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m3_22',
-    moduleId: 3,
+    moduleId: 4,
     situationDa:
       'Du kører i højre vognbane ind mod en tosporet rundkørsel (skilt D12 + B11) og skal fortsætte til venstre ad 3. afkørsel (Mål 7.15).',
     situationRu:
@@ -7602,7 +7602,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m3_23',
-    moduleId: 3,
+    moduleId: 4,
     situationDa:
       'Du kommer ad en villavej, hvor en sidevej munder ud fra højre (T-kryds uden skilte, uden fortov henover og uden hajtænder). Du fortsætter ligeud (Mål 7.12).',
     situationRu:
@@ -7645,7 +7645,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m3_24',
-    moduleId: 3,
+    moduleId: 4,
     situationDa:
       'To modkørende personbiler vil begge dreje til venstre ind ad de modsatte sideveje i et bredt bykryds med bred midterrabat imellem (Mål 7.14).',
     situationRu:
@@ -7688,7 +7688,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m3_25',
-    moduleId: 3,
+    moduleId: 4,
     situationDa:
       'Du holder stille i et kryds i byen. Bagfra nærmer en ambulance sig med blåt blink og sirene, og alle baner omkring dig er optaget (Mål 6.2).',
     situationRu:
@@ -7731,7 +7731,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m4_21',
-    moduleId: 4,
+    moduleId: 5,
     situationDa:
       'Du skal dreje til højre i byzone. Før krydset er kantstenen langs cykelstien ophørt og erstattet af en punkteret hvid linje i ca. 20–30 meter (Mål 7.13).',
     situationRu:
@@ -7775,7 +7775,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m4_22',
-    moduleId: 4,
+    moduleId: 5,
     situationDa:
       'Du nærmer dig en smal bygade skiltet med blå tavle "Cykelgade" (E49), og derefter en bred hovedgade med store ladcykler og el-løbehjul (Mål 7.10 & 4.5).',
     situationRu:
@@ -7818,7 +7818,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m4_23',
-    moduleId: 4,
+    moduleId: 5,
     situationDa:
       'I en bygade med to baner i din retning holder en hvid varevogn stille lige foran et ureguleret fodgængerfelt (E17), så du ikke kan se fortovet på dens venstre side (Mål 7.17).',
     situationRu:
@@ -7863,7 +7863,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m4_24',
-    moduleId: 4,
+    moduleId: 5,
     situationDa:
       'Du kører i byzone (50 km/t) bag en stor rød turistbus (ikke i almindelig bybus-rute), som blinker til venstre fra en vejkant, og senere møder du en almindelig gul bybus (Mål 4.5).',
     situationRu:
@@ -7907,7 +7907,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m4_25',
-    moduleId: 4,
+    moduleId: 5,
     situationDa:
       'Du kører i et roligt villakvarter med børn på legeplads, og ser længere fremme en skolepatrulje i refleksvester ved et kryds samt skiltet A22 (Mål 4.5–4.6).',
     situationRu:
@@ -7952,7 +7952,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   // === ДОПОЛНЕНИЕ МОДУЛЯ 5 (21–25): Разметка, светофоры, зоны и переезды ===
   {
     id: 'q_m5_21',
-    moduleId: 5,
+    moduleId: 3,
     situationDa:
       'Du kører ind i et område med vejarbejde (A73). På asfalten er der malet gule midlertidige linjer hen over de almindelige hvide vejstriber.',
     situationRu:
@@ -7997,7 +7997,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m5_22',
-    moduleId: 5,
+    moduleId: 3,
     situationDa:
       'Du holder som første bil i et lyskryds (A19), hvor der både findes et hovedlyssignal og en særskilt grøn højresvingspil.',
     situationRu:
@@ -8041,7 +8041,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m5_23',
-    moduleId: 5,
+    moduleId: 3,
     situationDa:
       'På landevejen ser du, at midterlinjen skifter til tættere streger (varslingslinje) og kort efter et skraveret felt (spærreflade) før et kryds.',
     situationRu:
@@ -8084,7 +8084,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m5_24',
-    moduleId: 5,
+    moduleId: 3,
     situationDa:
       'Du drejer ind ad en stille boligvej, hvor det blå firkantede tavleskilt E51 ("Opholds- og legeområde") er opsat.',
     situationRu:
@@ -8128,7 +8128,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
   },
   {
     id: 'q_m5_25',
-    moduleId: 5,
+    moduleId: 3,
     situationDa:
       'Du nærmer dig en jernbaneoverskæring med advarselskryds (krydsmærke) og røde blinkende lygter langs vejen.',
     situationRu:

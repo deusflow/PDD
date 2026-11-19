@@ -59,7 +59,7 @@ function sanitizeCourseState(raw: unknown): CourseState {
             : 0,
         bestFirstTryScore:
           typeof mp.bestFirstTryScore === 'number' && Number.isFinite(mp.bestFirstTryScore)
-            ? Math.max(0, Math.min(20, Math.floor(mp.bestFirstTryScore)))
+            ? Math.max(0, Math.min(25, Math.floor(mp.bestFirstTryScore)))
             : 0,
         passed: Boolean(mp.passed),
         passedAt:
@@ -93,7 +93,7 @@ export function getDefaultState(): UserAppState {
     window.matchMedia('(prefers-color-scheme: dark)').matches;
 
   return {
-    version: 1,
+    version: 2,
     hasSeenOnboarding: false,
     languageMode: 'both',
     theme: prefersDark ? 'dark' : 'light',
@@ -154,8 +154,20 @@ function validateAndMigrateState(raw: unknown): UserAppState | null {
         .slice(0, 50)
     : [];
 
+  const rawVersion = typeof obj.version === 'number' ? obj.version : 1;
+  const course = sanitizeCourseState(obj.course);
+  if (rawVersion < 2) {
+    // Migrate v1 curriculum order (old M5 Signs -> M3, old M3 Priority -> M4, old M4 Users -> M5)
+    const old3 = course.modules[3];
+    const old4 = course.modules[4];
+    const old5 = course.modules[5];
+    course.modules[3] = old5;
+    course.modules[4] = old3;
+    course.modules[5] = old4;
+  }
+
   return {
-    version: 1,
+    version: 2,
     hasSeenOnboarding: Boolean(obj.hasSeenOnboarding),
     languageMode,
     theme,
@@ -163,7 +175,7 @@ function validateAndMigrateState(raw: unknown): UserAppState | null {
     examHistory,
     sessionsCompleted:
       typeof obj.sessionsCompleted === 'number' ? Math.max(0, obj.sessionsCompleted) : 0,
-    course: sanitizeCourseState(obj.course),
+    course,
   };
 }
 
@@ -252,7 +264,7 @@ export const StorageManager = {
     }
 
     const payload = {
-      v: 1,
+      v: 2,
       o: state.hasSeenOnboarding ? 1 : 0,
       l: state.languageMode,
       t: state.theme,
@@ -290,7 +302,7 @@ export const StorageManager = {
     const json = new TextDecoder().decode(bytes);
     const payload = JSON.parse(json);
 
-    if (!payload || payload.v !== 1 || typeof payload.s !== 'object') {
+    if (!payload || (payload.v !== 1 && payload.v !== 2) || typeof payload.s !== 'object') {
       throw new Error('Повреждённый или устаревший код синхронизации.');
     }
 
@@ -338,7 +350,7 @@ export const StorageManager = {
     }
 
     const reconstructed = validateAndMigrateState({
-      version: 1,
+      version: payload.v,
       hasSeenOnboarding: Boolean(payload.o),
       languageMode: payload.l,
       theme: payload.t,

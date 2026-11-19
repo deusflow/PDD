@@ -145,11 +145,11 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
                 </p>
                 <div className="mt-3 space-y-2 text-xs">
                   {[
-                    { code: 'M1', da: 'Grundlæggende trafikforståelse', ru: 'Поведение, § 3, восприятие, манёвренность ТС (Уроки 1, 2, 5)', lessons: 'Mål 3, 4, 5.1, 6.1–6.2' },
+                    { code: 'M1', da: 'Grundlæggende trafikforståelse', ru: 'Поведение, § 3, восприятие, манёвренность ТС, сигналы (Уроки 1, 2, 3)', lessons: 'Mål 3, 4, 5.1, 6.1–6.2' },
                     { code: 'M2', da: 'Forberedende teori + Manøvrebane', ru: 'Устройство авто, документы + 3–4 ч площадка (Уроки 1, 2)', lessons: 'Mål 1.1–1.3, 2.1–2.9' },
-                    { code: 'M3', da: 'Grundlæggende kørsel på vej', ru: 'Базовая езда: перекрёстки, круги, велосипедисты (Уроки 3, 4)', lessons: 'Mål 7.1–7.4, 7.6–7.15' },
-                    { code: 'M4', da: 'Udvidet kørsel på vej', ru: 'Обгон, Motorvej, E43, туннель, Letbane, ночь и парковка (Уроки 3, 5, 6, 7)', lessons: 'Mål 7.5, 7.9, 7.16–7.21, 8' },
-                    { code: 'M5', da: 'Afsluttende + Glatbane (KTA)', ru: 'Скользкая площадка, обочина rabat, экзамены (Уроки 8 + Контроль)', lessons: 'Mål 9.1–9.5, 7.22, 10' },
+                    { code: 'M3', da: 'Grundlæggende kørsel på vej', ru: 'Базовая езда: знаки, перекрёстки, круги, велосипедисты (Уроки 3, 4, 5)', lessons: 'Mål 7.1–7.4, 7.6–7.15' },
+                    { code: 'M4', da: 'Udvidet kørsel på vej', ru: 'Обгон, Motorvej, E43, туннель, Letbane, ночь и парковка (Уроки 4, 6, 7)', lessons: 'Mål 7.5, 7.9, 7.16–7.21, 8' },
+                    { code: 'M5', da: 'Afsluttende + Glatbane (KTA)', ru: 'Скользкая площадка, обочина rabat, экзамены (Урок 8 + Контроль)', lessons: 'Mål 9.1–9.5, 7.22, 10' },
                   ].map((st) => (
                     <div key={st.code} className="flex items-start gap-2.5 rounded-xl border border-zinc-200/80 bg-zinc-50/70 p-2.5 dark:border-zinc-800 dark:bg-zinc-950/60">
                       <span className="shrink-0 rounded-md bg-teal-600 px-2 py-0.5 text-[11px] font-bold text-white">
