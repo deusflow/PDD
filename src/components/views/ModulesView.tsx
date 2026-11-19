@@ -7,6 +7,7 @@ import {
   CheckCircle2,
   ChevronLeft,
   ChevronRight,
+  ExternalLink,
   Layers,
   Play,
   RotateCcw,
@@ -19,6 +20,7 @@ import { DICTIONARY_ENTRIES } from '../../data/signsAndGlossary';
 import { shuffleItems } from '../../services/coursePlanner';
 import { BOX_META, computeProgressStats, getSRSRecord } from '../../services/srsEngine';
 import { LanguageMode, ModuleCourseProgress, SRSRecord, TeoriQuestion } from '../../types';
+import { extractOrdnetLookupWords, getOrdnetUrl } from '../../utils/ordnet';
 import { BilingualText } from '../common/BilingualText';
 import { RuleVisualBlock } from '../common/RuleVisualBlock';
 import { SpeakButton } from '../common/SpeakButton';
@@ -103,7 +105,7 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
 
   if (viewMode === 'list') {
     return (
-      <div className="mx-auto max-w-5xl space-y-5 animate-fade-in">
+      <div className="mx-auto max-w-7xl space-y-5 animate-fade-in">
         <section className="nordic-card flex flex-col justify-between gap-4 p-5 sm:flex-row sm:items-center sm:p-6">
           <div>
             <h1 className="text-xl font-bold tracking-tight text-zinc-900 sm:text-2xl dark:text-zinc-100">
@@ -160,6 +162,7 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
                         <div className="text-[11px] text-zinc-600 dark:text-zinc-400">{st.ru}</div>
                         <div className="mt-0.5 text-[10px] font-medium text-teal-700 dark:text-teal-400">{st.lessons}</div>
                       </div>
+                      <SpeakButton id={`school_stage_${st.code}`} text={st.da} />
                     </div>
                   ))}
                 </div>
@@ -174,33 +177,38 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
                 </p>
                 <div className="mt-3 space-y-2">
                   {[
-                    { id: 'pasfoto', title: '📷 Pasfoto (фото 35×45 мм)', desc: 'Строгие требования полиции (лучше фотоателье / Fotoportalen, автоматы часто отклоняют).' },
-                    { id: 'laegeattest', title: '🩺 Digital Lægeattest (справка от врача)', desc: 'Сначала заполните Del A на Borger.dk, затем семейный врач оформит Del B.' },
-                    { id: 'forstehjaelp', title: '⛑️ Førstehjælpsbevis (8 ч первой помощи)', desc: 'Сертификат Færdselsrelateret førstehjælp (не старше 12 мес при подаче!).' },
-                    { id: 'fuldmagt', title: '✍️ Fuldmagt (доверенность школе)', desc: 'Подписывается через MitID на Borger.dk, чтобы школа могла бронировать экзамены.' },
+                    { id: 'pasfoto', daTerm: 'Pasfoto', title: '📷 Pasfoto (фото 35×45 мм)', desc: 'Строгие требования полиции (лучше фотоателье / Fotoportalen, автоматы часто отклоняют).' },
+                    { id: 'laegeattest', daTerm: 'Digital lægeattest', title: '🩺 Digital Lægeattest (справка от врача)', desc: 'Сначала заполните Del A на Borger.dk, затем семейный врач оформит Del B.' },
+                    { id: 'forstehjaelp', daTerm: 'Færdselsrelateret førstehjælpsbevis', title: '⛑️ Førstehjælpsbevis (8 ч первой помощи)', desc: 'Сертификат Færdselsrelateret førstehjælp (не старше 12 мес при подаче!).' },
+                    { id: 'fuldmagt', daTerm: 'Fuldmagt', title: '✍️ Fuldmagt (доверенность школе)', desc: 'Подписывается через MitID на Borger.dk, чтобы школа могла бронировать экзамены.' },
                   ].map((doc) => {
                     const checked = Boolean(docChecks[doc.id]);
                     return (
-                      <button
+                      <div
                         key={doc.id}
-                        type="button"
-                        onClick={() => toggleDocCheck(doc.id)}
-                        className={`flex w-full items-start gap-3 rounded-xl border p-3 text-left transition-colors ${
+                        className={`flex w-full items-start gap-2 rounded-xl border p-3 transition-colors ${
                           checked
                             ? 'border-emerald-300 bg-emerald-50/70 dark:border-emerald-900/60 dark:bg-emerald-950/30'
-                            : 'border-zinc-200/80 bg-white hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:bg-zinc-800/70'
+                            : 'border-zinc-200/80 bg-white dark:border-zinc-800 dark:bg-zinc-900'
                         }`}
                       >
-                        <CheckCircle2
-                          className={`mt-0.5 h-4 w-4 shrink-0 ${
-                            checked ? 'text-emerald-600 dark:text-emerald-400' : 'text-zinc-300 dark:text-zinc-600'
-                          }`}
-                        />
-                        <div>
-                          <div className="text-xs font-bold text-zinc-900 dark:text-zinc-100">{doc.title}</div>
-                          <div className="mt-0.5 text-[11px] text-zinc-600 dark:text-zinc-400">{doc.desc}</div>
-                        </div>
-                      </button>
+                        <button
+                          type="button"
+                          onClick={() => toggleDocCheck(doc.id)}
+                          className="flex flex-1 items-start gap-3 text-left"
+                        >
+                          <CheckCircle2
+                            className={`mt-0.5 h-4 w-4 shrink-0 ${
+                              checked ? 'text-emerald-600 dark:text-emerald-400' : 'text-zinc-300 dark:text-zinc-600'
+                            }`}
+                          />
+                          <div>
+                            <div className="text-xs font-bold text-zinc-900 dark:text-zinc-100">{doc.title}</div>
+                            <div className="mt-0.5 text-[11px] text-zinc-600 dark:text-zinc-400">{doc.desc}</div>
+                          </div>
+                        </button>
+                        <SpeakButton id={`doc_${doc.id}`} text={doc.daTerm} />
+                      </div>
                     );
                   })}
                 </div>
@@ -209,7 +217,7 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
           </section>
         )}
 
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {MODULES_DATA.map((item) => {
             const qs = QUESTIONS_BANK.filter((q) => q.moduleId === item.id);
             const st = computeProgressStats(
@@ -353,7 +361,7 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
   );
 
   return (
-    <div className="mx-auto max-w-4xl space-y-5 animate-fade-in">
+    <div className="mx-auto max-w-7xl space-y-5 animate-fade-in">
       {/* Top Lesson Bar */}
       <div className="flex flex-wrap items-center justify-between gap-2">
         <button
@@ -504,34 +512,38 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
 
       {lessonTab === 'sheet' && (
         <div className="space-y-4">
-          <LessonHeroIllustration moduleId={mod.id} languageMode={languageMode} />
+          <div className="grid gap-4 lg:grid-cols-12 lg:items-stretch">
+            <div className="lg:col-span-7">
+              <LessonHeroIllustration moduleId={mod.id} languageMode={languageMode} />
+            </div>
 
-          {/* Key Metrics */}
-          <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
-            {mod.keyMetrics.map((metric, i) => (
-              <div
-                key={i}
-                className="nordic-card p-3.5"
-              >
-                <div className="text-base font-extrabold text-zinc-900 dark:text-zinc-100">
-                  {metric.value}
-                </div>
-                {languageMode !== 'da_only' ? (
-                  <>
-                    <div className="mt-0.5 text-[11px] font-semibold text-zinc-800 dark:text-zinc-200">
-                      {metric.labelRu}
-                    </div>
-                    <div className="text-[10px] text-zinc-500 dark:text-zinc-400">
+            {/* Key Metrics 2×2 alongside Hero on MacBook / iMac */}
+            <div className="grid grid-cols-2 gap-2.5 lg:col-span-5">
+              {mod.keyMetrics.map((metric, i) => (
+                <div
+                  key={i}
+                  className="nordic-card flex flex-col justify-center p-4"
+                >
+                  <div className="text-lg font-extrabold text-zinc-900 dark:text-zinc-100">
+                    {metric.value}
+                  </div>
+                  {languageMode !== 'da_only' ? (
+                    <>
+                      <div className="mt-1 text-xs font-semibold text-zinc-800 dark:text-zinc-200">
+                        {metric.labelRu}
+                      </div>
+                      <div className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                        {metric.labelDa}
+                      </div>
+                    </>
+                  ) : (
+                    <div className="mt-1 text-xs font-medium text-zinc-700 dark:text-zinc-300">
                       {metric.labelDa}
                     </div>
-                  </>
-                ) : (
-                  <div className="mt-0.5 text-[11px] font-medium text-zinc-700 dark:text-zinc-300">
-                    {metric.labelDa}
-                  </div>
-                )}
-              </div>
-            ))}
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
 
           <section className="nordic-card p-5 sm:p-6">
@@ -583,12 +595,12 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
             {/* Step-by-step algorithm (fixed DA/RU order!) */}
             {mod.algorithms && mod.algorithms.length > 0 && (
               <div className="mt-5 rounded-2xl border border-sky-200/80 bg-sky-50/50 p-4 dark:border-sky-900/50 dark:bg-sky-950/25">
-                <h3 className="mb-2.5 text-xs font-bold uppercase tracking-wider text-sky-800 dark:text-sky-300">
+                <h3 className="mb-3 text-xs font-bold uppercase tracking-wider text-sky-800 dark:text-sky-300">
                   Обязательный алгоритм действий
                 </h3>
-                <div className="space-y-2.5">
+                <div className="grid gap-3 md:grid-cols-3">
                   {mod.algorithms.map((alg) => (
-                    <div key={alg.step} className="flex items-start justify-between gap-2">
+                    <div key={alg.step} className="flex items-start justify-between gap-2 rounded-xl border border-sky-200/70 bg-white/80 p-3 dark:border-sky-900/40 dark:bg-zinc-900/70">
                       <div className="flex items-start gap-2.5">
                         <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-sky-600 text-[11px] font-bold text-white">
                           {alg.step}
@@ -641,7 +653,7 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
               <h2 className="mb-3 text-sm font-bold text-zinc-900 dark:text-zinc-100">
                 Дорожные знаки Урока {mod.id} ({modSigns.length})
               </h2>
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 md:grid-cols-5">
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6">
                 {modSigns.map((sign) => (
                   <div
                     key={sign.id}
@@ -670,10 +682,11 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
               <h2 className="mb-3 text-sm font-bold text-zinc-900 dark:text-zinc-100">
                 Термины и карточки урока ({modEntries.length})
               </h2>
-              <div className="grid gap-3 md:grid-cols-2">
+              <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
                 {modEntries.map((entry) => {
                   const rec = getSRSRecord(srsMap, entry.id);
                   const meta = BOX_META[rec.box];
+                  const ddoWords = extractOrdnetLookupWords(entry.da, 2);
                   return (
                     <div
                       key={entry.id}
@@ -708,6 +721,25 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
                             />
                           </div>
                         </div>
+
+                        {ddoWords.length > 0 && (
+                          <div className="mt-2.5 flex flex-wrap items-center gap-1.5">
+                            <span className="text-[10px] font-semibold text-zinc-400">ordnet.dk:</span>
+                            {ddoWords.map((w) => (
+                              <a
+                                key={w}
+                                href={getOrdnetUrl(w)}
+                                target="_blank"
+                                rel="noreferrer"
+                                title={`Открыть «${w}» на Den Danske Ordbog (аудио и транскрипция)`}
+                                className="inline-flex items-center gap-0.5 rounded-md border border-zinc-200/80 bg-white px-1.5 py-0.5 text-[10px] font-medium text-teal-700 transition-colors hover:border-teal-300 hover:bg-teal-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-teal-400"
+                              >
+                                <span>{w}</span>
+                                <ExternalLink className="h-2.5 w-2.5 opacity-70" />
+                              </a>
+                            ))}
+                          </div>
+                        )}
                       </div>
 
                       <div className="mt-3 flex gap-2 border-t border-zinc-200/70 pt-2.5 dark:border-zinc-800">

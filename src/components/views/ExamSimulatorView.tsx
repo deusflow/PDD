@@ -368,7 +368,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
       : 0;
 
     return (
-      <div className="mx-auto max-w-2xl space-y-5 animate-fade-in">
+      <div className="mx-auto max-w-4xl space-y-5 animate-fade-in">
         <div className="nordic-card p-6 sm:p-8">
           <div className="flex items-center gap-3">
             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-rose-100 text-rose-600 dark:bg-rose-950 dark:text-rose-400">
@@ -580,7 +580,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
     }).filter((item) => item.total > 0);
 
     return (
-      <div className="mx-auto max-w-3xl space-y-5 animate-slide-up">
+      <div className="mx-auto max-w-6xl space-y-5 animate-slide-up">
         <div className="nordic-card p-6 sm:p-8">
           <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
             <div className="flex items-center gap-3.5">
@@ -654,7 +654,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
               Разбор точности по темам автошколы (M1–M8)
             </h3>
           </div>
-          <div className="grid gap-2.5 sm:grid-cols-2">
+          <div className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-4">
             {moduleBreakdown.map(({ mod, total, passedCount }) => {
               const ratio = total > 0 ? passedCount / total : 0;
               const barColor =
@@ -856,7 +856,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
   };
 
   return (
-    <div className="mx-auto max-w-3xl space-y-4 animate-fade-in">
+    <div className="mx-auto max-w-7xl space-y-4 animate-fade-in">
       {/* Top Exam Status Bar */}
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-zinc-200 bg-white px-4 py-2.5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
         <div className="flex items-center gap-2">
@@ -987,30 +987,34 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
         )}
       </div>
 
-      {/* Question Card */}
+      {/* Question Card: 2-column Desktop Teoriprøven Cockpit */}
       <div className="nordic-card p-4 sm:p-6">
-        <div className="mb-4">{renderVisualForQuestion(question)}</div>
+        <div className="grid gap-5 lg:grid-cols-12 lg:items-start">
+          <div className="space-y-4 lg:sticky lg:top-20 lg:col-span-7">
+            <div>{renderVisualForQuestion(question)}</div>
 
-        <div className="mb-4 flex items-start justify-between gap-3 rounded-2xl border border-zinc-200/80 bg-zinc-50/70 p-4 dark:border-zinc-800 dark:bg-zinc-950/50">
-          <BilingualText
-            da={question.situationDa}
-            ru={question.situationRu}
-            mode={languageMode}
-            daClassName="text-sm sm:text-base"
-            ruClassName="text-xs sm:text-sm"
-          />
-          <div className="flex shrink-0 items-center gap-1.5">
-            <SpeakButton
-              id={`ex_all_${question.id}`}
-              text={question.situationDa}
-              sequence={buildFullTicketSequence(question)}
-              label="Озвучить билет"
-            />
-            <SpeakButton id={`ex_sit_${question.id}`} text={question.situationDa} />
+            <div className="flex items-start justify-between gap-3 rounded-2xl border border-zinc-200/80 bg-zinc-50/70 p-4 dark:border-zinc-800 dark:bg-zinc-950/50">
+              <BilingualText
+                da={question.situationDa}
+                ru={question.situationRu}
+                mode={languageMode}
+                daClassName="text-sm sm:text-base"
+                ruClassName="text-xs sm:text-sm"
+              />
+              <div className="flex shrink-0 items-center gap-1.5">
+                <SpeakButton
+                  id={`ex_all_${question.id}`}
+                  text={question.situationDa}
+                  sequence={buildFullTicketSequence(question)}
+                  label="Озвучить билет"
+                />
+                <SpeakButton id={`ex_sit_${question.id}`} text={question.situationDa} />
+              </div>
+            </div>
           </div>
-        </div>
 
-        <div className="space-y-2.5">
+          <div className="lg:col-span-5">
+            <div className="space-y-2.5">
           {question.subQuestions.map((sq, idx) => {
             const chosen = answers[sq.id];
             const isFocused = idx === focusedSubIdx;
@@ -1098,6 +1102,8 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
         <p className="mt-2.5 text-center text-[11px] text-zinc-400 dark:text-zinc-500">
           Клавиатура: 1 / J = Ja · 2 / N = Nej {!officialMode ? '· F = На проверку ' : ''}· → / Enter = Далее
         </p>
+          </div>
+        </div>
       </div>
     </div>
   );

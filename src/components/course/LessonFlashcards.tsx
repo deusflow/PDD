@@ -85,7 +85,7 @@ export const LessonFlashcards: React.FC<LessonFlashcardsProps> = ({
   };
 
   return (
-    <div className="mx-auto max-w-2xl space-y-5">
+    <div className="mx-auto max-w-4xl space-y-5">
       <div className="flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
         <span>Карточки урока</span>
         <span className="font-semibold tabular-nums text-zinc-700 dark:text-zinc-300">

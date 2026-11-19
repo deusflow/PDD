@@ -86,81 +86,132 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   const heroImageSrc = `./images/lessons/module-${heroModuleId}.jpg`;
 
   return (
-    <div className="mx-auto max-w-4xl space-y-5 animate-fade-in">
-      {/* Hero Card: Guided Course */}
-      <section className="nordic-card relative overflow-hidden p-6 sm:p-8">
-        {/* Partial faded road illustration backdrop matching the lesson theme */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-y-0 right-0 w-full select-none overflow-hidden sm:w-[64%]"
-        >
-          <img
-            src={heroImageSrc}
-            alt=""
-            className="h-full w-full object-cover object-center opacity-25 saturate-[0.9] sm:opacity-35 dark:opacity-20 sm:dark:opacity-25"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-white/25 dark:from-zinc-900 dark:via-zinc-900/90 dark:to-zinc-900/30" />
-          <div className="absolute inset-0 bg-gradient-to-t from-white/85 via-transparent to-white/50 sm:hidden dark:from-zinc-900/85 dark:to-zinc-900/50" />
-        </div>
+    <div className="mx-auto max-w-7xl space-y-5 animate-fade-in">
+      {/* Top Desktop Grid: Guided Hero (left) + Live Readiness Summary (right) */}
+      <div className="grid gap-5 lg:grid-cols-12">
+        {/* Hero Card: Guided Course */}
+        <section className="nordic-card relative flex flex-col justify-between overflow-hidden p-6 sm:p-8 lg:col-span-8">
+          {/* Partial faded road illustration backdrop matching the lesson theme */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-y-0 right-0 w-full select-none overflow-hidden sm:w-[64%]"
+          >
+            <img
+              src={heroImageSrc}
+              alt=""
+              className="h-full w-full object-cover object-center opacity-25 saturate-[0.9] sm:opacity-35 dark:opacity-20 sm:dark:opacity-25"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-white/25 dark:from-zinc-900 dark:via-zinc-900/90 dark:to-zinc-900/30" />
+            <div className="absolute inset-0 bg-gradient-to-t from-white/85 via-transparent to-white/50 sm:hidden dark:from-zinc-900/85 dark:to-zinc-900/50" />
+          </div>
 
-        <div className="relative z-10 flex flex-col justify-between gap-6 sm:flex-row sm:items-center">
-          <div className="space-y-3">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-teal-50 px-3 py-1 text-xs font-semibold text-teal-700 dark:bg-teal-950/60 dark:text-teal-300">
-                <BookOpen className="h-3.5 w-3.5" />
-                <span>{overview.stepLabel}</span>
-              </span>
-
-              {dueReviewQuestions.length > 0 && (
-                <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-700 dark:bg-amber-950/60 dark:text-amber-300">
-                  <RefreshCw className="h-3 w-3" />
-                  <span>Пора повторить: {dueReviewQuestions.length}</span>
+          <div className="relative z-10 flex flex-col justify-between gap-6 sm:flex-row sm:items-center">
+            <div className="space-y-3">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-teal-50 px-3 py-1 text-xs font-semibold text-teal-700 dark:bg-teal-950/60 dark:text-teal-300">
+                  <BookOpen className="h-3.5 w-3.5" />
+                  <span>{overview.stepLabel}</span>
                 </span>
-              )}
-            </div>
 
-            <div>
-              <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-100">
-                {isFreshUser ? 'Начать обучение по ПДД Дании' : 'Продолжить обучение'}
-              </h1>
-              <p className="mt-1.5 max-w-xl text-[15px] leading-relaxed text-zinc-600 dark:text-zinc-400">
-                {overview.stepDescription}
-              </p>
-            </div>
-
-            <div className="flex items-center gap-3 pt-1">
-              <div className="h-1.5 w-44 overflow-hidden rounded-full bg-zinc-200 sm:w-56 dark:bg-zinc-800">
-                <div
-                  className="h-full rounded-full bg-teal-600 transition-all duration-500 dark:bg-teal-400"
-                  style={{ width: `${overview.percent}%` }}
-                />
+                {dueReviewQuestions.length > 0 && (
+                  <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-700 dark:bg-amber-950/60 dark:text-amber-300">
+                    <RefreshCw className="h-3 w-3" />
+                    <span>Пора повторить: {dueReviewQuestions.length}</span>
+                  </span>
+                )}
               </div>
-              <span className="text-xs font-semibold tabular-nums text-zinc-500 dark:text-zinc-400">
-                Курс: {overview.percent}% • Уроков: {overview.completedModules}/8
+
+              <div>
+                <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-100">
+                  {isFreshUser ? 'Начать обучение по ПДД Дании' : 'Продолжить обучение'}
+                </h1>
+                <p className="mt-1.5 max-w-xl text-[15px] leading-relaxed text-zinc-600 dark:text-zinc-400">
+                  {overview.stepDescription}
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3 pt-1">
+                <div className="h-1.5 w-44 overflow-hidden rounded-full bg-zinc-200 sm:w-56 dark:bg-zinc-800">
+                  <div
+                    className="h-full rounded-full bg-teal-600 transition-all duration-500 dark:bg-teal-400"
+                    style={{ width: `${overview.percent}%` }}
+                  />
+                </div>
+                <span className="text-xs font-semibold tabular-nums text-zinc-500 dark:text-zinc-400">
+                  Курс: {overview.percent}% • Уроков: {overview.completedModules}/8
+                </span>
+              </div>
+            </div>
+
+            <div className="flex shrink-0 flex-col gap-2 sm:items-end">
+              <button
+                type="button"
+                onClick={onStartCourse}
+                className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-teal-600 px-7 text-sm font-semibold text-white shadow-sm transition-all hover:bg-teal-500 sm:w-auto"
+              >
+                <span>{isFreshUser ? 'Начать курс' : 'Продолжить курс'}</span>
+                <ArrowRight className="h-4 w-4" />
+              </button>
+
+              <button
+                type="button"
+                onClick={onOpenLessonsReference}
+                className="rounded-lg bg-white/75 px-2.5 py-1 text-xs font-medium text-zinc-700 backdrop-blur-sm transition-colors hover:bg-white hover:text-zinc-950 dark:bg-zinc-900/75 dark:text-zinc-300 dark:hover:bg-zinc-900 dark:hover:text-zinc-100"
+              >
+                Открыть справочник 8 тем
+              </button>
+            </div>
+          </div>
+        </section>
+
+        {/* Right Desktop Card: At-a-Glance Readiness Telemetry */}
+        <aside className="nordic-card flex flex-col justify-between p-5 lg:col-span-4">
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+                <BarChart3 className="h-3.5 w-3.5 text-teal-600 dark:text-teal-400" />
+                Готовность к Teoriprøven
+              </span>
+              <span className="text-xs font-bold tabular-nums text-zinc-700 dark:text-zinc-300">
+                {QUESTIONS_BANK.length} билетов
               </span>
             </div>
+
+            <div className="grid grid-cols-2 gap-2.5">
+              <div className="rounded-xl border border-zinc-200/80 bg-zinc-50/70 p-3 dark:border-zinc-800 dark:bg-zinc-950/50">
+                <div className="text-lg font-extrabold tabular-nums text-sky-600 dark:text-sky-400">
+                  {overallStats.coveragePercent}%
+                </div>
+                <div className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">
+                  Охвачено ({overallStats.seenItems}/{overallStats.totalItems})
+                </div>
+              </div>
+              <div className="rounded-xl border border-zinc-200/80 bg-zinc-50/70 p-3 dark:border-zinc-800 dark:bg-zinc-950/50">
+                <div className="text-lg font-extrabold tabular-nums text-emerald-600 dark:text-emerald-400">
+                  {overallStats.masteryPercent}%
+                </div>
+                <div className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">
+                  Закреплено (Box 4–5)
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div className="flex shrink-0 flex-col gap-2 sm:items-end">
-            <button
-              type="button"
-              onClick={onStartCourse}
-              className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-teal-600 px-7 text-sm font-semibold text-white shadow-sm transition-all hover:bg-teal-500 sm:w-auto"
-            >
-              <span>{isFreshUser ? 'Начать курс' : 'Продолжить курс'}</span>
-              <ArrowRight className="h-4 w-4" />
-            </button>
-
-            <button
-              type="button"
-              onClick={onOpenLessonsReference}
-              className="rounded-lg bg-white/75 px-2.5 py-1 text-xs font-medium text-zinc-700 backdrop-blur-sm transition-colors hover:bg-white hover:text-zinc-950 dark:bg-zinc-900/75 dark:text-zinc-300 dark:hover:bg-zinc-900 dark:hover:text-zinc-100"
-            >
-              Открыть справочник 8 тем
-            </button>
+          <div className="mt-3 flex items-center justify-between gap-2 border-t border-zinc-200/70 pt-3 text-xs dark:border-zinc-800">
+            <span className="flex items-center gap-1.5 font-medium text-zinc-600 dark:text-zinc-400">
+              <Layers className="h-3.5 w-3.5 text-zinc-400" />
+              {failedQuestions.length > 0
+                ? `Ошибок Box 1: ${failedQuestions.length}`
+                : 'Ошибок в Box 1 нет'}
+            </span>
+            <span className="font-semibold tabular-nums text-zinc-500 dark:text-zinc-400">
+              {appState.examHistory.length > 0
+                ? `Экзамен: ${Math.max(...appState.examHistory.map((e) => e.score))}/25`
+                : 'Сессий: ' + appState.sessionsCompleted}
+            </span>
           </div>
-        </div>
-      </section>
+        </aside>
+      </div>
 
       {/* Secondary Grid: 3 Compact Cards */}
       <section className="grid gap-4 md:grid-cols-3">

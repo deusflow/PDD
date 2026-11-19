@@ -76,7 +76,7 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header className="sticky top-0 z-30 border-b border-zinc-200/70 bg-white/85 backdrop-blur-md dark:border-zinc-800/80 dark:bg-zinc-950/85">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Top bar */}
         <div className="flex h-14 items-center justify-between gap-2 sm:gap-3">
           {/* Left: Brand + Quick Return to Main Menu */}

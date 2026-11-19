@@ -78,90 +78,93 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
   const hasAttention = attentionRu.length > 0 || attentionDa.length > 0;
 
   return (
-    <div className="space-y-4">
-      {rule.visual && <div>{renderVisual()}</div>}
+    <div className={rule.visual ? 'grid gap-5 lg:grid-cols-12 lg:items-start' : 'space-y-4'}>
+      <div className={rule.visual ? 'space-y-4 lg:col-span-6' : 'space-y-4'}>
+        {rule.visual && <div>{renderVisual()}</div>}
 
-      {/* Situation description directly attached to the illustration */}
-      {(rule.bodyRu || rule.bodyDa) && (
-        <div className="flex items-start gap-2.5 rounded-xl border border-zinc-200/80 bg-zinc-50/80 p-3.5 dark:border-zinc-800 dark:bg-zinc-950/60">
-          <Eye className="mt-0.5 h-4 w-4 shrink-0 text-teal-600 dark:text-teal-400" />
-          <div className="min-w-0 flex-1 text-xs leading-relaxed sm:text-sm">
-            <div className="mb-0.5 text-[11px] font-bold uppercase tracking-wider text-teal-700 dark:text-teal-400">
-              {languageMode === 'da_only' ? 'Situation & regel' : 'Описание ситуации'}
-            </div>
-            {languageMode === 'da_only' ? (
-              <p className="text-zinc-800 dark:text-zinc-200">{rule.bodyDa}</p>
-            ) : languageMode === 'spoiler' ? (
-              <BilingualText
-                da={rule.bodyDa}
-                ru={rule.bodyRu}
-                mode="spoiler"
-                daClassName="text-xs sm:text-sm font-normal leading-relaxed"
-                ruClassName="text-xs leading-relaxed"
-              />
-            ) : (
-              <div className="space-y-1">
-                <p className="text-zinc-800 dark:text-zinc-200">{rule.bodyRu}</p>
-                {rule.bodyDa && (
-                  <p className="text-[11px] leading-relaxed text-zinc-500 dark:text-zinc-400">
-                    DA: {rule.bodyDa}
-                  </p>
-                )}
+        {/* Situation description directly attached to the illustration */}
+        {(rule.bodyRu || rule.bodyDa) && (
+          <div className="flex items-start gap-2.5 rounded-xl border border-zinc-200/80 bg-zinc-50/80 p-3.5 dark:border-zinc-800 dark:bg-zinc-950/60">
+            <Eye className="mt-0.5 h-4 w-4 shrink-0 text-teal-600 dark:text-teal-400" />
+            <div className="min-w-0 flex-1 text-xs leading-relaxed sm:text-sm">
+              <div className="mb-0.5 text-[11px] font-bold uppercase tracking-wider text-teal-700 dark:text-teal-400">
+                {languageMode === 'da_only' ? 'Situation & regel' : 'Описание ситуации'}
               </div>
-            )}
+              {languageMode === 'da_only' ? (
+                <p className="text-zinc-800 dark:text-zinc-200">{rule.bodyDa}</p>
+              ) : languageMode === 'spoiler' ? (
+                <BilingualText
+                  da={rule.bodyDa}
+                  ru={rule.bodyRu}
+                  mode="spoiler"
+                  daClassName="text-xs sm:text-sm font-normal leading-relaxed"
+                  ruClassName="text-xs leading-relaxed"
+                />
+              ) : (
+                <div className="space-y-1">
+                  <p className="text-zinc-800 dark:text-zinc-200">{rule.bodyRu}</p>
+                  {rule.bodyDa && (
+                    <p className="text-[11px] leading-relaxed text-zinc-500 dark:text-zinc-400">
+                      DA: {rule.bodyDa}
+                    </p>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Visual scan order markers (1 -> 2 -> 3): "Where to look" */}
-      {hasAttention && (
-        <div className="rounded-xl border border-indigo-200/80 bg-indigo-50/60 p-3.5 dark:border-indigo-900/50 dark:bg-indigo-950/25">
-          <div className="mb-2.5 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-indigo-700 dark:text-indigo-300">
-            <Compass className="h-3.5 w-3.5" />
-            <span>
-              {languageMode === 'da_only'
-                ? 'Orientering på billedet (1 → 2 → 3)'
-                : 'Куда смотреть на картинке (1 → 2 → 3)'}
-            </span>
+        {/* Visual scan order markers (1 -> 2 -> 3): "Where to look" */}
+        {hasAttention && (
+          <div className="rounded-xl border border-indigo-200/80 bg-indigo-50/60 p-3.5 dark:border-indigo-900/50 dark:bg-indigo-950/25">
+            <div className="mb-2.5 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-indigo-700 dark:text-indigo-300">
+              <Compass className="h-3.5 w-3.5" />
+              <span>
+                {languageMode === 'da_only'
+                  ? 'Orientering på billedet (1 → 2 → 3)'
+                  : 'Куда смотреть на картинке (1 → 2 → 3)'}
+              </span>
+            </div>
+            <ol className="grid gap-2 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+              {(languageMode === 'da_only' ? attentionDa : attentionRu.length > 0 ? attentionRu : attentionDa).map(
+                (step, idx) => (
+                  <li
+                    key={idx}
+                    className="flex items-start gap-2 rounded-lg border border-indigo-200/60 bg-white/80 p-2.5 text-xs leading-snug dark:border-indigo-900/40 dark:bg-zinc-900/70"
+                  >
+                    <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-indigo-600 text-[11px] font-bold text-white dark:bg-indigo-500">
+                      {idx + 1}
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      {languageMode === 'spoiler' && attentionDa[idx] ? (
+                        <BilingualText
+                          da={attentionDa[idx]}
+                          ru={attentionRu[idx] ?? ''}
+                          mode="spoiler"
+                          daClassName="text-xs font-medium leading-snug"
+                          ruClassName="text-[11px] leading-snug"
+                        />
+                      ) : (
+                        <>
+                          <p className="font-medium text-zinc-800 dark:text-zinc-200">{step}</p>
+                          {languageMode === 'both' && attentionDa[idx] && (
+                            <p className="mt-0.5 text-[11px] text-zinc-500 dark:text-zinc-400">
+                              DA: {attentionDa[idx]}
+                            </p>
+                          )}
+                        </>
+                      )}
+                    </div>
+                  </li>
+                )
+              )}
+            </ol>
           </div>
-          <ol className="grid gap-2 sm:grid-cols-3">
-            {(languageMode === 'da_only' ? attentionDa : attentionRu.length > 0 ? attentionRu : attentionDa).map(
-              (step, idx) => (
-                <li
-                  key={idx}
-                  className="flex items-start gap-2 rounded-lg border border-indigo-200/60 bg-white/80 p-2.5 text-xs leading-snug dark:border-indigo-900/40 dark:bg-zinc-900/70"
-                >
-                  <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-indigo-600 text-[11px] font-bold text-white dark:bg-indigo-500">
-                    {idx + 1}
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    {languageMode === 'spoiler' && attentionDa[idx] ? (
-                      <BilingualText
-                        da={attentionDa[idx]}
-                        ru={attentionRu[idx] ?? ''}
-                        mode="spoiler"
-                        daClassName="text-xs font-medium leading-snug"
-                        ruClassName="text-[11px] leading-snug"
-                      />
-                    ) : (
-                      <>
-                        <p className="font-medium text-zinc-800 dark:text-zinc-200">{step}</p>
-                        {languageMode === 'both' && attentionDa[idx] && (
-                          <p className="mt-0.5 text-[11px] text-zinc-500 dark:text-zinc-400">
-                            DA: {attentionDa[idx]}
-                          </p>
-                        )}
-                      </>
-                    )}
-                  </div>
-                </li>
-              )
-            )}
-          </ol>
-        </div>
-      )}
+        )}
+      </div>
 
-      {/* Main bullet points ("How to do it right") */}
+      <div className={rule.visual ? 'space-y-4 lg:col-span-6' : 'space-y-4'}>
+        {/* Main bullet points ("How to do it right") */}
       {hasPoints && (
         <div className="space-y-2">
           {languageMode === 'da_only' ? (
@@ -325,6 +328,7 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 };

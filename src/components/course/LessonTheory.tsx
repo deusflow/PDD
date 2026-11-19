@@ -103,8 +103,8 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
     switch (currentSlide.kind) {
       case 'cover':
         return (
-          <div className="space-y-6">
-            <div className="space-y-2">
+          <div className="grid gap-6 lg:grid-cols-12 lg:items-center">
+            <div className="space-y-4 lg:col-span-6">
               <div className="flex items-start justify-between gap-3">
                 <div>
                   {languageMode !== 'da_only' ? (
@@ -125,51 +125,62 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
                 <SpeakButton id={`course_cov_${mod.id}`} text={mod.titleDa} size="md" />
               </div>
 
-              <p className="pt-1 text-[15px] leading-7 text-zinc-600 sm:text-base dark:text-zinc-300">
+              <p className="text-[15px] leading-7 text-zinc-600 sm:text-base dark:text-zinc-300">
                 {languageMode !== 'da_only' ? mod.subtitleRu : mod.subtitleDa}
               </p>
 
               {(mod.schoolStageLabelRu || (mod.officialGoals && mod.officialGoals.length > 0)) && (
-                <div className="flex flex-wrap items-center gap-1.5 pt-2">
+                <div className="space-y-1.5 pt-1">
                   {mod.schoolStageLabelRu && (
-                    <span className="inline-flex items-center rounded-lg border border-teal-200/80 bg-teal-50/80 px-2.5 py-1 text-[11px] font-semibold text-teal-800 dark:border-teal-900/60 dark:bg-teal-950/40 dark:text-teal-300">
-                      {languageMode === 'da_only' ? mod.schoolStageLabelDa : mod.schoolStageLabelRu}
-                    </span>
-                  )}
-                  {mod.officialGoals?.map((goal) => (
-                    <span
-                      key={goal.code}
-                      title={languageMode === 'da_only' ? goal.titleDa : `${goal.titleRu} (${goal.titleDa})`}
-                      className="inline-flex items-center rounded-lg border border-zinc-200/80 bg-zinc-100/80 px-2 py-1 text-[11px] font-medium text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
-                    >
-                      🎯 {goal.code}
-                    </span>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <LessonHeroIllustration moduleId={mod.id} languageMode={languageMode} />
-
-            <div className="grid grid-cols-2 gap-3">
-              {mod.keyMetrics.map((metric, idx) => (
-                <div
-                  key={idx}
-                  className="rounded-2xl border border-zinc-200/70 bg-zinc-50/70 p-4 dark:border-zinc-800 dark:bg-zinc-950/60"
-                >
-                  <div className="text-xl font-bold tracking-tight text-teal-700 sm:text-2xl dark:text-teal-400">
-                    {metric.value}
-                  </div>
-                  <div className="mt-1 text-xs font-medium text-zinc-800 dark:text-zinc-200">
-                    {languageMode !== 'da_only' ? metric.labelRu : metric.labelDa}
-                  </div>
-                  {languageMode === 'both' && (
-                    <div className="mt-0.5 text-[11px] text-zinc-400 dark:text-zinc-500">
-                      {metric.labelDa}
+                    <div className="inline-flex items-center gap-1.5 rounded-lg border border-teal-200/80 bg-teal-50/80 px-2.5 py-1 text-[11px] font-semibold text-teal-800 dark:border-teal-900/60 dark:bg-teal-950/40 dark:text-teal-300">
+                      <span>{languageMode === 'da_only' ? mod.schoolStageLabelDa : mod.schoolStageLabelRu}</span>
                     </div>
                   )}
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    {mod.officialGoals?.map((goal) => (
+                      <div
+                        key={goal.code}
+                        className="inline-flex items-center gap-1 rounded-lg border border-zinc-200/80 bg-zinc-100/80 py-0.5 pl-2 pr-1 text-[11px] font-medium text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
+                      >
+                        <span title={languageMode === 'da_only' ? goal.titleDa : `${goal.titleRu} (${goal.titleDa})`}>
+                          🎯 {goal.code}
+                        </span>
+                        <SpeakButton
+                          id={`goal_${mod.id}_${goal.code}`}
+                          text={goal.titleDa}
+                          title={`Озвучить датскую цель: ${goal.titleDa}`}
+                          className="h-5 w-5 border-transparent bg-transparent"
+                        />
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              ))}
+              )}
+
+              <div className="grid grid-cols-2 gap-3 pt-1">
+                {mod.keyMetrics.map((metric, idx) => (
+                  <div
+                    key={idx}
+                    className="rounded-2xl border border-zinc-200/70 bg-zinc-50/70 p-3.5 dark:border-zinc-800 dark:bg-zinc-950/60"
+                  >
+                    <div className="text-lg font-bold tracking-tight text-teal-700 sm:text-xl dark:text-teal-400">
+                      {metric.value}
+                    </div>
+                    <div className="mt-1 text-xs font-medium text-zinc-800 dark:text-zinc-200">
+                      {languageMode !== 'da_only' ? metric.labelRu : metric.labelDa}
+                    </div>
+                    {languageMode === 'both' && (
+                      <div className="mt-0.5 text-[11px] text-zinc-400 dark:text-zinc-500">
+                        {metric.labelDa}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="lg:col-span-6">
+              <LessonHeroIllustration moduleId={mod.id} languageMode={languageMode} />
             </div>
           </div>
         );
@@ -226,7 +237,7 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
             )}
 
             {mod.id !== 1 && moduleSigns.length > 0 && (
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
                 {moduleSigns.map((sign) => (
                   <div
                     key={sign.id}
@@ -261,23 +272,26 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
             <h2 className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-100">
               Пошаговый алгоритм
             </h2>
-            <div className="space-y-3">
+            <div className="grid gap-3 md:grid-cols-3">
               {mod.algorithms?.map((alg) => (
                 <div
                   key={alg.step}
-                  className="flex items-start justify-between gap-3 rounded-2xl border border-zinc-200/70 bg-zinc-50/70 p-4 dark:border-zinc-800 dark:bg-zinc-950/50"
+                  className="flex flex-col justify-between gap-3 rounded-2xl border border-zinc-200/70 bg-zinc-50/70 p-4 dark:border-zinc-800 dark:bg-zinc-950/50"
                 >
-                  <div className="flex items-start gap-3">
-                    <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-teal-600 text-xs font-bold text-white">
-                      {alg.step}
-                    </span>
+                  <div className="space-y-2.5">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-teal-600 text-xs font-bold text-white">
+                        {alg.step}
+                      </span>
+                      <SpeakButton id={`course_alg_${mod.id}_${alg.step}`} text={alg.da} />
+                    </div>
                     <div>
                       {languageMode === 'both' ? (
                         <>
                           <div className="text-[15px] font-medium leading-6 text-zinc-900 dark:text-zinc-100">
                             {alg.ru}
                           </div>
-                          <div className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+                          <div className="mt-1.5 text-xs text-zinc-500 dark:text-zinc-400">
                             {alg.da}
                           </div>
                         </>
@@ -292,7 +306,6 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
                       )}
                     </div>
                   </div>
-                  <SpeakButton id={`course_alg_${mod.id}_${alg.step}`} text={alg.da} />
                 </div>
               ))}
             </div>
@@ -321,32 +334,34 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
               Главное за 30 секунд
             </h2>
 
-            <ul className="space-y-2.5">
-              {mod.cheatSheet.map((r, idx) => (
-                <li key={idx} className="flex items-start gap-2.5 text-[15px] leading-6">
-                  <CheckCircle2 className="mt-1 h-4 w-4 shrink-0 text-teal-600 dark:text-teal-400" />
-                  <span className="font-medium text-zinc-800 dark:text-zinc-200">
-                    {languageMode !== 'da_only' ? r.titleRu : r.titleDa}
-                  </span>
-                </li>
-              ))}
-            </ul>
-
-            {keyRules.length > 0 && (
-              <div className="space-y-2.5 border-t border-zinc-200/80 pt-4 dark:border-zinc-800">
-                <div className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
-                  Ловушки на экзамене
-                </div>
-                {keyRules.map((q) => (
-                  <div
-                    key={q.id}
-                    className="rounded-xl border border-zinc-200/70 bg-zinc-50/70 px-3.5 py-2.5 text-xs leading-relaxed text-zinc-700 sm:text-sm dark:border-zinc-800 dark:bg-zinc-950/50 dark:text-zinc-300"
-                  >
-                    {languageMode !== 'da_only' ? q.keyRuleRu : q.keyRuleDa}
-                  </div>
+            <div className="grid gap-6 lg:grid-cols-2 lg:items-start">
+              <ul className="space-y-2.5">
+                {mod.cheatSheet.map((r, idx) => (
+                  <li key={idx} className="flex items-start gap-2.5 text-[15px] leading-6">
+                    <CheckCircle2 className="mt-1 h-4 w-4 shrink-0 text-teal-600 dark:text-teal-400" />
+                    <span className="font-medium text-zinc-800 dark:text-zinc-200">
+                      {languageMode !== 'da_only' ? r.titleRu : r.titleDa}
+                    </span>
+                  </li>
                 ))}
-              </div>
-            )}
+              </ul>
+
+              {keyRules.length > 0 && (
+                <div className="space-y-2.5 rounded-2xl border border-zinc-200/80 bg-zinc-50/60 p-4 dark:border-zinc-800 dark:bg-zinc-950/40">
+                  <div className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
+                    Ловушки на экзамене
+                  </div>
+                  {keyRules.map((q) => (
+                    <div
+                      key={q.id}
+                      className="rounded-xl border border-zinc-200/70 bg-white px-3.5 py-2.5 text-xs leading-relaxed text-zinc-700 sm:text-sm dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
+                    >
+                      {languageMode !== 'da_only' ? q.keyRuleRu : q.keyRuleDa}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         );
       }
@@ -354,7 +369,7 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
   };
 
   return (
-    <div className="mx-auto max-w-2xl space-y-5">
+    <div className="mx-auto max-w-6xl space-y-5">
       {/* Slide Card */}
       <div
         key={`${mod.id}_${slideIndex}`}

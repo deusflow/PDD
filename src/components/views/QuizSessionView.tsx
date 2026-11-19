@@ -389,7 +389,7 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
   };
 
   return (
-    <div className="mx-auto max-w-3xl space-y-4 animate-fade-in">
+    <div className="mx-auto max-w-7xl space-y-4 animate-fade-in">
       {/* Top session bar (hidden in course mode to keep focus) */}
       {mode !== 'course' && (
         <div className="flex items-center justify-between gap-3">
@@ -472,23 +472,28 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
           )}
         </div>
 
-        {/* Visual */}
-        <div className="mb-4">{renderVisual()}</div>
+        {/* Desktop 2-column Cockpit (Visual + Situation on left, Ja/Nej decisions on right) */}
+        <div className="grid gap-5 lg:grid-cols-12 lg:items-start">
+          <div className="space-y-4 lg:sticky lg:top-20 lg:col-span-7">
+            {/* Visual */}
+            <div>{renderVisual()}</div>
 
-        {/* Situation description + speech */}
-        <div className="mb-5 flex items-start justify-between gap-3 rounded-2xl border border-zinc-200/80 bg-zinc-50/70 p-4 dark:border-zinc-800 dark:bg-zinc-950/50">
-          <BilingualText
-            da={question.situationDa}
-            ru={question.situationRu}
-            mode={languageMode}
-            daClassName="text-sm sm:text-base leading-relaxed"
-            ruClassName="text-xs sm:text-sm"
-          />
-          <SpeakButton id={`sit_${question.id}`} text={question.situationDa} size="md" />
-        </div>
+            {/* Situation description + speech */}
+            <div className="flex items-start justify-between gap-3 rounded-2xl border border-zinc-200/80 bg-zinc-50/70 p-4 dark:border-zinc-800 dark:bg-zinc-950/50">
+              <BilingualText
+                da={question.situationDa}
+                ru={question.situationRu}
+                mode={languageMode}
+                daClassName="text-sm sm:text-base leading-relaxed"
+                ruClassName="text-xs sm:text-sm"
+              />
+              <SpeakButton id={`sit_${question.id}`} text={question.situationDa} size="md" />
+            </div>
+          </div>
 
-        {/* Sub-questions (Ja / Nej) */}
-        <div className="space-y-3">
+          <div className="lg:col-span-5">
+            {/* Sub-questions (Ja / Nej) */}
+            <div className="space-y-3">
           {question.subQuestions.map((sq, idx) => {
             const chosen = answers[sq.id];
             const isCorrectSub = isSubmitted && chosen === sq.correctAnswer;
@@ -677,6 +682,8 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
             </div>
           </div>
         )}
+          </div>
+        </div>
       </div>
     </div>
   );
