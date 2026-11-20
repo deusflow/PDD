@@ -38,11 +38,21 @@ import {
   computeProgressStats,
   updateSRSRecord,
 } from './services/srsEngine';
+import {
+  clearFreeSessionMeta,
+  clearQuizDraft,
+  loadFreeSessionMeta,
+  loadNavState,
+  PersistedNavState,
+  saveFreeSessionMeta,
+  saveNavState,
+} from './services/sessionPersistence';
 import { StorageManager } from './services/storage';
 import {
   ActiveTab,
   ExamAttemptSummary,
   LanguageMode,
+  LessonTab,
   ModuleCourseProgress,
   SRSRecord,
   TeoriQuestion,
@@ -56,6 +66,27 @@ interface ActiveQuizSession {
   moduleId?: number;
   questions: TeoriQuestion[];
   requeueFailures: boolean;
+}
+
+function restoreInitialSession(): ActiveQuizSession | null {
+  const meta = loadFreeSessionMeta();
+  if (!meta) return null;
+  const byId = new Map(QUESTIONS_BANK.map((q) => [q.id, q]));
+  const questions = meta.questionIds
+    .map((id) => byId.get(id))
+    .filter((q): q is TeoriQuestion => Boolean(q));
+  if (questions.length !== meta.questionIds.length || questions.length === 0) {
+    clearFreeSessionMeta();
+    return null;
+  }
+  return {
+    key: meta.key,
+    title: meta.title,
+    subtitle: meta.subtitle,
+    moduleId: meta.moduleId,
+    questions,
+    requeueFailures: meta.requeueFailures,
+  };
 }
 
 function syncRelatedDictionaryItems(
@@ -120,11 +151,19 @@ function applyModuleQuizUpdate(
 
 export const App: React.FC = () => {
   const [appState, setAppState] = useState<UserAppState>(() => StorageManager.load());
-  const [activeTab, setActiveTab] = useState<ActiveTab>('dashboard');
-  const [selectedModuleId, setSelectedModuleId] = useState<number>(1);
-  const [modulesViewMode, setModulesViewMode] = useState<'list' | 'lesson'>('list');
-  const [dictionaryCategory, setDictionaryCategory] = useState<CategoryFilter>('all');
-  const [activeSession, setActiveSession] = useState<ActiveQuizSession | null>(null);
+  const [initialNav] = useState<PersistedNavState>(() => loadNavState());
+  const [activeTab, setActiveTab] = useState<ActiveTab>(initialNav.activeTab);
+  const [selectedModuleId, setSelectedModuleId] = useState<number>(initialNav.selectedModuleId);
+  const [modulesViewMode, setModulesViewMode] = useState<'list' | 'lesson'>(
+    initialNav.modulesViewMode
+  );
+  const [lessonTab, setLessonTab] = useState<LessonTab>(initialNav.lessonTab);
+  const [dictionaryCategory, setDictionaryCategory] = useState<CategoryFilter>(
+    initialNav.dictionaryCategory
+  );
+  const [activeSession, setActiveSession] = useState<ActiveQuizSession | null>(() =>
+    restoreInitialSession()
+  );
   const [isOnboardingOpen, setIsOnboardingOpen] = useState<boolean>(false);
   const [isBackupOpen, setIsBackupOpen] = useState<boolean>(false);
 
@@ -132,6 +171,33 @@ export const App: React.FC = () => {
   useEffect(() => {
     StorageManager.save(appState);
   }, [appState]);
+
+  // Persist navigation state whenever location/tab/module updates
+  useEffect(() => {
+    saveNavState({
+      activeTab,
+      selectedModuleId,
+      modulesViewMode,
+      lessonTab,
+      dictionaryCategory,
+    });
+  }, [activeTab, selectedModuleId, modulesViewMode, lessonTab, dictionaryCategory]);
+
+  // Persist active free-quiz session metadata across page reloads
+  useEffect(() => {
+    if (activeSession) {
+      saveFreeSessionMeta({
+        key: activeSession.key,
+        title: activeSession.title,
+        subtitle: activeSession.subtitle,
+        moduleId: activeSession.moduleId,
+        questionIds: activeSession.questions.map((q) => q.id),
+        requeueFailures: activeSession.requeueFailures,
+      });
+    } else {
+      clearFreeSessionMeta();
+    }
+  }, [activeSession]);
 
   // Apply light / dark theme class on <html>
   useEffect(() => {
@@ -172,12 +238,14 @@ export const App: React.FC = () => {
 
   const handleTabChange = (tab: ActiveTab) => {
     danishSpeech.stop();
+    clearQuizDraft('free_active');
     setActiveSession(null);
     if (tab === 'dictionary') {
       setDictionaryCategory('all');
     }
     if (tab === 'modules') {
       setModulesViewMode('list');
+      setLessonTab('slides');
     }
     setActiveTab(tab);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -202,6 +270,7 @@ export const App: React.FC = () => {
 
   const handleStartSmartSession = (count: 10 | 20) => {
     danishSpeech.stop();
+    clearQuizDraft('free_active');
     const selected = buildSmartSession(QUESTIONS_BANK, appState.srs, count);
     setActiveSession({
       key: `smart_${Date.now()}`,
@@ -220,6 +289,7 @@ export const App: React.FC = () => {
     moduleId?: number
   ) => {
     danishSpeech.stop();
+    clearQuizDraft('free_active');
     setActiveSession({
       key: `custom_${Date.now()}`,
       title,
@@ -355,6 +425,7 @@ export const App: React.FC = () => {
     setActiveSession(null);
     setSelectedModuleId(nextModuleId);
     setModulesViewMode('lesson');
+    setLessonTab('slides');
     setActiveTab('modules');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -395,6 +466,10 @@ export const App: React.FC = () => {
     const fresh = StorageManager.clear();
     setAppState(fresh);
     setActiveSession(null);
+    setSelectedModuleId(1);
+    setModulesViewMode('list');
+    setLessonTab('slides');
+    setDictionaryCategory('all');
     setActiveTab('dashboard');
   };
 
@@ -459,6 +534,7 @@ export const App: React.FC = () => {
           <QuizSessionView
             key={activeSession.key}
             mode="free"
+            draftKey="free_active"
             title={activeSession.title}
             subtitle={activeSession.subtitle}
             moduleId={activeSession.moduleId}
@@ -524,7 +600,10 @@ export const App: React.FC = () => {
               <ModulesView
                 selectedModuleId={selectedModuleId}
                 initialViewMode={modulesViewMode}
+                initialLessonTab={lessonTab}
                 onSelectModule={setSelectedModuleId}
+                onViewModeChange={setModulesViewMode}
+                onLessonTabChange={setLessonTab}
                 srsMap={appState.srs}
                 courseModules={appState.course.modules}
                 languageMode={appState.languageMode}
@@ -555,10 +634,10 @@ export const App: React.FC = () => {
 
             {activeTab === 'dictionary' && (
               <DictionaryView
-                key={dictionaryCategory}
                 srsMap={appState.srs}
                 languageMode={appState.languageMode}
                 initialCategory={dictionaryCategory}
+                onCategoryChange={setDictionaryCategory}
                 onRecordEntryReview={(entryId, passed) => {
                   handleRecordResult(entryId, passed);
                 }}

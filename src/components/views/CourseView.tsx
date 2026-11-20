@@ -10,6 +10,11 @@ import {
   getNextCourseStep,
   REQUIRED_MOCK_EXAM_STREAK,
 } from '../../services/coursePlanner';
+import {
+  hasResumableQuizDraft,
+  loadNavState,
+  saveNavState,
+} from '../../services/sessionPersistence';
 import { danishSpeech } from '../../services/speech';
 import { SRSRecord, TeoriQuestion, UserAppState } from '../../types';
 import { CourseInterstitial } from '../course/CourseInterstitial';
@@ -49,7 +54,26 @@ type PendingTransition =
     }
   | null;
 
+function getDraftKeyForStep(step: CourseStep): string | undefined {
+  switch (step.kind) {
+    case 'quiz':
+      return `course_quiz_m${step.moduleId}`;
+    case 'fix':
+      return `course_fix_m${step.moduleId}`;
+    case 'review':
+      return 'course_review';
+    case 'checkpoint':
+      return 'course_checkpoint';
+    default:
+      return undefined;
+  }
+}
+
 function shouldShowInterstitial(step: CourseStep, state: UserAppState): boolean {
+  const draftKey = getDraftKeyForStep(step);
+  if (draftKey && hasResumableQuizDraft(draftKey)) {
+    return false;
+  }
   if (
     step.kind === 'review' ||
     step.kind === 'fix' ||
@@ -90,7 +114,13 @@ export const CourseView: React.FC<CourseViewProps> = ({
   const [checkpointRetryBanner, setCheckpointRetryBanner] = useState<string | null>(null);
   const [extraMockExam, setExtraMockExam] = useState<boolean>(false);
   const [pendingTransition, setPendingTransition] = useState<PendingTransition>(null);
-  const [browsingModuleId, setBrowsingModuleId] = useState<number | null>(null);
+  const [browsingModuleId, setBrowsingModuleId] = useState<number | null>(
+    () => loadNavState().courseBrowsingModuleId
+  );
+
+  useEffect(() => {
+    saveNavState({ courseBrowsingModuleId: browsingModuleId });
+  }, [browsingModuleId]);
 
   useEffect(() => {
     if (!pendingTransition) return;
@@ -343,6 +373,7 @@ export const CourseView: React.FC<CourseViewProps> = ({
         return (
           <LessonFlashcards
             key={stepKey}
+            moduleId={activeStep.moduleId}
             entryIds={activeStep.entryIds}
             languageMode={appState.languageMode}
             onAnswer={(entryId, passed) => {
@@ -365,6 +396,7 @@ export const CourseView: React.FC<CourseViewProps> = ({
           <QuizSessionView
             key={stepKey}
             mode="course"
+            draftKey={getDraftKeyForStep(activeStep)}
             title={
               isFullQuiz
                 ? `Тест · Урок ${mId}: ${mod?.titleRu ?? ''}`
@@ -400,6 +432,7 @@ export const CourseView: React.FC<CourseViewProps> = ({
           <QuizSessionView
             key={stepKey}
             mode="course"
+            draftKey="course_review"
             title="Повторение пройденных тем"
             initialQuestions={activeStep.questions}
             srsMap={appState.srs}
@@ -420,6 +453,7 @@ export const CourseView: React.FC<CourseViewProps> = ({
           <QuizSessionView
             key={stepKey}
             mode="course"
+            draftKey="course_checkpoint"
             title="Контрольная · Уроки 1–4"
             initialQuestions={activeStep.questions}
             srsMap={appState.srs}

@@ -7,6 +7,7 @@ import {
   ThemeMode,
   UserAppState,
 } from '../types';
+import { clearAllSessionPersistence } from './sessionPersistence';
 
 const STORAGE_KEY = 'dk_korekort_state_v1';
 const SYNC_PREFIX = 'DKK1:';
@@ -200,6 +201,7 @@ export const StorageManager = {
   },
 
   clear(): UserAppState {
+    clearAllSessionPersistence();
     const fresh = {
       ...getDefaultState(),
       hasSeenOnboarding: true,

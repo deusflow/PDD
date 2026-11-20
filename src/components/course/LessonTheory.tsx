@@ -1,8 +1,13 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, CheckCircle2, Sparkles } from 'lucide-react';
 import { MODULES_DATA } from '../../data/modulesData';
 import { QUESTIONS_BANK } from '../../data/questionsBank';
 import { DICTIONARY_ENTRIES } from '../../data/signsAndGlossary';
+import {
+  clearTheorySlideIndex,
+  loadTheorySlideIndex,
+  saveTheorySlideIndex,
+} from '../../services/sessionPersistence';
 import { LanguageMode, ModuleCheatRule } from '../../types';
 import { BilingualText } from '../common/BilingualText';
 import { RuleVisualBlock } from '../common/RuleVisualBlock';
@@ -64,14 +69,27 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
     return list;
   }, [mod]);
 
-  const [slideIndex, setSlideIndex] = useState(0);
+  const [slideIndex, setSlideIndex] = useState(() =>
+    loadTheorySlideIndex(moduleId, slides.length)
+  );
+  const prevModuleIdRef = useRef(moduleId);
 
   useEffect(() => {
-    setSlideIndex(0);
-  }, [moduleId]);
+    if (prevModuleIdRef.current !== moduleId) {
+      prevModuleIdRef.current = moduleId;
+      setSlideIndex(loadTheorySlideIndex(moduleId, slides.length));
+    }
+  }, [moduleId, slides.length]);
 
   const isFirst = slideIndex === 0;
   const isLast = slideIndex === slides.length - 1;
+
+  const goToSlide = (idx: number) => {
+    const clamped = Math.max(0, Math.min(idx, slides.length - 1));
+    setSlideIndex(clamped);
+    saveTheorySlideIndex(moduleId, clamped);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -80,22 +98,21 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
 
       if (e.key === 'ArrowRight' && slideIndex < slides.length - 1) {
         e.preventDefault();
-        setSlideIndex((i) => Math.min(slides.length - 1, i + 1));
+        const nextIdx = Math.min(slides.length - 1, slideIndex + 1);
+        setSlideIndex(nextIdx);
+        saveTheorySlideIndex(moduleId, nextIdx);
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else if (e.key === 'ArrowLeft' && slideIndex > 0) {
         e.preventDefault();
-        setSlideIndex((i) => Math.max(0, i - 1));
+        const prevIdx = Math.max(0, slideIndex - 1);
+        setSlideIndex(prevIdx);
+        saveTheorySlideIndex(moduleId, prevIdx);
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [slideIndex, slides.length]);
-
-  const goToSlide = (idx: number) => {
-    setSlideIndex(idx);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  }, [moduleId, slideIndex, slides.length]);
 
   const currentSlide = slides[slideIndex];
 
@@ -426,7 +443,10 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
         ) : (
           <button
             type="button"
-            onClick={onComplete}
+            onClick={() => {
+              clearTheorySlideIndex(moduleId);
+              onComplete();
+            }}
             className="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-xl bg-teal-600 px-6 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-teal-500"
           >
             <span>{nextButtonLabel}</span>

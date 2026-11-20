@@ -1,11 +1,17 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { CheckCircle2, RotateCw, XCircle } from 'lucide-react';
 import { DICTIONARY_ENTRIES } from '../../data/signsAndGlossary';
+import {
+  clearFlashcardsDraft,
+  loadFlashcardsDraft,
+  saveFlashcardsDraft,
+} from '../../services/sessionPersistence';
 import { DictionaryEntry, LanguageMode } from '../../types';
 import { SpeakButton } from '../common/SpeakButton';
 import { DictionaryVisualThumbnail } from '../visuals/DictionaryVisualThumbnail';
 
 interface LessonFlashcardsProps {
+  moduleId: number;
   entryIds: string[];
   languageMode: LanguageMode;
   onAnswer: (entryId: string, passed: boolean) => void;
@@ -13,25 +19,56 @@ interface LessonFlashcardsProps {
 }
 
 export const LessonFlashcards: React.FC<LessonFlashcardsProps> = ({
+  moduleId,
   entryIds,
   languageMode,
   onAnswer,
   onComplete,
 }) => {
-  const initialCards = useMemo(() => {
+  const initialState = useMemo(() => {
     const map = new Map<string, DictionaryEntry>();
     for (const d of DICTIONARY_ENTRIES) {
       map.set(d.id, d);
     }
-    return entryIds
+    const baseCards = entryIds
       .map((id) => map.get(id))
       .filter((entry): entry is DictionaryEntry => Boolean(entry));
-  }, [entryIds]);
 
-  const [queue, setQueue] = useState<DictionaryEntry[]>(initialCards);
-  const [retriedIds, setRetriedIds] = useState<Record<string, boolean>>({});
-  const [index, setIndex] = useState(0);
+    const draft = loadFlashcardsDraft(moduleId, entryIds);
+    if (draft) {
+      const restoredQueue = draft.queueIds
+        .map((id) => map.get(id))
+        .filter((entry): entry is DictionaryEntry => Boolean(entry));
+      if (restoredQueue.length > 0 && draft.index < restoredQueue.length) {
+        return {
+          queue: restoredQueue,
+          retriedIds: draft.retriedIds,
+          index: draft.index,
+        };
+      }
+    }
+
+    return {
+      queue: baseCards,
+      retriedIds: {} as Record<string, boolean>,
+      index: 0,
+    };
+  }, [moduleId, entryIds]);
+
+  const [queue, setQueue] = useState<DictionaryEntry[]>(initialState.queue);
+  const [retriedIds, setRetriedIds] = useState<Record<string, boolean>>(initialState.retriedIds);
+  const [index, setIndex] = useState(initialState.index);
   const [flipped, setFlipped] = useState(false);
+
+  useEffect(() => {
+    if (queue.length === 0) return;
+    saveFlashcardsDraft({
+      moduleId,
+      queueIds: queue.map((c) => c.id),
+      retriedIds,
+      index,
+    });
+  }, [moduleId, queue, retriedIds, index]);
 
   const keyHandlerRef = useRef<(e: KeyboardEvent) => void>(() => {});
 
@@ -67,6 +104,7 @@ export const LessonFlashcards: React.FC<LessonFlashcardsProps> = ({
       setIndex((i) => i + 1);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
+      clearFlashcardsDraft();
       onComplete();
     }
   };

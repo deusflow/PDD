@@ -20,6 +20,7 @@ import {
 import { MODULES_DATA } from '../../data/modulesData';
 import { QUESTIONS_BANK } from '../../data/questionsBank';
 import { danishSpeech } from '../../services/speech';
+import { COURSE_EXAM_DRAFT_KEY, EXAM_DRAFT_KEY } from '../../services/sessionPersistence';
 import { buildExamQuestions, buildHardcoreExamQuestions } from '../../services/srsEngine';
 import { ExamAttemptSummary, LanguageMode, SRSRecord, TeoriQuestion } from '../../types';
 import { BilingualText } from '../common/BilingualText';
@@ -47,7 +48,6 @@ const EXAM_CONFIG: Record<ExamIntensity, { durationSec: number; passThreshold: n
   standard: { durationSec: 25 * 60, passThreshold: 20 },
   hardcore: { durationSec: 20 * 60, passThreshold: 22 },
 };
-const EXAM_DRAFT_KEY = 'dk_exam_draft_v1';
 
 interface ExamDraft {
   questionIds: string[];
@@ -64,9 +64,10 @@ function buildFullTicketSequence(q: TeoriQuestion): string[] {
   return [q.situationDa, ...q.subQuestions.map((s, i) => `${i + 1}. ${s.da}`)];
 }
 
-function loadExamDraft(): { draft: ExamDraft; questions: TeoriQuestion[] } | null {
+function loadExamDraft(draftKey: string): { draft: ExamDraft; questions: TeoriQuestion[] } | null {
   try {
-    const raw = sessionStorage.getItem(EXAM_DRAFT_KEY);
+    if (typeof localStorage === 'undefined') return null;
+    const raw = localStorage.getItem(draftKey);
     if (!raw) return null;
     const parsed = JSON.parse(raw) as ExamDraft;
     if (!Array.isArray(parsed.questionIds) || parsed.questionIds.length === 0) return null;
@@ -81,9 +82,10 @@ function loadExamDraft(): { draft: ExamDraft; questions: TeoriQuestion[] } | nul
   }
 }
 
-function clearExamDraft(): void {
+function clearExamDraft(draftKey: string): void {
   try {
-    sessionStorage.removeItem(EXAM_DRAFT_KEY);
+    if (typeof localStorage === 'undefined') return;
+    localStorage.removeItem(draftKey);
   } catch {
     // ignore storage errors
   }
@@ -104,26 +106,47 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
   onFinishExam,
   onTrainFailedQuestions,
 }) => {
+  const draftKey = autoStart ? COURSE_EXAM_DRAFT_KEY : EXAM_DRAFT_KEY;
+  const [initialAutoDraft] = useState<{
+    draft: ExamDraft;
+    questions: TeoriQuestion[];
+  } | null>(() => (autoStart ? loadExamDraft(draftKey) : null));
   const [phase, setPhase] = useState<'intro' | 'active' | 'review'>(() =>
     autoStart ? 'active' : 'intro'
   );
-  const [officialMode, setOfficialMode] = useState(false);
-  const [examIntensity, setExamIntensity] = useState<ExamIntensity>('standard');
+  const [officialMode, setOfficialMode] = useState(() =>
+    Boolean(initialAutoDraft?.draft.officialMode)
+  );
+  const [examIntensity, setExamIntensity] = useState<ExamIntensity>(
+    () => initialAutoDraft?.draft.examIntensity ?? 'standard'
+  );
   const activeConfig = EXAM_CONFIG[examIntensity];
   const [examQuestions, setExamQuestions] = useState<TeoriQuestion[]>(() =>
-    autoStart ? buildExamQuestions(QUESTIONS_BANK, 25, srsMap) : []
+    autoStart
+      ? initialAutoDraft?.questions ?? buildExamQuestions(QUESTIONS_BANK, 25, srsMap)
+      : []
   );
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, boolean | undefined>>({});
-  const [flaggedIds, setFlaggedIds] = useState<Record<string, boolean>>({});
-  const [secondsLeft, setSecondsLeft] = useState(EXAM_CONFIG.standard.durationSec);
+  const [currentIndex, setCurrentIndex] = useState(() =>
+    initialAutoDraft
+      ? Math.min(Math.max(0, initialAutoDraft.draft.currentIndex ?? 0), initialAutoDraft.questions.length - 1)
+      : 0
+  );
+  const [answers, setAnswers] = useState<Record<string, boolean | undefined>>(
+    () => initialAutoDraft?.draft.answers ?? {}
+  );
+  const [flaggedIds, setFlaggedIds] = useState<Record<string, boolean>>(
+    () => initialAutoDraft?.draft.flaggedIds ?? {}
+  );
+  const [secondsLeft, setSecondsLeft] = useState(() =>
+    initialAutoDraft ? Math.max(1, initialAutoDraft.draft.secondsLeft) : EXAM_CONFIG.standard.durationSec
+  );
   const [lastSummary, setLastSummary] = useState<ExamAttemptSummary | null>(null);
   const [expandedReviewId, setExpandedReviewId] = useState<string | null>(null);
   const [confirmIncomplete, setConfirmIncomplete] = useState(false);
   const [pendingDraft, setPendingDraft] = useState<{
     draft: ExamDraft;
     questions: TeoriQuestion[];
-  } | null>(() => (autoStart ? null : loadExamDraft()));
+  } | null>(() => (autoStart ? null : loadExamDraft(draftKey)));
 
   const answersRef = useRef(answers);
   answersRef.current = answers;
@@ -141,7 +164,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
       currentAnswers: Record<string, boolean | undefined>,
       remainingSec: number
     ) => {
-      clearExamDraft();
+      clearExamDraft(draftKey);
       setPendingDraft(null);
       const results = questionsList.map((q) => {
         const passed = q.subQuestions.every(
@@ -165,7 +188,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
       window.scrollTo({ top: 0, behavior: 'smooth' });
       onFinishExam(summary, results);
     },
-    [onFinishExam, activeConfig]
+    [onFinishExam, activeConfig, draftKey]
   );
 
   useEffect(() => {
@@ -183,8 +206,9 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
   }, [phase, secondsLeft, finalizeExam]);
 
   useEffect(() => {
-    if (autoStart || phase !== 'active' || examQuestions.length === 0) return;
+    if (phase !== 'active' || examQuestions.length === 0) return;
     try {
+      if (typeof localStorage === 'undefined') return;
       const payload: ExamDraft = {
         questionIds: examQuestions.map((q) => q.id),
         answers,
@@ -195,12 +219,12 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
         examIntensity,
         savedAt: Date.now(),
       };
-      sessionStorage.setItem(EXAM_DRAFT_KEY, JSON.stringify(payload));
+      localStorage.setItem(draftKey, JSON.stringify(payload));
     } catch {
       // ignore storage quota errors
     }
   }, [
-    autoStart,
+    draftKey,
     phase,
     examQuestions,
     answers,
@@ -320,7 +344,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
   };
 
   const startExam = () => {
-    clearExamDraft();
+    clearExamDraft(draftKey);
     setPendingDraft(null);
     const cfg = EXAM_CONFIG[examIntensity];
     const selected =
@@ -356,7 +380,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
   };
 
   const discardExamDraft = () => {
-    clearExamDraft();
+    clearExamDraft(draftKey);
     setPendingDraft(null);
   };
 

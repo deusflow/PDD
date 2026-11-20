@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 import { DICTIONARY_ENTRIES } from '../../data/signsAndGlossary';
 import { BOX_META, getSRSRecord } from '../../services/srsEngine';
-import { LanguageMode, SRSRecord } from '../../types';
+import { DictionaryCategoryFilter, LanguageMode, SRSRecord } from '../../types';
 import { extractOrdnetLookupWords, getOrdnetUrl } from '../../utils/ordnet';
 import { BilingualText } from '../common/BilingualText';
 import { SpeakButton } from '../common/SpeakButton';
@@ -21,16 +21,18 @@ interface DictionaryViewProps {
   srsMap: Record<string, SRSRecord>;
   languageMode: LanguageMode;
   initialCategory?: CategoryFilter;
+  onCategoryChange?: (category: CategoryFilter) => void;
   onRecordEntryReview: (entryId: string, passed: boolean) => void;
 }
 
-export type CategoryFilter = 'all' | 'term' | 'sign' | 'kontrol' | 'sign_kontrol';
+export type CategoryFilter = DictionaryCategoryFilter;
 type StatusFilter = 'all' | 'unknown' | 'learning' | 'mastered';
 
 export const DictionaryView: React.FC<DictionaryViewProps> = ({
   srsMap,
   languageMode,
   initialCategory = 'all',
+  onCategoryChange,
   onRecordEntryReview,
 }) => {
   const [query, setQuery] = useState('');
@@ -38,6 +40,15 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({
   const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>(initialCategory);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
   const [isSignBlitzOpen, setIsSignBlitzOpen] = useState(false);
+
+  React.useEffect(() => {
+    setCategoryFilter(initialCategory);
+  }, [initialCategory]);
+
+  const handleCategorySelect = (cat: CategoryFilter) => {
+    setCategoryFilter(cat);
+    onCategoryChange?.(cat);
+  };
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -181,7 +192,7 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({
               <button
                 key={cat.id}
                 type="button"
-                onClick={() => setCategoryFilter(cat.id as CategoryFilter)}
+                onClick={() => handleCategorySelect(cat.id as CategoryFilter)}
                 className={`rounded-xl border px-3 py-1.5 text-xs font-semibold transition-all ${
                   categoryFilter === cat.id
                     ? 'border-zinc-900 bg-zinc-900 text-white dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-900'

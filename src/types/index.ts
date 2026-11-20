@@ -2,6 +2,8 @@ export type LanguageMode = 'both' | 'spoiler' | 'da_only';
 export type ThemeMode = 'light' | 'dark';
 export type BoxLevel = 0 | 1 | 2 | 3 | 4 | 5;
 export type ActiveTab = 'dashboard' | 'course' | 'modules' | 'exam' | 'dictionary';
+export type LessonTab = 'slides' | 'sheet' | 'signs';
+export type DictionaryCategoryFilter = 'all' | 'term' | 'sign' | 'kontrol' | 'sign_kontrol';
 
 export type TechnicalTabId = 'motorrum' | 'daek_bremser' | 'lygter' | 'instrumentpanel';
 

@@ -9,6 +9,12 @@ import {
   Scale,
   XCircle,
 } from 'lucide-react';
+import { QUESTIONS_BANK } from '../../data/questionsBank';
+import {
+  clearQuizDraft,
+  loadQuizDraft,
+  saveQuizDraft,
+} from '../../services/sessionPersistence';
 import { BOX_META, getSRSRecord } from '../../services/srsEngine';
 import { LanguageMode, SRSRecord, TeoriQuestion } from '../../types';
 import { BilingualText } from '../common/BilingualText';
@@ -22,6 +28,7 @@ interface QuizSessionViewProps {
   subtitle?: string;
   moduleId?: number;
   mode?: 'free' | 'course';
+  draftKey?: string;
   initialQuestions: TeoriQuestion[];
   srsMap: Record<string, SRSRecord>;
   languageMode: LanguageMode;
@@ -51,11 +58,76 @@ interface SessionHistoryItem {
   wasRetry: boolean;
 }
 
+interface ResolvedQuizInit {
+  queue: Array<{ question: TeoriQuestion; isRetry: boolean }>;
+  currentIndex: number;
+  answers: Record<string, boolean | undefined>;
+  submittedRecord: SRSRecord | null;
+  history: SessionHistoryItem[];
+  finished: boolean;
+}
+
+function resolveInitialQuizState(
+  draftKey: string | undefined,
+  initialQuestions: TeoriQuestion[],
+  moduleId: number | undefined,
+  srsMap: Record<string, SRSRecord>
+): ResolvedQuizInit {
+  const fallback: ResolvedQuizInit = {
+    queue: initialQuestions.map((question) => ({ question, isRetry: false })),
+    currentIndex: 0,
+    answers: {},
+    submittedRecord: null,
+    history: [],
+    finished: false,
+  };
+
+  if (!draftKey || initialQuestions.length === 0) return fallback;
+  const draft = loadQuizDraft(draftKey);
+  if (!draft) return fallback;
+
+  const bankById = new Map(QUESTIONS_BANK.map((q) => [q.id, q]));
+  const initialIdSet = new Set(initialQuestions.map((q) => q.id));
+
+  const restoredQueue: Array<{ question: TeoriQuestion; isRetry: boolean }> = [];
+  for (const item of draft.queue) {
+    const q = bankById.get(item.questionId);
+    if (!q) return fallback;
+    if (moduleId !== undefined && !initialIdSet.has(q.id)) {
+      return fallback;
+    }
+    restoredQueue.push({ question: q, isRetry: item.isRetry });
+  }
+  if (restoredQueue.length === 0) return fallback;
+
+  const safeIndex = Math.min(Math.max(0, draft.currentIndex), restoredQueue.length - 1);
+  const restoredHistory: SessionHistoryItem[] = [];
+  for (const h of draft.history) {
+    const q = bankById.get(h.questionId);
+    if (q) {
+      restoredHistory.push({ question: q, passed: h.passed, wasRetry: h.wasRetry });
+    }
+  }
+
+  const activeQ = restoredQueue[safeIndex].question;
+  const submittedRecord = draft.isSubmitted ? getSRSRecord(srsMap, activeQ.id) : null;
+
+  return {
+    queue: restoredQueue,
+    currentIndex: safeIndex,
+    answers: draft.answers,
+    submittedRecord,
+    history: restoredHistory,
+    finished: draft.finished,
+  };
+}
+
 export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
   title,
   subtitle,
   moduleId,
   mode = 'free',
+  draftKey,
   initialQuestions,
   srsMap,
   languageMode,
@@ -69,14 +141,41 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
   onRestartWithQuestions,
   onExit,
 }) => {
-  const [queue, setQueue] = useState<Array<{ question: TeoriQuestion; isRetry: boolean }>>(() =>
-    initialQuestions.map((question) => ({ question, isRetry: false }))
+  const [initialQuiz] = useState<ResolvedQuizInit>(() =>
+    resolveInitialQuizState(draftKey, initialQuestions, moduleId, srsMap)
   );
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, boolean | undefined>>({});
-  const [submittedRecord, setSubmittedRecord] = useState<SRSRecord | null>(null);
-  const [history, setHistory] = useState<SessionHistoryItem[]>([]);
-  const [finished, setFinished] = useState(false);
+  const [queue, setQueue] = useState<Array<{ question: TeoriQuestion; isRetry: boolean }>>(
+    initialQuiz.queue
+  );
+  const [currentIndex, setCurrentIndex] = useState(initialQuiz.currentIndex);
+  const [answers, setAnswers] = useState<Record<string, boolean | undefined>>(initialQuiz.answers);
+  const [submittedRecord, setSubmittedRecord] = useState<SRSRecord | null>(
+    initialQuiz.submittedRecord
+  );
+  const [history, setHistory] = useState<SessionHistoryItem[]>(initialQuiz.history);
+  const [finished, setFinished] = useState(initialQuiz.finished);
+
+  useEffect(() => {
+    if (!draftKey || queue.length === 0) return;
+    saveQuizDraft(draftKey, {
+      queue: queue.map((item) => ({ questionId: item.question.id, isRetry: item.isRetry })),
+      currentIndex,
+      answers,
+      isSubmitted: submittedRecord !== null,
+      history: history.map((h) => ({
+        questionId: h.question.id,
+        passed: h.passed,
+        wasRetry: h.wasRetry,
+      })),
+      finished,
+      savedAt: Date.now(),
+    });
+  }, [draftKey, queue, currentIndex, answers, submittedRecord, history, finished]);
+
+  const handleExitWithCleanup = () => {
+    if (draftKey) clearQuizDraft(draftKey);
+    onExit();
+  };
 
   const keyHandlerRef = useRef<(e: KeyboardEvent) => void>(() => {});
 
@@ -99,7 +198,7 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
         </p>
         <button
           type="button"
-          onClick={onExit}
+          onClick={handleExitWithCleanup}
           className="mt-4 inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-4 py-2 text-sm font-semibold text-white dark:bg-zinc-100 dark:text-zinc-900"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -173,13 +272,14 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
                 <div>
                   <button
                     type="button"
-                    onClick={() =>
+                    onClick={() => {
+                      if (draftKey) clearQuizDraft(draftKey);
                       onCourseFinish({
                         firstTryScore: passedCount,
                         total: totalCount,
                         failedQuestionIds: failedInThisSession.map((q) => q.id),
-                      })
-                    }
+                      });
+                    }}
                     className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-teal-600 px-6 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-teal-500"
                   >
                     <span>Продолжить</span>
@@ -191,7 +291,10 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
                   {hasNextModule && moduleId !== undefined && onContinueToNextModule && (
                     <button
                       type="button"
-                      onClick={() => onContinueToNextModule(moduleId + 1)}
+                      onClick={() => {
+                        if (draftKey) clearQuizDraft(draftKey);
+                        onContinueToNextModule(moduleId + 1);
+                      }}
                       className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-emerald-600 py-3.5 text-sm font-bold text-white shadow-sm transition-colors hover:bg-emerald-500"
                     >
                       <span>Перейти к следующему уроку (Урок {moduleId + 1})</span>
@@ -202,7 +305,8 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
                   {failedInThisSession.length > 0 && onRestartWithQuestions && (
                     <button
                       type="button"
-                      onClick={() =>
+                      onClick={() => {
+                        if (draftKey) clearQuizDraft(draftKey);
                         onRestartWithQuestions(
                           moduleId
                             ? `Исправление ошибок Урока ${moduleId}`
@@ -210,8 +314,8 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
                           `Повторное закрепление (${failedInThisSession.length} вопр.)`,
                           failedInThisSession,
                           moduleId
-                        )
-                      }
+                        );
+                      }}
                       className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-rose-200 bg-rose-50 py-3 text-sm font-bold text-rose-700 transition-colors hover:bg-rose-100 dark:border-rose-900/60 dark:bg-rose-950/40 dark:text-rose-300"
                     >
                       <RotateCcw className="h-4 w-4" />
@@ -223,7 +327,10 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
                     {onReturnToLessons && (
                       <button
                         type="button"
-                        onClick={onReturnToLessons}
+                        onClick={() => {
+                          if (draftKey) clearQuizDraft(draftKey);
+                          onReturnToLessons();
+                        }}
                         className="flex-1 rounded-2xl border border-zinc-200 bg-white py-3 text-xs font-semibold text-zinc-800 transition-colors hover:bg-zinc-50 sm:text-sm dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
                       >
                         К списку уроков
@@ -231,7 +338,7 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
                     )}
                     <button
                       type="button"
-                      onClick={onExit}
+                      onClick={handleExitWithCleanup}
                       className="flex-1 rounded-2xl bg-zinc-900 py-3 text-xs font-semibold text-white transition-colors hover:bg-zinc-800 sm:text-sm dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
                     >
                       В главное меню
@@ -401,7 +508,7 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
         <div className="flex items-center justify-between gap-3">
           <button
             type="button"
-            onClick={onExit}
+            onClick={handleExitWithCleanup}
             className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-xs font-semibold text-zinc-700 transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
           >
             <ArrowLeft className="h-3.5 w-3.5" />

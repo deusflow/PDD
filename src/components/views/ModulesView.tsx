@@ -18,8 +18,9 @@ import { MODULES_DATA } from '../../data/modulesData';
 import { QUESTIONS_BANK } from '../../data/questionsBank';
 import { DICTIONARY_ENTRIES } from '../../data/signsAndGlossary';
 import { shuffleItems } from '../../services/coursePlanner';
+import { loadAllTheorySlideIndices } from '../../services/sessionPersistence';
 import { BOX_META, computeProgressStats, getSRSRecord } from '../../services/srsEngine';
-import { LanguageMode, ModuleCourseProgress, SRSRecord, TeoriQuestion } from '../../types';
+import { LanguageMode, LessonTab, ModuleCourseProgress, SRSRecord, TeoriQuestion } from '../../types';
 import { extractOrdnetLookupWords, getOrdnetUrl } from '../../utils/ordnet';
 import { BilingualText } from '../common/BilingualText';
 import { RuleVisualBlock } from '../common/RuleVisualBlock';
@@ -33,7 +34,10 @@ import { LessonHeroIllustration } from '../visuals/LessonHeroIllustration';
 interface ModulesViewProps {
   selectedModuleId: number;
   initialViewMode?: 'list' | 'lesson';
+  initialLessonTab?: LessonTab;
   onSelectModule: (id: number) => void;
+  onViewModeChange?: (mode: 'list' | 'lesson') => void;
+  onLessonTabChange?: (tab: LessonTab) => void;
   srsMap: Record<string, SRSRecord>;
   courseModules?: Record<number, ModuleCourseProgress>;
   languageMode: LanguageMode;
@@ -48,12 +52,13 @@ interface ModulesViewProps {
   onOpenCourse: () => void;
 }
 
-type LessonTab = 'slides' | 'sheet' | 'signs';
-
 export const ModulesView: React.FC<ModulesViewProps> = ({
   selectedModuleId,
   initialViewMode = 'list',
+  initialLessonTab = 'slides',
   onSelectModule,
+  onViewModeChange,
+  onLessonTabChange,
   srsMap,
   courseModules,
   languageMode,
@@ -64,7 +69,7 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
 }) => {
   const [activeId, setActiveId] = useState<number>(selectedModuleId);
   const [viewMode, setViewMode] = useState<'list' | 'lesson'>(initialViewMode);
-  const [lessonTab, setLessonTab] = useState<LessonTab>('slides');
+  const [lessonTab, setLessonTab] = useState<LessonTab>(initialLessonTab);
   const [showSchoolPlan, setShowSchoolPlan] = useState(false);
   const [docChecks, setDocChecks] = useState<Record<string, boolean>>(() => {
     try {
@@ -95,13 +100,21 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
     setViewMode(initialViewMode);
   }, [initialViewMode]);
 
+  useEffect(() => {
+    setLessonTab(initialLessonTab);
+  }, [initialLessonTab]);
+
   const handleOpenLesson = (id: number) => {
     setActiveId(id);
     onSelectModule(id);
     setViewMode('lesson');
+    onViewModeChange?.('lesson');
     setLessonTab('slides');
+    onLessonTabChange?.('slides');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  const savedSlideIndices = viewMode === 'list' ? loadAllTheorySlideIndices() : {};
 
   if (viewMode === 'list') {
     return (
@@ -324,7 +337,11 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
                       onClick={() => handleOpenLesson(item.id)}
                       className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-zinc-900 px-3.5 py-2.5 text-xs font-bold text-white transition-colors hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
                     >
-                      <span>Читать урок</span>
+                      <span>
+                        {(savedSlideIndices[item.id] ?? 0) > 0
+                          ? `Продолжить (слайд ${savedSlideIndices[item.id] + 1})`
+                          : 'Читать урок'}
+                      </span>
                       <ArrowRight className="h-3.5 w-3.5" />
                     </button>
                     <button
@@ -371,6 +388,7 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
           type="button"
           onClick={() => {
             setViewMode('list');
+            onViewModeChange?.('list');
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
           className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-xs font-semibold text-zinc-700 transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
@@ -479,7 +497,10 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
               <button
                 key={tab.id}
                 type="button"
-                onClick={() => setLessonTab(tab.id)}
+                onClick={() => {
+                  setLessonTab(tab.id);
+                  onLessonTabChange?.(tab.id);
+                }}
                 className={`inline-flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs font-semibold transition-all ${
                   active
                     ? 'bg-zinc-900 text-white shadow-sm dark:bg-zinc-100 dark:text-zinc-900'
