@@ -191,6 +191,7 @@ export const MODULES_DATA: ModuleInfo[] = [
         visual: {
           kind: 'technical',
           presetId: 'tech_motorrum',
+          imageSrc: './images/rules/engine-bay-fluids.jpg',
           technicalTab: 'motorrum',
           technicalHotspot: 'koelervaeske',
         },
@@ -702,6 +703,7 @@ export const MODULES_DATA: ModuleInfo[] = [
         visual: {
           kind: 'pov',
           presetId: 'pov_hojre_vigepligt',
+          imageSrc: './images/rules/right-of-way-junction.jpg',
           maneuverBadge: 'Вид водителя: жилой перекрёсток без знаков — пропускаем машину справа',
         },
       },
@@ -1395,6 +1397,7 @@ export const MODULES_DATA: ModuleInfo[] = [
         visual: {
           kind: 'pov',
           presetId: 'pov_parking_meters',
+          imageSrc: './images/rules/parking-pskive.jpg',
           maneuverBadge: 'Знаки C61, C62, парковочный диск P-skive и золотые метры',
         },
       },
@@ -1445,6 +1448,7 @@ export const MODULES_DATA: ModuleInfo[] = [
         visual: {
           kind: 'pov',
           presetId: 'pov_parking_5m_10m',
+          imageSrc: './images/rules/parking-5m-10m.jpg',
           maneuverBadge: 'Вид водителя: отступы 5 м перед зеброй и 10 м от углов перекрёстка',
         },
       },
@@ -1468,6 +1472,7 @@ export const MODULES_DATA: ModuleInfo[] = [
         visual: {
           kind: 'pov',
           presetId: 'pov_parking_bus_driveway',
+          imageSrc: './images/rules/parking-bus-curb.jpg',
           maneuverBadge: 'Вид водителя: 12 м у остановки автобуса (остановка OK, стоянка нельзя) и выезд со двора',
         },
       },
@@ -1491,6 +1496,7 @@ export const MODULES_DATA: ModuleInfo[] = [
         visual: {
           kind: 'pov',
           presetId: 'pov_parking_oneway_ensrettet',
+          imageSrc: './images/rules/parking-pskive.jpg',
           maneuverBadge: 'Вид водителя: на односторонней улице E19 можно парковаться с обеих сторон',
         },
       },
@@ -1514,6 +1520,7 @@ export const MODULES_DATA: ModuleInfo[] = [
         visual: {
           kind: 'pov',
           presetId: 'pov_parking_night_tomgang',
+          imageSrc: './images/rules/night-headlights.jpg',
           maneuverBadge: 'Вид водителя: ночная стоянка с габаритами (Positionslys) и запрет холостого хода',
         },
       },

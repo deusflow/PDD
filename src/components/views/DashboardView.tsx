@@ -219,7 +219,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         <div className="nordic-card flex flex-col justify-between p-5">
           <div>
             <div className="flex items-center justify-between">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-teal-50 text-teal-700 dark:bg-teal-950/60 dark:text-teal-300">
                 <Zap className="h-5 w-5" />
               </div>
               {failedQuestions.length > 0 && (
@@ -287,7 +287,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         <div className="nordic-card flex flex-col justify-between p-5">
           <div>
             <div className="flex items-center justify-between">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-rose-50 text-rose-600 dark:bg-rose-950/60 dark:text-rose-400">
                 <FileCheck2 className="h-5 w-5" />
               </div>
               <span className="text-[11px] font-medium text-zinc-400">
@@ -319,7 +319,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         <div className="nordic-card flex flex-col justify-between p-5">
           <div>
             <div className="flex items-center justify-between">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-sky-50 text-sky-600 dark:bg-sky-950/60 dark:text-sky-400">
                 <Signpost className="h-5 w-5" />
               </div>
               <span className="text-[11px] font-medium text-zinc-400">

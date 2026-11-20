@@ -10,17 +10,17 @@
   }
 
   body {
-    @apply bg-[#F7F8F7] text-zinc-900 transition-colors duration-200 dark:bg-[#0B1117] dark:text-zinc-100;
+    @apply bg-[#F5F7F6] text-zinc-900 transition-colors duration-200 dark:bg-[#0B1117] dark:text-zinc-100;
   }
 }
 
 @layer utilities {
   .nordic-card {
-    @apply rounded-2xl border border-zinc-200/75 bg-white/95 shadow-nordic backdrop-blur-sm dark:border-zinc-800/80 dark:bg-zinc-900/90;
+    @apply rounded-2xl border border-zinc-200/70 bg-white/95 shadow-nordic backdrop-blur-sm dark:border-zinc-800/75 dark:bg-zinc-900/85;
   }
 
   .nordic-pill {
-    @apply inline-flex items-center gap-1.5 rounded-full border border-zinc-200/80 bg-zinc-100/80 px-2.5 py-0.5 text-xs font-medium text-zinc-700 dark:border-zinc-700/80 dark:bg-zinc-800/80 dark:text-zinc-300;
+    @apply inline-flex items-center gap-1.5 rounded-full border border-zinc-200/75 bg-zinc-100/75 px-2.5 py-0.5 text-xs font-medium text-zinc-700 dark:border-zinc-700/70 dark:bg-zinc-800/75 dark:text-zinc-300;
   }
 
   .perspective-1000 {

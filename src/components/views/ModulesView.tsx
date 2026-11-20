@@ -234,46 +234,49 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
             return (
               <div
                 key={item.id}
-                className="nordic-card flex flex-col justify-between p-5 transition-all hover:border-zinc-300 dark:hover:border-zinc-700"
+                className="nordic-card group flex flex-col justify-between overflow-hidden transition-all hover:-translate-y-0.5 hover:border-zinc-300 hover:shadow-nordic-lg dark:hover:border-zinc-700"
               >
                 <div>
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <div className="flex flex-wrap items-center gap-1.5">
-                      <span className="rounded-lg bg-zinc-900 px-2.5 py-0.5 text-xs font-bold text-white dark:bg-zinc-100 dark:text-zinc-900">
+                  {/* Cover Thumbnail Preview */}
+                  <div className="relative aspect-[16/9] w-full overflow-hidden bg-zinc-100 dark:bg-zinc-950">
+                    <img
+                      src={`./images/lessons/module-${item.id}.jpg`}
+                      alt={item.titleRu}
+                      loading="lazy"
+                      className="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-[1.03]"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/70 via-zinc-950/15 to-transparent" />
+                    <div className="absolute inset-x-3 top-2.5 flex items-center justify-between gap-2">
+                      <span className="rounded-lg bg-zinc-950/80 px-2.5 py-0.5 text-xs font-bold text-white backdrop-blur-sm">
                         Урок {item.id}
                       </span>
-                      {item.schoolStage && (
-                        <span className="rounded-lg border border-teal-200 bg-teal-50 px-2 py-0.5 text-[11px] font-semibold text-teal-800 dark:border-teal-900/60 dark:bg-teal-950/40 dark:text-teal-300">
-                          Школа M{item.schoolStage}
+                      {hasErrors ? (
+                        <span className="inline-flex items-center gap-1 rounded-full bg-rose-600/90 px-2.5 py-0.5 text-[11px] font-semibold text-white backdrop-blur-sm">
+                          <AlertTriangle className="h-3 w-3" />
+                          Ошибки ({st.boxCounts[1]})
                         </span>
-                      )}
+                      ) : isPassed ? (
+                        <span className="inline-flex items-center gap-1 rounded-full bg-emerald-600/90 px-2.5 py-0.5 text-[11px] font-semibold text-white backdrop-blur-sm">
+                          <CheckCircle2 className="h-3 w-3" />
+                          Пройден
+                        </span>
+                      ) : isInProgress ? (
+                        <span className="rounded-full bg-sky-600/90 px-2.5 py-0.5 text-[11px] font-semibold text-white backdrop-blur-sm">
+                          {st.seenItems}/{st.totalItems}
+                        </span>
+                      ) : null}
                     </div>
-
-                    {hasErrors ? (
-                      <span className="inline-flex items-center gap-1 rounded-full bg-rose-100 px-2.5 py-0.5 text-[11px] font-semibold text-rose-700 dark:bg-rose-950 dark:text-rose-300">
-                        <AlertTriangle className="h-3 w-3" />
-                        Есть ошибки ({st.boxCounts[1]})
-                      </span>
-                    ) : isPassed ? (
-                      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
-                        <CheckCircle2 className="h-3 w-3" />
-                        Пройден
-                      </span>
-                    ) : isInProgress ? (
-                      <span className="rounded-full bg-sky-100 px-2.5 py-0.5 text-[11px] font-semibold text-sky-700 dark:bg-sky-950 dark:text-sky-300">
-                        В процессе ({st.seenItems}/{st.totalItems})
-                      </span>
-                    ) : (
-                      <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-[11px] font-medium text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
-                        Не начат
+                    {item.schoolStage && (
+                      <span className="absolute bottom-2.5 left-3 rounded-md bg-white/90 px-2 py-0.5 text-[11px] font-semibold text-teal-900 backdrop-blur-sm dark:bg-zinc-900/90 dark:text-teal-300">
+                        Школа M{item.schoolStage}
                       </span>
                     )}
                   </div>
 
-                  <div className="mt-3">
+                  <div className="p-4 pb-0">
                     {languageMode !== 'da_only' ? (
                       <>
-                        <h2 className="text-base font-bold leading-snug text-zinc-900 dark:text-zinc-100">
+                        <h2 className="text-[15px] font-bold leading-snug text-zinc-900 dark:text-zinc-100">
                           {item.titleRu}
                         </h2>
                         <div className="mt-0.5 text-xs font-medium text-zinc-500 dark:text-zinc-400">
@@ -281,18 +284,18 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
                         </div>
                       </>
                     ) : (
-                      <h2 className="text-base font-bold leading-snug text-zinc-900 dark:text-zinc-100">
+                      <h2 className="text-[15px] font-bold leading-snug text-zinc-900 dark:text-zinc-100">
                         {item.titleDa}
                       </h2>
                     )}
-                  </div>
 
-                  <p className="mt-2 text-xs leading-relaxed text-zinc-600 dark:text-zinc-400">
-                    {languageMode !== 'da_only' ? item.subtitleRu : item.subtitleDa}
-                  </p>
+                    <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-zinc-600 dark:text-zinc-400">
+                      {languageMode !== 'da_only' ? item.subtitleRu : item.subtitleDa}
+                    </p>
+                  </div>
                 </div>
 
-                <div className="mt-4 space-y-3">
+                <div className="mt-4 space-y-3 p-4 pt-0">
                   {/* Micro progress bar */}
                   <div>
                     <div className="h-1.5 w-full overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
@@ -547,18 +550,32 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
           </div>
 
           <section className="nordic-card p-5 sm:p-6">
-            <div className="mb-4 flex items-center gap-2">
-              <BookOpen className="h-4 w-4 text-sky-600 dark:text-sky-400" />
-              <h2 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
-                Все правила и разборы урока
-              </h2>
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+              <div className="flex items-center gap-2">
+                <BookOpen className="h-4 w-4 text-teal-600 dark:text-teal-400" />
+                <h2 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+                  Все правила и разборы урока ({mod.cheatSheet.length})
+                </h2>
+              </div>
+              <div className="flex flex-wrap items-center gap-1.5">
+                {mod.cheatSheet.map((rule, idx) => (
+                  <a
+                    key={idx}
+                    href={`#mod_rule_${mod.id}_${idx}`}
+                    className="rounded-lg border border-zinc-200/80 bg-zinc-50 px-2.5 py-1 text-xs font-medium text-zinc-600 transition-colors hover:border-teal-300 hover:bg-teal-50/70 hover:text-teal-800 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400 dark:hover:border-teal-800 dark:hover:text-teal-300"
+                  >
+                    {idx + 1}. {(languageMode !== 'da_only' ? rule.titleRu : rule.titleDa).split(/[(:—]/)[0].trim().slice(0, 26)}
+                  </a>
+                ))}
+              </div>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-4">
               {mod.cheatSheet.map((rule, idx) => (
                 <div
                   key={idx}
-                  className="rounded-2xl border border-zinc-200/80 bg-zinc-50/60 p-4 dark:border-zinc-800 dark:bg-zinc-950/50"
+                  id={`mod_rule_${mod.id}_${idx}`}
+                  className="scroll-mt-20 rounded-2xl border border-zinc-200/75 bg-zinc-50/40 p-4 sm:p-5 dark:border-zinc-800/80 dark:bg-zinc-950/35"
                 >
                   <div className="flex items-start justify-between gap-2">
                     {languageMode === 'both' ? (

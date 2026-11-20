@@ -242,17 +242,16 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({
               >
                 <div>
                   <div className="mb-2.5 flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-1.5">
-                      <span className="nordic-pill">{catLabel}</span>
-                      <span className="text-[10px] font-semibold text-zinc-400">
-                        M{entry.moduleId}
-                      </span>
+                    <div className="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
+                      <span className="font-semibold text-zinc-700 dark:text-zinc-300">{catLabel}</span>
+                      <span className="opacity-40">•</span>
+                      <span>Урок {entry.moduleId}</span>
                     </div>
                     <div className="flex items-center gap-1.5">
                       <span
-                        className={`rounded-full border px-2 py-0.5 text-[10px] font-semibold ${meta.badgeClass}`}
+                        className={`rounded-full border px-2 py-0.5 text-[11px] font-medium ${meta.badgeClass}`}
                       >
-                        Box {rec.box} • {meta.labelRu}
+                        Box {rec.box}
                       </span>
                       <SpeakButton
                         id={`dict_${entry.id}`}
@@ -268,15 +267,15 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({
                         da={entry.da}
                         ru={entry.ru}
                         mode={languageMode}
-                        daClassName="text-sm font-bold"
-                        ruClassName="text-xs"
+                        daClassName="text-sm font-bold leading-snug"
+                        ruClassName="text-xs leading-snug"
                       />
                       <BilingualText
                         da={entry.detailsDa}
                         ru={entry.detailsRu}
                         mode={languageMode}
                         daClassName="text-xs font-normal leading-relaxed text-zinc-600 dark:text-zinc-300"
-                        ruClassName="text-[11px] leading-relaxed"
+                        ruClassName="text-xs leading-relaxed text-zinc-500 dark:text-zinc-400"
                       />
                     </div>
                   </div>

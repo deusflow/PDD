@@ -36,12 +36,24 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
 
     if (visual.kind === 'technical') {
       return (
-        <CarTechnicalSVG
-          initialTab={visual.technicalTab ?? 'motorrum'}
-          activeHotspot={visual.technicalHotspot}
-          languageMode={languageMode}
-          compact={compactVisual}
-        />
+        <div className="space-y-3">
+          {visual.imageSrc && (
+            <div className="overflow-hidden rounded-xl border border-zinc-200/80 bg-zinc-900 dark:border-zinc-800">
+              <img
+                src={visual.imageSrc}
+                alt={rule.titleRu}
+                loading="lazy"
+                className="aspect-[16/9] w-full object-cover object-center"
+              />
+            </div>
+          )}
+          <CarTechnicalSVG
+            initialTab={visual.technicalTab ?? 'motorrum'}
+            activeHotspot={visual.technicalHotspot}
+            languageMode={languageMode}
+            compact={compactVisual}
+          />
+        </div>
       );
     }
 
@@ -84,11 +96,11 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
 
         {/* Situation description directly attached to the illustration */}
         {(rule.bodyRu || rule.bodyDa) && (
-          <div className="flex items-start gap-2.5 rounded-xl border border-zinc-200/80 bg-zinc-50/80 p-3.5 dark:border-zinc-800 dark:bg-zinc-950/60">
+          <div className="flex items-start gap-2.5 rounded-r-xl border-l-2 border-teal-500 bg-zinc-50/90 py-3 pl-3.5 pr-3 dark:bg-zinc-950/55">
             <Eye className="mt-0.5 h-4 w-4 shrink-0 text-teal-600 dark:text-teal-400" />
-            <div className="min-w-0 flex-1 text-xs leading-relaxed sm:text-sm">
-              <div className="mb-0.5 text-[11px] font-bold uppercase tracking-wider text-teal-700 dark:text-teal-400">
-                {languageMode === 'da_only' ? 'Situation & regel' : 'Описание ситуации'}
+            <div className="min-w-0 flex-1 text-sm leading-relaxed">
+              <div className="mb-0.5 text-xs font-semibold text-teal-700 dark:text-teal-400">
+                {languageMode === 'da_only' ? 'Situation & regel' : 'Суть ситуации'}
               </div>
               {languageMode === 'da_only' ? (
                 <p className="text-zinc-800 dark:text-zinc-200">{rule.bodyDa}</p>
@@ -97,14 +109,14 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
                   da={rule.bodyDa}
                   ru={rule.bodyRu}
                   mode="spoiler"
-                  daClassName="text-xs sm:text-sm font-normal leading-relaxed"
+                  daClassName="text-sm font-normal leading-relaxed"
                   ruClassName="text-xs leading-relaxed"
                 />
               ) : (
                 <div className="space-y-1">
                   <p className="text-zinc-800 dark:text-zinc-200">{rule.bodyRu}</p>
                   {rule.bodyDa && (
-                    <p className="text-[11px] leading-relaxed text-zinc-500 dark:text-zinc-400">
+                    <p className="text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">
                       DA: {rule.bodyDa}
                     </p>
                   )}
@@ -116,9 +128,9 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
 
         {/* Visual scan order markers (1 -> 2 -> 3): "Where to look" */}
         {hasAttention && (
-          <div className="rounded-xl border border-indigo-200/80 bg-indigo-50/60 p-3.5 dark:border-indigo-900/50 dark:bg-indigo-950/25">
-            <div className="mb-2.5 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-indigo-700 dark:text-indigo-300">
-              <Compass className="h-3.5 w-3.5" />
+          <div className="rounded-xl border border-zinc-200/75 bg-zinc-50/60 p-3.5 dark:border-zinc-800/80 dark:bg-zinc-950/45">
+            <div className="mb-2.5 flex items-center gap-1.5 text-xs font-semibold text-zinc-700 dark:text-zinc-300">
+              <Compass className="h-3.5 w-3.5 text-teal-600 dark:text-teal-400" />
               <span>
                 {languageMode === 'da_only'
                   ? 'Orientering på billedet (1 → 2 → 3)'
@@ -130,9 +142,9 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
                 (step, idx) => (
                   <li
                     key={idx}
-                    className="flex items-start gap-2 rounded-lg border border-indigo-200/60 bg-white/80 p-2.5 text-xs leading-snug dark:border-indigo-900/40 dark:bg-zinc-900/70"
+                    className="flex items-start gap-2 rounded-lg bg-white p-2.5 text-xs leading-snug shadow-sm ring-1 ring-zinc-200/60 dark:bg-zinc-900/80 dark:ring-zinc-800"
                   >
-                    <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-indigo-600 text-[11px] font-bold text-white dark:bg-indigo-500">
+                    <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-teal-600 text-[11px] font-bold text-white dark:bg-teal-500">
                       {idx + 1}
                     </span>
                     <div className="min-w-0 flex-1">
@@ -269,7 +281,7 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
 
       {/* Exceptions callout */}
       {(rule.exceptionsRu || rule.exceptionsDa) && (
-        <div className="flex items-start gap-2.5 rounded-xl border border-sky-200/80 bg-sky-50/70 p-3.5 dark:border-sky-900/60 dark:bg-sky-950/30">
+        <div className="flex items-start gap-2.5 rounded-r-xl border-l-2 border-sky-500 bg-sky-50/45 py-3 pl-3.5 pr-3 dark:bg-sky-950/25">
           <Info className="mt-0.5 h-4 w-4 shrink-0 text-sky-600 dark:text-sky-400" />
           <div className="text-xs leading-relaxed sm:text-sm">
             <span className="font-semibold text-sky-900 dark:text-sky-200">Исключение: </span>
@@ -287,7 +299,7 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
               <div>
                 <span className="text-sky-900/90 dark:text-sky-100">{rule.exceptionsRu}</span>
                 {rule.exceptionsDa && (
-                  <div className="mt-1 text-[11px] text-sky-800/75 dark:text-sky-300/80">
+                  <div className="mt-1 text-xs text-sky-800/75 dark:text-sky-300/80">
                     DA: {rule.exceptionsDa}
                   </div>
                 )}
@@ -299,11 +311,11 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
 
       {/* Common trap / Exam mistake callout */}
       {(rule.trapRu || rule.trapDa) && (
-        <div className="flex items-start gap-2.5 rounded-xl border border-amber-200/90 bg-amber-50/80 p-3.5 dark:border-amber-900/60 dark:bg-amber-950/35">
+        <div className="flex items-start gap-2.5 rounded-r-xl border-l-2 border-amber-500 bg-amber-50/55 py-3 pl-3.5 pr-3 dark:bg-amber-950/25">
           <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400" />
           <div className="text-xs leading-relaxed sm:text-sm">
             <span className="font-semibold text-amber-900 dark:text-amber-200">
-              Где обычно путаются:{' '}
+              Ловушка на экзамене:{' '}
             </span>
             {languageMode === 'da_only' ? (
               <span className="text-amber-900/90 dark:text-amber-100">{rule.trapDa}</span>
@@ -319,7 +331,7 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
               <div>
                 <span className="text-amber-900/90 dark:text-amber-100">{rule.trapRu}</span>
                 {rule.trapDa && (
-                  <div className="mt-1 text-[11px] text-amber-800/75 dark:text-amber-300/80">
+                  <div className="mt-1 text-xs text-amber-800/75 dark:text-amber-300/80">
                     DA: {rule.trapDa}
                   </div>
                 )}

@@ -560,6 +560,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_hojre_vigepligt',
+      imageSrc: './images/rules/right-of-way-junction.jpg',
       captionDa: 'Ureguleret kryds uden skilte/hajtænder = Højrevigepligt',
       captionRu: 'Равнозначный перекрёсток без знаков — правило правой руки',
     },
@@ -1229,6 +1230,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_railway_crossing',
+      imageSrc: './images/rules/railway-crossing.jpg',
       captionDa: 'Jernbaneoverskæring med rødt blink og bomme',
       captionRu: 'Железнодорожный переезд с красным мигающим сигналом',
     },
@@ -1546,6 +1548,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_parking_5m_10m',
+      imageSrc: './images/rules/parking-5m-10m.jpg',
       captionDa: 'Afstandskrav: 5 m før felt/cykelsti & 10 m fra kryds',
       captionRu: 'Золотые отступы: 5 м до перехода/веловыезда и 10 м от перекрёстка',
     },
@@ -1589,6 +1592,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_parking_bus_driveway',
+      imageSrc: './images/rules/parking-bus-curb.jpg',
       captionDa: 'Ind- og udkørsel til ejendom vs. Busstoppested (12 m)',
       captionRu: 'Выезд из двора (остановка можно, стоянка нет) и остановка автобуса (12 м)',
     },
@@ -2784,6 +2788,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_parking_meters',
+      imageSrc: './images/rules/parking-pskive.jpg',
       captionDa: '30 m jernbane, gul kantsten & parkering på bakke',
       captionRu: '30 м до ж/д переезда, жёлтый бордюр и уклон',
     },
@@ -4014,6 +4019,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_parking_bus_driveway',
+      imageSrc: './images/rules/parking-bus-curb.jpg',
       captionDa: 'Standsning og parkering ud for indkørsel og på fortov',
       captionRu: 'Правила остановки и парковки перед выездом и у тротуара',
     },
@@ -5985,6 +5991,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_parking_bus_driveway',
+      imageSrc: './images/rules/parking-bus-curb.jpg',
       captionDa: '12-meter reglen ved busstoppested: Standsning vs. Parkering',
       captionRu: '12 м от знака остановки автобуса: когда можно остановиться, а когда нельзя парковаться',
     },
@@ -6028,6 +6035,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_parking_5m_10m',
+      imageSrc: './images/rules/parking-5m-10m.jpg',
       captionDa: '5-meter reglen: KUN FØR fodgængerfelt og cykelstiudkørsel!',
       captionRu: 'Правило 5 метров действует только ДО пешеходного перехода',
     },
@@ -6598,6 +6606,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_hojre_vigepligt',
+      imageSrc: './images/rules/right-of-way-junction.jpg',
       captionDa: 'Højrevigepligt: bredde og asfalt afgør IKKE forrang!',
       captionRu: 'Помеха справа: ширина дороги без знаков не даёт приоритета',
     },
@@ -7435,6 +7444,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_hojre_vigepligt',
+      imageSrc: './images/rules/right-of-way-junction.jpg',
       captionDa: 'Grundregel § 3: Hensyn & aldrig at "køre på sin ret" (Mål 6.2)',
       captionRu: 'Базовый принцип § 3: никогда не настаивать на своём приоритете ценой ДТП',
     },
@@ -8136,6 +8146,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_railway_crossing',
+      imageSrc: './images/rules/railway-crossing.jpg',
       captionDa: 'Jernbaneoverskæring — krydsmærke, rødt blinklys og bomanlæg',
       captionRu: 'Железнодорожный переезд — светофоры, шлагбаумы и правила проезда',
     },
@@ -8401,6 +8412,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_parking_5m_10m',
+      imageSrc: './images/rules/parking-5m-10m.jpg',
       signCode: 'E17',
       captionDa: 'Standsningsforbud: 5-meters regel før felt/cykelsti og 10-meters regel ved kryds',
       captionRu: 'Запрет остановки и стоянки: 5 метров перед переходом и 10 метров у перекрёстка',
@@ -8445,6 +8457,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_parking_bus_driveway',
+      imageSrc: './images/rules/parking-bus-curb.jpg',
       captionDa: 'Indkørsel (kun standsning) vs Busstoppested (12 m før / 12 m efter)',
       captionRu: 'Выезд со двора (только остановка) против автобусной остановки (12 м + 12 м)',
     },
@@ -8576,6 +8589,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_parking_meters',
+      imageSrc: './images/rules/parking-pskive.jpg',
       signCode: 'E33',
       captionDa: 'E33 Parkering — tidsbegrænsning (P-skive), handicapplads & elbil-pladser',
       captionRu: 'E33 Парковка — парковочные часы (P-skive), места для инвалидов и электрозарядки',
