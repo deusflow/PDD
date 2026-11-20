@@ -1574,8 +1574,18 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
               presetId !== 'pov_narrow_bridge_b18' &&
               presetId !== 'pov_railway_crossing' &&
               !presetId.startsWith('pov_sign_'))) && (
-            <div className="absolute right-3 top-3 rounded-lg bg-white/90 p-1 shadow-sm backdrop-blur dark:bg-zinc-900/90">
-              <DanishRoadSignSVG code={signCode} subPlaque={subPlaque} size={48} />
+            <div
+              className={`absolute right-3 top-3 bg-white/95 backdrop-blur dark:bg-zinc-900/95 ${
+                presetId.startsWith('pov_sign_')
+                  ? 'rounded-xl p-2 shadow-lg ring-1 ring-zinc-900/10 dark:ring-white/15'
+                  : 'rounded-lg p-1 shadow-sm'
+              }`}
+            >
+              <DanishRoadSignSVG
+                code={signCode}
+                subPlaque={subPlaque}
+                size={presetId.startsWith('pov_sign_') ? 76 : 48}
+              />
             </div>
           )}
       </div>

@@ -1052,6 +1052,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_sign_country',
+      imageSrc: './images/rules/country-lanes.jpg',
       signCode: 'A73',
       subPlaque: '500 m',
       captionDa: 'Midlertidig gul skiltning & gul vejafmærkning ved vejarbejde',
@@ -1097,6 +1098,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_sign_intersection',
+      imageSrc: './images/rules/right-of-way-junction.jpg',
       signCode: 'C11',
       subPlaque: 'Undtaget cykler',
       captionDa: 'C11 (Indkørsel forbudt) med undertavle',
@@ -1185,6 +1187,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_sign_country',
+      imageSrc: './images/rules/country-lanes.jpg',
       signCode: 'A99',
       subPlaque: '↑ 1,2 km ↑',
       captionDa: 'Aflæsning af undertavler: Afstand vs. Strækning vs. Tid',
@@ -1278,6 +1281,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_sign_city',
+      imageSrc: './images/rules/bus-byzone.jpg',
       signCode: 'E55',
       captionDa: 'E55 Byzone — Generelle hastighedsgrænser i Danmark',
       captionRu: 'E55 Населённый пункт — общие скоростные лимиты в Дании',
@@ -1504,6 +1508,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_sign_parking',
+      imageSrc: './images/rules/parking-pskive.jpg',
       signCode: 'C62',
       captionDa: 'C62 (Parkering forbudt) vs. C61 (Standsning forbudt)',
       captionRu: 'Знак C62 («Стоянка запрещена») и отличие от C61 («Остановка запрещена»)',
@@ -1636,6 +1641,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_sign_parking',
+      imageSrc: './images/rules/parking-pskive.jpg',
       signCode: 'E33',
       subPlaque: '1 time 8-18 (8-14)',
       captionDa: 'P-skive indstilling ved ankomst kl. 10:04',
@@ -2084,6 +2090,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_sign_intersection',
+      imageSrc: './images/rules/right-of-way-junction.jpg',
       signCode: 'B17',
       captionDa: 'B17 Hovedvej ophører — ændring af vigepligt',
       captionRu: 'Знак B17 («Конец главной дороги») — смена приоритета',
@@ -2215,6 +2222,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_sign_city',
+      imageSrc: './images/rules/bus-byzone.jpg',
       signCode: 'D15',
       captionDa: 'D15 (Påbudt passage til højre) & D11 (Påbudt kørselsretning)',
       captionRu: 'Знаки D15 (объезд препятствия справа) и D11 (прямо)',
@@ -2259,6 +2267,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_sign_country',
+      imageSrc: './images/rules/country-lanes.jpg',
       signCode: 'C55-130',
       captionDa: 'Bugsering (max 30 km/t) & Motorvej 130 km/t',
       captionRu: 'Буксировка (макс. 30 км/ч) и автомагистраль 130 км/ч',
@@ -2347,6 +2356,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_sign_parking',
+      imageSrc: './images/rules/parking-pskive.jpg',
       signCode: 'C61',
       captionDa: 'Gyldighedsområde for C61 (Standsning forbudt)',
       captionRu: 'Зона действия знака C61 («Остановка запрещена»)',
@@ -2391,6 +2401,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_sign_country',
+      imageSrc: './images/rules/country-lanes.jpg',
       signCode: 'B16',
       captionDa: 'Hovedvej (B16) uden for byzone & Jernbaneoverskæring',
       captionRu: 'Главная дорога (B16) вне города и ж/д переезд',
@@ -2435,6 +2446,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_sign_country',
+      imageSrc: './images/rules/country-lanes.jpg',
       signCode: 'A31',
       captionDa: 'A31 Glat vej — sort is på broer & vinterkørsel',
       captionRu: 'Знак A31 («Скользкая дорога») — гололёд на мостах',
@@ -3100,6 +3112,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_sign_country',
+      imageSrc: './images/rules/country-lanes.jpg',
       signCode: 'C55-60',
       captionDa: 'Lokal hastighedsbegrænsning C55 (60 km/t)',
       captionRu: 'Локальное ограничение скорости C55 (60 км/ч)',
@@ -3188,6 +3201,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_sign_country',
+      imageSrc: './images/rules/country-lanes.jpg',
       signCode: 'B19',
       captionDa: 'Tavle B19: Modkørende færdsel skal holde tilbage',
       captionRu: 'Знак B19: Преимущество перед встречным транспортом',
@@ -3232,6 +3246,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_sign_intersection',
+      imageSrc: './images/rules/right-of-way-junction.jpg',
       signCode: 'B13',
       captionDa: 'Tavle B13: Fuldt stop ved stoplinje',
       captionRu: 'Знак B13: Обязательная полная остановка',
@@ -3276,6 +3291,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_sign_intersection',
+      imageSrc: './images/rules/right-of-way-junction.jpg',
       signCode: 'E19',
       captionDa: 'E19: Ensrettet færdsel',
       captionRu: 'E19: Одностороннее движение',
@@ -3580,6 +3596,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_sign_city',
+      imageSrc: './images/rules/bus-byzone.jpg',
       signCode: 'A21',
       captionDa: 'Tavle A21: Cyklister og knallerter på vejen',
       captionRu: 'Знак A21: Велосипедисты на проезжей части',
@@ -3624,6 +3641,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_sign_city',
+      imageSrc: './images/rules/bus-byzone.jpg',
       signCode: 'D15',
       captionDa: 'Tavle D15: Påbudt passage til højre for helle',
       captionRu: 'Знак D15: Обязательный объезд препятствия справа',
@@ -3929,6 +3947,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_sign_parking',
+      imageSrc: './images/rules/parking-pskive.jpg',
       signCode: 'E33',
       subPlaque: '2 timer',
       captionDa: 'Indstilling af P-skive ved ankomst kl. 14:07',
@@ -3974,6 +3993,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_sign_parking',
+      imageSrc: './images/rules/parking-pskive.jpg',
       signCode: 'C62',
       subPlaque: '8-18 | (8-18)',
       captionDa: 'Tavle C62 med tidsangivelse for hverdag og lørdag',
@@ -4853,6 +4873,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_sign_intersection',
+      imageSrc: './images/rules/right-of-way-junction.jpg',
       signCode: 'B16',
       captionDa: 'Knækket hovedvej med undertavle',
       captionRu: 'Изменение направления главной дороги (B16 + табличка)',
@@ -5200,6 +5221,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_sign_parking',
+      imageSrc: './images/rules/parking-pskive.jpg',
       signCode: 'E51',
       captionDa: 'Opholds- og legeområde (E51) — legende børn og 15 km/t',
       captionRu: 'Правила движения и парковки в жилой и игровой зоне (E51)',
@@ -5287,6 +5309,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_sign_country',
+      imageSrc: './images/rules/country-lanes.jpg',
       signCode: 'A99',
       subPlaque: 'Vildt',
       captionDa: 'Fare for vildt på vejen — reaktion ved små vs. store dyr',
@@ -5335,6 +5358,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_sign_intersection',
+      imageSrc: './images/rules/right-of-way-junction.jpg',
       signCode: 'D11-straight',
       captionDa: 'Blå rund påbudstavle D11 vs. Blå firkantet oplysningstavle E19',
       captionRu: 'Отличие предписывающего круга D11 от информационного квадрата E19',
@@ -5466,6 +5490,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_sign_intersection',
+      imageSrc: './images/rules/right-of-way-junction.jpg',
       signCode: 'A11',
       captionDa: 'Tavle A11: Farligt vejkryds med højrevigepligt',
       captionRu: 'Знак A11: Пересечение равнозначных дорог (помеха справа)',
@@ -5510,6 +5535,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_sign_city',
+      imageSrc: './images/rules/bus-byzone.jpg',
       signCode: 'E68',
       captionDa: 'Zone-tavle E68 vs. Almindelig lokal hastighedstavle',
       captionRu: 'Зонное ограничение E68 против одиночного знака C55',
@@ -5903,6 +5929,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_sign_parking',
+      imageSrc: './images/rules/parking-pskive.jpg',
       signCode: 'E33',
       subPlaque: 'Kun elbiler / Handicap',
       captionDa: 'Særlige P-båse: Handicap og ladestandere til elbiler',
@@ -6430,6 +6457,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_sign_country',
+      imageSrc: './images/rules/country-lanes.jpg',
       signCode: 'A41',
       captionDa: 'Tavle A41: Farlig kurve — hastighed og bremsning',
       captionRu: 'Знак A41: Опасный поворот — выбор скорости и торможения',
@@ -6474,6 +6502,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_sign_country',
+      imageSrc: './images/rules/country-lanes.jpg',
       signCode: 'A43',
       captionDa: 'Tavle A43: Indsnævring af vej uden vigepligtstavler',
       captionRu: 'Знак A43: Сужение проезжей части без знаков B18/B19',
@@ -6650,6 +6679,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_sign_city',
+      imageSrc: './images/rules/bus-byzone.jpg',
       signCode: 'D21',
       captionDa: 'Tavle D21: Påbudt cykelsti — hvem må køre her?',
       captionRu: 'Знак D21: Обязательная велодорожка и правила пользования',
@@ -6694,6 +6724,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_sign_city',
+      imageSrc: './images/rules/bus-byzone.jpg',
       signCode: 'E49',
       captionDa: 'Tavle E49: Cykelgade — cyklisternes gade',
       captionRu: 'Знак E49: Велосипедная улица — правила для водителей',
@@ -6738,6 +6769,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_sign_intersection',
+      imageSrc: './images/rules/right-of-way-junction.jpg',
       signCode: 'C19',
       captionDa: 'Tavle C19 (Kørsel forbudt) vs. C11 (Indkørsel forbudt)',
       captionRu: 'Отличие знака C19 (запрещено сквозное движение) от C11 («кирпич»)',
@@ -6782,6 +6814,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_sign_intersection',
+      imageSrc: './images/rules/right-of-way-junction.jpg',
       signCode: 'A19',
       captionDa: 'Tavle A19: Advarsel om lyssignal længere fremme',
       captionRu: 'Знак A19: Предупреждение о светофоре впереди',
@@ -6870,6 +6903,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_sign_country',
+      imageSrc: './images/rules/country-lanes.jpg',
       signCode: 'C52',
       captionDa: 'Tavle C52 (Overhaling forbudt ophører) + Spærrelinje',
       captionRu: 'Знак C52 («Конец запрета обгона») и сплошная линия',
@@ -6958,6 +6992,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_sign_intersection',
+      imageSrc: './images/rules/right-of-way-junction.jpg',
       signCode: 'D11-right',
       captionDa: 'Tavle D11: Påbudt kørselsretning til højre',
       captionRu: 'Знак D11: Движение строго направо',
@@ -7002,6 +7037,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_sign_country',
+      imageSrc: './images/rules/country-lanes.jpg',
       signCode: 'C59',
       captionDa: 'Tavle C59: Ophør af lokal hastighedsbegrænsning / forbud',
       captionRu: 'Знак C59: Конец локальных ограничений',
@@ -7046,6 +7082,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_sign_country',
+      imageSrc: './images/rules/country-lanes.jpg',
       signCode: 'E56',
       captionDa: 'Tavle E56: Ophør af byzone (80 km/t & uoplyst landevej)',
       captionRu: 'Знак E56: Выезд из города — новые лимиты и опасности',
@@ -8102,6 +8139,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_sign_city',
+      imageSrc: './images/rules/bus-byzone.jpg',
       signCode: 'E51',
       captionDa: 'E51 Opholds- og legeområde — lav fart og legepladser på vejen',
       captionRu: 'E51 Жилая и игровая зона — ограничения скорости, парковки и приоритета',
