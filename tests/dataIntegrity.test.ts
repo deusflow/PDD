@@ -46,12 +46,17 @@ test('QUESTIONS_BANK has 200 unique questions evenly distributed across modules 
       assert.ok(sq.da.trim().length > 0 && sq.ru.trim().length > 0);
       assert.ok(sq.explanationDa.trim().length > 0 && sq.explanationRu.trim().length > 0);
       assert.ok(
-        !/^(Hvad|Hvor|Hvordan)\s/.test(sq.da),
+        !/^(Hvad|Hvor|Hvordan|Hvilken|Hvilket|Hvilke|Hvem|Hvornår|Hvorfor)\s/.test(sq.da),
         `Open-ended non-Ja/Nej Danish question in ${sq.id}: ${sq.da}`
       );
       assert.ok(
         !sq.da.includes('?.') && !sq.ru.includes('?.') && !sq.da.includes('..') && !sq.ru.includes('..'),
         `Malformed punctuation in ${sq.id}`
+      );
+      assert.equal(
+        sq.da.trim().endsWith('?'),
+        sq.ru.trim().endsWith('?'),
+        `DA/RU statement-vs-question mismatch in ${sq.id}`
       );
     }
   }
@@ -60,9 +65,10 @@ test('QUESTIONS_BANK has 200 unique questions evenly distributed across modules 
   const declarativeDaCount = QUESTIONS_BANK.flatMap((q) => q.subQuestions).filter((sq) =>
     sq.da.trim().endsWith('.')
   ).length;
-  assert.ok(
-    declarativeDaCount / totalSubQuestions >= 0.5,
-    `Expected >= 50% declarative Teoriprøven statements, got ${declarativeDaCount}/${totalSubQuestions}`
+  assert.equal(
+    declarativeDaCount,
+    totalSubQuestions,
+    `Expected 100% declarative Teoriprøven statements, got ${declarativeDaCount}/${totalSubQuestions}`
   );
 
   for (let m = 1; m <= 8; m += 1) {
@@ -132,6 +138,22 @@ test('all visuals (POV presets, traffic scenes, signs, hotspots) referenced in d
         daChars / Math.max(1, ruChars) >= 0.7,
         `DA points too short vs RU (${daChars}/${ruChars}) in M${mod.id}: ${rule.titleRu}`
       );
+      assert.ok(
+        rule.bodyDa.length / Math.max(1, rule.bodyRu.length) >= 0.7,
+        `DA body too short vs RU in M${mod.id}: ${rule.titleRu}`
+      );
+      if (rule.trapRu) {
+        assert.ok(
+          (rule.trapDa?.length ?? 0) / rule.trapRu.length >= 0.7,
+          `DA trap too short vs RU in M${mod.id}: ${rule.titleRu}`
+        );
+      }
+      if (rule.exceptionsRu) {
+        assert.ok(
+          (rule.exceptionsDa?.length ?? 0) / rule.exceptionsRu.length >= 0.7,
+          `DA exceptions too short vs RU in M${mod.id}: ${rule.titleRu}`
+        );
+      }
       assert.ok(
         !(rule.pointsRu ?? []).some((p) => p.includes('Правое водительское')),
         `Factual left-hand-drive typo found in M${mod.id}: ${rule.titleRu}`

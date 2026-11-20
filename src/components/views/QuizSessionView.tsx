@@ -123,156 +123,162 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
       moduleId !== undefined && moduleId < 8 && Boolean(onContinueToNextModule);
 
     return (
-      <div className="mx-auto max-w-2xl space-y-6 animate-slide-up">
+      <div className="mx-auto max-w-5xl space-y-6 animate-slide-up">
         <div className="nordic-card p-6 sm:p-8">
-          <div className="flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
-              <Award className="h-6 w-6" />
-            </div>
-            <div>
-              <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">
-                {moduleId ? `Тест Урока ${moduleId} завершён` : 'Тренировка завершена'}
-              </h2>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">{title}</p>
-            </div>
-          </div>
-
-          <div className="mt-6 grid grid-cols-3 gap-3">
-            <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-3.5 text-center dark:border-zinc-800 dark:bg-zinc-950/60">
-              <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
-                {passedCount}/{totalCount}
+          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-zinc-200/70 pb-5 dark:border-zinc-800">
+            <div className="flex items-center gap-3.5">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+                <Award className="h-6 w-6" />
               </div>
-              <div className="mt-0.5 text-[11px] font-medium text-zinc-500 dark:text-zinc-400">
-                Верно с 1-го раза
-              </div>
-            </div>
-            <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-3.5 text-center dark:border-zinc-800 dark:bg-zinc-950/60">
-              <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
-                {totalCount > 0 ? Math.round((passedCount / totalCount) * 100) : 0}%
-              </div>
-              <div className="mt-0.5 text-[11px] font-medium text-zinc-500 dark:text-zinc-400">
-                Точность
-              </div>
-            </div>
-            <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-3.5 text-center dark:border-zinc-800 dark:bg-zinc-950/60">
-              <div className="text-2xl font-bold text-amber-600 dark:text-amber-400">
-                {retriesCount}
-              </div>
-              <div className="mt-0.5 text-[11px] font-medium text-zinc-500 dark:text-zinc-400">
-                Повторов ошибок
+              <div>
+                <h2 className="text-xl font-bold text-zinc-900 sm:text-2xl dark:text-zinc-100">
+                  {moduleId ? `Тест Урока ${moduleId} завершён` : 'Тренировка завершена'}
+                </h2>
+                <p className="text-xs text-zinc-500 sm:text-sm dark:text-zinc-400">{title}</p>
               </div>
             </div>
           </div>
 
-          <div className="mt-6 space-y-2">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-              Итоги по билетам
-            </h3>
-            <div className="max-h-60 space-y-2 overflow-y-auto pr-1">
-              {firstPassAttempts.map((item, idx) => {
-                const rec = getSRSRecord(srsMap, item.question.id);
-                const meta = BOX_META[rec.box];
-                return (
-                  <div
-                    key={`${item.question.id}_${idx}`}
-                    className="flex items-center justify-between gap-3 rounded-xl border border-zinc-200/80 px-3 py-2 dark:border-zinc-800"
-                  >
-                    <div className="flex min-w-0 items-center gap-2">
-                      {item.passed ? (
-                        <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-500" />
-                      ) : (
-                        <XCircle className="h-4 w-4 shrink-0 text-rose-500" />
-                      )}
-                      <span className="truncate text-xs font-medium text-zinc-800 dark:text-zinc-200">
-                        {languageMode !== 'da_only'
-                          ? item.question.situationRu
-                          : item.question.situationDa}
-                      </span>
-                    </div>
-                    {mode !== 'course' && (
-                      <span
-                        className={`shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-semibold ${meta.badgeClass}`}
-                      >
-                        Box {rec.box} • {meta.labelRu}
-                      </span>
-                    )}
+          <div className="mt-6 grid gap-6 lg:grid-cols-12 lg:items-start">
+            <div className="space-y-5 lg:col-span-5">
+              <div className="grid grid-cols-3 gap-3">
+                <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-3.5 text-center dark:border-zinc-800 dark:bg-zinc-950/60">
+                  <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+                    {passedCount}/{totalCount}
                   </div>
-                );
-              })}
-            </div>
-          </div>
+                  <div className="mt-0.5 text-[11px] font-medium text-zinc-500 dark:text-zinc-400">
+                    Верно с 1-го раза
+                  </div>
+                </div>
+                <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-3.5 text-center dark:border-zinc-800 dark:bg-zinc-950/60">
+                  <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
+                    {totalCount > 0 ? Math.round((passedCount / totalCount) * 100) : 0}%
+                  </div>
+                  <div className="mt-0.5 text-[11px] font-medium text-zinc-500 dark:text-zinc-400">
+                    Точность
+                  </div>
+                </div>
+                <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-3.5 text-center dark:border-zinc-800 dark:bg-zinc-950/60">
+                  <div className="text-2xl font-bold text-amber-600 dark:text-amber-400">
+                    {retriesCount}
+                  </div>
+                  <div className="mt-0.5 text-[11px] font-medium text-zinc-500 dark:text-zinc-400">
+                    Повторов ошибок
+                  </div>
+                </div>
+              </div>
 
-          {/* Guided Next Step Actions */}
-          {mode === 'course' && onCourseFinish ? (
-            <div className="mt-6">
-              <button
-                type="button"
-                onClick={() =>
-                  onCourseFinish({
-                    firstTryScore: passedCount,
-                    total: totalCount,
-                    failedQuestionIds: failedInThisSession.map((q) => q.id),
-                  })
-                }
-                className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-teal-600 px-6 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-teal-500"
-              >
-                <span>Продолжить</span>
-                <ArrowRight className="h-4 w-4" />
-              </button>
-            </div>
-          ) : (
-            <div className="mt-6 space-y-2.5">
-              {hasNextModule && moduleId !== undefined && onContinueToNextModule && (
-                <button
-                  type="button"
-                  onClick={() => onContinueToNextModule(moduleId + 1)}
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-emerald-600 py-3.5 text-sm font-bold text-white shadow-sm transition-colors hover:bg-emerald-500"
-                >
-                  <span>Перейти к следующему уроку (Урок {moduleId + 1})</span>
-                  <ArrowRight className="h-4 w-4" />
-                </button>
-              )}
-
-              {failedInThisSession.length > 0 && onRestartWithQuestions && (
-                <button
-                  type="button"
-                  onClick={() =>
-                    onRestartWithQuestions(
-                      moduleId
-                        ? `Исправление ошибок Урока ${moduleId}`
-                        : 'Повтор билетов с ошибками',
-                      `Повторное закрепление (${failedInThisSession.length} вопр.)`,
-                      failedInThisSession,
-                      moduleId
-                    )
-                  }
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-rose-200 bg-rose-50 py-3 text-sm font-bold text-rose-700 transition-colors hover:bg-rose-100 dark:border-rose-900/60 dark:bg-rose-950/40 dark:text-rose-300"
-                >
-                  <RotateCcw className="h-4 w-4" />
-                  <span>Повторить только билеты с ошибками ({failedInThisSession.length})</span>
-                </button>
-              )}
-
-              <div className="flex flex-col gap-2 sm:flex-row">
-                {onReturnToLessons && (
+              {/* Guided Next Step Actions */}
+              {mode === 'course' && onCourseFinish ? (
+                <div>
                   <button
                     type="button"
-                    onClick={onReturnToLessons}
-                    className="flex-1 rounded-2xl border border-zinc-200 bg-white py-3 text-xs font-semibold text-zinc-800 transition-colors hover:bg-zinc-50 sm:text-sm dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
+                    onClick={() =>
+                      onCourseFinish({
+                        firstTryScore: passedCount,
+                        total: totalCount,
+                        failedQuestionIds: failedInThisSession.map((q) => q.id),
+                      })
+                    }
+                    className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-teal-600 px-6 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-teal-500"
                   >
-                    К списку уроков
+                    <span>Продолжить</span>
+                    <ArrowRight className="h-4 w-4" />
                   </button>
-                )}
-                <button
-                  type="button"
-                  onClick={onExit}
-                  className="flex-1 rounded-2xl bg-zinc-900 py-3 text-xs font-semibold text-white transition-colors hover:bg-zinc-800 sm:text-sm dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
-                >
-                  В главное меню
-                </button>
+                </div>
+              ) : (
+                <div className="space-y-2.5">
+                  {hasNextModule && moduleId !== undefined && onContinueToNextModule && (
+                    <button
+                      type="button"
+                      onClick={() => onContinueToNextModule(moduleId + 1)}
+                      className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-emerald-600 py-3.5 text-sm font-bold text-white shadow-sm transition-colors hover:bg-emerald-500"
+                    >
+                      <span>Перейти к следующему уроку (Урок {moduleId + 1})</span>
+                      <ArrowRight className="h-4 w-4" />
+                    </button>
+                  )}
+
+                  {failedInThisSession.length > 0 && onRestartWithQuestions && (
+                    <button
+                      type="button"
+                      onClick={() =>
+                        onRestartWithQuestions(
+                          moduleId
+                            ? `Исправление ошибок Урока ${moduleId}`
+                            : 'Повтор билетов с ошибками',
+                          `Повторное закрепление (${failedInThisSession.length} вопр.)`,
+                          failedInThisSession,
+                          moduleId
+                        )
+                      }
+                      className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-rose-200 bg-rose-50 py-3 text-sm font-bold text-rose-700 transition-colors hover:bg-rose-100 dark:border-rose-900/60 dark:bg-rose-950/40 dark:text-rose-300"
+                    >
+                      <RotateCcw className="h-4 w-4" />
+                      <span>Повторить только билеты с ошибками ({failedInThisSession.length})</span>
+                    </button>
+                  )}
+
+                  <div className="flex flex-col gap-2 sm:flex-row">
+                    {onReturnToLessons && (
+                      <button
+                        type="button"
+                        onClick={onReturnToLessons}
+                        className="flex-1 rounded-2xl border border-zinc-200 bg-white py-3 text-xs font-semibold text-zinc-800 transition-colors hover:bg-zinc-50 sm:text-sm dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
+                      >
+                        К списку уроков
+                      </button>
+                    )}
+                    <button
+                      type="button"
+                      onClick={onExit}
+                      className="flex-1 rounded-2xl bg-zinc-900 py-3 text-xs font-semibold text-white transition-colors hover:bg-zinc-800 sm:text-sm dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+                    >
+                      В главное меню
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="space-y-2.5 lg:col-span-7">
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+                Итоги по билетам ({firstPassAttempts.length})
+              </h3>
+              <div className="max-h-72 space-y-2 overflow-y-auto pr-1 lg:max-h-[420px]">
+                {firstPassAttempts.map((item, idx) => {
+                  const rec = getSRSRecord(srsMap, item.question.id);
+                  const meta = BOX_META[rec.box];
+                  return (
+                    <div
+                      key={`${item.question.id}_${idx}`}
+                      className="flex items-center justify-between gap-3 rounded-xl border border-zinc-200/80 px-3.5 py-2.5 dark:border-zinc-800"
+                    >
+                      <div className="flex min-w-0 items-center gap-2.5">
+                        {item.passed ? (
+                          <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-500" />
+                        ) : (
+                          <XCircle className="h-4 w-4 shrink-0 text-rose-500" />
+                        )}
+                        <span className="truncate text-xs font-medium text-zinc-800 sm:text-sm dark:text-zinc-200">
+                          {languageMode !== 'da_only'
+                            ? item.question.situationRu
+                            : item.question.situationDa}
+                        </span>
+                      </div>
+                      {mode !== 'course' && (
+                        <span
+                          className={`shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-semibold ${meta.badgeClass}`}
+                        >
+                          Box {rec.box} • {meta.labelRu}
+                        </span>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </div>
-          )}
+          </div>
         </div>
       </div>
     );

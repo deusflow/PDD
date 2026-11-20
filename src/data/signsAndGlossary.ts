@@ -1017,7 +1017,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     signCode: 'C52',
     da: 'Overhaling forbudt ophører (C52)',
     ru: 'Конец зоны запрещения обгона',
-    detailsDa: 'Ophæver det tidligere skiltede overhalingsforbud (C51).',
+    detailsDa: 'Ophæver det tidligere skiltede overhalingsforbud (C51), men ophæver ikke en heltrukken spærrelinje!',
     detailsRu: 'Отменяет ранее введённый знаком C51 запрет на обгон (но не отменяет сплошную линию разметки!).',
   },
   {

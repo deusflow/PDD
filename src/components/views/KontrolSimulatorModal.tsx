@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   ArrowRight,
   CheckCircle2,
+  ExternalLink,
   RotateCcw,
   ShieldCheck,
   Wrench,
@@ -9,6 +10,7 @@ import {
   XCircle,
 } from 'lucide-react';
 import { LanguageMode, TechnicalTabId } from '../../types';
+import { extractOrdnetLookupWords, getOrdnetUrl } from '../../utils/ordnet';
 import { SpeakButton } from '../common/SpeakButton';
 import { CarTechnicalSVG } from '../visuals/CarTechnicalSVG';
 
@@ -168,7 +170,7 @@ const KONTROL_QUESTIONS: KontrolQuestion[] = [
     id: 'k6_stoddaempere',
     tab: 'daek_bremser',
     hotspot: 'stoddaempere',
-    promptDa: 'Hvordan kontrollerer du bilens støddæmpere?',
+    promptDa: 'Hvordan kontrollerer du til kontrolprøven, at bilens støddæmpere virker korrekt?',
     promptRu: 'Как на экзамене проверяют исправность амортизаторов (støddæmpere)?',
     options: [
       {
@@ -246,7 +248,7 @@ const KONTROL_QUESTIONS: KontrolQuestion[] = [
     id: 'k9_fjernlys',
     tab: 'lygter',
     hotspot: 'fjernlys',
-    promptDa: 'Hvad skal du vide om fjernlyset ved kontrolprøven?',
+    promptDa: 'Hvad skal du vide og vise prøvesagkyndigen om bilens fjernlys ved kontrolprøven?',
     promptRu: 'Что обязательно нужно знать и показать инспектору о дальнем свете (fjernlys)?',
     options: [
       {
@@ -492,6 +494,21 @@ export const KontrolSimulatorModal: React.FC<KontrolSimulatorModalProps> = ({
                   >
                     «{q.promptDa}»
                   </p>
+                  <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                    {extractOrdnetLookupWords(q.promptDa, 3).map((word) => (
+                      <a
+                        key={word}
+                        href={getOrdnetUrl(word)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 rounded-md border border-amber-200/80 bg-white/80 px-2 py-0.5 text-[10px] font-medium text-amber-800 transition-colors hover:bg-amber-100/70 dark:border-amber-800/70 dark:bg-zinc-900/80 dark:text-amber-300 dark:hover:bg-amber-950/60"
+                        title={`Открыть слово «${word}» в Den Danske Ordbog (ordnet.dk)`}
+                      >
+                        <span>DDO: {word}</span>
+                        <ExternalLink className="h-2.5 w-2.5" />
+                      </a>
+                    ))}
+                  </div>
                 </div>
                 <SpeakButton id={`kontrol_speak_${q.id}`} text={q.promptDa} size="md" />
               </div>
