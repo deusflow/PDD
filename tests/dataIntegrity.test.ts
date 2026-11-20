@@ -45,8 +45,25 @@ test('QUESTIONS_BANK has 200 unique questions evenly distributed across modules 
       else falseCount += 1;
       assert.ok(sq.da.trim().length > 0 && sq.ru.trim().length > 0);
       assert.ok(sq.explanationDa.trim().length > 0 && sq.explanationRu.trim().length > 0);
+      assert.ok(
+        !/^(Hvad|Hvor|Hvordan)\s/.test(sq.da),
+        `Open-ended non-Ja/Nej Danish question in ${sq.id}: ${sq.da}`
+      );
+      assert.ok(
+        !sq.da.includes('?.') && !sq.ru.includes('?.') && !sq.da.includes('..') && !sq.ru.includes('..'),
+        `Malformed punctuation in ${sq.id}`
+      );
     }
   }
+
+  const totalSubQuestions = trueCount + falseCount;
+  const declarativeDaCount = QUESTIONS_BANK.flatMap((q) => q.subQuestions).filter((sq) =>
+    sq.da.trim().endsWith('.')
+  ).length;
+  assert.ok(
+    declarativeDaCount / totalSubQuestions >= 0.5,
+    `Expected >= 50% declarative Teoriprøven statements, got ${declarativeDaCount}/${totalSubQuestions}`
+  );
 
   for (let m = 1; m <= 8; m += 1) {
     assert.equal(counts.get(m), 25, `Expected 25 questions in module ${m}`);
@@ -104,6 +121,28 @@ test('all visuals (POV presets, traffic scenes, signs, hotspots) referenced in d
       }
       assert.ok((rule.pointsRu?.length ?? 0) > 0, `Missing pointsRu in ${mod.id}: ${rule.titleRu}`);
       assert.ok((rule.pointsDa?.length ?? 0) > 0, `Missing pointsDa in ${mod.id}: ${rule.titleRu}`);
+      assert.equal(
+        rule.pointsDa?.length,
+        rule.pointsRu?.length,
+        `1-to-1 DA/RU bullet count mismatch in M${mod.id}: ${rule.titleRu}`
+      );
+      const daChars = (rule.pointsDa ?? []).join(' ').length;
+      const ruChars = (rule.pointsRu ?? []).join(' ').length;
+      assert.ok(
+        daChars / Math.max(1, ruChars) >= 0.7,
+        `DA points too short vs RU (${daChars}/${ruChars}) in M${mod.id}: ${rule.titleRu}`
+      );
+      assert.ok(
+        !(rule.pointsRu ?? []).some((p) => p.includes('Правое водительское')),
+        `Factual left-hand-drive typo found in M${mod.id}: ${rule.titleRu}`
+      );
+      if (rule.attentionStepsRu || rule.attentionStepsDa) {
+        assert.equal(
+          rule.attentionStepsDa?.length ?? 0,
+          rule.attentionStepsRu?.length ?? 0,
+          `attentionSteps DA/RU length mismatch in M${mod.id}: ${rule.titleRu}`
+        );
+      }
     }
   }
 
