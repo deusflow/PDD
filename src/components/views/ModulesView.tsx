@@ -624,7 +624,7 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
                   </div>
 
                   <div className="mt-3 border-t border-zinc-200/70 pt-3 dark:border-zinc-800">
-                    <RuleVisualBlock rule={rule} languageMode={languageMode} compactVisual />
+                    <RuleVisualBlock rule={rule} moduleId={mod.id} languageMode={languageMode} compactVisual />
                   </div>
                 </div>
               ))}

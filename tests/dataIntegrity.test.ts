@@ -158,13 +158,21 @@ test('all visuals (POV presets, traffic scenes, signs, hotspots) referenced in d
         !(rule.pointsRu ?? []).some((p) => p.includes('Правое водительское')),
         `Factual left-hand-drive typo found in M${mod.id}: ${rule.titleRu}`
       );
-      if (rule.attentionStepsRu || rule.attentionStepsDa) {
-        assert.equal(
-          rule.attentionStepsDa?.length ?? 0,
-          rule.attentionStepsRu?.length ?? 0,
-          `attentionSteps DA/RU length mismatch in M${mod.id}: ${rule.titleRu}`
-        );
-      }
+      assert.ok(
+        (rule.attentionStepsRu?.length ?? 0) >= 3,
+        `Missing practical attentionStepsRu (>=3) in M${mod.id}: ${rule.titleRu}`
+      );
+      assert.equal(
+        rule.attentionStepsDa?.length ?? 0,
+        rule.attentionStepsRu?.length ?? 0,
+        `attentionSteps DA/RU length mismatch in M${mod.id}: ${rule.titleRu}`
+      );
+      const attDaChars = (rule.attentionStepsDa ?? []).join(' ').length;
+      const attRuChars = (rule.attentionStepsRu ?? []).join(' ').length;
+      assert.ok(
+        attDaChars / Math.max(1, attRuChars) >= 0.7,
+        `attentionSteps DA too short vs RU in M${mod.id}: ${rule.titleRu}`
+      );
     }
   }
 
@@ -175,6 +183,10 @@ test('all visuals (POV presets, traffic scenes, signs, hotspots) referenced in d
     assert.ok(!dictIds.has(entry.id), `Duplicate dictionary id: ${entry.id}`);
     dictIds.add(entry.id);
     assert.ok(entry.moduleId >= 1 && entry.moduleId <= 8);
+    assert.ok(
+      entry.detailsDa.length / Math.max(1, entry.detailsRu.length) >= 0.7,
+      `Dictionary entry detailsDa too short vs detailsRu for ${entry.id}`
+    );
     dictPerModule.set(entry.moduleId, (dictPerModule.get(entry.moduleId) ?? 0) + 1);
     if (entry.signCode) {
       dictSignCodes.add(entry.signCode);

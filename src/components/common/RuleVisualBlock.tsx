@@ -1,6 +1,17 @@
-import React from 'react';
-import { AlertTriangle, ArrowLeftRight, CheckCircle2, Compass, Eye, Info } from 'lucide-react';
+import React, { useMemo } from 'react';
+import {
+  AlertTriangle,
+  ArrowLeftRight,
+  BookMarked,
+  CheckCircle2,
+  Compass,
+  ExternalLink,
+  Eye,
+  Info,
+} from 'lucide-react';
+import { DICTIONARY_ENTRIES } from '../../data/signsAndGlossary';
 import { LanguageMode, ModuleCheatRule } from '../../types';
+import { extractOrdnetLookupWords, getOrdnetUrl } from '../../utils/ordnet';
 import { CarTechnicalSVG } from '../visuals/CarTechnicalSVG';
 import { DanishRoadSignSVG } from '../visuals/DanishRoadSignSVG';
 import { DriverPOVSceneSVG } from '../visuals/DriverPOVSceneSVG';
@@ -10,15 +21,54 @@ import { SpeakButton } from './SpeakButton';
 
 interface RuleVisualBlockProps {
   rule: ModuleCheatRule;
+  moduleId?: number;
   languageMode: LanguageMode;
   compactVisual?: boolean;
 }
 
 export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
   rule,
+  moduleId,
   languageMode,
-  compactVisual = false,
 }) => {
+  const matchedTerms = useMemo(() => {
+    const haystack = [
+      rule.titleDa,
+      rule.bodyDa,
+      ...(rule.pointsDa ?? []),
+      rule.trapDa ?? '',
+      rule.exceptionsDa ?? '',
+    ]
+      .join(' ')
+      .toLowerCase();
+
+    const preferred: typeof DICTIONARY_ENTRIES = [];
+    const fallback: typeof DICTIONARY_ENTRIES = [];
+
+    for (const entry of DICTIONARY_ENTRIES) {
+      const signMatch =
+        Boolean(entry.signCode) && haystack.includes(entry.signCode!.toLowerCase());
+      const head = entry.da
+        .split(/[—(,/]/)[0]
+        .trim()
+        .toLowerCase();
+      const firstWord = head.split(/\s+/)[0] ?? '';
+      const wordMatch =
+        (head.length >= 4 && haystack.includes(head)) ||
+        (firstWord.length >= 5 && haystack.includes(firstWord));
+
+      if (!signMatch && !wordMatch) continue;
+
+      if (moduleId !== undefined && entry.moduleId === moduleId) {
+        preferred.push(entry);
+      } else {
+        fallback.push(entry);
+      }
+    }
+
+    return [...preferred, ...fallback].slice(0, 5);
+  }, [rule, moduleId]);
+
   const renderVisual = () => {
     if (!rule.visual) return null;
     const { visual } = rule;
@@ -38,7 +88,7 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
     if (visual.kind === 'technical') {
       return (
         <div className="space-y-3">
-          {visual.imageSrc && (
+          {visual.imageSrc && visual.technicalTab !== 'motorrum' && (
             <div className="overflow-hidden rounded-xl border border-zinc-200/80 bg-zinc-900 dark:border-zinc-800">
               <img
                 src={visual.imageSrc}
@@ -52,7 +102,7 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
             initialTab={visual.technicalTab ?? 'motorrum'}
             activeHotspot={visual.technicalHotspot}
             languageMode={languageMode}
-            compact={compactVisual}
+            compact={false}
           />
         </div>
       );
@@ -139,8 +189,8 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
               <Compass className="h-3.5 w-3.5 text-teal-600 dark:text-teal-400" />
               <span>
                 {languageMode === 'da_only'
-                  ? 'Orientering på billedet (1 → 2 → 3)'
-                  : 'Куда смотреть на картинке (1 → 2 → 3)'}
+                  ? 'Trin for trin i praksis (1 → 2 → 3)'
+                  : 'Пошагово на практике (1 → 2 → 3)'}
               </span>
             </div>
             <ol className="grid gap-2 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
@@ -365,6 +415,47 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
           {rule.trapDa && (
             <SpeakButton id={`rule_trap_${rule.titleDa.slice(0, 12)}`} text={rule.trapDa} />
           )}
+        </div>
+      )}
+
+      {/* Key Danish Driving-School Vocabulary for this slide */}
+      {matchedTerms.length > 0 && (
+        <div className="rounded-xl border border-zinc-200/80 bg-zinc-50/70 p-3 dark:border-zinc-800 dark:bg-zinc-950/50">
+          <div className="mb-2 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+            <BookMarked className="h-3.5 w-3.5 text-teal-600 dark:text-teal-400" />
+            <span>Словарь этого слайда (для датской автошколы)</span>
+          </div>
+          <div className="flex flex-wrap gap-1.5">
+            {matchedTerms.map((term) => {
+              const lookupWord = extractOrdnetLookupWords(term.da, 1)[0] ?? term.da;
+              return (
+                <div
+                  key={term.id}
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200/90 bg-white px-2 py-1 text-xs shadow-sm dark:border-zinc-800 dark:bg-zinc-900"
+                >
+                  <span className="font-semibold text-zinc-900 dark:text-zinc-100">{term.da}</span>
+                  {languageMode !== 'da_only' && (
+                    <span className="text-[11px] text-zinc-500 dark:text-zinc-400">— {term.ru}</span>
+                  )}
+                  <SpeakButton
+                    id={`slide_term_${term.id}`}
+                    text={term.da}
+                    className="h-5 w-5 border-transparent bg-transparent"
+                  />
+                  <a
+                    href={getOrdnetUrl(lookupWord)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title={`Открыть «${lookupWord}» на ordnet.dk/ddo`}
+                    className="inline-flex items-center gap-0.5 rounded px-1 py-0.5 text-[10px] font-bold text-teal-700 hover:bg-teal-50 dark:text-teal-400 dark:hover:bg-teal-950/50"
+                  >
+                    DDO
+                    <ExternalLink className="h-2.5 w-2.5" />
+                  </a>
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
       </div>

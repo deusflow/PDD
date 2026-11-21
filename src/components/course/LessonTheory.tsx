@@ -237,7 +237,7 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
               />
             </div>
 
-            <RuleVisualBlock rule={rule} languageMode={languageMode} compactVisual />
+            <RuleVisualBlock rule={rule} moduleId={mod.id} languageMode={languageMode} compactVisual />
           </div>
         );
       }

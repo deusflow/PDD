@@ -5,7 +5,12 @@ export type ActiveTab = 'dashboard' | 'course' | 'modules' | 'exam' | 'dictionar
 export type LessonTab = 'slides' | 'sheet' | 'signs';
 export type DictionaryCategoryFilter = 'all' | 'term' | 'sign' | 'kontrol' | 'sign_kontrol';
 
-export type TechnicalTabId = 'motorrum' | 'daek_bremser' | 'lygter' | 'instrumentpanel';
+export type TechnicalTabId =
+  | 'kabine'
+  | 'motorrum'
+  | 'daek_bremser'
+  | 'lygter'
+  | 'instrumentpanel';
 
 export interface SRSRecord {
   id: string;
