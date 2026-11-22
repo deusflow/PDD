@@ -511,12 +511,18 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
         return (
           <CockpitFrame>
             <HorizonRoad />
-            <g transform="translate(115, 24) scale(0.75)">
-              <DanishRoadSignSVG code="E33" subPlaque="1 time 8-18 (8-14)" size={110} />
+            <g transform="translate(46, 24) scale(0.68)">
+              <DanishRoadSignSVG code="A99" subPlaque="500 m" size={110} />
             </g>
-            <g transform="translate(245, 24) scale(0.75)">
-              <DanishRoadSignSVG code="A99" subPlaque="↑ 1,2 km ↑" size={110} />
+            <g transform="translate(186, 24) scale(0.68)">
+              <DanishRoadSignSVG code="A99" subPlaque="↑ 500 m ↑" size={110} />
             </g>
+            <g transform="translate(326, 24) scale(0.68)">
+              <DanishRoadSignSVG code="E33" subPlaque="8-18 (8-14)" size={110} />
+            </g>
+            <BadgePill x={24} y={136} text="Через 500 м" tone="dark" />
+            <BadgePill x={156} y={136} text="Зона 500 м" tone="teal" />
+            <BadgePill x={298} y={136} text="Пн-Пт · (Сб)" tone="warn" />
             <BadgePill x={16} y={168} text="Без стрелок = расстояние ДО · Со стрелками = длина зоны" tone="teal" />
           </CockpitFrame>
         );
@@ -891,22 +897,26 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
         return (
           <CockpitFrame skyColor="#BAE6FD">
             <HorizonRoad withCenterDash />
-            <g transform="translate(40, 26) scale(0.56)">
-              <DanishRoadSignSVG code="A20" size={110} />
+            <g transform="translate(22, 26) scale(0.52)">
+              <DanishRoadSignSVG code="A11" size={110} />
             </g>
-            <g transform="translate(142, 26) scale(0.56)">
+            <g transform="translate(108, 26) scale(0.52)">
+              <DanishRoadSignSVG code="B11" size={110} />
+            </g>
+            <g transform="translate(194, 26) scale(0.52)">
               <DanishRoadSignSVG code="C51" size={110} />
             </g>
-            <g transform="translate(244, 26) scale(0.56)">
+            <g transform="translate(280, 26) scale(0.52)">
               <DanishRoadSignSVG code="D15" size={110} />
             </g>
-            <g transform="translate(346, 26) scale(0.56)">
+            <g transform="translate(366, 26) scale(0.52)">
               <DanishRoadSignSVG code="E55" size={110} />
             </g>
-            <BadgePill x={24} y={102} text="A Опасность" tone="warn" />
-            <BadgePill x={142} y={102} text="C Запрет" tone="dark" />
-            <BadgePill x={242} y={102} text="D Приказ" tone="teal" />
-            <BadgePill x={346} y={102} text="E Зона" tone="dark" />
+            <BadgePill x={12} y={96} text="A Опасность" tone="warn" />
+            <BadgePill x={94} y={96} text="B Приоритет" tone="warn" />
+            <BadgePill x={186} y={96} text="C Запрет" tone="dark" />
+            <BadgePill x={270} y={96} text="D Приказ" tone="teal" />
+            <BadgePill x={364} y={96} text="E Инфо" tone="dark" />
           </CockpitFrame>
         );
 

@@ -323,14 +323,26 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
     }
     if (visual.type === 'technical') {
       return (
-        <CarTechnicalSVG
-          key={q.id}
-          initialTab={visual.technicalTab ?? 'motorrum'}
-          activeHotspot={visual.technicalHotspot}
-          languageMode={languageMode}
-          compact
-          lockedTab
-        />
+        <div className="space-y-3">
+          {visual.imageSrc && visual.technicalTab !== 'motorrum' && (
+            <div className="overflow-hidden rounded-xl border border-zinc-200/80 bg-zinc-900 dark:border-zinc-800">
+              <img
+                src={visual.imageSrc}
+                alt={q.situationRu}
+                loading="lazy"
+                className="aspect-[16/9] w-full object-cover object-center"
+              />
+            </div>
+          )}
+          <CarTechnicalSVG
+            key={q.id}
+            initialTab={visual.technicalTab ?? 'motorrum'}
+            activeHotspot={visual.technicalHotspot}
+            languageMode={languageMode}
+            compact
+            lockedTab
+          />
+        </div>
       );
     }
     return (

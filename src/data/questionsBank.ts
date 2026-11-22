@@ -14,6 +14,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'technical',
       presetId: 'tech_bremser',
+      imageSrc: './images/rules/brake-pedal-test.jpg',
       technicalTab: 'daek_bremser',
       technicalHotspot: 'bremser',
       captionDa: 'Kontrol af bremsepedal & vakuumforstærker',
@@ -59,6 +60,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'technical',
       presetId: 'tech_daek',
+      imageSrc: './images/rules/tire-tread-twi.jpg',
       technicalTab: 'daek_bremser',
       technicalHotspot: 'daek',
       captionDa: 'Dækmønster (TWI) & Støddæmpere',
@@ -104,6 +106,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'technical',
       presetId: 'tech_lygter',
+      imageSrc: './images/rules/car-lights-panel.jpg',
       technicalTab: 'lygter',
       technicalHotspot: 'naerlys',
       captionDa: 'Lygter, nummerpladelys & reflekser',
@@ -297,6 +300,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_cockpit_blind_spot',
+      imageSrc: './images/rules/spejl-skulder.jpg',
       captionDa: 'Kabineudsigt: Bakspejl, sidespejl og skulderkig',
       captionRu: 'Вид из кабины: зеркала и слепая зона (cyklist)',
     },
@@ -470,6 +474,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_cockpit_seat_mirror',
+      imageSrc: './images/rules/seat-mirrors-headrest.jpg',
       captionDa: 'Korrekt ergonomi & indstilling før kørsel',
       captionRu: 'Правильная настройка сиденья, подголовника и зеркал',
     },
@@ -1688,6 +1693,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_parking_oneway_ensrettet',
+      imageSrc: './images/rules/parking-pskive.jpg',
       signCode: 'E19',
       captionDa: 'Ensrettet gade (E19) — Parkering i højre & venstre side',
       captionRu: 'Односторонняя улица (E19) — парковка справа и слева',
@@ -1958,6 +1964,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'technical',
       presetId: 'tech_lygter_stop',
+      imageSrc: './images/rules/car-lights-panel.jpg',
       technicalTab: 'lygter',
       technicalHotspot: 'stoplys',
       captionDa: 'Stoplys, positionslys & udstødning ved Kontrolprøven',
@@ -2585,6 +2592,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_spejl_skulder',
+      imageSrc: './images/rules/spejl-skulder.jpg',
       captionDa: 'Risikoopfattelse i bytrafik: parkerede biler & stoplys',
       captionRu: 'Оценка риска в городе: припаркованные машины и стоп-сигналы впереди',
     },
@@ -2892,6 +2900,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'technical',
       presetId: 'tech_daek',
+      imageSrc: './images/rules/tire-tread-twi.jpg',
       technicalTab: 'daek_bremser',
       technicalHotspot: 'daek',
       captionDa: 'Kontrol af dæk og parkeringsbremse',
@@ -2937,6 +2946,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'technical',
       presetId: 'tech_lygter_stop',
+      imageSrc: './images/rules/car-lights-panel.jpg',
       technicalTab: 'lygter',
       technicalHotspot: 'stoplys',
       captionDa: 'Kontrol af stoplys, blinklys og nummerpladelys',
@@ -3819,6 +3829,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_night_fog_lights',
+      imageSrc: './images/rules/night-headlights.jpg',
       maneuverBadge: 'Tæt tåge — Tågelygter & Tågebaglygte',
       captionDa: 'Brug af tågelygter og tågebaglygte i tæt tåge',
       captionRu: 'Правила использования передних и задних противотуманных фар',
@@ -4088,6 +4099,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_spejl_skulder',
+      imageSrc: './images/rules/spejl-skulder.jpg',
       maneuverBadge: 'Hollandsk greb (højre hånd på dørhåndtag) + Tomgangsforbud',
       captionDa: 'Sikker udstigning ved cykelsti og regler for tomgang',
       captionRu: 'Безопасный выход из авто и запрет работы двигателя на холостом ходу',
@@ -4311,6 +4323,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_cockpit_seat_mirror',
+      imageSrc: './images/rules/seat-mirrors-headrest.jpg',
       captionDa: 'Indstilling af sæde, nakkestøtte og spejle',
       captionRu: 'Настройка посадки, подголовника и зеркал перед стартом',
     },
@@ -4442,6 +4455,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'technical',
       presetId: 'tech_lygter',
+      imageSrc: './images/rules/car-lights-panel.jpg',
       technicalTab: 'lygter',
       technicalHotspot: 'naerlys',
       captionDa: 'Kørelys (DRL) vs. Nærlys og baglygter i skumring',
@@ -4706,6 +4720,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_cockpit_blind_spot',
+      imageSrc: './images/rules/truck-blindspot.jpg',
       captionDa: 'Lastbilens blinde vinkler og svingradius',
       captionRu: 'Слепые зоны грузовика и траектория его поворота направо',
     },
@@ -5273,6 +5288,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_night_fog_lights',
+      imageSrc: './images/rules/night-headlights.jpg',
       captionDa: 'Fodgængere på landevej & synshandicappede med hvid stok',
       captionRu: 'Пешеходы на загородной трассе и незрячие пешеходы с белой тростью',
     },
@@ -5983,6 +5999,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_parking_night_tomgang',
+      imageSrc: './images/rules/night-headlights.jpg',
       captionDa: 'Standsning/parkering i mørke på uoplyst landevej',
       captionRu: 'Ночная стоянка на неосвещённой загородной дороге',
     },
@@ -6114,6 +6131,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_parking_oneway_ensrettet',
+      imageSrc: './images/rules/parking-pskive.jpg',
       captionDa: 'Tovejs gade (kun højre side!) vs. Ensrettet gade (begge sider)',
       captionRu: 'Парковка против хода движения на двухсторонней улице запрещена',
     },
@@ -7182,6 +7200,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'technical',
       presetId: 'tech_daek',
+      imageSrc: './images/rules/tire-tread-twi.jpg',
       technicalTab: 'daek_bremser',
       technicalHotspot: 'daek',
       captionDa: 'Dækkrav i vinterføre: M+S, 3PMSF & "åbenbart uegnede dæk"',
@@ -7227,6 +7246,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     visual: {
       type: 'scene',
       presetId: 'pov_cockpit_blind_spot',
+      imageSrc: './images/rules/truck-blindspot.jpg',
       captionDa: 'Store køretøjers manøvreegenskaber: udsving og blind vinkel (Mål 3.2)',
       captionRu: 'Габариты автобуса и грузовика в повороте: вынос задней части',
     },

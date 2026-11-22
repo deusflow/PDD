@@ -73,6 +73,7 @@ export const MODULES_DATA: ModuleInfo[] = [
         visual: {
           kind: 'technical',
           presetId: 'tech_kabine',
+          imageSrc: './images/rules/cockpit-pedals-controls.jpg',
           technicalTab: 'kabine',
           technicalHotspot: 'pedaler',
         },
@@ -109,6 +110,7 @@ export const MODULES_DATA: ModuleInfo[] = [
         visual: {
           kind: 'pov',
           presetId: 'pov_cockpit_seat_mirror',
+          imageSrc: './images/rules/seat-mirrors-headrest.jpg',
           maneuverBadge: 'Вид водителя: настройка посадки, подголовника и 3 зеркал перед стартом',
         },
       },
@@ -216,6 +218,7 @@ export const MODULES_DATA: ModuleInfo[] = [
         visual: {
           kind: 'technical',
           presetId: 'tech_lygter',
+          imageSrc: './images/rules/car-lights-panel.jpg',
           technicalTab: 'lygter',
           technicalHotspot: 'naerlys',
         },
@@ -330,6 +333,7 @@ export const MODULES_DATA: ModuleInfo[] = [
         visual: {
           kind: 'technical',
           presetId: 'tech_daek',
+          imageSrc: './images/rules/tire-tread-twi.jpg',
           technicalTab: 'daek_bremser',
           technicalHotspot: 'daek',
         },
@@ -368,6 +372,7 @@ export const MODULES_DATA: ModuleInfo[] = [
         visual: {
           kind: 'technical',
           presetId: 'tech_bremser',
+          imageSrc: './images/rules/brake-pedal-test.jpg',
           technicalTab: 'daek_bremser',
           technicalHotspot: 'bremser',
         },
@@ -500,6 +505,7 @@ export const MODULES_DATA: ModuleInfo[] = [
         visual: {
           kind: 'pov',
           presetId: 'pov_spejl_skulder',
+          imageSrc: './images/rules/spejl-skulder.jpg',
           maneuverBadge: 'Вид водителя: проверка зеркал и слепой зоны перед смещением вправо',
         },
       },
@@ -535,6 +541,7 @@ export const MODULES_DATA: ModuleInfo[] = [
         visual: {
           kind: 'pov',
           presetId: 'pov_cockpit_blind_spot',
+          imageSrc: './images/rules/truck-blindspot.jpg',
           maneuverBadge: 'Вид водителя: слепая зона справа и skulderkig перед поворотом/выходом',
         },
       },
