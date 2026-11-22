@@ -604,8 +604,11 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
                         <div className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
                           {rule.titleRu}
                         </div>
-                        <div className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
-                          {rule.titleDa}
+                        <div className="mt-1 flex items-center gap-1.5 text-xs font-medium text-teal-950/85 dark:text-teal-200/90">
+                          <span className="inline-flex shrink-0 items-center rounded bg-teal-100 px-1.5 py-0.5 text-[10px] font-bold tracking-wide text-teal-800 dark:bg-teal-950 dark:text-teal-300">
+                            DA
+                          </span>
+                          <span>{rule.titleDa}</span>
                         </div>
                       </div>
                     ) : (
@@ -648,8 +651,11 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
                             <div className="text-xs font-medium text-zinc-900 sm:text-sm dark:text-zinc-100">
                               {alg.ru}
                             </div>
-                            <div className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
-                              {alg.da}
+                            <div className="mt-1.5 flex items-start gap-1.5 text-xs leading-snug text-teal-950/85 dark:text-teal-200/90">
+                              <span className="mt-0.5 inline-flex shrink-0 items-center rounded bg-teal-100 px-1.5 py-0.5 text-[10px] font-bold tracking-wide text-teal-800 dark:bg-teal-950 dark:text-teal-300">
+                                DA
+                              </span>
+                              <span>{alg.da}</span>
                             </div>
                           </div>
                         ) : (

@@ -485,6 +485,7 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
           activeHotspot={visual.technicalHotspot}
           languageMode={languageMode}
           compact
+          lockedTab
         />
       );
     }

@@ -1,15 +1,23 @@
 import React, { useEffect, useId, useState } from 'react';
-import { ExternalLink } from 'lucide-react';
+import {
+  AlertCircle,
+  CheckCircle2,
+  ExternalLink,
+  Eye,
+  HelpCircle,
+  Wrench,
+} from 'lucide-react';
 import { LanguageMode, TechnicalTabId } from '../../types';
 import { extractOrdnetLookupWords, getOrdnetUrl } from '../../utils/ordnet';
-import { BilingualText } from '../common/BilingualText';
 import { SpeakButton } from '../common/SpeakButton';
+import { TheoryBilingual } from '../common/TheoryBilingual';
 
 interface CarTechnicalSVGProps {
   initialTab?: TechnicalTabId;
   activeHotspot?: string;
   languageMode?: LanguageMode;
   compact?: boolean;
+  lockedTab?: boolean;
   className?: string;
 }
 
@@ -18,10 +26,16 @@ interface HotspotInfo {
   tab: TechnicalTabId;
   labelDa: string;
   labelRu: string;
+  whyDa: string;
+  whyRu: string;
   lookDa: string;
   lookRu: string;
   checkDa: string;
   checkRu: string;
+  okDa?: string;
+  okRu?: string;
+  failDa?: string;
+  failRu?: string;
 }
 
 const HOTSPOTS: HotspotInfo[] = [
@@ -31,50 +45,80 @@ const HOTSPOTS: HotspotInfo[] = [
     tab: 'kabine',
     labelDa: 'Pedaler: Kobling · Bremse · Speeder',
     labelRu: '3 педали: Сцепление · Тормоз · Газ',
-    lookDa: 'Fra venstre mod højre på manuelt gear: K (Kobling) helt til venstre, B (Bremse) i midten, S (Speeder) til højre. På automatgear mangler K.',
-    lookRu: 'Слева направо на «механике»: левая — сцепление (K, только для левой ноги), средняя — тормоз (B), правая — газ (S) для правой ноги. На «автомате» (P-R-N-D) левой педали нет!',
-    checkDa: 'Venstre fod styrer KUN koblingen; højre fod skifter mellem bremse og gas. På automatgear hviler venstre fod altid på fodhvileren.',
-    checkRu: 'Левая нога нажимает ТОЛЬКО сцепление (до упора). Правая нога работает поочерёдно с тормозом и газом. На автомате левая нога вообще не касается педалей!',
+    whyDa: 'Det er helt afgørende, at dine fødder finder den rigtige pedal i blinde — især i en nødsituation, hvor du aldrig må forveksle bremse og speeder.',
+    whyRu: 'Ваши ноги должны находить педали вслепую ещё до выезда со двора, чтобы в экстренный момент мгновенно нажать тормоз, а не газ.',
+    lookDa: 'Fra venstre mod højre på manuelt gear: K (Kobling) helt til venstre, B (Bremse) i midten, S (Speeder) til højre. På automatgear (P-R-N-D) mangler K.',
+    lookRu: 'Слева направо на «механике»: 1) Сцепление (K, крайняя левая), 2) Тормоз (B, широкая в центре), 3) Газ (S, крайняя правая). На «автомате» (P-R-N-D) левой педали вообще нет!',
+    checkDa: 'Venstre fod styrer KUN koblingen; højre fod skifter mellem bremse og gas. På automatgear hviler venstre fod altid roligt på fodhvileren til venstre.',
+    checkRu: 'На механике левая нога нажимает ТОЛЬКО сцепление, а правая работает с тормозом и газом. На автомате левая нога ВСЕГДА отдыхает на подставке слева — тормоз и газ жмёт только правая!',
+    okDa: 'Hver fod har sine faste pedaler, og du sidder, så kobling eller bremse nemt kan trædes i bund.',
+    okRu: 'Правая нога свободно переставляется с газа на тормоз с пятки; на автомате левая нога спокойно стоит на площадке.',
+    failDa: 'At bremse med venstre fod i en bil med automatgear — man hugger næsten altid bremsen alt for hårdt i bund!',
+    failRu: 'Попытаться притормозить левой ногой на автомате: по привычке ударите по тормозу со всей силы до резкого блока колёс.',
   },
   {
     id: 'motorhjelm',
     tab: 'kabine',
     labelDa: 'Motorhjelm (Åbning i 3 trin)',
     labelRu: 'Как открыть капот (3 простых шага)',
-    lookDa: 'Indvendigt håndtag sidder nede ved venstre fod (ofte med et bilikon med åben hjelm). Ude foran sidder en lille sikkerhedslås midt under forkanten.',
-    lookRu: '1) Рычажок/ручка в самом низу слева у левой ноги водителя (рисунок авто с открытым капотом). 2) Под приподнятой кромкой капота спереди по центру — вторая защёлка.',
-    checkDa: '1) Træk i håndtaget ved venstre fod (klikkelyd) · 2) Skub sikkerhedslåsen til siden/op under midten af hjelmen · 3) Løft og sæt støttepinden i hak.',
-    checkRu: 'Шаг 1: потяните рычаг у левой ноги (капот чуть щёлкнет). Шаг 2: подойдите спереди, просуньте руку по центру под кромку, сдвиньте предохранительный язычок вбок/вверх. Шаг 3: поднимите капот и уприте в штангу.',
+    whyDa: 'Både før køreturen og til den mundtlige kontrolprøve skal du selv kunne åbne motorhjelmen uden at famle, så du kan tjekke væsker.',
+    whyRu: 'На первом уроке и на устном экзамене Kontrolprøven инспектор просит вас самого открыть капот, чтобы показать жидкости — никто не откроет его за вас.',
+    lookDa: 'Indvendigt udløsergreb sidder nede ved venstre fod (ofte med et bilikon med åben hjelm). Ude foran sidder en lille sikkerhedskrog midt under forkanten.',
+    lookRu: '1) Рычажок/ручка в самом низу у левой ноги водителя (значок авто с приподнятым капотом). 2) Снаружи по центру под кромкой капота — страховочный язычок.',
+    checkDa: '1) Træk i grebet ved venstre fod (klikkelyd) · 2) Skub sikkerhedslåsen til side/op under midten af hjelmen · 3) Løft hjelmen og sæt støttepinden i hak.',
+    checkRu: 'Шаг 1: потяните рычаг у левой ноги до щелчка (капот чуть приподнимется). Шаг 2: нащупайте защёлку по центру под кромкой и сдвиньте вбок/вверх. Шаг 3: поднимите капот и уприте штангу.',
+    okDa: 'Hjelmen står sikkert på støttepinden (eller gasdæmperne) og klikker fast i begge låse, når den lukkes igen.',
+    okRu: 'Капот надёжно зафиксирован штангой, а при закрытии опускается с ~20 см и защёлкивается без люфта.',
+    failDa: 'At glemme den skjulte sikkerhedskrog ude foran eller køre af sted uden at hjelmen er klikket helt i lås.',
+    failRu: 'Тянуть приподнятый капот силой, не нащупав вторую защёлку, либо недозакрыть капот перед поездкой.',
   },
   {
     id: 'lyskontakt',
     tab: 'kabine',
     labelDa: 'Lyskontakt & Blinklysarm (Venstre)',
     labelRu: 'Свет и левый рычажок поворотников',
-    lookDa: 'Venstre arm bag rattet styrer blinklys og fjernlys. Drejeknappen til lys sidder enten til venstre på instrumentbrættet eller som ring på venstre arm.',
-    lookRu: 'Левый подрулевой рычаг = поворотники (вверх — направо, вниз — налево) и дальний свет (от себя — загорится синий значок). Круглый переключатель слева от руля — режимы света (0 / Auto / Габариты / Ближний).',
-    checkDa: 'Blink op = højre, ned = venstre; skub armen frem = fjernlys (blå lampe!). Drej på lyskontakten til nærlys (grøn lampe) i regn, tunnel og skumring.',
-    checkRu: 'В дождь, сумерки и туннель вручную поверните переключатель в крайнее положение «Ближний свет» (nærlys), чтобы гарантированно горели и задние фонари!',
+    whyDa: 'Automatiske kørelys (DRL) tænder ofte kun forlygterne om dagen — i regn, tåge eller tunnel kan din bil være helt mørk bagtil, hvis du ikke drejer lyskontakten selv.',
+    whyRu: 'Днём многие машины в режиме «Auto» включают только передние ходовые огни — в дождь, туман или туннель машина сзади остаётся невидимой без ручного ближнего света!',
+    lookDa: 'Venstre arm bag rattet styrer blinklys og fjernlys. Lyskontakten sidder enten til venstre på instrumentbrættet eller som drejering på venstre arm.',
+    lookRu: 'Левый подрулевой рычаг = поворотники (вниз — налево, вверх — направо) и дальний свет (толчок от себя). Переключатель света — слева от руля или кольцо на том же рычаге.',
+    checkDa: 'Blink op = højre, ned = venstre; skub armen frem = fjernlys (blå lampe!). Drej lyskontakten til nærlys (grøn lampe) i regn, skumring og tunnel.',
+    checkRu: 'Вверх = правый поворотник, вниз = левый (как направление поворота руля!). В дождь, сумерки и туннель вручную поверните тумблер на ближний свет (nærlys).',
+    okDa: 'Grøn nærlyslampe lyser i regn/mørke, og blå lampe tænder kun, når fjernlyset er aktiveret uden blænding af andre.',
+    okRu: 'В непогоду горят и передние фары, и задние красные фонари; при дальнем свете на приборке горит синяя лампа.',
+    failDa: 'At stole blindt på «Auto» i regn/tåge, så baglygterne er helt slukkede og biler bagfra ser dig for sent.',
+    failRu: 'Полагаться только на режим Auto в дождь или туман — задние габариты могут не включиться!',
   },
   {
     id: 'visker_havari',
     tab: 'kabine',
     labelDa: 'Vinduesvisker, Sprinkler & Havariblink',
     labelRu: 'Дворники (правый рычаг) и кнопка «Аварийка»',
-    lookDa: 'Højre arm bag rattet har ikoner af en forrude med visker. Midt på instrumentbrættet sidder en stor rød knap med to trekanter indeni (havariblink).',
-    lookRu: 'Правый рычажок за рулём — дворники и омыватель. В центре торпедо — заметная кнопка с красным треугольником (аварийная сигнализация — havariblink).',
-    checkDa: 'Højre arm op/ned = viskerhastighed; træk armen ind mod dig selv = sprøjt sprinklervæske på forruden. Tryk på den røde trekant ved motorstop eller uheld.',
-    checkRu: 'Правый рычаг вверх/вниз меняет скорость щёток; потянуть на себя — побрызгать омывателем на стекло. Красный треугольник включают при поломке, ДТП или резком хвосте пробки на трассе.',
+    whyDa: 'Rent udsyn gennem forruden og hurtig advarsel med havariblink ved pludselig kø eller motorstop forebygger påkørsler på få sekunder.',
+    whyRu: 'Брызнуть омывателем на грязное стекло или мгновенно включить аварийку перед внезапной пробкой на трассе вы должны уметь не глядя вниз.',
+    lookDa: 'Højre arm bag rattet viser ikoner af en forrude med visker. Midt på konsollen sidder en stor rød knap med trekantsymbol (havariblink).',
+    lookRu: 'Правый рычажок за рулём отвечает за щётки и омыватель. В центре торпедо — заметная кнопка с красным треугольником (Havariblink).',
+    checkDa: 'Højre arm op/ned = viskerhastighed; træk armen ind mod dig selv = sprøjt sprinklervæske på ruden. Tryk på rød trekant ved motorstop eller brat kø på motorvej.',
+    checkRu: 'Правый рычаг вверх/вниз меняет частоту взмахов; потянуть НА СЕБЯ — побрызгать водой на стекло. Красный треугольник включают при поломке, ДТП или резком хвосте пробки.',
+    okDa: 'Viskerne tørrer ruden helt ren uden striber, og alle 6 blinklys blinker samtidig ved tryk på havariknappen.',
+    okRu: 'Стекло очищается равномерно за пару взмахов, а аварийка мигает одновременно на всех 6 фонарях.',
+    failDa: 'Slidte viskerblade, der smører snavs ud i blinde striber, eller tom sprinklerbeholder midt i salt og sjap.',
+    failRu: 'Пустой бачок омывателя или порванные резинки щёток, размазывающие грязь по стеклу на солнце.',
   },
   {
     id: 'saede_spejle',
     tab: 'kabine',
     labelDa: 'Sæde, Nakkestøtte & 3 Spejle',
     labelRu: 'Посадка, подголовник и 3 зеркала перед стартом',
-    lookDa: 'Håndtag under sædets forkant flytter det frem/tilbage; håndtag/hjul på siden justerer ryglæn og højde. Spejlknap sidder ofte på førerdøren (L / R).',
-    lookRu: 'Скоба под сиденьем двигает кресло вперёд/назад; рычаг сбоку — наклон спинки. Джойстик регулировки боковых зеркал (L / R) — обычно на подлокотнике водительской двери.',
-    checkDa: 'Træd kobling helt i bund (knæ stadig let bøjet), håndled når rattets top, nakkestøtte i højde med issen, og spejle indstillet med blot ~1–2 cm af egen bil.',
-    checkRu: 'Выжмите сцепление до упора — колено должно оставаться чуть согнутым, а запястья доставать до верха руля; верх подголовника — вровень с макушкой головы.',
+    whyDa: 'Sidder du for langt væk, når du ikke bremsepedalen i bund ved panikstop; sidder du skævt eller med for lav nakkestøtte, øges risikoen for piskesmæld markant.',
+    whyRu: 'Неправильная посадка лишает вас силы экстренного торможения и контроля руля, а низкий подголовник при ударе сзади приводит к травме шеи.',
+    lookDa: 'Bøjle under sædets forkant flytter det frem/tilbage; greb/hjul på siden justerer ryglæn og højde. Spejlknap sidder ofte på førerdøren (L / R).',
+    lookRu: 'Скоба под передним краем кресла двигает его вперёд/назад; рычаг/колесо сбоку — наклон спинки. Джойстик зеркал (L/R) — обычно на двери водителя.',
+    checkDa: 'Træd kobling (eller bremse på automatgear) i bund med let bøjet knæ, håndled når rattets top, nakkestøttens overkant i højde med issen, og blot ~1–2 cm af egen bil i sidespejlene.',
+    checkRu: 'При выжатой педали (сцепления или тормоза на автомате) колено остаётся чуть согнутым, запястья касаются верха руля, макушка вровень с верхом подголовника, а в боковых зеркалах видно лишь ~1–2 см своей машины.',
+    okDa: 'Let bøjet knæ ved fuldt pedaltryk, frit udsyn bagud i bakspejlet og minimale blinde vinkler i sidespejlene.',
+    okRu: 'Педаль жмётся до упора без отрыва поясницы, а боковые зеркала смотрят на соседние полосы, а не на ваши ручки дверей.',
+    failDa: 'Strakt ben ved bremsning, nakkestøtte nede i nakken eller sidespejle rettet så langt ind, at halvdelen viser din egen bildør.',
+    failRu: 'Прямая нога при нажатии тормоза, заваленная далеко назад спинка или зеркала, повёрнутые внутрь на собственный кузов.',
   },
 
   // 1. Motorrum (over real engine bay photo)
@@ -83,50 +127,80 @@ const HOTSPOTS: HotspotInfo[] = [
     tab: 'motorrum',
     labelDa: 'Kølervæske (Ekspansionsbeholder)',
     labelRu: 'Охлаждающая жидкость (антифриз)',
+    whyDa: 'Kølervæsken forhindrer motoren i at overophede og koge over (eller fryse til is om vinteren). Uden kølervæske ødelægges topstykket hurtigt.',
+    whyRu: 'Антифриз отводит жар от работающего двигателя (как радиатор в доме, только наоборот) и не даёт мотору закипеть летом или замёрзнуть зимой.',
     lookDa: 'Gennemsigtig rund plastikbeholder med LYSRØD væske og blåt/sort tryklåg øverst til venstre under hjelmen.',
-    lookRu: 'Прозрачный округлый бачок с РОЗОВОЙ (иногда зелёной/синей) жидкостью слева под капотом; на крышке нарисована книжка/термометр.',
-    checkDa: 'Standen skal være mellem MIN og MAX på beholderens side. Åbn ALDRIG låget, mens motoren er varm — risiko for skoldning!',
-    checkRu: 'Уровень смотрят снаружи между MIN и MAX. НИКОГДА не откручивайте крышку на горячем моторе — давление выбьет кипяток!',
+    lookRu: 'Полупрозрачный округлый бачок с РОЗОВОЙ (иногда зелёной или синей) жидкостью сверху слева под капотом; на крышке нарисован градусник/книжка.',
+    checkDa: 'Standen skal ligge mellem MIN og MAX på beholderens side. Åbn ALDRIG låget, mens motoren er varm — overtryk kan sprøjte kogende væske ud!',
+    checkRu: 'Посмотрите на метки MIN и MAX сбоку бачка, НЕ откручивая крышку! На горячем двигателе внутри высокое давление — можно обжечься паром.',
+    okDa: 'Lyserød/klar væske mellem MIN og MAX på kold motor, ingen lækager eller rustfarvet snavs.',
+    okRu: 'Уровень между отметками MIN и MAX, жидкость прозрачная розового/цветного оттенка, бачок закрыт.',
+    failDa: 'Væskestanden er under MIN, beholderen er helt tom, eller du forsøger at skrue låget af på varm motor.',
+    failRu: 'Уровень ниже MIN, пустой бачок (мотор перегревается!) или попытка открыть крышку сразу после поездки.',
   },
   {
     id: 'sprinklervaeske',
     tab: 'motorrum',
     labelDa: 'Sprinklervæske (Blåt låg)',
     labelRu: 'Бачок омывателя (синяя крышка)',
-    lookDa: 'Lille BLÅT flip-låg helt fremme til venstre ved forlygten — ofte med et symbol af en forrude med vandstråle.',
-    lookRu: 'Яркая СИНЯЯ крышечка спереди слева (у передней кромки), на ней нарисовано лобовое стекло с фонтанчиком воды.',
-    checkDa: 'Skal indeholde væske (med frostsikring om vinteren), så forruden altid kan vaskes ren.',
-    checkRu: 'Просто откройте крышку и убедитесь, что жидкость есть (зимой обязательно морозостойкая незамерзайка до −20 °C).',
+    whyDa: 'På våde og saltede danske veje bliver forruden uigennemsigtig på få sekunder efter en modkørende lastbil. Sprinklervæske er lovpligtig for klart udsyn.',
+    whyRu: 'На датских дорогах в дождь или зимнюю слякоть брызги от встречной фуры за секунду делают лобовое стекло слепым — без омывателя вы ничего не увидите.',
+    lookDa: 'Lille BLÅT flip-låg helt fremme til venstre ved forlygten — markeret med et symbol af en forrude med vandstråle.',
+    lookRu: 'Яркая СИНЯЯ крышка спереди слева у края капота, на ней нарисовано лобовое стекло с фонтанчиком воды.',
+    checkDa: 'Åbn det blå låg og tjek, at der er rigeligt væske i beholderen (brug frostsikret væske ned til mindst −20 °C om vinteren).',
+    checkRu: 'Откройте синюю крышку, загляните или нажмите омыватель из салона. Зимой заливайте только незамерзайку (минимум до −20 °C), обычная вода разорвёт бачок!',
+    okDa: 'Fyldt beholder med frostsikret væske og kraftig stråle ud på både for- og bagrude.',
+    okRu: 'В бачке есть жидкость, а форсунки бодро брызгают на стекло при нажатии правого рычага на себя.',
+    failDa: 'Tom beholder eller almindeligt postevand om vinteren, der fryser til is i dyser og slanger.',
+    failRu: 'Пустой бачок или летняя вода при минусовой температуре — щётки только размажут соль белой плёнкой.',
   },
   {
     id: 'motorolie',
     tab: 'motorrum',
     labelDa: 'Motorolie & Oliepind',
     labelRu: 'Щуп и горловина моторного масла',
-    lookDa: 'OLIEPIND: den lille GULE (eller orange) løkke foran på selve motoren. Lige ved siden af sidder det sorte oliedæksel med oliekande-symbol.',
-    lookRu: 'Ищите яркое ЖЁЛТОЕ колечко (ручка щупа) прямо по центру двигателя. Рядом с ним чёрная пробка с символом маслёнки — это заливная горловина.',
-    checkDa: 'Bilen skal stå plant med slukket motor. Træk pinden op, tør den af, sæt helt ned igen, træk op: oliestreg mellem MIN og MAX.',
-    checkRu: 'Авто стоит ровно, мотор заглушен. Выньте жёлтый щуп, протрите тряпкой/салфеткой, вставьте обратно до упора, снова выньте и проверьте след между MIN и MAX.',
+    whyDa: 'Olien smører motorens metaldele, der bevæger sig tusindvis af gange i minuttet. For lidt olie giver massiv friktion og ødelægger motoren permanent.',
+    whyRu: 'Масло смазывает и охлаждает детали внутри двигателя — без него металл трётся о металл, и мотор заклинит за считанные минуты.',
+    lookDa: 'OLIEPIND: den lille GULE (eller orange) løkke foran på motoren. Lige ved siden af sidder det sorte påfyldningsdæksel med oliekande-symbol.',
+    lookRu: 'Ищите яркое ЖЁЛТОЕ колечко (ручка щупа — oliepind) по центру мотора. Рядом чёрная пробка со значком лейки — туда доливают масло.',
+    checkDa: 'Bilen skal stå plant med slukket motor (vent 5 min.). Træk pinden op, tør den ren med papir, sæt den helt ned igen, træk op og aflæs oliestregen.',
+    checkRu: 'Машина стоит ровно, мотор заглушен. Выньте жёлтый щуп, оботрите его салфеткой досуха, вставьте обратно до упора, снова выньте — масляный след должен быть между MIN и MAX.',
+    okDa: 'Oliemærket på spidsen af oliepinden ligger mellem MIN og MAX (helst tæt på MAX).',
+    okRu: 'След чистого/янтарного масла ровно между рисками MIN и MAX на конце щупа.',
+    failDa: 'Olien er under MIN (skal efterfyldes før kørsel) eller aflæst mens motoren kører eller bilen holder skævt.',
+    failRu: 'Уровень ниже MIN (или кончик щупа сухой) либо проверка на заведённом моторе/крутом уклоне.',
   },
   {
     id: 'bremsevaeske',
     tab: 'motorrum',
     labelDa: 'Bremsevæskebeholder',
     labelRu: 'Бачок тормозной жидкости',
-    lookDa: 'Lille firkantet lys beholder bagerst under forruden (til højre mellem motoren og batteriet) med gult/sort bremse-symbol på låget.',
-    lookRu: 'Небольшой светлый бачок глубже у лобового стекла справа (между двигателем и аккумулятором), крышка часто с чёрно-жёлтым значком `(!)`.',
-    checkDa: 'Væskestanden skal stå mellem MIN og MAX (kontrolleres udefra). Hurtigt fald = utæt bremsesystem (kør ikke videre!).',
-    checkRu: 'Уровень между MIN и MAX виден через полупрозрачную стенку (открывать крышку не нужно!). Резкое падение = утечка, ехать запрещено!',
+    whyDa: 'Når du træder på bremsepedalen, er det denne væske i rørene, der presser bremseklodserne mod hjulene. Falder væsken pludseligt, kan bremserne svigte helt.',
+    whyRu: 'Когда вы жмёте тормоз, усилие на колёса передаётся именно по этой жидкости в трубках. Если она вытечет — машина вообще перестанет тормозить.',
+    lookDa: 'Lille firkantet lys beholder bagerst under forruden (til højre mellem motoren og batteriet) med bremse-symbol på låget.',
+    lookRu: 'Небольшой полупрозрачный бачок в глубине ближе к лобовому стеклу (между мотором и аккумулятором), часто с чёрно-жёлтым значком (!).',
+    checkDa: 'Aflæs standen udefra gennem den lyse plastikvæg mellem MIN og MAX (skru ikke låget af!). Pludseligt væsketab = utæthed!',
+    checkRu: 'Уровень смотрят снаружи сквозь светлые стенки бачка (крышку лучше лишний раз не откручивать, чтобы не попала влага): должен быть между MIN и MAX.',
+    okDa: 'Klar gullig væske mellem MIN og MAX, og den falder ikke hurtigt mellem kontrollerne.',
+    okRu: 'Жидкость находится между MIN и MAX и держит стабильный уровень.',
+    failDa: 'Under MIN eller hurtigt faldende stand = alvorlig utæthed i bremsesystemet — kør IKKE videre!',
+    failRu: 'Уровень упал ниже MIN или быстро снижается — возможна утечка в тормозной магистрали, ехать запрещено!',
   },
   {
     id: 'batteri',
     tab: 'motorrum',
     labelDa: '12V Batteri (Startbatteri)',
     labelRu: 'Аккумулятор 12V (АКБ)',
-    lookDa: 'Sort firkantet kasse til højre under hjelmen med to tykke kabler (+ under rød kappe og − sort).',
-    lookRu: 'Крупный чёрный прямоугольный блок справа; сверху подходят клеммы: красный плюсовой провод (+) и чёрный минус (−).',
-    checkDa: 'Skal sidde helt fast spændt uden løse eller stærkt irrerede polsko på kablerne.',
-    checkRu: 'Корпус должен быть надёжно закреплён и не болтаться, а клеммы — плотно затянуты без сильного налёта.',
+    whyDa: '12V-batteriet leverer strøm til at starte motoren og driver lys, blinklys og advarselssystemer. Et løst batteri kan kortslutte ved hård opbremsning.',
+    whyRu: 'Аккумулятор запускает стартер и питает всю электронику и фары. Если он не закреплён, на кочке или при торможении он сместится и может замкнуть проводку.',
+    lookDa: 'Sort firkantet kasse til højre under hjelmen med to tykke kabler (+ rød kappe og − sort).',
+    lookRu: 'Крупный чёрный прямоугольный блок справа; сверху подходят два толстых провода: красный плюс (+) и чёрный минус (−).',
+    checkDa: 'Tag fat i batterikassen (skal sidde urokkeligt fast spændt) og kontroller, at polskoene sidder stramt uden hvidt/grønt ir.',
+    checkRu: 'Покачайте корпус руками (он обязан быть жёстко прикручен) и посмотрите на клеммы — они должны сидеть плотно, без белого/зелёного налёта.',
+    okDa: 'Batteriet sidder helt fast, kablerne er stramme og rene, og rød batterilampe slukker efter motorstart.',
+    okRu: 'Батарея не болтается, контакты чистые и затянутые, после старта мотора красная лампа АКБ гаснет.',
+    failDa: 'Løst batteri, irrede/løse polsko eller tændt rød batterilampe under kørsel (generatoren lader ikke).',
+    failRu: 'Аккумулятор шатается в креплении, клеммы окислены/болтаются или на ходу горит красная иконка батареи.',
   },
 
   // 2. Dæk, Bremser & Styretøj
@@ -135,50 +209,80 @@ const HOTSPOTS: HotspotInfo[] = [
     tab: 'daek_bremser',
     labelDa: 'Dækmønster (min. 1,6 mm & TWI)',
     labelRu: 'Протектор шин (мин. 1,6 мм и метки TWI)',
-    lookDa: 'Kig ned i dækkets dybe langsgående riller efter de små forhøjede gummiklodser (TWI) — ofte markeret med "TWI" eller en lille trekant på dæksiden.',
-    lookRu: 'Загляните внутрь глубоких канавок протектора: на дне есть маленькие резиновые «перемычки» высотой ровно 1,6 мм (на боковине напротив них стоит надпись TWI или треугольник).',
-    checkDa: 'Mindst 1,6 mm i hovedrillerne hele vejen rundt (ikke slidt helt ned til TWI). Samme dæktype på alle 4 hjul; i sne/is mindst M+S / 3PMSF.',
-    checkRu: 'Если поверхность шины стёрлась вровень с перемычкой TWI — шина лысая и вне закона (<1,6 мм)! Все 4 шины одного типа; зимой при снеге/льде нужна маркировка M+S / 3PMSF (и ≥ 3 мм).',
+    whyDa: 'Rillerne i dækket leder vand, sjap og regn væk under hjulet. Er dækket slidt ned under 1,6 mm, mister bilen vejgrebet (akvaplaning) og bremselængden eksploderer.',
+    whyRu: 'Глубокие канавки на шине отводят воду и снег из-под колеса. Если протектор стёрся, машина на первой же луже всплывает («аквапланирование») и не тормозит.',
+    lookDa: 'Kig ned i dækkets dybe langsgående riller efter de små forhøjede gummiklodser (TWI) — på dæksiden står ofte "TWI" eller en lille trekant ud for dem.',
+    lookRu: 'Загляните в глубокие продольные канавки шины: на дне видны маленькие резиновые перемычки высотой 1,6 мм (на боковине напротив них стоит значок TWI или треугольник).',
+    checkDa: 'Mindst 1,6 mm i alle hovedriller (må ikke være slidt i plan med TWI-klodsen!). Alle 4 dæk skal være af samme type; i sne/is mindst M+S / 3PMSF-vinterdæk.',
+    checkRu: 'Сравните высоту рисунка с перемычкой TWI: поверхность шины должна быть ВЫШЕ неё. Все 4 колеса одного типа (нельзя смешивать лето и зиму); в снег/гололёд с 01.07.2025 обязательны зимние M+S / 3PMSF!',
+    okDa: 'Klart dybere mønster end TWI-mærkerne (gerne ≥ 3 mm om vinteren), ens dæktype på alle 4 hjul og korrekt lufttryk.',
+    okRu: 'Протектор заметно глубже перемычки TWI (для зимы от 3 мм), на боках нет грыж и порезов, все 4 шины одного сезона.',
+    failDa: 'Gummiklodsen TWI flugter med dækkets overflade (< 1,6 mm), bule/revne i dæksiden eller sommerdæk på én aksel og vinterdæk på den anden.',
+    failRu: 'Рисунок сравнялся с меткой TWI («лысая» шина < 1,6 мм), видны грыжи/корды или стоят летние шины спереди и зимние сзади.',
   },
   {
     id: 'bremser',
     tab: 'daek_bremser',
     labelDa: 'Driftsbremse & Vakuumforstærker',
     labelRu: 'Педаль тормоза и вакуумный усилитель',
+    whyDa: 'En tung bil kræver vakuumforstærker, som hjælper din fod med at bremse let (virker kun når motoren er tændt). Testen beviser både, at hjælperen virker, og at bremsesystemet ikke lækker væske.',
+    whyRu: 'Машина весит больше тонны, поэтому вашей ноге помогает вакуумный усилитель (он работает только при заведённом моторе). Эта проверка доказывает две вещи: усилитель помогает и тормозная жидкость нигде не подтекает.',
     lookDa: 'Den midterste (på automatgear venstre) brede pedal ved dine fødder.',
-    lookRu: 'Средняя широкая педаль под правой ногой (на автомате — широкая левая педаль).',
-    checkDa: '1) Sluk motor → pump pedalen 3-4 gange (bliver hård) · 2) Hold tryk & start motoren → pedalen synker let · 3) Hold hårdt i 10 sek → må ikke synke mod bunden!',
-    checkRu: '1) На заглушенном моторе накачайте педаль 3–4 раза (станет тугой). 2) Удерживая ногу на тормозе, заведите мотор → педаль мягко опустится вниз. 3) Удерживайте сильно 10 сек → проваливаться до пола НЕ должна.',
+    lookRu: 'Средняя широкая педаль под правой ногой (на автомате — широкая левая педаль под правую ногу).',
+    checkDa: '1) Med slukket motor: pump bremsen 3–4 gange til den bliver hård. 2) Hold foden på pedalen med helt almindeligt fast tryk (som ved et rødt lys — IKKE alt hvad du kan!) og start motoren. 3) Bliv stående på pedalen i ca. 10 sek.',
+    checkRu: '1) Заглушите мотор и нажмите тормоз 3–4 раза — педаль станет тугой (ушёл остаточный вакуум). 2) Держите ногу на педали с обычным уверенным усилием (как остановились перед красным светофором, НЕ давя всем весом!) и заведите мотор. 3) Удерживайте ногу неподвижно ~10 секунд.',
+    okDa: 'Pedalen synker en smule blødt ved motorstart (forstærkeren tager over) og står derefter klippefast på samme niveau i alle 10 sek.',
+    okRu: 'Слегка опустилась при запуске двигателя (усилитель включился — это НОРМА!) и дальше 10 секунд стоит на одном уровне, не уходя в пол.',
+    failDa: 'Pedalen forbliver stenhård ved motorstart (forstærker defekt) ELLER bliver ved med at synke langsomt mod gulvet (utæthed/lækage — kør IKKE!).',
+    failRu: 'Осталась каменной при запуске (сломан усилитель) ИЛИ продолжает медленно проваливаться к полу за 10 сек (утечка в системе — ехать нельзя!).',
   },
   {
     id: 'haandbremse',
     tab: 'daek_bremser',
     labelDa: 'Parkeringsbremse (Håndbremse)',
     labelRu: 'Стояночный тормоз (ручник)',
+    whyDa: 'Håndbremsen holder bilen låst på bakker, så den ikke triller ind i andre biler eller fodgængere, og virker mekanisk uafhængigt af fodbremsevæsken.',
+    whyRu: 'Ручник удерживает стоящую машину на уклоне даже при выключенном моторе — и служит резервом на случай отказа основной гидравлики.',
     lookDa: 'Enten et klassisk håndtag mellem forsæderne eller en lille knap med "(P)" symbol i midterkonsollen.',
-    lookRu: 'Классический рычаг между передними сиденьями (щелкает при поднятии) либо небольшая клавиша со значком `(P)` на центральной консоли.',
-    checkDa: 'Skal kunne holde bilen sikkert på en bakke uafhængigt af det hydrauliske system.',
-    checkRu: 'Затяните ручник и проверьте (или поставьте P) — машина обязана стоять неподвижно на уклоне без отката.',
+    lookRu: 'Классический рычаг между передними сиденьями (поднимается со щелчками) либо небольшая клавиша со значком `(P)` у консоли.',
+    checkDa: 'Træk håndbremsen (eller aktiver P-knappen), sæt i frigear/N og mærk på en svag skråning eller ved let igangsætning, at bilen står helt fast.',
+    checkRu: 'Поставьте на ручник, на небольшом уклоне отпустите основной тормоз (в нейтрали) — авто обязано оставаться неподвижным и при начале движения явно упираться.',
+    okDa: 'Bilen står helt stille på hældning uden at rulle, og den røde P-lampe slukker straks, når håndbremsen løsnes helt.',
+    okRu: 'Машина стоит мёртво, а после снятия с ручника красная лампа `(!)` / `(P)` на панели сразу гаснет.',
+    failDa: 'Håndtaget skal helt op i loftet før det bider, bilen ruller, eller håndbremsen hænger og lyser rødt under kørsel.',
+    failRu: 'Машина откатывается на ручнике или рычаг уходит до самого верха почти без сопротивления.',
   },
   {
     id: 'stoddaempere',
     tab: 'daek_bremser',
     labelDa: 'Støddæmpere (4 hjørner)',
     labelRu: 'Амортизаторы (проверка углов кузова)',
-    lookDa: 'Kontrolleres udefra over hvert af bilens 4 hjul / hjørner (forskærm eller bagskærm).',
-    lookRu: 'Проверяются снаружи машины: подойдите к каждому из 4 углов кузова над колесом (левое/правое крыло спереди и сзади).',
-    checkDa: 'Tryk kraftigt ned over hvert hjørne og slip: bilen skal straks rejse sig 1 gang og falde til ro uden eftergyngen.',
-    checkRu: 'Упритесь руками в крыло над колесом, резко качните вниз и отпустите: машина должна подняться 1 раз и сразу замереть, не прыгая как мячик.',
+    whyDa: 'Uden støddæmpere ville bilen hoppe på fjedrene efter hvert bump som en bold, så hjulene mister greb med asfalten i sving og ved opbremsning.',
+    whyRu: 'Амортизаторы гасят раскачку пружин. Если они «убиты», колёса на кочках буквально отрываются от асфальта, машину кидает в повороте и растёт тормозной путь.',
+    lookDa: 'Kontrolleres udefra over hvert af bilens 4 hjørner lige over hjulkasserne (begge forskærme og bagskærme).',
+    lookRu: 'Проверяются снаружи машины: подойдите по очереди к каждому из 4 углов кузова (над каждым колесом).',
+    checkDa: 'Læg begge hænder over hjørnet af skærmen, tryk kraftigt ned én gang og slip med det samme — se hvor hurtigt bilen falder til ro.',
+    checkRu: 'Упритесь ладонями в прочное место крыла прямо над колесом, резко качните машину вниз и отпустите руки — проследите за движением кузова.',
+    okDa: 'Bilen rejser sig ét enkelt roligt løft og falder straks helt til ro (max ca. 1–1,5 svingning).',
+    okRu: 'Кузов поднимается ровно один раз и сразу замирает как влитой.',
+    failDa: 'Bilen bliver ved med at gynge op og ned som en trampolin (2–3+ gange efter du slipper) — dæmperen er slidt op.',
+    failRu: 'Машина продолжает качаться вверх-вниз 2–3 раза после отпускания (как мячик на пружине) — амортизатор изношен.',
   },
   {
     id: 'styretoej',
     tab: 'daek_bremser',
     labelDa: 'Styretøj & Ratslør (0 cm)',
     labelRu: 'Рулевое управление и люфт (0 см)',
-    lookDa: 'Rul førerdørens rude helt ned, så du kan se forhjulet udefra, mens du drejer let i rattet.',
-    lookRu: 'Опустите водительское стекло, встаньте снаружи у двери и, держась одной рукой за верх руля, смотрите прямо на переднее левое колесо.',
-    checkDa: 'Med startet motor (aktiv servostyring) skal forhjulet reagere øjeblikkeligt, når rattet drejes let fra side til side (0 cm ratslør).',
-    checkRu: 'При ЗАВЕДЁННОМ двигателе слегка покачайте руль влево-вправо: колесо обязано поворачиваться мгновенно, без холостого хода (0 см люфта).',
+    whyDa: 'Ratslør er «tom» bevægelse i rattet, hvor du drejer på rattet, uden at forhjulene flytter sig (som et løst cykelstyr). For meget slør gør bilen svær og farlig at holde lige på vejen.',
+    whyRu: 'Люфт (ratslør) — это пустой ход руля: вы чуть повернули руль, а колёса всё ещё стоят прямо (как разболтанный руль у старого велосипеда). Проверка гарантирует, что машина слушается руля мгновенно.',
+    lookDa: 'Rul førerdørens rude helt ned, stå eventuelt lige udenfor ved døren og kig direkte ned på det forreste venstre hjul, mens du holder øverst på rattet.',
+    lookRu: 'Опустите водительское стекло полностью, встаньте у открытого окна и, держась рукой за верх руля, смотрите прямо на переднее левое колесо.',
+    checkDa: 'Med STARTET motor (aktiv servostyring) vipper du let rattet fra side til side. «0 cm ratslør» betyder ikke en lineal: hjulet skal bare reagere med det samme uden forsinkelse!',
+    checkRu: 'При ЗАВЕДЁННОМ двигателе (работает усилитель руля — servostyring) слегка покачайте руль влево-вправо. «0 см» не значит замерять линейкой: просто колесо обязано реагировать сразу, без пустого болтания.',
+    okDa: 'Så snart du drejer en lille smule på rattet, begynder forhjulet øjeblikkeligt at dreje med.',
+    okRu: 'Едва вы шевельнули руль — переднее колесо в ту же секунду повернулось вслед за ним.',
+    failDa: 'Rattet kan drejes et par centimeter frem og tilbage, mens forhjulet står helt stille (dødgang/slør — skal på værksted!).',
+    failRu: 'Руль свободно ходит на несколько сантиметров впустую, а колесо остаётся неподвижным — есть люфт, нужна диагностика на СТО.',
   },
 
   // 3. Lygter
@@ -187,70 +291,112 @@ const HOTSPOTS: HotspotInfo[] = [
     tab: 'lygter',
     labelDa: 'Positionslys (2 hvide + 2 røde)',
     labelRu: 'Габаритные огни (видимость 300 м)',
-    lookDa: 'Det svage lys foran og bagpå, når lyskontakten stilles på de to små modstående lygtepiktogrammer.',
-    lookRu: 'Слабые контурные огни (2 белых спереди + 2 красных сзади), значок на переключателе — два маленьких фонарика «в разные стороны».',
-    checkDa: 'Skal kunne ses tydeligt på mindst 300 m i klart mørke uden at blænde. Bruges bl.a. ved parkering på uoplyst landevej.',
-    checkRu: 'Должны быть видны в темноте минимум с 300 м. Сами дорогу НЕ освещают, зато включаются при стоянке ночью на неосвещённой трассе.',
+    whyDa: 'Positionslys markerer bilens bredde og position om natten, når bilen holder parkeret tæt på en uoplyst landevej — de er ikke bygget til at køre med alene.',
+    whyRu: 'Габариты не освещают дорогу, а лишь «подсвечивают контур» стоящей машины в темноте, чтобы вас не задели на неосвещённой трассе.',
+    lookDa: 'Det svage lys i for- og baglygter, når lyskontakten stilles på de to små modstående lygteikoner.',
+    lookRu: 'Слабые контурные лампы (2 белые спереди + 2 красные сзади), значок на переключателе — два маленьких фонарика, светящих «в разные стороны».',
+    checkDa: 'Gå rundt om bilen: 2 hvide/gullige lys foran og 2 røde bagpå skal kunne ses tydeligt på mindst 300 m i klart mørke uden at blænde.',
+    checkRu: 'Обойдите машину: должны гореть 2 белых огня спереди и 2 красных сзади (плюс подсветка номера), видимые в темноте минимум за 300 м.',
+    okDa: 'Alle 4 hjørnelys plus nummerpladelys lyser klart og ensartet.',
+    okRu: 'Обе пары огней светят ровно, без перегоревших ламп.',
+    failDa: 'En pære er sprunget, eller du kører rundt om natten kun med positionslys (det giver ingen sigtbarhed fremad!).',
+    failRu: 'Езда ночью только на габаритах (дорогу не видно!) или не горит одна из сторон.',
   },
   {
     id: 'naerlys',
     tab: 'lygter',
     labelDa: 'Nærlys (min. 30 m & 1% fald)',
     labelRu: 'Ближний свет (мин. 30 м, уклон 1%)',
-    lookDa: 'Ikon på lyskontakten med nedadvendte lysstråler (ofte grøn lampe på instrumentpanelet). Lyskeglen peger skråt nedad og længere ud mod højre rabat.',
-    lookRu: 'Значок фары с лучами, направленными вниз. Луч асимметричный — правая обочина освещена дальше левой встречной полосы.',
-    checkDa: 'Skal oplyse vejen mindst 30 m frem med et fald på 1 % (1 cm pr. meter) uden at blænde modkørende.',
-    checkRu: 'Освещает минимум 30 м дороги вперёд, наклон вниз 1% (1 см на каждый метр расстояния), чтобы не слепить встречных водителей.',
+    whyDa: 'Dit vigtigste kørelys i mørke, regn og tunnel: det oplyser vejen foran dig uden at blænde modkørende bilister og tænder samtidig baglygterne.',
+    whyRu: 'Главный рабочий свет: освещает дорогу на 30 м вперёд и правую обочину с пешеходами, при этом пучок скошен вниз на 1%, чтобы не слепить встречных.',
+    lookDa: 'Ikon på lyskontakten med nedadvendte lysstråler (grøn lampe på instrumentbrættet). Lyskeglen peger længere ud langs højre kant.',
+    lookRu: 'Значок фары с наклонными лучами вниз (на панели обычно горит зелёный значок). Асимметричный пучок дальше подсвечивает правый край дороги.',
+    checkDa: 'Skal oplyse vejen mindst 30 m frem med 1 % fald (1 cm pr. meter), lyse symmetrisk i begge forlygter og tænde baglygterne automatisk.',
+    checkRu: 'Включите ближний свет: горят обе передние фары (~30 м вперёд, лёгкий наклон вниз) и обязательно оба красных фонаря сзади.',
+    okDa: 'Begge nærlygter lyser kraftigt og ensartet med tydelig skarp lysgrænse, og baglygterne er tændt.',
+    okRu: 'Обе фары светят ровно (не «в небо»), и задние габариты гарантированно включены.',
+    failDa: 'Én pære er død («énøjet» bil), eller forlygterne peger for højt op pga. tung bagage (glemte lygtehøjden!).',
+    failRu: 'Не горит одна фара или забыли опустить корректор фар при полной загрузке багажника (слепите встречных).',
   },
   {
     id: 'fjernlys',
     tab: 'lygter',
     labelDa: 'Fjernlys (min. 100 m & Blå lampe)',
     labelRu: 'Дальний свет (мин. 100 м, синяя лампа)',
-    lookDa: 'Skub venstre blinklysarm væk fra dig — på instrumentpanelet tænder altid en markant BLÅ kontrollampe med lige stråler.',
-    lookRu: 'Включается толчком левого рычага «от себя» (при включённом ближнем свете); на панели загорается яркая СИНЯЯ лампа с прямыми лучами.',
-    checkDa: 'Lyser mindst 100 meter frem og tænder blå kontrollampe. Blænd ned til nærlys ca. 200–300 m før modkørende og 100–150 m bag forankørende!',
-    checkRu: 'Светит минимум на 100 м вперёд; обязательна СИНЯЯ лампа. Переключайте обратно на ближний за 200–300 м до встречной машины и за 100–150 м сзади попутной.',
+    whyDa: 'Ved 80 km/t på mørk landevej rækker 30 m nærlys kun godt ét sekund frem! Fjernlyset på min. 100 m giver dig tid til at se cyklister, rådyr og sving i god tid.',
+    whyRu: 'На тёмной загородной трассе при 80 км/ч ближнего света (30 м) хватает всего на ~1,3 секунды! Дальний свет даёт 100+ м запаса, чтобы вовремя увидеть оленя, пешехода или поворот.',
+    lookDa: 'Skub venstre arm væk fra dig (med nærlys tændt) — på instrumentbrættet lyser altid en markant BLÅ kontrollampe med lige stråler.',
+    lookRu: 'Оттолкните левый рычаг от себя (при включённом ближнем свете) — на приборной панели сразу загорается яркая СИНЯЯ лампа.',
+    checkDa: 'Lyser min. 100 m frem + blå kontrollampe lyser. Blænd ned til nærlys ca. 200–300 m før modkørende og ca. 100–150 m bag forankørende!',
+    checkRu: 'Убедитесь, что горят все дальние секции фар (≥ 100 м) и горит СИНЯЯ иконка на приборке. Переключайтесь на ближний за 200–300 м до встречной машины и за 100–150 м за попутной.',
+    okDa: 'Både fjernlygter og den lovpligtige BLÅ kontrollampe på panelet virker øjeblikkeligt.',
+    okRu: 'Свет бьёт далеко вперёд, а синий индикатор на приборной панели ярко сигнализирует об этом водителю.',
+    failDa: 'Blå lampe lyser ikke, eller du glemmer at blænde ned i tide for modkørende, cyklister og toge.',
+    failRu: 'Едете на дальнем свете в освещённом городе или слепите встречного водителя/велосипедиста.',
   },
   {
     id: 'stoplys',
     tab: 'lygter',
     labelDa: 'Stoplys (3 røde lygter)',
     labelRu: 'Стоп-сигналы (3 красных фонаря)',
-    lookDa: '2 kraftige røde lygter i baglygterne + 1 højt i midten ved bagruden. På Kontrolprøven ber du prøvesagkyndigen se bagud (eller spejler i en rude), mens du træder på bremsen.',
-    lookRu: 'Три красных фонаря сзади (левый, правый и верхний по центру). Удобно проверять, попросив инспектора посмотреть сзади или в отражении витрины/стены.',
-    checkDa: 'Alle 3 stoplygter skal lyse straks ved tryk på bremsen og være væsentligt kraftigere end almindelige røde baglygter.',
-    checkRu: 'Все 3 стоп-сигнала должны загораться одновременно при нажатии тормоза и светить заметно ярче обычных задних габаритов.',
+    whyDa: 'Stoplysene advarer bilerne bag dig inden for et splitsekund, når du sætter farten ned — uden dem opdager bagvedkørende ikke, at du bremser.',
+    whyRu: 'Стоп-сигналы мгновенно предупреждают едущих сзади, что вы тормозите. Без них водитель позади поймёт это слишком поздно.',
+    lookDa: '2 kraftige røde lygter i baglygterne + 1 højt i midten ved bagruden.',
+    lookRu: '3 красных фонаря сзади: слева, справа и третья полоса по центру вверху/внизу заднего стекла.',
+    checkDa: 'Bed prøvesagkyndigen eller en hjælper se bagpå (eller brug spejlingen i en mørk butiksrude), mens du træder på bremsen.',
+    checkRu: 'Попросите инспектора/помощника встать сзади или проверьте в отражении витрины/стены при нажатии педали тормоза.',
+    okDa: 'Alle 3 stoplys tænder straks ved pedaltryk og lyser væsentligt kraftigere end almindelige baglys.',
+    okRu: 'Загораются все 3 фонаря сразу, и светят заметно ярче обычных красных габаритов.',
+    failDa: 'Én eller flere stoplygter er sprunget (typisk det høje midterstoplys eller én sidepære).',
+    failRu: 'Не горит одна из боковых ламп или центральный стоп-сигнал.',
   },
   {
     id: 'blinklys',
     tab: 'lygter',
     labelDa: 'Blinklys & Havariblink (60–120/min)',
     labelRu: 'Поворотники и аварийка (6 фонарей)',
-    lookDa: '6 gule/orange lygter: 2 foran, 2 på forskærme/spejle, 2 bagpå. Alle 6 blinker samtidig ved tryk på den røde havariknap.',
-    lookRu: '6 жёлтых фонарей (по 3 на каждом борту: перед, бок/зеркало, зад). Проще всего проверить все 6 разом, нажав красную кнопку аварийки и обойдя машину.',
-    checkDa: 'Skal blinke ensartet 60–120 gange i minuttet. Blinker lampen inde i bilen dobbelt så hurtigt = én udvendig pære er sprunget!',
-    checkRu: 'Частота 60–120 миганий в минуту. Если стрелка в салоне защёлкала вдвое быстрее — перегорела одна из ламп снаружи!',
+    whyDa: 'Tydeligt blink er din vigtigste kommunikation med cyklister, fodgængere og andre biler før vognbaneskift, rundkørsler og sving.',
+    whyRu: 'Поворотники показывают велосипедистам и другим водителям ваш план ДО того, как вы начали крутить руль.',
+    lookDa: '6 gule/orange lygter: 2 foran, 2 på forskærme/sidespejle, 2 bagpå. Alle 6 blinker samtidig på den røde havariknap.',
+    lookRu: '6 жёлтых фонарей (по 3 на борт: передняя фара, крыло/зеркало, задний фонарь). Нажмите красную кнопку аварийки, чтобы увидеть все 6 за один обход.',
+    checkDa: 'Skal blinke ensartet 60–120 gange i minuttet (1–2 gange i sekundet) og tænde alle 3 lygter på hver side.',
+    checkRu: 'Частота мигания 60–120 раз в минуту (примерно 1–2 щелчка в секунду), мигают все 3 фонаря с каждой стороны.',
+    okDa: 'Alle 6 udvendige blinklys lyser gult/orange i rolig, ensartet takt.',
+    okRu: 'Все 6 фонарей мигают ярко и в ровном ритме.',
+    failDa: 'Blinker lampen inde i bilen dobbelt så hurtigt? Så er en udvendig blinklyspære næsten altid sprunget!',
+    failRu: 'Стрелка на панели вдруг стала щёлкать вдвое быстрее обычного — верный признак, что снаружи перегорела лампочка!',
   },
   {
     id: 'nummerplade',
     tab: 'lygter',
     labelDa: 'Nummerpladelys (20 m) & Reflekser',
     labelRu: 'Подсветка номера (20 м) и катафоты',
-    lookDa: 'Små hvide lamper lige over den bagerste nummerplade + to RØDE ikke-trekantede reflekser integreret i bagkofanger/baglygter.',
-    lookRu: 'Белые лампочки прямо над задним номерным знаком + два красных светоотражателя (катафота) в задних фонарях/бампере.',
-    checkDa: 'Hvidt nummerpladelys skal gøre pladen læsbar på min. 20 m i mørke. Personbilens 2 bagreflekser må ALDRIG være trekantede (trekanter er kun til trailere!).',
-    checkRu: 'Белая подсветка должна делать номер читаемым минимум с 20 м. Катафоты легковушки НЕ могут быть треугольными (треугольные — только для прицепов!).',
+    whyDa: 'Nummerpladen skal kunne aflæses i mørke, og de bagerste røde reflekser gør din bil synlig på lang afstand, selv hvis al strøm og lys svigter om natten.',
+    whyRu: 'Подсветка делает номер читаемым в темноте, а красные катафоты отражают свет чужих фар, даже если машина стоит заглушенной без аккумулятора.',
+    lookDa: 'Små hvide lamper lige over den bagerste nummerplade + 2 RØDE ikke-trekantede reflekser integreret i bagkofanger eller baglygter.',
+    lookRu: 'Белые лампочки прямо над задним номером + 2 КРАСНЫХ нетреугольных катафота в заднем бампере или фонарях.',
+    checkDa: 'Hvidt nummerpladelys skal gøre pladen læsbar på min. 20 m i mørke. En personbils 2 bagreflekser må ALDRIG være trekantede (trekant = kun trailer/påhængsvogn!).',
+    checkRu: 'Подсветка номера (белая, минимум с 20 м читаемость) горит вместе с габаритами/ближним светом. У легковой машины сзади 2 красных катафота НЕ треугольной формы (треугольники — только для прицепов!).',
+    okDa: 'Hvidt lys oplyser hele bagnummerpladen, og begge røde ikke-trekantede reflekser er hele og rene.',
+    okRu: 'Номер чётко подсвечен белым светом, оба катафота целые и чистые.',
+    failDa: 'Mørk nummerplade (sprungen pære), rødt lys på nummerpladen eller knækket/manglende refleks.',
+    failRu: 'Подсветка номера не горит совсем или разбиты задние отражатели.',
   },
   {
     id: 'horn',
     tab: 'lygter',
     labelDa: 'Horn (Kun ved fare)',
     labelRu: 'Звуковой сигнал / клаксон',
-    lookDa: 'Midterpuden i selve rattet (ikon af et lille horn/trompet).',
-    lookRu: 'Нажим на центральную подушку руля (значок гудка). На Kontrolprøven инспектор может попросить коротко нажать для проверки звука.',
-    checkDa: 'Klar ensartet tone — må efter færdselsloven KUN bruges for at afværge overhængende fare (aldrig for at hilse eller skynde på nogen!).',
-    checkRu: 'Должен давать чёткий ровный звук; в Дании использовать в городе/на трассе можно ТОЛЬКО для предотвращения немедленной опасности!',
+    whyDa: 'Hornet er udelukkende et nødværktøj til at forhindre en ulykke her og nu — i Danmark er det ulovligt at dytte for at hilse eller skynde på andre.',
+    whyRu: 'В Дании звуковой сигнал используется ТОЛЬКО чтобы предотвратить непосредственную аварию (сигналить знакомым или торопить соседа по светофору запрещено).',
+    lookDa: 'Midterpuden på rattet (mærket med et lille horn/trompet-ikon).',
+    lookRu: 'Центральная часть руля (значок гудка/трубы).',
+    checkDa: 'Tryk ganske kort på rattets midterpude — hornet skal give én klar, ensartet tone (på prøven evt. på et åbent, roligt sted efter instruks).',
+    checkRu: 'Короткое нажатие на центр руля должно давать чистый ровный звуковой сигнал без хрипа и задержек.',
+    okDa: 'Tydelig, ensartet advarselstone ved kort tryk.',
+    okRu: 'Сигнал чёткий, громкий и ровный.',
+    failDa: 'Helt tavst horn, skrattende tone eller brug af hornet uden reel fare (fx af irritation i kø).',
+    failRu: 'Клаксон молчит или хрипит при нажатии.',
   },
 
   // 4. Instrumentpanel
@@ -259,40 +405,64 @@ const HOTSPOTS: HotspotInfo[] = [
     tab: 'instrumentpanel',
     labelDa: 'Rød oliekande — Olietryk',
     labelRu: 'Красная маслёнка — нет давления масла',
-    lookDa: 'Rødt ikon formet som en gammeldags oliekande med en dråbe på spidsen.',
-    lookRu: 'Красный значок в виде старинной лейки/маслёнки с капелькой масла.',
-    checkDa: 'STANDS STRAKS på et sikkert sted og sluk motoren! Manglende olietryk kan ødelægge motoren på få sekunder.',
-    checkRu: 'КРИТИЧЕСКАЯ ОШИБКА: немедленно безопасно остановитесь и заглушите двигатель! Ехать даже 5 км до АЗС нельзя — мотор заклинит.',
+    whyDa: 'Uden olietryk mangler motoren øjeblikkeligt smøring indeni — fortsætter du kørslen blot få minutter, kan motoren brænde sammen.',
+    whyRu: 'Нет давления масла = двигатель работает «на сухую». Даже 2–3 минуты езды с этой красной лампой могут полностью убить мотор.',
+    lookDa: 'Rødt ikon formet som en oliekande med en dråbe på spidsen.',
+    lookRu: 'Красный значок старинной маслёнки/лейки с капелькой.',
+    checkDa: 'Skal tænde ved tænding og slukke straks efter motorstart. Lyser den under kørsel: STANDS STRAKS sikkert og sluk motoren!',
+    checkRu: 'При повороте ключа загорается для проверки, а сразу после запуска двигателя обязана погаснуть. Загорелась на ходу = остановитесь у обочины НЕМЕДЛЕННО и заглушите мотор!',
+    okDa: 'Slukker inden for 1–2 sekunder efter, at motoren starter.',
+    okRu: 'Погасла сразу после запуска двигателя.',
+    failDa: 'Forbliver rød eller blinker under kørsel — kør IKKE videre til tankstation eller værksted!',
+    failRu: 'Горит красным на заведённом двигателе — ехать дальше категорически нельзя (вызывайте эвакуатор / звоните в автошколу).',
   },
   {
     id: 'bremse_lampe',
     tab: 'instrumentpanel',
     labelDa: 'Rød (!) — Bremsefejl / Håndbremse',
     labelRu: 'Красный (!) — ручник или ошибка тормозов',
-    lookDa: 'Rød cirkel med udråbstegn `(!)` — lyser normalt, når håndbremsen er trukket op.',
-    lookRu: 'Красный круг с восклицательным знаком `(!)`. Нормально горит на стоянке, пока поднят ручник.',
-    checkDa: 'Hvis den lyser under kørsel med håndbremsen helt nede: for lidt bremsevæske eller bremsefejl — stands straks!',
-    checkRu: 'Если вы полностью опустили ручник и поехали, а красная `(!)` продолжает гореть — уровень тормозной жидкости упал или утечка. Остановитесь немедленно!',
+    whyDa: 'Den advarer enten om, at du er ved at køre med håndbremsen trukket, eller at der er farligt lav bremsevæske/lækage i bremserne.',
+    whyRu: 'Лампа подсказывает либо забытый ручник, либо критически низкий уровень тормозной жидкости (риск отказа тормозов).',
+    lookDa: 'Rød cirkel med udråbstegn `(!)` (eller `(P)`) midt på instrumentbrættet.',
+    lookRu: 'Красный кружок с восклицательным знаком `(!)` или `(P)`.',
+    checkDa: 'Skal slukke helt, når håndbremsen løsnes! Lyser den rødt videre under kørsel: stands straks sikkert og tjek bremsevæsken.',
+    checkRu: 'На стоянке с поднятым ручником она горит (это нормально). Но как только ручник опущен, лампа должна погаснуть! Если горит на ходу — немедленно остановитесь.',
+    okDa: 'Slukker helt så snart håndbremsen sænkes før igangsætning.',
+    okRu: 'Сразу гаснет после снятия машины с ручника.',
+    failDa: 'Rød `(!)` lyser stadig under kørsel med håndbremsen helt nede = bremsefejl eller manglende bremsevæske!',
+    failRu: 'Ручник полностью опущен, а красный `(!)` горит на ходу = утечка тормозной жидкости или отказ контура.',
   },
   {
     id: 'temp_lampe',
     tab: 'instrumentpanel',
     labelDa: 'Rød Temperatur / Batteri',
     labelRu: 'Красный термометр (перегрев) / АКБ',
-    lookDa: 'Rødt termometer over bølger (motortemperatur) eller rødt batteri med + og −.',
-    lookRu: 'Красный значок градусника в волнах (кипит мотор) или красный значок аккумулятора (нет зарядки от генератора).',
-    checkDa: 'Rød lampe = stands sikkert hurtigst muligt og sluk motoren. (Åbn IKKE varm kølervæske-låg!).',
-    checkRu: 'Красная лампа = остановиться как можно скорее и заглушить мотор! При красном термометре НЕ открывайте крышку антифриза на горячем моторе.',
+    whyDa: 'Begge røde lamper advarer om akut teknisk svigt: enten overophedes motoren, eller også løber batteriet tørt, så servo, bremsekraft og lys pludselig kan svigte.',
+    whyRu: 'Красная лампа на панели всегда означает «СТОП»: мотор закипает (термометр) либо генератор перестал заряжать аккумулятор и скоро отключится вся электроника.',
+    lookDa: 'Rødt termometer over bølger (motortemperatur) eller rødt batteri-symbol med + og −.',
+    lookRu: 'Красный градусник над волнами (температура антифриза) или красный прямоугольник батарейки со знаками `+` и `−`.',
+    checkDa: 'Rød lampe = stands sikkert hurtigst muligt og sluk motoren! Ved varmt termometer: lad motoren køle helt af og åbn ALDRIG det varme kølervæskedæksel.',
+    checkRu: 'Остановитесь как можно быстрее в безопасном месте и заглушите мотор. При перегреве НЕ открывайте бачок антифриза, пока мотор полностью не остынет!',
+    okDa: 'Begge lamper slukker få sekunder efter start og forbliver slukkede under kørsel.',
+    okRu: 'Гаснут сразу после запуска двигателя.',
+    failDa: 'Lyser rødt under kørsel — du risikerer motorhavari eller pludseligt strømsvigt midt i trafikken.',
+    failRu: 'Горят красным во время езды — продолжение поездки грозит закипанием/заклиниванием двигателя или полным отказом электрики.',
   },
   {
     id: 'abs_lampe',
     tab: 'instrumentpanel',
     labelDa: 'Gul ABS / ESP / Motorlampe',
     labelRu: 'Жёлтая лампа (ABS / ESP / Check Engine)',
-    lookDa: 'Gult/orange symbol: bogstaver "ABS", slingrende bil (ESP) eller en lille motorblok (Check Engine).',
-    lookRu: 'Жёлтый или оранжевый значок (кружок «ABS», машинка на змейке ESP или контур двигателя).',
-    checkDa: 'Gul advarsel = systemet (fx blokeringssikring ABS) kan være ude af drift, men almindelige bremser virker stadig — kør forsigtigt til værksted.',
-    checkRu: 'Жёлтый индикатор допускает осторожное движение до СТО своим ходом. Но помните: при горящем жёлтом ABS антиблокировка отключена — на резком торможении колёса могут пойти юзом.',
+    whyDa: 'Gule/orange lamper er en vigtig skillelinje på prøven: de betyder «advarsel — kør forsigtigt til værksted», i modsætning til røde lamper som kræver øjeblikkeligt stop.',
+    whyRu: 'На экзамене важно отличать красный от жёлтого: жёлтая лампа — это не мгновенный «стоп», а предупреждение «электронный помощник отключён, езжайте аккуратно на СТО».',
+    lookDa: 'Gult/orange symbol: bogstaverne "ABS", bil på slingrespor (ESP) eller et lille motorsymbol (Check Engine).',
+    lookRu: 'Жёлтый или оранжевый значок: кружок «ABS», машинка со змейкой «ESP» или силуэт двигателя.',
+    checkDa: 'Ved tændt gul ABS/ESP virker selve bremsepedalen stadig, men hjulene kan låse og skride ved hård opbremsning — kør ekstra forsigtigt og få bilen på værksted.',
+    checkRu: 'Обычные тормоза продолжают работать, но антиблокировка (ABS) или антизанос (ESP) отключены! Езжайте спокойнее с запасом дистанции прямиком в сервис.',
+    okDa: 'Alle gule advarselslamper slukker kort efter start og lyser ikke under kørslen.',
+    okRu: 'Все жёлтые иконки погасли через пару секунд после запуска мотора.',
+    failDa: 'Lyser gult konstant under kørsel — må ikke ignoreres i ugevis, men kræver værkstedsbesøg med ekstra forsigtig kørsel.',
+    failRu: 'Постоянно горит жёлтым на ходу: на скользкой дороге при резком торможении без ABS колёса пойдут юзом — пора на СТО.',
   },
 ];
 
@@ -311,11 +481,11 @@ const ENGINE_BAY_PINS: Array<{
 ];
 
 const TABS: Array<{ id: TechnicalTabId; da: string; ru: string }> = [
-  { id: 'kabine', da: '0. Kabine & Pedaler', ru: 'Салон и педали' },
-  { id: 'motorrum', da: '1. Motorrum', ru: 'Под капотом' },
-  { id: 'daek_bremser', da: '2. Dæk & Bremser', ru: 'Шины и тормоза' },
-  { id: 'lygter', da: '3. Lygter & Horn', ru: 'Фары и сигналы' },
-  { id: 'instrumentpanel', da: '4. Instrumentpanel', ru: 'Приборная панель' },
+  { id: 'kabine', da: '0. Kabine & Pedaler', ru: '0. Салон и педали' },
+  { id: 'motorrum', da: '1. Motorrum', ru: '1. Под капотом' },
+  { id: 'daek_bremser', da: '2. Dæk & Bremser', ru: '2. Шины и тормоза' },
+  { id: 'lygter', da: '3. Lygter & Horn', ru: '3. Фары и сигналы' },
+  { id: 'instrumentpanel', da: '4. Instrumentpanel', ru: '4. Приборная панель' },
 ];
 
 export const CarTechnicalSVG: React.FC<CarTechnicalSVGProps> = ({
@@ -323,6 +493,7 @@ export const CarTechnicalSVG: React.FC<CarTechnicalSVGProps> = ({
   activeHotspot,
   languageMode = 'both',
   compact = false,
+  lockedTab = false,
   className = '',
 }) => {
   const uid = useId().replace(/:/g, '');
@@ -347,6 +518,7 @@ export const CarTechnicalSVG: React.FC<CarTechnicalSVGProps> = ({
   const tabHotspots = HOTSPOTS.filter((h) => h.tab === tab);
   const currentInfo =
     HOTSPOTS.find((h) => h.id === selectedId && h.tab === tab) ?? tabHotspots[0];
+  const activeTabInfo = TABS.find((t) => t.id === tab);
 
   const handleSelectTab = (nextTab: TechnicalTabId) => {
     setTab(nextTab);
@@ -388,28 +560,23 @@ export const CarTechnicalSVG: React.FC<CarTechnicalSVGProps> = ({
         return (
           <g>
             <rect x="0" y="0" width="440" height="220" fill="#09090B" />
-            {/* Windshield frame & dashboard shelf */}
             <path d="M 18 14 Q 220 4 422 14 L 422 132 Q 220 120 18 132 Z" fill="#18181B" stroke="#3F3F46" strokeWidth="1.8" />
             <rect x="34" y="132" width="372" height="80" rx="10" fill="#111827" stroke="#27272A" strokeWidth="1.4" />
 
-            {/* Light dial left of steering wheel */}
             <circle cx="52" cy="84" r="16" fill="#0F172A" stroke="#64748B" strokeWidth="2" />
             <text x="52" y="64" textAnchor="middle" fill="#FACC15" fontSize="7.5" fontWeight="800">
               LYS (0 / Auto / Nær)
             </text>
 
-            {/* Left & Right Stalks behind steering wheel */}
             <rect x="76" y="76" width="46" height="8" rx="4" fill="#475569" stroke="#CBD5E1" strokeWidth="1" />
             <rect x="180" y="76" width="46" height="8" rx="4" fill="#475569" stroke="#CBD5E1" strokeWidth="1" />
 
-            {/* Steering wheel */}
             <circle cx="151" cy="84" r="40" fill="none" stroke="#334155" strokeWidth="10" />
             <circle cx="151" cy="84" r="14" fill="#1E293B" stroke="#64748B" strokeWidth="2" />
             <text x="151" y="34" textAnchor="middle" fill="#CBD5E1" fontSize="8" fontWeight="800">
               RAT &amp; SPEJLE
             </text>
 
-            {/* Center Console + Red Hazard Triangle Button */}
             <rect x="260" y="40" width="94" height="80" rx="10" fill="#1E293B" stroke="#475569" strokeWidth="1.5" />
             <rect x="292" y="54" width="30" height="24" rx="5" fill="#7F1D1D" stroke="#EF4444" strokeWidth="1.5" />
             <polygon points="307,59 316,74 298,74" fill="none" stroke="#FCA5A5" strokeWidth="2" />
@@ -417,31 +584,25 @@ export const CarTechnicalSVG: React.FC<CarTechnicalSVGProps> = ({
               HAVARIBLINK
             </text>
 
-            {/* Hood Release Lever near bottom-left footwell */}
             <rect x="24" y="160" width="76" height="36" rx="8" fill="#1E293B" stroke="#F59E0B" strokeWidth="1.8" />
             <path d="M 38 178 L 58 178 L 54 170" fill="none" stroke="#FDE047" strokeWidth="2" strokeLinecap="round" />
             <text x="62" y="190" textAnchor="middle" fill="#FDE68A" fontSize="7" fontWeight="800">
               MOTORHJELM
             </text>
 
-            {/* 3 Foot Pedals Left -> Right: K (Kobling), B (Bremse), S (Speeder) */}
             <g transform="translate(124, 146)">
               <rect x="0" y="0" width="160" height="58" rx="10" fill="#09090B" stroke="#334155" strokeWidth="1.5" />
-              {/* Left pedal K */}
               <rect x="14" y="10" width="32" height="32" rx="6" fill="#0284C7" opacity="0.8" stroke="#BAE6FD" strokeWidth="1.5" />
               <text x="30" y="29" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="900">K</text>
               <text x="30" y="52" textAnchor="middle" fill="#7DD3FC" fontSize="6.5" fontWeight="700">Kobling</text>
-              {/* Middle pedal B */}
               <rect x="64" y="10" width="34" height="32" rx="6" fill="#DC2626" opacity="0.85" stroke="#FECACA" strokeWidth="1.5" />
               <text x="81" y="29" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="900">B</text>
               <text x="81" y="52" textAnchor="middle" fill="#FCA5A5" fontSize="6.5" fontWeight="700">Bremse</text>
-              {/* Right pedal S */}
               <rect x="116" y="6" width="28" height="38" rx="6" fill="#10B981" opacity="0.8" stroke="#A7F3D0" strokeWidth="1.5" />
               <text x="130" y="29" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="900">S</text>
               <text x="130" y="52" textAnchor="middle" fill="#6EE7B7" fontSize="6.5" fontWeight="700">Speeder</text>
             </g>
 
-            {/* Gear stick / Auto reminder box on bottom right */}
             <g transform="translate(300, 146)">
               <rect x="0" y="0" width="102" height="58" rx="10" fill="#09090B" stroke="#334155" strokeWidth="1.5" />
               <text x="51" y="22" textAnchor="middle" fill="#E2E8F0" fontSize="8" fontWeight="800">
@@ -496,7 +657,6 @@ export const CarTechnicalSVG: React.FC<CarTechnicalSVGProps> = ({
               </g>
             ))}
 
-            {/* Zoomed TWI Tread Callout */}
             <g transform="translate(14, 14)">
               <rect x="0" y="0" width="132" height="48" rx="10" fill="#0F172A" stroke="#10B981" strokeWidth="1.5" />
               <rect x="10" y="10" width="28" height="28" rx="4" fill="#27272A" />
@@ -609,31 +769,55 @@ export const CarTechnicalSVG: React.FC<CarTechnicalSVGProps> = ({
 
   return (
     <div className={`space-y-3 ${className}`}>
-      {/* 5 Beginner-to-Pro Tabs */}
-      <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-5">
-        {TABS.map((t) => {
-          const isActive = tab === t.id;
-          return (
-            <button
-              key={t.id}
-              type="button"
-              onClick={() => handleSelectTab(t.id)}
-              className={`rounded-xl border px-2.5 py-2 text-left text-xs transition-all ${
-                isActive
-                  ? 'border-zinc-900 bg-zinc-900 text-white shadow-sm dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-900'
-                  : 'border-zinc-200 bg-white text-zinc-600 hover:border-zinc-300 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-zinc-700'
-              }`}
-            >
-              <div className="font-semibold leading-tight">{t.da}</div>
-              {languageMode !== 'da_only' && (
-                <div className={`mt-0.5 text-[10px] leading-tight ${isActive ? 'opacity-80' : 'text-zinc-400'}`}>
-                  {t.ru}
+      {/* Header or 5 Beginner-to-Pro Tabs */}
+      {lockedTab ? (
+        !compact &&
+        activeTabInfo && (
+          <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-zinc-200/80 bg-zinc-50/80 px-3 py-2 text-xs dark:border-zinc-800 dark:bg-zinc-900/60">
+            <span className="font-semibold text-zinc-800 dark:text-zinc-200">
+              {languageMode === 'da_only'
+                ? `Interaktiv oversigt: ${activeTabInfo.da}`
+                : `Интерактивная схема: ${activeTabInfo.ru}`}
+            </span>
+            {languageMode !== 'da_only' && (
+              <span className="inline-flex items-center gap-1 rounded-md bg-teal-50 px-2 py-0.5 text-[11px] font-semibold text-teal-800 dark:bg-teal-950/60 dark:text-teal-300">
+                DA: {activeTabInfo.da}
+              </span>
+            )}
+          </div>
+        )
+      ) : (
+        <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-3 lg:grid-cols-5">
+          {TABS.map((t) => {
+            const isActive = tab === t.id;
+            return (
+              <button
+                key={t.id}
+                type="button"
+                onClick={() => handleSelectTab(t.id)}
+                className={`min-w-0 break-words rounded-xl border px-2.5 py-2 text-left text-xs transition-all ${
+                  isActive
+                    ? 'border-zinc-900 bg-zinc-900 text-white shadow-sm dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-900'
+                    : 'border-zinc-200 bg-white text-zinc-700 hover:border-zinc-300 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-zinc-700'
+                }`}
+              >
+                <div className="font-semibold leading-tight">
+                  {languageMode === 'da_only' || languageMode === 'spoiler' ? t.da : t.ru}
                 </div>
-              )}
-            </button>
-          );
-        })}
-      </div>
+                {languageMode === 'both' && (
+                  <div
+                    className={`mt-0.5 text-[11px] leading-tight ${
+                      isActive ? 'text-teal-200 dark:text-teal-700' : 'text-teal-800/80 dark:text-teal-300/80'
+                    }`}
+                  >
+                    {t.da}
+                  </div>
+                )}
+              </button>
+            );
+          })}
+        </div>
+      )}
 
       {/* Viewport: Real Annotated Engine Bay Photo for motorrum, Schematic SVG for other tabs */}
       {tab === 'motorrum' ? (
@@ -702,11 +886,11 @@ export const CarTechnicalSVG: React.FC<CarTechnicalSVGProps> = ({
               onClick={() => setSelectedId(item.id)}
               className={`rounded-lg border px-2.5 py-1 text-xs font-medium transition-all ${
                 isSelected
-                  ? 'border-sky-500 bg-sky-50 text-sky-800 dark:border-sky-400 dark:bg-sky-950/60 dark:text-sky-200'
-                  : 'border-zinc-200 bg-zinc-50 text-zinc-600 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800'
+                  ? 'border-teal-500 bg-teal-50 text-teal-900 dark:border-teal-400 dark:bg-teal-950/60 dark:text-teal-200'
+                  : 'border-zinc-200 bg-zinc-50 text-zinc-700 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800'
               }`}
             >
-              {item.labelDa}
+              {languageMode === 'da_only' || languageMode === 'spoiler' ? item.labelDa : item.labelRu}
             </button>
           );
         })}
@@ -714,18 +898,19 @@ export const CarTechnicalSVG: React.FC<CarTechnicalSVGProps> = ({
 
       {/* Selected hotspot specification card (hidden when compact=true in exams) */}
       {!compact && currentInfo && (
-        <div className="space-y-2.5 rounded-xl border border-zinc-200 bg-zinc-50/90 p-3.5 dark:border-zinc-800 dark:bg-zinc-900/75">
+        <div className="space-y-3 rounded-xl border border-zinc-200 bg-zinc-50/90 p-3.5 sm:p-4 dark:border-zinc-800 dark:bg-zinc-900/75">
+          {/* Header + DDO + Speak */}
           <div className="flex items-start justify-between gap-2">
-            <div className="space-y-1.5">
-              <BilingualText
-                da={currentInfo.labelDa}
+            <div className="min-w-0 flex-1 space-y-1.5">
+              <TheoryBilingual
                 ru={currentInfo.labelRu}
+                da={currentInfo.labelDa}
                 mode={languageMode}
-                daClassName="text-sm font-semibold"
-                ruClassName="text-xs"
+                ruClassName="text-sm sm:text-base font-bold leading-snug"
+                compact
               />
               {labelLookupWords.length > 0 && (
-                <div className="flex flex-wrap gap-1.5">
+                <div className="flex flex-wrap gap-1.5 pt-0.5">
                   {labelLookupWords.map((w) => (
                     <a
                       key={w}
@@ -743,35 +928,90 @@ export const CarTechnicalSVG: React.FC<CarTechnicalSVGProps> = ({
             </div>
             <SpeakButton
               id={`tech_${currentInfo.id}`}
-              text={`${currentInfo.labelDa}. ${currentInfo.checkDa}`}
+              text={`${currentInfo.labelDa}. ${currentInfo.whyDa} ${currentInfo.checkDa}`}
             />
           </div>
 
-          <div className="rounded-lg border border-sky-200/70 bg-sky-50/50 px-3 py-2 dark:border-sky-900/50 dark:bg-sky-950/30">
-            <div className="mb-0.5 text-[10px] font-bold uppercase tracking-wider text-sky-700 dark:text-sky-400">
-              {languageMode === 'da_only' ? 'Sådan finder du den' : 'Как узнать на глаз'}
+          {/* 1. Why is this needed? */}
+          <div className="rounded-lg border border-teal-200/75 bg-teal-50/60 px-3 py-2.5 dark:border-teal-900/50 dark:bg-teal-950/25">
+            <div className="mb-1 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-teal-800 dark:text-teal-300">
+              <HelpCircle className="h-3.5 w-3.5 shrink-0" />
+              <span>{languageMode === 'da_only' ? 'Hvorfor tjekker man det?' : 'Зачем это проверять?'}</span>
             </div>
-            <BilingualText
-              da={currentInfo.lookDa}
+            <TheoryBilingual
+              ru={currentInfo.whyRu}
+              da={currentInfo.whyDa}
+              mode={languageMode}
+              compact
+              ruClassName="text-xs sm:text-[13px] leading-relaxed"
+            />
+          </div>
+
+          {/* 2. Where / How to spot it */}
+          <div className="rounded-lg border border-sky-200/70 bg-sky-50/55 px-3 py-2.5 dark:border-sky-900/50 dark:bg-sky-950/25">
+            <div className="mb-1 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-sky-800 dark:text-sky-300">
+              <Eye className="h-3.5 w-3.5 shrink-0" />
+              <span>{languageMode === 'da_only' ? 'Sådan finder du den' : 'Как узнать на глаз'}</span>
+            </div>
+            <TheoryBilingual
               ru={currentInfo.lookRu}
+              da={currentInfo.lookDa}
               mode={languageMode}
-              daClassName="text-xs font-normal"
-              ruClassName="text-[11px]"
+              compact
+              ruClassName="text-xs sm:text-[13px] leading-relaxed"
             />
           </div>
 
-          <div className="border-t border-zinc-200/80 pt-2 dark:border-zinc-800">
-            <div className="mb-0.5 text-[10px] font-bold uppercase tracking-wider text-teal-700 dark:text-teal-400">
-              {languageMode === 'da_only' ? 'Kontrol på prøven' : 'Как проверить руками'}
+          {/* 3. How to test it */}
+          <div className="rounded-lg border border-zinc-200/80 bg-white px-3 py-2.5 dark:border-zinc-800 dark:bg-zinc-950/60">
+            <div className="mb-1 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
+              <Wrench className="h-3.5 w-3.5 shrink-0 text-teal-600 dark:text-teal-400" />
+              <span>{languageMode === 'da_only' ? 'Kontrol på prøven' : 'Как проверить руками'}</span>
             </div>
-            <BilingualText
-              da={currentInfo.checkDa}
+            <TheoryBilingual
               ru={currentInfo.checkRu}
+              da={currentInfo.checkDa}
               mode={languageMode}
-              daClassName="text-xs sm:text-sm font-normal"
-              ruClassName="text-xs"
+              compact
+              ruClassName="text-xs sm:text-[13px] leading-relaxed"
             />
           </div>
+
+          {/* 4. Norm vs Error */}
+          {(currentInfo.okRu || currentInfo.failRu) && (
+            <div className="grid gap-2 sm:grid-cols-2">
+              {currentInfo.okRu && (
+                <div className="rounded-lg border border-emerald-200/80 bg-emerald-50/70 px-3 py-2 dark:border-emerald-900/50 dark:bg-emerald-950/25">
+                  <div className="mb-1 flex items-center gap-1 text-[11px] font-bold text-emerald-800 dark:text-emerald-300">
+                    <CheckCircle2 className="h-3.5 w-3.5 shrink-0" />
+                    <span>{languageMode === 'da_only' ? 'Normalt' : 'Норма'}</span>
+                  </div>
+                  <TheoryBilingual
+                    ru={currentInfo.okRu}
+                    da={currentInfo.okDa}
+                    mode={languageMode}
+                    compact
+                    ruClassName="text-xs leading-snug text-emerald-950 dark:text-emerald-100"
+                  />
+                </div>
+              )}
+              {currentInfo.failRu && (
+                <div className="rounded-lg border border-rose-200/80 bg-rose-50/70 px-3 py-2 dark:border-rose-900/50 dark:bg-rose-950/25">
+                  <div className="mb-1 flex items-center gap-1 text-[11px] font-bold text-rose-800 dark:text-rose-300">
+                    <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+                    <span>{languageMode === 'da_only' ? 'Fejl / Ikke tilladt' : 'Ошибка / Поломка'}</span>
+                  </div>
+                  <TheoryBilingual
+                    ru={currentInfo.failRu}
+                    da={currentInfo.failDa}
+                    mode={languageMode}
+                    compact
+                    ruClassName="text-xs leading-snug text-rose-950 dark:text-rose-100"
+                  />
+                </div>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>

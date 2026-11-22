@@ -142,6 +142,14 @@ test('all visuals (POV presets, traffic scenes, signs, hotspots) referenced in d
         rule.bodyDa.length / Math.max(1, rule.bodyRu.length) >= 0.7,
         `DA body too short vs RU in M${mod.id}: ${rule.titleRu}`
       );
+      assert.ok(
+        (rule.whyRu?.trim().length ?? 0) >= 20 && (rule.whyDa?.trim().length ?? 0) >= 20,
+        `Missing beginner whyRu/whyDa lead-in in M${mod.id}: ${rule.titleRu}`
+      );
+      assert.ok(
+        (rule.whyDa?.length ?? 0) / Math.max(1, rule.whyRu?.length ?? 1) >= 0.7,
+        `whyDa too short vs whyRu in M${mod.id}: ${rule.titleRu}`
+      );
       if (rule.trapRu) {
         assert.ok(
           (rule.trapDa?.length ?? 0) / rule.trapRu.length >= 0.7,

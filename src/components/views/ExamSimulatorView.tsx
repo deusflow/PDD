@@ -328,6 +328,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
           activeHotspot={visual.technicalHotspot}
           languageMode={languageMode}
           compact
+          lockedTab
         />
       );
     }

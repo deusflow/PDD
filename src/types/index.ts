@@ -88,6 +88,8 @@ export interface ModuleCheatRule {
   titleRu: string;
   bodyDa: string;
   bodyRu: string;
+  whyRu?: string;
+  whyDa?: string;
   pointsRu?: string[];
   pointsDa?: string[];
   attentionStepsRu?: string[];

@@ -28,6 +28,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Первые 5 минут в машине (с нуля): педали, капот, свет и рычаги',
         bodyDa: 'Før du overhovedet starter motoren i køreskolen: lær rækkefølgen af de 3 pedaler, hvordan man åbner motorhjelmen i 3 trin, og hvor lys, blinklys og vinduesvisker sidder.',
         bodyRu: 'База для самого первого занятия с инструктором: где какая педаль, как открыть капот изнутри, чем включаются поворотники, ближний свет, дворники и ручник.',
+        whyRu: 'На самом первом уроке в автошколе никто не ждёт, что вы знаете машину. Здесь за 5 минут разбираемся вслепую, где какая педаль, как открыть капот и как включить поворотники, свет и дворники.',
+        whyDa: 'På din første køretime forventer ingen, at du kender bilen i forvejen. Her lærer du på 5 minutter, hvilke pedaler der er hvilke, hvordan motorhjelmen åbnes, og hvordan blink, lys og visker betjenes.',
         pointsRu: [
           'Педали слева направо на механике (Manuelt gear): 1) Сцепление (Kobling — только ЛЕВАЯ нога!), 2) Тормоз (Bremse — центр, ПРАВАЯ нога), 3) Газ (Speeder — крайняя правая, ПРАВАЯ нога). На автомате (Automatgear: P-R-N-D) левой педали вообще нет!',
           'Как открыть капот (Motorhjelm) в 3 шага: 1) потянуть рычаг у левой ноги водителя до щелчка → 2) нащупать по центру под кромкой капота страховочную защёлку и сдвинуть её → 3) поднять капот и вставить упорную штангу в паз.',
@@ -54,8 +56,8 @@ export const MODULES_DATA: ModuleInfo[] = [
           right: {
             labelRu: 'Автомат (2 педали: B · S + P-R-N-D)',
             labelDa: 'Automatgear (2 pedaler: B · S + P-R-N-D)',
-            summaryRu: 'Работает ТОЛЬКО правая нога: P (Паркинг), R (Задний ход), N (Нейтраль), D (Движение вперёд).',
-            summaryDa: 'Kun højre fod bruges: P (Parkering), R (Bak), N (Frigear), D (Kørsel frem).',
+            summaryRu: 'Работает ТОЛЬКО правая нога: P (Паркинг), R (Задний ход), N (Нейтраль), D (Вперёд). В Дании: Kode 78 = только автомат, или Kode 148 = экзамен на автомате + ≥7 уроков на механике для любых авто.',
+            summaryDa: 'Kun højre fod bruges: P, R, N, D. I Danmark: Kode 78 = kun automatgear, eller Kode 148 = køreprøve i automatgear + min. 7 lektioner i manuelt gear giver ret til begge.',
           },
         },
         attentionStepsRu: [
@@ -80,6 +82,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Посадка, подголовники и обязательные документы',
         bodyDa: 'Juster sæde, nakkestøtte og 3 spejle før start, og kend kravene til advarselstrekant og registreringsattest.',
         bodyRu: 'Правильная настройка сиденья, подголовника, 3 зеркал и знание обязательного комплекта в машине.',
+        whyRu: 'Если кресло и зеркала настроены плохо, вы не дотянетесь до педали в экстренный момент или не увидите велосипедиста сбоку — а на экзамене это сразу проверяют ещё до запуска мотора.',
+        whyDa: 'Hvis sæde og spejle er indstillet forkert, kan du hverken bremse helt igennem i en nødsituation eller se cyklister bagud — og prøvesagkyndigen holder øje med dette, før bilen overhovedet starter.',
         pointsRu: [
           'Подголовник (nakkestøtte) настраивается по высоте так, чтобы его верхний край был вровень с макушкой головы (защита шеи при ударе сзади).',
           'Водительское кресло (слева) и спинка настроены так, чтобы при выжатом до упора сцеплении колено оставалось чуть согнутым, а запястья доставали до верха руля.',
@@ -113,6 +117,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Физика манёвра и поведение разных ТС (Mål 3.1–3.2 из DriveLogger)',
         bodyDa: 'Ethvert køretøj opfører sig forskelligt afhængigt af tyngdepunkt, belæsning, akselafstand og størrelse. Motorcykler ses sent pga. smal silhuet; lastbiler/busser svinger bagenden ud.',
         bodyRu: 'Официальный блок Самообучения 1 в датских автошколах: как вес, центр тяжести и тип транспорта меняют радиус поворота, устойчивость и тормозной путь.',
+        whyRu: 'Мотоцикл, гружёный универсал и длинный автобус ведут себя на дороге совершенно по-разному. Понимая их габариты и инерцию, вы не подрежете фуру в повороте и не ошибётесь в скорости встречного байка.',
+        whyDa: 'En motorcykel, en tungt lastet bil og en lang bus opfører sig vidt forskelligt i trafikken. Når du kender deres fysik og udsyn, undgår du farlige fejlbedømmelser af fart og svingradius.',
         pointsRu: [
           'Центр тяжести (tyngdepunkt) и загрузка (Mål 3.1): тяжёлый багаж на крыше повышает крен и удлиняет тормозной путь; на льду возможны снос передка (understyring — авто «едет прямо») или занос зада (overstyring).',
           'Мотоцикл (Mål 3.2): узкий силуэт — мозг ошибочно оценивает его скорость и расстояние (кажется, что он дальше, чем есть!). Уязвим к боковому ветру и разметке, хуже тормозит в наклоне.',
@@ -163,6 +169,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Свет, отражатели и лампы панели',
         bodyDa: 'Foran: 2 hvide positionslys, 2 nærlys (asymmetrisk mod højre kantsten), 2 fjernlys. Bagpå: 2 røde baglys, 3 stoplys, 2 røde reflekser (ikke trekantede), hvidt nummerpladelys.',
         bodyRu: 'Обязательные огни, их дальность, частота поворотников и правило красных/жёлтых индикаторов приборной панели.',
+        whyRu: 'В Дании часто бывают дождь, туман и короткий световой день — важно не только самим видеть дорогу, но и оставаться заметным сзади, а также мгновенно понимать, при какой лампе на приборке надо сразу глушить мотор.',
+        whyDa: 'I dansk regn, tåge og mørke skal du både kunne se langt frem og sikre, at baglygterne faktisk er tændt — samt straks vide, hvilke advarselslamper på panelet der kræver øjeblikkeligt stop.',
         pointsRu: [
           'Габариты (2 белых + 2 красных): видны в темноте минимум с 300 м.',
           'Ближний свет: освещает минимум 30 м (уклон 1% = 1 см на метр, асимметричный луч вправо).',
@@ -217,6 +225,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Обзор, стёкла, омыватель и выхлопная система',
         bodyDa: 'Forruden skal være hel uden skader i synsfeltet, visker/sprinkler skal virke, og udstødningen skal være tæt.',
         bodyRu: 'Лобовое стекло без трещин в зоне обзора, исправные дворники и герметичный глушитель без лишнего шума.',
+        whyRu: 'Чистое стекло, работающий омыватель и исправный глушитель — это базовый контроль машины перед каждой поездкой: грязь и соль мгновенно слепят против солнца, а дырявый выхлоп опасен угарным газом.',
+        whyDa: 'Klart udsyn gennem ruden, fungerende sprinkler og en tæt udstødning er grundlæggende sikkerhed før hver tur: snavs og lav sol blænder på et sekund, og en utæt udstødning er både ulovlig og sundhedsfarlig.',
         pointsRu: [
           'Лобовое стекло и зеркала должны быть чистыми и без трещин/сколов в зоне работы дворников перед водителем.',
           'Омыватель (sprinklervæske) и щётки обязаны очищать стекло равномерно без разводов.',
@@ -250,17 +260,19 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Рулевое управление и подкапотное пространство',
         bodyDa: 'Moderne biler med servostyring må ikke have ratslør (0 cm dødgang). Tjek bremsevæske mellem MIN og MAX, motorolie på oliepinden, kølervæske og sprinklervæske.',
         bodyRu: 'На современных авто с усилителем руля люфт (ratslør) должен отсутствовать (0 см). Под капотом проверяем 4 жидкости.',
+        whyRu: 'Перед выездом на практическом экзамене (Kontrolprøven) инспектор почти всегда просит открыть капот, показать базовые жидкости и объяснить, почему у руля не должно быть люфта (пустого свободного хода).',
+        whyDa: 'Inden kørslen på den praktiske prøve (Kontrolprøven) beder prøvesagkyndigen dig næsten altid åbne motorhjelmen, udpege de 4 vigtigste væsker og tjekke, at styretøjet reagerer uden ratslør.',
         pointsRu: [
-          'Люфт руля: при работающем двигателе (активный усилитель) колесо должно реагировать мгновенно (0 см свободного хода).',
-          'Тормозная жидкость (Bremsevæske) и антифриз (Kølervæske) — уровень между MIN и MAX.',
-          'Моторное масло проверяют щупом на ровной площадке при заглушенном моторе.',
-          'В бачке омывателя (Sprinklervæske) всегда должна быть жидкость (зимой незамерзающая).',
+          'Люфт руля (Ratslør) — это пустой ход, когда вы чуть поворачиваете руль, а колёса ещё стоят (как болтающийся руль велосипеда). При заведённом моторе колесо должно реагировать мгновенно — линейка для «0 см» не нужна, главное чтобы не было заметной задержки.',
+          'Тормозная жидкость (Bremsevæske) и антифриз (Kølervæske) — уровень между MIN и MAX виден через стенку бачка (горячий антифриз открывать нельзя!).',
+          'Моторное масло проверяют жёлтым щупом (Oliepind) на ровной площадке при заглушенном моторе: вынуть, протереть, вставить обратно и проверить след между MIN и MAX.',
+          'В бачке омывателя (Sprinklervæske, синяя крышка) всегда должна быть жидкость (зимой незамерзайка до −20 °C).',
         ],
         pointsDa: [
-          'Rattslør: ved tændt motor (aktiv servostyring) skal forhjulene reagere med det samme uden rattslør (0 cm frigang).',
-          'Bremsevæske og kølervæske — væskestanden skal ligge mellem MIN- og MAX-mærkerne.',
-          'Motorolie kontrolleres med oliepinden på plant underlag, når motoren er slukket.',
-          'I sprinklervæskebeholderen skal der altid være væske (om vinteren frostsikret sprinklervæske).',
+          'Ratslør er «dødgang» i rattet (som et løst cykelstyr): ved startet motor (aktiv servostyring) skal forhjulet reagere med det samme uden forsinkelse — «0 cm» betyder bare ingen mærkbar dødgang.',
+          'Bremsevæske og kølervæske — væskestanden skal ligge mellem MIN- og MAX-mærkerne udefra (åbn aldrig varm kølervæske!).',
+          'Motorolie kontrolleres med den gule oliepind på plant underlag ved slukket motor: træk op, tør af, sæt ned igen og aflæs mellem MIN og MAX.',
+          'I sprinklervæskebeholderen (blåt låg) skal der altid være væske (om vinteren frostsikret sprinklervæske ned til −20 °C).',
         ],
         trapRu: 'Никогда не открывайте крышку расширительного бачка антифриза (kølervæske) на горячем двигателе — можно получить тяжёлые ожоги паром!',
         trapDa: 'Åbn aldrig dækslet til kølervæskens ekspansionsbeholder på en varm motor — du kan få alvorlige forbrændinger af hed damp!',
@@ -287,17 +299,19 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Шины, диски и амортизаторы',
         bodyDa: 'Lovligt minimum for dækmønster er 1,6 mm på hele slidbanen (TWI-indikatorer i rillerne). Samme dæktype på alle 4 hjul (sommer/vinter). Tryk ned på bilens hjørne og slip: bilen skal straks gå i ro.',
         bodyRu: 'Законный минимум глубины протектора — 1,6 мм по всей рабочей поверхности (ориентируйтесь по индикатору износа TWI).',
+        whyRu: 'Единственная точка контакта тяжёлой машины с дорогой — это 4 ладони резины под колёсами. Лысые шины или «прыгающие» амортизаторы резко увеличивают тормозной путь на мокром асфальте и запрещены законом.',
+        whyDa: 'Bilens eneste kontakt med vejen er fire små trædeflader under dækkene. Slidte dæk eller dårlige støddæmpere forlænger bremselængden voldsomt på våd vej — og udløser store bøder.',
         pointsRu: [
-          'Минимальная глубина протектора по закону — 1,6 мм (смотрите перемычки TWI в канавках).',
+          'Минимальная глубина протектора по закону — 1,6 мм: загляните на дно канавок — там видны маленькие резиновые перемычки (TWI). Если резина стёрлась вровень с ними — шина вне закона.',
           'Для зимы настоятельно рекомендуется минимум 3 мм. При снеге, льде или слякоти (vinterføre) с 01.07.2025 запрещена летняя резина («åbenbart uegnede dæk» — штраф 1.000 kr за колесо!): требуются шины минимум M+S, а лучше со снежинкой 3PMSF.',
           'Все 4 шины должны быть одного типа (либо все летние, либо все зимние/всесезонные).',
-          'Надавите на угол кузова и отпустите: машина должна подняться 1 раз и сразу замереть.',
+          'Амортизаторы (Støddæmpere): надавите на угол крыла над колесом и отпустите — ✅ норма: поднялась 1 раз и замерла; ❌ ошибка: продолжает качаться вверх-вниз как мячик.',
         ],
         pointsDa: [
-          'Lovens minimum for dækmønsterdybde er 1,6 mm (tjek slidindikatorerne TWI i dækrillerne).',
+          'Lovens minimum for dækmønsterdybde er 1,6 mm: kig ned i rillerne efter de små forhøjede gummiklodser (TWI) — er dækket slidt i plan med TWI, er det ulovligt.',
           'Om vinteren anbefales mindst 3 mm. Ved sne, is eller sjap (vinterføre) er sommerdæk forbudt fra 01.07.2025 («åbenbart uegnede dæk» — bøde på 1.000 kr. pr. dæk!): der kræves mindst M+S-dæk og helst vinterdæk med snefnugsymbol (3PMSF).',
           'Alle 4 dæk skal være af samme type (enten alle sommerdæk eller alle vinter-/helårsdæk).',
-          'Tryk hårdt ned på et hjørne af bilen og slip: bilen skal rejse sig én gang og straks falde til ro.',
+          'Støddæmpere: tryk hårdt ned over hvert hjørne af bilen og slip — ✅ normalt: rejser sig én gang og falder til ro; ❌ fejl: bilen fortsætter med at gynge op og ned.',
         ],
         exceptionsRu: 'Временное запасное колесо («докатка») допускает отличие только для доезда до СТО с ограничением скорости (обычно до 80 км/ч).',
         exceptionsDa: 'Et midlertidigt reservehjul («nødhjul») må kun afvige midlertidigt til nærmeste værksted med nedsat hastighed (typisk højst 80 km/t).',
@@ -325,29 +339,31 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Тормоза и вакуумный усилитель',
         bodyDa: 'Sluk motoren og pump bremsepedalen 3–4 gange, til den bliver hård. Hold trykket og start motoren: pedalen skal synke en smule — det viser, at vakuumforstærkeren virker. Pedalen må ikke synke til bunds ved fast tryk (utæthed). Håndbremsen skal kunne holde bilen på en skråning.',
         bodyRu: 'Заглушите мотор и нажмите педаль тормоза 3–4 раза, пока она не станет твёрдой. Удерживая педаль, заведите двигатель: она должна слегка уйти вниз — вакуумный усилитель исправен.',
+        whyRu: 'Чтобы тормозить легко, ножному тормозу помогает вакуумный усилитель, работающий от мотора. Этот простой тест за 20 секунд доказывает вам и инспектору, что усилитель исправен и из тормозов не течёт жидкость.',
+        whyDa: 'For at du ikke skal træde med hele kropsvægten, hjælper vakuumforstærkeren dig med at bremse — men kun når motoren kører. Denne korte test beviser både for dig og til prøven, at bremserne holder tæt og forstærkeren virker.',
         pointsRu: [
-          'При заглушенном моторе накачайте педаль тормоза 3–4 раза — она должна стать жёсткой.',
-          'Удерживая педаль, заведите мотор — она должна мягко просесть чуть вниз (вакуумный усилитель исправен).',
-          'При сильном нажатии на 10 секунд педаль не должна проваливаться к полу (иначе утечка жидкости).',
-          'Стояночный тормоз (ручник) обязан удерживать машину на уклоне.',
+          'При заглушенном моторе нажмите педаль тормоза 3–4 раза — она станет тугой (ушёл воздух из вакуумного усилителя).',
+          'Продолжая держать педаль с обычным уверенным усилием (как перед красным светофором — НЕ нужно давить изо всех сил всем весом!), заведите мотор: ✅ норма — педаль мягко чуть опустится вниз (усилитель включился).',
+          'Держите ногу неподвижно ~10 секунд с тем же усилием: ✅ норма — педаль замерла на одном уровне; ❌ ошибка — продолжает медленно проваливаться к полу (утечка тормозной жидкости!) или осталась каменной при запуске.',
+          'Стояночный тормоз (Håndbremse / клавиша P) обязан удерживать машину на уклоне отдельно от ножного тормоза.',
         ],
         pointsDa: [
-          'Pump bremsepedalen 3–4 gange med slukket motor — pedalen skal blive hård.',
-          'Hold trykket på pedalen og start motoren — pedalen skal synke blødt lidt ned (vakuumbremseforstærkeren virker).',
-          'Ved kraftigt tryk i 10 sekunder må bremsepedalen ikke synke mod gulvet (ellers er der utæthed i bremsesystemet).',
-          'Parkeringsbremsen (håndbremsen) skal kunne holde bilen sikkert på en hældning.',
+          'Pump bremsepedalen 3–4 gange med slukket motor — pedalen bliver hård, fordi vakuummet slipper op.',
+          'Hold et almindeligt fast tryk på pedalen (som ved et rødt lyskryds — du skal IKKE presse af alle kræfter!) og start motoren: ✅ normalt — pedalen synker lidt blødt ned (vakuumforstærkeren tager over).',
+          'Hold foden stille på pedalen i ca. 10 sekunder: ✅ normalt — pedalen står fast på samme niveau; ❌ fejl — den synker langsomt mod gulvet (utæthed!) eller forbliver helt hård ved start.',
+          'Parkeringsbremsen (håndbremsen / P-knap) skal kunne holde bilen sikkert på en hældning.',
         ],
         trapRu: 'Ученики часто путают: лёгкое проседание педали при запуске мотора — это НОРМА, а медленное проваливание до пола при удержании — это ПОЛОМКА (утечка).',
         trapDa: 'Elever blander det ofte sammen: en let synkning af bremsepedalen ved motorstart er NORMALT, mens langsom synkning helt mod gulvet under fast tryk betyder FEJL (utæthed).',
         attentionStepsRu: [
-          'Заглушите мотор и нажмите педаль тормоза 3–4 раза подряд — она станет тугой и высокой (стравили вакуум)',
-          'Удерживая ногу на тугой педали, запустите двигатель — педаль мягко опустится чуть вниз (вакуумный усилитель исправен!)',
-          'Зажмите педаль со всей силы на 10 секунд (не должна уходить к полу) и проверьте, что ручник держит авто на уклоне',
+          'Заглушите мотор и нажмите тормоз 3–4 раза — педаль станет тугой и высокой',
+          'Держа педаль с обычным усилием (как на светофоре), заведите мотор → педаль чуть просядет (усилитель работает)',
+          'Удерживайте ногу спокойно 10 сек (педаль стоит ровно на месте и не проваливается в пол) и проверьте ручник',
         ],
         attentionStepsDa: [
-          'Sluk motoren og pump bremsepedalen 3–4 gange, indtil den føles helt hård under foden',
-          'Hold konstant tryk på pedalen og start motoren — pedalen skal synke en smule blødt ned (vakuumforstærkeren virker!)',
-          'Hold hårdt tryk i 10 sekunder (må ikke synke mod gulvet) og kontroller, at parkeringsbremsen holder bilen sikkert',
+          'Sluk motoren og pump bremsepedalen 3–4 gange, til den føles hård under foden',
+          'Hold almindeligt fast tryk på pedalen og start motoren → pedalen synker en smule ned (vakuumforstærkeren virker)',
+          'Hold trykket roligt i 10 sekunder (må ikke synke mod gulvet) og tjek, at håndbremsen holder bilen',
         ],
         visual: {
           kind: 'technical',
@@ -402,6 +418,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Базовое правило § 3, «туннельное зрение» и объезд припаркованных авто',
         bodyDa: 'Færdselsloven § 3 pålægger dig altid at optræde hensynsfuldt og agtpågivende. Ved høj fart indsnævres dit synsfelt (tunnelsyn). Hold min. 1 m dørzone ved parkerede biler.',
         bodyRu: 'Ключевые цели из Модуля 1 и 3 датских автошкол: психофизиология внимания водителя и безопасный разъезд с препятствиями и припаркованными машинами.',
+        whyRu: 'Даже если вы правы по знакам, закон (§ 3) требует уступать, чтобы избежать аварии. Здесь учимся замечать «невидимые» опасности: внезапно открытую дверь припаркованной машины и сужение зрения на высокой скорости.',
+        whyDa: 'Selvom du har forkørselsret, kræver færdselslovens § 3, at du altid kører hensynsfuldt og undgår uheld. Her lærer du at forudse pludseligt åbnede bildøre og forstå, hvordan høj fart giver tunnelsyn.',
         pointsRu: [
           '§ 3 Grundregler (Mål 6.2): нельзя «настаивать на приоритете» ценой аварии! Если видите, что другой ошибся — тормозите и избегайте столкновения. Особая бережность к детям, пожилым и инвалидам.',
           'Туннельное зрение (Tunnelsyn, Mål 4.1–4.2): чем выше скорость (напр. 110–130 км/ч), тем уже угол периферического зрения — смотрите дальше вперёд и активно сканируйте зеркала и обочины.',
@@ -437,6 +455,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Контроль обстановки: Зеркало — Зеркало — Плечо',
         bodyDa: 'Før vognbaneskift, sving, igangsætning fra kantsten eller overhaling skal du altid orientere dig i rækkefølgen: Bakspejl → Sidespejl → Skulderkig i den blinde vinkel → Blink i god tid → Udfør manøvren.',
         bodyRu: 'Перед любым поворотом, перестроением, началом движения или обгоном водитель обязан проверить пространство в строгой последовательности.',
+        whyRu: 'В Дании тысячи велосипедистов ездят прямо вдоль правого борта машин. Порядок «зеркало → зеркало → взгляд через плечо» до автоматизма привит каждому водителю, чтобы никогда не повернуть прямо на велосипедиста.',
+        whyDa: 'I Danmark cykler tusindvis af trafikanter lige langs din højre side. Rutinen spejl-spejl-skulder skal sidde på rygraden før ethvert manøvretrin, så du aldrig overser nogen i den blinde vinkel.',
         pointsRu: [
           '1. Салонное зеркало (Bakspejl) — оценка потока сзади и скорости обгоняющих.',
           '2. Боковое зеркало (Sidespejl) — обстановка в соседней полосе или на велодорожке.',
@@ -472,6 +492,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Слепые зоны грузовиков и безопасный выход из авто',
         bodyDa: 'Hold aldrig i højre side ved en højresvingende lastbil, og brug højre hånd til at åbne førerdøren.',
         bodyRu: 'Никогда не заезжайте справа от поворачивающего грузовика и открывайте дверь правой рукой.',
+        whyRu: 'У грузовиков и автобусов огромные мёртвые зоны, откуда не видно ни легковушки, ни велосипеда. А открывая дверь правой рукой («голландский хват»), вы сами поворачиваете плечи и не снесёте проезжающего мимо велосипедиста.',
+        whyDa: 'Lastbiler og busser har store blinde vinkler, hvor både biler og cyklister forsvinder helt. Og når du åbner bildøren med højre hånd (hollandsk greb), tvinger du automatisk blikket bagud før døren svinger op.',
         pointsRu: [
           'У грузовиков и автобусов огромные слепые зоны (особенно справа и прямо перед кабиной) — если вы не видите лицо водителя в его зеркале, он не видит вас.',
           'Голландский захват (hollandsk greb): открывайте водительскую дверь правой рукой — корпус повернётся назад, и вы заметите велосипедиста до открытия двери.',
@@ -505,6 +527,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Правило 2 секунд и физика тормозного пути',
         bodyDa: 'Standselængde = Reaktionslængde + Bremselængde. Ved fordobling af hastigheden bliver reaktionslængden 2× så lang, men bremselængden bliver 4× så lang!',
         bodyRu: 'Безопасная дистанция измеряется в секундах, а не в метрах. При росте скорости энергия растёт в квадрате.',
+        whyRu: 'Метры на трассе плохо оцениваются на глаз — проще отсчитать «раз-два» до впереди идущей машины. Понимание, почему при удвоении скорости тормозной путь растёт в 4 раза, спасает от наезда сзади в дождь и лёд.',
+        whyDa: 'Afstand i meter er svær at vurdere i fart — derfor tæller vi sekunder. Når du forstår, hvorfor dobbelt hastighed giver fire gange så lang bremselængde, holder du naturligt sikker afstand.',
         pointsRu: [
           'На сухом асфальте держите минимум 2 секунды (от момента проезда столба машиной впереди: «1001, 1002»).',
           'В дождь, снег или туман дистанцию увеличивают до 3–4+ секунд.',
@@ -541,6 +565,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Математика тормозного пути и правила заднего хода',
         bodyDa: 'Standselængden består af reaktionslængde + bremselængde. Ved bakning har du fuld vigepligt for alle.',
         bodyRu: 'Остановочный путь = путь реакции + тормозной путь. При движении назад приоритет у всех.',
+        whyRu: 'Машина не останавливается в момент, когда вы увидели опасность: сначала идёт секунда реакции, и лишь потом срабатывают тормоза. Эти простые расчёты часто встречаются в вопросах Teoriprøven.',
+        whyDa: 'Bilen stopper ikke i det sekund, du ser en fare: først kører den videre under din reaktionstid, og først derefter bremser den. De enkle formler her er både livreddende og faste gengangere til teoriprøven.',
         pointsRu: [
           'При скорости 50 км/ч за 1 секунду реакции авто проезжает ~14 м (при 80 км/ч — ~22 м). При росте скорости в 2 раза тормозной путь растёт в 4 раза!',
           'На мокром льду тормозной путь длиннее в 4–10 раз — на затяжном спуске включайте пониженную передачу (торможение двигателем), чтобы не перегреть тормоза.',
@@ -574,6 +600,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Отъезд от бордюра, разворот и экономичное вождение',
         bodyDa: 'Når du sætter i gang fra kantsten, har du ubetinget vigepligt. Ved vending eller bakning må du aldrig være til fare eller ulempe.',
         bodyRu: 'Начало движения от края дороги и задний ход требуют безусловного приоритета для всех движущихся участников.',
+        whyRu: 'Каждый выезд от бордюра, разворот или задний ход — это опасный манёвр, где у вас нет никакого приоритета. Плюс плавная экономичная езда сразу нравится инструктору и экономит топливо.',
+        whyDa: 'Igangsætning fra kantsten, vending og bakning er særlige manøvrer, hvor du altid har ubetinget vigepligt for al anden færdsel. Samtidig giver rolig økokørsel færre overraskelser for både dig og medtrafikanterne.',
         pointsRu: [
           'Отъезжая от обочины/парковки, вы безусловно уступаете всем авто и велосипедистам. Поворотник не даёт приоритета!',
           'При развороте и езде задним ходом нельзя заставлять других тормозить или менять траекторию (смотрите через заднее стекло, не только в камеру).',
@@ -647,6 +675,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Как читать любой датский знак (Система A, B, C, D, E)',
         bodyDa: 'A = advarsel (trekant), B = vigepligt, C = forbud (rød cirkel), D = påbud (blå cirkel), E = oplysning/zone (blå firkant).',
         bodyRu: 'Форма и цвет мгновенно говорят о типе правила: красный треугольник, красный круг (запрет) и синий круг (приказ) работают по разным законам.',
+        whyRu: 'В Дании десятки дорожных знаков, но учить каждый наизусть вслепую не нужно: форма и цвет мгновенно выдают смысл любого знака (треугольник = осторожно, красный круг = нельзя, синий круг = обязан).',
+        whyDa: 'I Danmark findes der mange færdselstavler, men form og farve afslører straks betydningen af ethvert skilt: rød trekant advarer, rød cirkel forbyder, og blå cirkel påbyder.',
         pointsRu: [
           'A (красный треугольник) = предупреждение (ставятся за 150–250 м на трассе); B = знаки приоритета (треугольник B11 остриём вниз уникален, чтобы узнавать даже в снегу!).',
           'C (круг с красной каймой) = ЗАПРЕТ (скорость C55, обгон C51, въезд C19, остановка C61/C62) — одиночные знаки C51/C55 обычно отменяются на следующем перекрёстке!',
@@ -681,6 +711,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Подтаблички под знаками (Стрелки, скобки и цвета)',
         bodyDa: 'En undertavle gælder KUN for den hovedtavle, den sidder direkte under.',
         bodyRu: 'Как правильно расшифровывать время, расстояния и исключения на табличках под датскими знаками.',
+        whyRu: 'Самая частая причина штрафов у новичков — они видят большой синий знак P или скорость, но не читают маленькую белую табличку внизу. Стрелки и часы времени полностью меняют, где и кому знак действует.',
+        whyDa: 'Den hyppigste årsag til bøder og fejl på prøven er, at man overser den lille hvide undertavle. Pile, afstandstal og tidsrum afgør præcist, hvor og for hvem hovedskiltet gælder.',
         pointsRu: [
           '«500 m» без стрелок — расстояние ДО начала действия знака.',
           '«↑ 500 m ↑» со стрелками по бокам — ПРОТЯЖЁННОСТЬ зоны действия.',
@@ -716,6 +748,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Разметка: сплошная, предупредительная, Spærreflade и Cykelboks',
         bodyDa: 'Vognbanelinje må krydses. Varslingslinje advarer om spærrelinje. Spærrelinje og spærreflade må aldrig overskrides.',
         bodyRu: 'Четыре главных элемента разметки, которые нельзя путать на датском экзамене.',
+        whyRu: 'Разметка на асфальте подсказывает гораздо больше, чем кажется: можно ли выходить на обгон, как не выехать на полосатый островок безопасности и где останавливаться у светофора, не перекрыв карман для велосипедов.',
+        whyDa: 'Vejafmærkningen på asfalten styrer dine valg fra sekund til sekund: hvornår overhaling er lovlig, at spærreflader er helt forbudt område, og at cyklisterne skal have deres egen grønne boks forrest ved lyskrydset.',
         pointsRu: [
           'Прерывистая (Vognbanelinje — короткие штрихи): можно пересекать после обзора.',
           'Предупредительная (Varslingslinje — длинные штрихи, короткие паузы): предупреждает о скорой сплошной или опасности — начинать обгон нельзя!',
@@ -753,6 +787,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Иерархия сигналов, жёлтый свет и ж/д переезд',
         bodyDa: 'Hierarki: Politi → Lyssignal → Tavler → Færdselsregler. Gult lys betyder stands før stoplinjen, hvis sikkert.',
         bodyRu: 'Чёткий порядок подчинения на перекрёстках и правила проезда ж/д переездов.',
+        whyRu: 'На реальном перекрёстке сигналы могут конфликтовать — например, горит зелёный светофор, но стоит знак уступить или регулировщик. Чёткая иерархия снимает любую панику в секунду.',
+        whyDa: 'I travle kryds skal du vide præcist, hvad der trumfer hvad, hvis politi, lyssignal, skilte og generelle regler peger i hver sin retning — samt hvordan du krydser jernbanespor sikkert.',
         pointsRu: [
           'Иерархия: 1. Сигналы полиции → 2. Светофор → 3. Знаки → 4. Общие правила (помеха справа).',
           'Постоянный жёлтый свет = СТОП перед стоп-линией (проезд допустим только если безопасная остановка уже невозможна).',
@@ -789,6 +825,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Ремонт дороги (жёлтая разметка) и сигналы регулировщика',
         bodyDa: 'Midlertidig gul afmærkning ophæver hvide striber ved vejarbejde. Politiets tegn står altid øverst.',
         bodyRu: 'При дорожных работах жёлтая временная разметка отменяет постоянную белую; жесты полиции превыше светофора.',
+        whyRu: 'На датских дорогах постоянно идёт ремонт с временными жёлтыми линиями и знаками. Важно знать главное правило: в зоне ремонта жёлтая разметка полностью отменяет привычную белую.',
+        whyDa: 'Vejarbejde med gule striber og midlertidige tavler er hverdag på danske veje. Her er den enkle hovedregel: gul midlertidig afmærkning ophæver altid de faste hvide striber.',
         pointsRu: [
           'На участке ремонта (Vejarbejde) ЖЁЛТАЯ разметка на асфальте и временные жёлтые знаки полностью ОТМЕНЯЮТ постоянные белые линии — ехать нужно строго по жёлтому коридору!',
           'В узком коридоре ремонта запрещено обгонять широкие грузовики, если ширина полос ограничена.',
@@ -864,6 +902,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Помеха справа (Højrevigepligt)',
         bodyDa: 'Gælder i alle vejkryds, hvor der IKKE er skilte, lyssignaler, hajtænder eller overkørsel (fx villakvarterer og store P-pladser).',
         bodyRu: 'Если перекрёсток равнозначный (нет знаков приоритета, светофора, hajtænder и выезда через тротуар), действует правило правой руки.',
+        whyRu: 'Помеха справа — самый коварный фильтр датского экзамена, потому что на тихих жилых улицах часто нет вообще никаких знаков. Не сбавить ход перед незаметной улочкой справа = мгновенный провал практики.',
+        whyDa: 'Højrevigepligt er den største fælde til både teori- og køreprøven, fordi sideveje i villakvarterer ofte slet ingen skilte har. Glemmer du at holde tilbage fra højre i et ureguleret kryds, dumper man øjeblikkeligt.',
         pointsRu: [
           'Вы обязаны пропустить транспорт (включая велосипедистов!), приближающийся к вам справа.',
           'Транспорт слева уступает вам, но вы всегда следите, тормозит ли он.',
@@ -898,6 +938,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Т-образный перекрёсток без знаков и изгиб главной дороги',
         bodyDa: 'I et T-kryds uden vigepligtstavler gælder højrevigepligt! Ved knækket hovedvej skal du blinke ved retningsændring.',
         bodyRu: 'На Т-образном перекрёстке без знаков действует помеха справа, а при изгибе главной дороги обязателен поворотник.',
+        whyRu: 'Новички часто думают, что на Т-образном перекрёстке «прямая дорога всегда главная» — в Дании это миф! А если главная дорога резко сворачивает вбок на перекрёстке, важно уметь читать подтабличку-схему.',
+        whyDa: 'Mange tror fejlagtigt, at den lige vej i et T-kryds altid har forkørselsret — i Danmark gælder højrevigepligt, hvis der ingen hajtænder er! Her lærer du også at læse undertavlen for knækket hovedvej.',
         pointsRu: [
           'На Т-образном перекрёстке без знаков и «акульих зубов» водитель, едущий прямо по верхней перекладине «Т», ОБЯЗАН уступить тому, кто выезжает справа с примыкания!',
           'Если главная дорога (B16) на перекрёстке поворачивает (подтабличка с жирной ломаной линией — knækket hovedvej): вы включаете поворотник, когда меняете направление (даже оставаясь на главной!), и НЕ включаете, если едете прямо на второстепенную.',
@@ -931,6 +973,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Безусловная уступка: «Акульи зубы», STOP и выезды',
         bodyDa: 'Gælder ved B11, STOP-skilt B13, hajtænder samt udkørsel fra P-plads, ejendom, markvej, tankstation eller over fortov/cykelsti.',
         bodyRu: 'Когда вы видите треугольники на асфальте (hajtænder) или выезжаете с прилегающей территории, вы обязаны пропустить пересекаемый поток с ОБЕИХ сторон.',
+        whyRu: 'Белые треугольники на асфальте («акульи зубы»), знак СТОП и выезд со двора через тротуар означают одно: вы обязаны пропустить абсолютно всех с обеих сторон, прежде чем высунуть нос машины.',
+        whyDa: 'Hajtænder på asfalten, stoptavle eller udkørsel over fortov/cykelsti betyder det samme: du skal holde helt tilbage for al trafik fra både højre og venstre, før du kører frem.',
         pointsRu: [
           'При знаках B11 или разметке hajtænder заранее и заметно снизьте скорость, чтобы другие видели, что вы уступаете.',
           'При знаке STOP (B13) колёса обязаны остановиться полностью (0 км/ч) перед стоп-линией, даже если улица пуста.',
@@ -984,6 +1028,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Короткий и длинный левый поворот (Разъезд встречных)',
         bodyDa: 'Når to modkørende biler begge skal dreje til venstre i et kryds, kører de som hovedregel forbi hinanden med højre side mod højre side (kort venstresving).',
         bodyRu: 'Как разъезжаются две встречные машины, когда обе поворачивают налево на перекрёстке.',
+        whyRu: 'Когда вы и встречная машина напротив одновременно поворачиваете налево, нужно не столкнуться лоб в лоб в центре перекрёстка. Простое правило «короткого» и «длинного» поворота решает всё за доли секунды.',
+        whyDa: 'Når både du og en modkørende vil dreje til venstre i samme kryds, skal bilerne passere hinanden uden at spærre eller køre sammen. Her ser du præcist, hvornår I svinger foran eller bag om hinanden.',
         pointsRu: [
           'В Дании по умолчанию выполняется «короткий левый поворот» (kort venstresving): встречные машины разъезжаются ПРАВЫМИ бортами (перед центром перекрёстка), не пересекая траектории друг друга.',
           'Держите передние колёса прямо, пока ждёте встречный поток — чтобы при ударе сзади вас не вытолкнуло на встречную.',
@@ -1019,6 +1065,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Слияние (Fletning), перестроение и Круговое движение',
         bodyDa: 'Ved fletning (B15 / ophør af vognbane uden linje) har begge parter fælles ansvar (lynlås). Ved vognbaneskift over punkteret linje har den skiftende hele ansvaret.',
         bodyRu: 'Чёткое различие между «молнией» и перестроением, а также датские правила поворотников на круге.',
+        whyRu: 'В Дании круговых развязок больше, чем светофоров, а правила поворотников там отличаются от многих других стран (при въезде на круг НЕ мигают!). Плюс «молния» и обычное перестроение имеют разный приоритет.',
+        whyDa: 'Danmark har utallige rundkørsler, hvor blinkreglerne ofte overrasker udlændinge, og der er markant juridisk forskel på fletning («lynlås») og et almindeligt vognbaneskift.',
         pointsRu: [
           'Слияние (Fletning — знак B15, полоса разгона или сужение без разделительной линии): взаимное правило «застёжки-молнии» (один за другим).',
           'Перестроение (Vognbaneskift — вы пересекаете прерывистую линию между полосами): вся ответственность лежит только на том, кто перестраивается.',
@@ -1070,6 +1118,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Спецтранспорт, трамвай (Letbane) и всадники',
         bodyDa: 'Giv straks fri bane for udrykning (blåt blink), hold tilbage for letbanen, og pas på heste på vejen.',
         bodyRu: 'Освобождайте проезд скорой/полиции с маячками, уступайте рельсовому Letbane и осторожно объезжайте лошадей.',
+        whyRu: 'Скорая с сиреной, бесшумный городской трамвай Letbane в Орхусе/Оденсе/Копенгагене и всадник на лошади требуют особых действий, чтобы не запаниковать и не помешать спецтранспорту.',
+        whyDa: 'En ambulance med blåt blink, en støjsvag letbane på skinner eller en rytter på landevejen kræver rolig og rigtig reaktion, så du hverken spærrer vejen for udrykningen eller skaber panik.',
         pointsRu: [
           'При приближении полиции, скорой или пожарных с синими маячками/сиреной немедленно примите вправо (при необходимости — осторожно сдвиньтесь за стоп-линию, не создавая аварии). Ехать на красный следом за скорой запрещено!',
           'Городской трамвай/лёгкое метро (Letbane в Орхусе, Оденсе, Копенгагене) почти всегда имеет приоритет и длинный тормозной путь — никогда не останавливайтесь на рельсах.',
@@ -1145,6 +1195,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Пешеходные переходы, дети и животные',
         bodyDa: 'Ved ureguleret fodgængerfelt skal du give fri passage og aldrig overhale. Over for børn, ældre, heste og hvid stok skal du vise særlig agtpågivenhed.',
         bodyRu: 'Правила проезда «зебры», жилых зон и взаимодействия с уязвимыми участниками движения.',
+        whyRu: 'Пешеходы, дети у школ и старики непредсказуемы — они не защищены железным кузовом. Закон требует снижать скорость заранее перед каждой «зеброй», особенно если обзор справа закрыт стоящей машиной.',
+        whyDa: 'Fodgængere og børn har ingen beskyttende karrosseri omkring sig og reagerer ofte uforudsigeligt. Derfor skal du sænke farten i god tid før feltet og altid holde ekstra øje, hvis en bil ved siden af holder stille.',
         pointsRu: [
           'Перед нерегулируемым переходом (E17) заранее снижайте скорость — пешеход на переходе или вступающий на него имеет приоритет.',
           'Запрещено обгонять или опережать машину, которая тормозит/остановилась перед переходом!',
@@ -1181,6 +1233,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Автобус, отъезжающий от остановки',
         bodyDa: 'I byzone (≤ 50 km/t) skal du holde tilbage for en rutebil, der blinker til venstre fra stoppested. Uden for byzone har bussen vigepligt.',
         bodyRu: 'Обязанность уступить городскому рейсовому автобусу зависит от того, находитесь ли вы в населённом пункте (Byzone).',
+        whyRu: 'На экзамене постоянно попадается фото отъезжающего жёлтого автобуса с левым поворотником. Главное различие простое: в городе (до 50 км/ч) его ОБЯЗАНЫ пропустить, а за городом — нет.',
+        whyDa: 'En bybus med tændt venstre blinklys ved et stoppested er en fast eksamenssituation i Danmark. Den afgørende forskel er simpel: i byzone skal du holde tilbage — uden for byzone har bussen vigepligt.',
         pointsRu: [
           'Внутри города (Byzone, знак E55): если рейсовый автобус включил левый поворотник на остановке — вы ОБЯЗАНЫ притормозить и выпустить его (если это безопасно).',
           'За городом (Landevej, 80 км/ч): у вас НЕТ юридической обязанности уступать, но проявляйте осторожность.',
@@ -1215,6 +1269,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Жилая зона (15 км/ч), пешеходная улица и левый поворот',
         bodyDa: 'I opholds- og legeområder gælder max 15 km/t og parkering kun i afmærkede båse. Ved venstresving krydser du ofte modkørende cyklister.',
         bodyRu: 'В жилых зонах лимит 15 км/ч и приоритет пешеходов/детей, а при левом повороте помните про встречных велосипедистов.',
+        whyRu: 'Во дворах (Opholdsområde) дети могут играть прямо посреди дороги, поэтому машина там лишь «гость» со скоростью 15 км/ч. А на левом повороте нужно помнить про велосипедиста, который едет навстречу вам.',
+        whyDa: 'I opholds- og legeområder har legende børn og gående altid førsteret, og bilen er kun gæst ved maks. 15 km/t. Ved venstresving skal du desuden huske eventuelle cyklister, der krydser din vej.',
         pointsRu: [
           'Жилая и игровая зона (E51 Opholds- og legeområde): скорость макс. 15 км/ч, дети и пешеходы могут пользоваться всей шириной дороги, парковаться можно ТОЛЬКО на размеченных местах!',
           'Пешеходная улица (Gågade): въезд на авто запрещён, кроме разрешённого времени погрузки/жильцов (скорость шага ≤ 15 км/ч, полная уступка пешеходам).',
@@ -1248,6 +1304,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Мопеды (Knallert 30 vs 45), грузовые вело и Cykelgade',
         bodyDa: 'Lille knallert (30) kører på cykelsti; stor knallert (45, gul/hvid plade) skal køre på kørebanen som motorcykel.',
         bodyRu: 'Малый мопед (до 30 км/ч) едет по велодорожке, а большой мопед (до 45 км/ч, с номером) — строго по проезжей части.',
+        whyRu: 'В Дании два очень похожих внешне скутера подчиняются совершенно разным правилам: один едет по велодорожке как велосипед, а второй — как полноценный мотоцикл по вашей полосе. Ошибка с ними опасна при повороте.',
+        whyDa: 'To næsten ens knallerter følger i Danmark helt forskellige regler: Knallert 30 kører på cykelstien, mens Knallert 45 (med nummerplade) skal køre ude på selve kørebanen sammen med bilerne.',
         pointsRu: [
           'Knallert 30 и электровелосипеды едут по cykelsti — при правом и левом повороте вы обязаны пропускать их так же, как велосипедистов!',
           'Knallert 45 (имеет номерной знак сзади) и тракторы движутся ПО ПРОЕЗЖЕЙ ЧАСТИ (по велодорожке им ехать запрещено) — относитесь к ним как к полноценному транспорту, не сигнальте.',
@@ -1297,6 +1355,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Два типа правого поворота через велодорожку (Главная ловушка!)',
         bodyDa: 'Der findes to udformninger af cykelstier før højresving i Danmark: med ubrudt spærrelinje/kantsten helt frem til krydset, og med punkteret linje (fælles svingbane/opmarchbås).',
         bodyRu: 'На экзамене в Дании критически важно различать, какая разметка отделяет велодорожку перед вашим правым поворотом.',
+        whyRu: 'Поворот направо через велодорожку — причина №1 заваленных экзаменов в Дании! Линия разметки перед поворотом решает: прижаться ли вам к самому бордюру вправо заранее или поворачивать прямо из полосы, пропуская велосипедистов.',
+        whyDa: 'Højresving ind over cykelsti er årsag nr. 1 til dumpede køreprøver i Danmark! Striberne på asfalten afgør, om du skal trække helt ind over den stiplede kantlinje før svinget eller blive i din bane.',
         pointsRu: [
           'Тип 1 (Сплошная линия / бордюр до самого перекрёстка): оставайтесь в своей полосе (на велодорожку не заезжайте!). Сделайте spejl-spejl-skulder, пропустите всех велосипедистов и самокаты, едущих прямо, и только потом поворачивайте.',
           'Тип 2 (Перед перекрёстком бордюр пропадает и идёт прерывистая линия): после spejl-spejl-skulder и пропуска ближайших велосипедистов вы ОБЯЗАНЫ перестроиться к самому правому бордюру, чтобы никто не вклинился справа!',
@@ -1388,6 +1448,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Общие лимиты скорости: Город / Трасса / Motortrafikvej / Motorvej',
         bodyDa: 'Byzone: 50 km/t. Landevej og Motortrafikvej (blå E43): 80 km/t. Motorvej (grøn E42): 130 km/t.',
         bodyRu: 'Запомните точные базовые ограничения в Дании при отсутствии других знаков скорости.',
+        whyRu: 'На многих датских дорогах нет знаков с цифрой скорости — предполагается, что водитель сам знает базовый лимит для города (50), трассы (80) и автобана (130), плюс ограничения для прицепа.',
+        whyDa: 'På de fleste danske veje står der intet fartskilt efter hvert kryds — du forventes selv at vide, om grænsen er 50, 80, 110 eller 130 km/t (og lavere med anhænger).',
         pointsRu: [
           'Город (Byzone E55): максимум 50 км/ч.',
           'Загородная дорога (Landevej) и синяя скоростная дорога (Motortrafikvej E43): максимум 80 км/ч!',
@@ -1425,6 +1487,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Отличие Motortrafikvej (E43) от Motorvej (E42)',
         bodyDa: 'På motortrafikvej er fartgrænsen 80 km/t (IKKE 130!), og der kan komme modkørende uden autoværn.',
         bodyRu: 'Важнейшая ловушка Дании: на скоростной трассе E43 лимит 80 км/ч (а не 110/130) и может быть встречное движение!',
+        whyRu: 'Оба знака выглядят похоже и синие, но за перепутывание E43 и E42 легко получить крупный штраф за превышение: на скоростной трассе (Motortrafikvej) лимит всего 80 км/ч и нет разделительного барьера от встречки!',
+        whyDa: 'Begge skilte er blå og ligner hinanden, men forskellen er kæmpestor: på en motortrafikvej (E43) er grundgrænsen kun 80 km/t, og der kan være modkørende trafik uden autoværn imellem jer.',
         pointsRu: [
           'На Motortrafikvej (знак E43 — белый автомобиль в синем прямоугольнике) базовый лимит 80 км/ч (если знаками C55 не установлено 90 или 100 км/ч).',
           'В отличие от автобана E42, на Motortrafikvej часто НЕТ разделительного барьера (отбойника) — возможна встречка, а также бывают обычные перекрёстки со светофорами или примыканиями!',
@@ -1476,6 +1540,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Обгон (слева/справа), автомагистраль и Nødspor',
         bodyDa: 'Overhaling sker til venstre. På motorvej må kun køre motorkøretøjer ≥ 50 km/t. Nødsporet er kun til havari.',
         bodyRu: 'Когда обгон запрещён, редкие исключения для опережения справа и правила поведения на автомагистрали.',
+        whyRu: 'Обгон на трассе и вливание в поток автобана со скоростью 110–130 км/ч пугают новичков больше всего. Чёткий порядок шагов (разгон по полосе, правило обгона справа/слева и зачем нужна аварийная полоса) даёт спокойствие.',
+        whyDa: 'Overhaling og fletteregler ved 110–130 km/t på motorvejen kan virke skræmmende i starten. Når du kender den faste rækkefølge, hvornår overhaling højre om er tilladt, og hvad nødsporet er til, falder roen på.',
         pointsRu: [
           'Обгон выполняется СЛЕВА. Запрещён на закрытых подъёмах/поворотах, перед переходами и переездами, при сплошной и под знак C51 (под C51 можно обгонять только двухколёсных).',
           'Справа можно опережать ТОЛЬКО: 1) когда впереди машина прижалась к центру и мигает налево; 2) в плотной пробке (køkørsel); 3) на полосах со стрелками.',
@@ -1512,6 +1578,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Где обгон КАТЕГОРИЧЕСКИ запрещён (6 железных правил)',
         bodyDa: 'Overhaling er forbudt før bakketop, i uoverskuelige sving, ved jernbaneoverkørsel, før fodgængerfelt, i kryds og når nogen allerede overhaler dig.',
         bodyRu: 'Запоминаем все 6 ситуаций, в которых начинать обгон в Дании запрещено законом.',
+        whyRu: 'Выезд на встречную полосу перед закрытым поворотом, горкой, переходом или ж/д переездом может стоить жизни и моментального лишения прав. Эти 6 железных запретов проверяют в каждом втором билете.',
+        whyDa: 'En overhaling i uoverskuelige sving, på bakketoppe, før fodgængerfelter eller ved jernbaneoverskæringer koster liv — og giver klip eller kørselsforbud. De 6 absolutte forbud skal sidde på plads.',
         pointsRu: [
           '1) Перед закрытым поворотом и вершиной подъёма (bakketop), если встречная полоса не просматривается полностью на всю дистанцию обгона.',
           '2) Перед и на пешеходном переходе (fodgængerfelt), а также на ж/д переезде и непосредственно перед ним.',
@@ -1548,6 +1616,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Вождение в туннелях (Mål 7.20: свет, очки и поломка)',
         bodyDa: 'Tænd altid nærlys før indkørsel i tunnel, tag solbriller af, hold ekstra afstand og brug kun nødvige ved havari.',
         bodyRu: 'Обязательная тема из плана датских автошкол (этап Skolemodul 4, Mål 7.20): правила освещения, разметки и действий при заторе/аварии в туннеле.',
+        whyRu: 'Подземный туннель — замкнутое пространство без дневного света и обочины. В датской программе (Mål 7.20) отдельно учат: снимать тёмные очки, включать настоящий ближний свет и знать, как не застрять на встречке или при пожаре.',
+        whyDa: 'En tunnel er et lukket rum uden dagslys og ofte uden nødspor. I det officielle undervisningsmål (Mål 7.20) lærer du at tage solbriller af, tænde rigtigt nærlys og reagere sikkert ved kø eller brand i tunnelen.',
         pointsRu: [
           'Перед въездом в туннель обязательно включите принудительный ближний свет (Nærlys — чтобы горели и задние габариты!) и снимите солнцезащитные очки.',
           'В туннеле строго запрещены разворот, задний ход, остановка и стоянка вне аварийных карманов (SOS-ниши).',
@@ -1584,6 +1654,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Техпаспорт и расчёт массы прицепа для категории B',
         bodyDa: 'På teoriprøven vises ofte et uddrag af bilens og trailerens registreringsattest, hvor du skal vurdere, om du lovligt må køre med vogntoget på kategori B-kørekort.',
         bodyRu: 'На реальном экзамене часто показывают выписку из техпаспорта (`Registreringsattest`) и просят решить, можно ли тянуть такой прицеп с правами B.',
+        whyRu: 'Даже легковую машину с прицепом нельзя цеплять на глаз: по датскому закону вес считают по «разрешённой максимальной массе» (Totalvægt) в техпаспорте, а не по тому, пустой ли прицеп сейчас.',
+        whyDa: 'Du må ikke bare koble en trailer på efter mavefornemmelse: loven regner altid med den tilladte totalvægt på registreringsattesten, ikke hvor meget den tomme trailer vejer lige nu.',
         pointsRu: [
           'Базовое правило категории B: (Totalvægt машины) + (Totalvægt прицепа) ≤ 3.500 kg.',
           'Смотрите в техпаспорте авто графу «Største påhængsvægt med/uden bremser» — полная масса прицепа не должна превышать лимит самой машины!',
@@ -1660,6 +1732,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Разница между остановкой (≤3 мин) и стоянкой (>3 мин)',
         bodyDa: 'STANDSNING = op til 3 min (eller på-/aflæsning / af-/påstigning). PARKERING = over 3 min. C61 forbyder begge; C62 kun parkering.',
         bodyRu: 'Чёткое юридическое разграничение в Дании, которое не зависит от того, заглушен ли мотор и сидит ли водитель в салоне.',
+        whyRu: 'В Дании штрафы за парковку огромные (от 510–800 kr), и контролёры не прощают путаницы: даже если вы сидите в заведённой машине 4 минуты — это уже не остановка, а полноценная стоянка со всеми запретами.',
+        whyDa: 'Parkeringsbøder i Danmark er dyre, og grænsen er knivskarp: holder du stille i mere end 3 minutter uden aktiv af-/påstigning eller gods, er det juridisk set parkering — også selvom motoren kører og du sidder ved rattet.',
         pointsRu: [
           'Standsning (остановка): до 3 минут ИЛИ любое время на посадку/высадку людей или погрузку/разгрузку груза.',
           'Parkering (стоянка): свыше 3 минут без посадки/погрузки — даже если двигатель работает и вы сидите за рулём!',
@@ -1714,6 +1788,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Золотые метры: 5 м, 10 м, 12 м и 30 м',
         bodyDa: '5 m før felt/cykelsti, 10 m fra kryds, 12 m fra busstoppested, 30 m fra jernbaneoverskæring.',
         bodyRu: 'Точные расстояния, которые в Дании проверяют на экзамене и за нарушение которых штрафуют мгновенно.',
+        whyRu: 'Даже там, где нет ни одного запрещающего знака, действуют скрытые метры безопасности у переходов, перекрёстков и остановок, чтобы машины не закрывали обзор детям и поворачивающим водителям.',
+        whyDa: 'Selvom der ikke står noget skilt, gælder faste forbudsmeter før fodgængerfelter, omkring vejkryds, ved busstoppesteder og før jernbaneoverskæringer — alt sammen for at sikre frit udsyn for andre trafikanter.',
         pointsRu: [
           '5 метров ПЕРЕД пешеходным переходом и выездом с велодорожки (после них — можно!).',
           '10 метров от края пересекаемой проезжей части перекрёстка — КАК до, ТАК И после перекрёстка!',
@@ -1766,6 +1842,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: '3 м до сплошной, места инвалидов, зарядки EV и парковка «против шерсти»',
         bodyDa: 'Der skal altid være 3 m fri bane til spærrelinje. Parkering mod færdselsretningen på tovejs gade er forbudt.',
         bodyRu: 'Запрещена парковка против хода движения на двухсторонней улице, ближе 3 м к сплошной, а также на местах для инвалидов и зарядок.',
+        whyRu: 'Встать у левого бордюра «против течения» на обычной улице, перегородить зарядку для электрокаров или прижаться к сплошной линии ближе 3 метров — частые и дорогие ошибки, которые тестируют на экзамене.',
+        whyDa: 'At parkere mod færdselsretningen på en tovejsgade, spærre en elbil-ladestander eller tvinge andre biler hen over en spærrelinje koster øjeblikkelig bøde — lær de præcise grænser her.',
         pointsRu: [
           'На обычной двухсторонней улице разрешено останавливаться и парковаться ТОЛЬКО на правой стороне по ходу движения (парковаться слева «против шерсти» можно только на односторонней E19!).',
           'Между вашим припаркованным авто и сплошной осевой линией (spærrelinje) должно оставаться минимум 3 метра свободной ширины.',
@@ -1800,6 +1878,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Парковочный диск (P-skive), односторонняя улица и уклон',
         bodyDa: 'P-skive stilles frem til nærmeste kvarter. På ensrettet gade må du parkere i både højre og venstre side.',
         bodyRu: 'Как правильно ставить время на P-skive, с какой стороны улицы можно парковаться и как повернуть колёса на горке.',
+        whyRu: 'Датский парковочный диск (P-skive) на лобовом стекле крутится не к ближайшей минуте, а вперёд к 15 минутам. Плюс важно знать, куда выкрутить колёса на горке, чтобы машина не покатилась на проезжую часть.',
+        whyDa: 'På den danske P-skive skal du altid runde frem til næste kvarter ved ankomst — aldrig stille tiden frem senere. Og på skråninger redder de drejede forhjul mod eller fra kantstenen din bil fra at trille ud i trafikken.',
         pointsRu: [
           'P-skive (в правом нижнем углу лобового стекла) ставится вперёд до ближайших 15 минут (приехали в 10:04 → ставите 10:15). Подкручивать диск, не переставляя машину, запрещено.',
           'На двухсторонних улицах парковка только СПРАВА; на односторонней (E19) можно и справа, и слева.',
@@ -1836,6 +1916,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Стоянка ночью на неосвещённой трассе и холостой ход (Tomgang)',
         bodyDa: 'Uden for byzone i mørke må du ikke parkere på kørebanen — brug rabat/P-plads og tænd positionslys, hvis bilen står nær vejen.',
         bodyRu: 'Правила ночной стоянки за городом и запрет прогрева двигателя на холостом ходу (tomgang).',
+        whyRu: 'Остановка ночью на неосвещённой загородной трассе без габаритов практически гарантирует удар сзади. А в датских городах также штрафуют за лишний прогрев мотора на холостом ходу (Tomgang).',
+        whyDa: 'At holde i mørke på en uoplyst landevej uden tændt positionslys er livsfarligt for trafikken bagfra. Samtidig har danske kommuner strenge tomgangsregler, som forbyder at lade motoren stå i gang i flere minutter.',
         pointsRu: [
           'Ночью на неосвещённой дороге вне города при стоянке на краю проезжей части или в случае вынужденной остановки включите габаритные огни (positionslys) и аварийку при поломке.',
           'Нельзя парковаться на проезжей части главной дороги (B16) вне населённых пунктов, а также на вершине подъёма или в закрытом повороте.',
@@ -1911,6 +1993,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Ночь, туман, аквапланирование и гололёд',
         bodyDa: 'I mørke er kørelys alene ikke nok. Blænd ned 200–300 m før modkørende og 100–150 m før forankørende. Tågebaglygte kun i tæt tåge/nedbør.',
         bodyRu: 'Правила света в тёмное время суток и безопасное управление в сложных погодных условиях.',
+        whyRu: 'Датская погода славится дождём, порывистым ветром и внезапным туманом. Здесь разбираем, когда дальний свет сам вас слепит о стену тумана и как по мелким признакам поймать невидимый чёрный лёд.',
+        whyDa: 'Dansk vejr byder tit på regn, sidevind, tæt tåge og pludseligt isslag. Her lærer du, hvornår fjernlys blænder dig selv i tåge, og hvordan du mærker begyndende sort is før du skrider ud.',
         pointsRu: [
           'Ночью и при плохой видимости дневных огней (kørelys) недостаточно — включайте ближний/дальний свет (должны гореть задние габариты!).',
           'Переключение с дальнего на ближний: за 200–300 м до встречной машины и за 100–150 м при приближении сзади.',
@@ -1947,6 +2031,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Гололёд (Glatbane KTA) и съезд на высокий край обочины (Mål 9.1–9.5)',
         bodyDa: 'På køreteknisk anlæg træner du bremsning på glat vej, undvigemanøvrer og sikker tilbagekørsel, hvis højre hjul kører ud over en høj eller blød vejkant (rabat).',
         bodyRu: 'Завершающий практический этап датской автошколы перед экзаменом (Skolemodul 5 / KTA): физика скольжения и спасение машины при съезде с края асфальта.',
+        whyRu: 'Перед экзаменом каждый ученик проходит скользкий автодром (Glatbane), чтобы на практике прочувствовать занос и не влететь во встречку, если колёса случайно съехали на глубокую обочину. Учимся правильным рефлексам заранее.',
+        whyDa: 'Sidst i forløbet skal alle elever på glatbane (KTA) for at øve nødbremse, undvigemanøvrer og udskridning. Når du kender reaktionen på forhånd — især ved høj vejkant — undgår du panik i rattet.',
         pointsRu: [
           'Высокий/мягкий край обочины (Høj/blød rabat, Mål 9.5): если правые колёса съехали с асфальта на обочину — НИКОГДА не дёргайте резко руль влево и не бейте по тормозам! Плавно сбросьте газ, выровняйтесь вдоль дороги, затем под пологим углом вернитесь на асфальт.',
           'Аквапланирование и чёрный лёд (Mål 9.1–9.2): на мокром льду (0…+2 °C) и в колее тормозной путь длиннее до 4–10 раз. Выжмите сцепление / отпустите газ и смотрите туда, куда хотите направить машину (взгляд ведёт руль!).',
@@ -1979,6 +2065,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Дети в автомобиле (< 135 см) и подушка безопасности',
         bodyDa: 'Alle børn under 135 cm skal sidde i godkendt autostol eller selepude. En bagudvendt autostol må ALDRIG stå på forsædet med aktiv airbag!',
         bodyRu: 'Жёсткое правило датского экзамена, за нарушение которого водитель получает 1 балл (klip) и штраф.',
+        whyRu: 'Подушка безопасности выстреливает со скоростью 300 км/ч — для грудного ребёнка в автокресле спиной вперёд это смертельно, если не отключить подушку! За нарушение правила перевозки детей дают балл (klip).',
+        whyDa: 'En frontairbag udløses med voldsom kraft og er livsfarlig for et barn i bagudvendt autostol, hvis den ikke er deaktiveret. Manglende eller forkert børnesikring koster både barnets sikkerhed og et klip i kørekortet.',
         pointsRu: [
           'Рост ребёнка < 135 см → обязательно сертифицированное детское кресло или бустер по весу и росту.',
           'Если детское кресло установлено СПИНОЙ ВПЕРЁД (bagudvendt) на переднем сиденье — фронтальная подушка безопасности пассажира ОБЯЗАТЕЛЬНО должна быть отключена! Иначе при срабатывании она смертельно травмирует ребёнка.',
@@ -2013,6 +2101,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Усталость, лекарства с красным треугольником и риск-факторы',
         bodyDa: 'Træthed og sløvende medicin (rød advarselstrekant) kan straffes på linje med spirituskørsel efter § 54.',
         bodyRu: 'Сильная усталость и приём лекарств с красным треугольником юридически приравниваются к нетрезвому вождению.',
+        whyRu: 'Вождение полусонным или под лекарством с красным треугольником по последствиям не лучше алкоголя: микросон длится 3–4 секунды, за которые на трассе машина пролетает вслепую целое футбольное поле.',
+        whyDa: 'Stærk træthed og medicin med rød advarselstrekant sløver reaktionen lige så meget som alkohol: blot 3 sekunders mikrosøvn på landevej svarer til at køre en hel fodboldbane i blinde.',
         pointsRu: [
           'По § 54 Færdselsloven запрещено садиться за руль в состоянии переутомления, болезни или под действием лекарств/наркотиков, мешающих безопасному управлению.',
           'Красный предупреждающий треугольник на упаковке лекарства (trafikfarlig medicin) предупреждает о сонливости/замедлении реакции — проверьте эффект или откажитесь от поездки.',
@@ -2046,6 +2136,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Алкоголь, баллы (Klip), конфискация и алгоритм ДТП',
         bodyDa: 'Promillegrænse: 0,20 ‰ for nye bilister i de første 3 år (ellers 0,50 ‰). Ny bilist: 2 klip = kørselsforbud. Vanvidskørsel = konfiskation. Ved uheld: sikr sted, 50/100 m trekant, ring 112/114.',
         bodyRu: 'Жёсткие датские санкции для водителей (включая порог 0,20 ‰ для новичков с 01.07.2025) и обязательный порядок действий при аварии.',
+        whyRu: 'Дания строго наказывает за алкоголь (лимит для новичков с 01.07.2025 — всего 0,20 ‰!), опасную езду (вплоть до конфискации авто навсегда!) и оставление места аварии. Плюс разбираем чёткий план 1→2→3 при ДТП.',
+        whyDa: 'Danmark straffer alkohol (kun 0,20 ‰ grænse for nye bilister fra 01.07.2025!), vanvidskørsel (konfiskation af bilen!) og flugt fra uheld utrolig hårdt. Samtidig skal du kende nødplanen 1→2→3 på uheldsstedet.',
         pointsRu: [
           'Алкоголь: для новичков (первые 3 года после получения первых прав B) с 01.07.2025 действует лимит 0,20‰ (фактически ноль алкоголя → нарушение даёт kørselsforbud + курс ANT!). Для опытных водителей лимит — 0,50‰. Телефон в руках = штраф + 1 балл (klip).',
           'Система Klip: опытный водитель теряет права (условно) при 3 баллах за 3 года; новичок в первые 3 года получает немедленный KØRSELSFORBUD уже при 2 баллах!',
@@ -2081,6 +2173,8 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Обязательная страховка, техосмотр Syn, Klip и лишение прав',
         bodyDa: 'Ansvarsforsikring er lovpligtig. Ny personbil skal til første syn efter 4 år og derefter hvert 2. år.',
         bodyRu: 'Что должен знать каждый владелец автомобиля в Дании: страховка, график техосмотра и разница между условным и безусловным лишением прав.',
+        whyRu: 'Когда вы наконец купите или возьмёте первую машину, важно понимать разницу между обязательной страховкой и каско, когда ехать на техосмотр Syn и почему в первые 3 года права сгорают уже после 2 нарушений (klip).',
+        whyDa: 'Når du får kørekort og bil i Danmark, skal du kende forskellen på lovpligtig ansvarsforsikring og kasko, fristen for periodisk syn samt hvorfor nye bilister mister retten til at køre allerede efter 2 klip inden for 3 år.',
         pointsRu: [
           'Обязательная страховка гражданской ответственности (Ansvarsforsikring) покрывает ущерб другим людям и имуществу; Kasko (добровольная) чинит вашу машину.',
           'Периодический техосмотр (Periodisk syn): новая легковая машина проходит 1-й раз через 4 года после первой регистрации, далее каждые 2 года.',
@@ -2114,17 +2208,21 @@ export const MODULES_DATA: ModuleInfo[] = [
         titleRu: 'Как устроена датская автошкола и сдача экзаменов',
         bodyDa: 'Den lovpligtige lovpakke består af mindst 29 teorilektioner, 4 lektioner på manøvrebane, 16 kørelektioner på vej og 4 lektioner på køreteknisk anlæg (glatbane).',
         bodyRu: 'Практическая дорожная карта ученика от первого занятия в køreskole до получения пластиковых прав.',
+        whyRu: 'Чтобы датская автошкола не стала запутанным квестом с бумагами и сюрпризами по деньгам, здесь собрана полная пошаговая карта: документы, медкомиссия, обязательные уроки, автомат (Kode 78/148) и оба экзамена.',
+        whyDa: 'For at køreskolen i Danmark ikke bliver en forvirrende jungle af regler og dokumenter, får du her den samlede køreplan: de 4 dokumenter, lovpakke B, automatgear (Kode 78/148) samt teori- og køreprøvens forløb.',
         pointsRu: [
           'Обязательный пакет (Lovpakke B): 29 уроков теории + 4 на площадке (Manøvrebane) + 16 в городе (вкл. ночь и трассу) + 4 на скользкой площадке (KTA Glatbane).',
           'Чек-лист 4 документов (как в DriveLogger): 1) Pasfoto · 2) Digital Lægeattest (сначала Del A на Borger.dk, затем врач заполняет Del B) · 3) Курс первой помощи 8 ч (не старше 12 мес!) · 4) Fuldmagt автошколе через MitID на Borger.dk для записи на экзамены.',
           'Цифровая Teoriprøve (Færdselsstyrelsen): 25 ситуаций, 25 минут, нужно ≥ 20/25 (допускается до 5 ошибок). Есть озвучка в наушниках, можно перелистывать вопросы и отмечать сомнительные; доступен переводчик (Tolk) или сдача на английском.',
           'Практический экзамен (Køreprøve): начинается с устного осмотра Kontrolprøven у машины (~5 мин), затем 25–35 минут вождения с экзаменатором.',
+          'Автомат (Automatgear) — Kode 78 vs Kode 148: если учитесь и сдаёте только на автомате, в правах ставят ограничение Kode 78 (ездить можно только на автомате). Но в Дании действует программа Kode 148: сдав экзамен на автомате + пройдя минимум 7 практических уроков на механике в автошколе, вы получаете право ездить и на механике, и на автомате!',
         ],
         pointsDa: [
           'Lovpakke kategori B: 29 teorilektioner + 4 lektioner på manøvrebane + 16 kørelektioner på vej (inkl. mørke og motorvej) + 4 lektioner på køreteknisk anlæg (glatbane KTA).',
           'Tjekliste med 4 dokumenter (som i DriveLogger): 1) Pasfoto · 2) Digital lægeattest (først Del A på Borger.dk, derefter udfylder lægen Del B) · 3) Færdselsrelateret førstehjælpskursus 8 t. (maks. 12 mdr. gammelt!) · 4) Fuldmagt til køreskolen via MitID på Borger.dk til prøvebooking.',
           'Digital teoriprøve (Færdselsstyrelsen): 25 billedsituationer, 25 minutter, kræver mindst 20/25 rigtige (højst 5 fejl). Oplæsning i hovedtelefoner, mulighed for at bladre og markere tvivlsspørgsmål; tolk eller engelsk prøve er muligt.',
           'Praktisk køreprøve: starter med mundtlig kontrolprøve ved bilen (ca. 5 min.), efterfulgt af 25–35 minutters kørsel med prøvesagkyndig.',
+          'Automatgear — Kode 78 vs. Kode 148: tager du kun undervisning og prøve i bil med automatgear, får du Kode 78 (kun automatgear). Men med ordningen Kode 148 (prøve i automatgear + mindst 7 lektioner i manuelt gear hos køreskolen) må du køre både manuelt og automatisk gear!',
         ],
         trapRu: 'Нельзя сначала пройти все вождения без теории — автошкола обязана вести теорию и практику параллельно, а на Glatbane допускают только в конце курса.',
         trapDa: 'Man må ikke gennemføre alle køretimer først uden teori — køreskolen har pligt til at køre teori og praktik parallelt, og til glatbane får man først adgang sidst i forløbet.',

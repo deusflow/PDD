@@ -124,18 +124,21 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
             <div className="space-y-4 lg:col-span-6">
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  {languageMode !== 'da_only' ? (
+                  {languageMode === 'both' ? (
                     <>
                       <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-100">
                         {mod.titleRu}
                       </h1>
-                      <p className="mt-1 text-sm font-medium text-zinc-500 dark:text-zinc-400">
-                        {mod.titleDa}
-                      </p>
+                      <div className="mt-1.5 inline-flex items-center gap-1.5 text-sm font-medium text-teal-900/85 dark:text-teal-300">
+                        <span className="rounded bg-teal-100 px-1.5 py-0.5 text-[10px] font-bold tracking-wide text-teal-800 dark:bg-teal-950 dark:text-teal-300">
+                          DA
+                        </span>
+                        <span>{mod.titleDa}</span>
+                      </div>
                     </>
                   ) : (
                     <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-100">
-                      {mod.titleDa}
+                      {languageMode === 'da_only' ? mod.titleDa : mod.titleRu}
                     </h1>
                   )}
                 </div>
@@ -212,8 +215,11 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
                   <h2 className="text-xl font-semibold tracking-tight text-zinc-900 sm:text-2xl dark:text-zinc-100">
                     {rule.titleRu}
                   </h2>
-                  <div className="mt-0.5 text-xs font-medium text-zinc-500 dark:text-zinc-400">
-                    {rule.titleDa}
+                  <div className="mt-1 flex items-center gap-1.5 text-[13px] font-medium text-teal-950/85 dark:text-teal-200/90">
+                    <span className="inline-flex shrink-0 items-center rounded bg-teal-100 px-1.5 py-0.5 text-[10px] font-bold tracking-wide text-teal-800 dark:bg-teal-950 dark:text-teal-300">
+                      DA
+                    </span>
+                    <span>{rule.titleDa}</span>
                   </div>
                 </div>
               ) : languageMode === 'spoiler' ? (
@@ -308,8 +314,11 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
                           <div className="text-[15px] font-medium leading-6 text-zinc-900 dark:text-zinc-100">
                             {alg.ru}
                           </div>
-                          <div className="mt-1.5 text-xs text-zinc-500 dark:text-zinc-400">
-                            {alg.da}
+                          <div className="mt-1.5 flex items-start gap-1.5 text-[13px] leading-snug text-teal-950/85 dark:text-teal-200/90">
+                            <span className="mt-0.5 inline-flex shrink-0 items-center rounded bg-teal-100 px-1.5 py-0.5 text-[10px] font-bold tracking-wide text-teal-800 dark:bg-teal-950 dark:text-teal-300">
+                              DA
+                            </span>
+                            <span>{alg.da}</span>
                           </div>
                         </>
                       ) : (

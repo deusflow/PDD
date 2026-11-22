@@ -523,6 +523,7 @@ export const KontrolSimulatorModal: React.FC<KontrolSimulatorModalProps> = ({
                   activeHotspot={isAnswered ? q.hotspot : undefined}
                   languageMode={languageMode}
                   compact
+                  lockedTab
                 />
                 {!isAnswered && (
                   <p className="mt-2 text-center text-[11px] text-zinc-400">
