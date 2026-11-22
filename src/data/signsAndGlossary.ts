@@ -32,7 +32,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'A21 — Cyklister og knallerter',
     ru: 'Велосипедисты и мопеды пересекают дорогу',
     detailsDa: 'Advarer om sted, hvor cyklister hyppigt kører ud på eller krydser kørebanen.',
-    detailsRu: 'Предупреждает о месте частого выезда или пересечения дороги велосипедистами.',
+    detailsRu: 'Предупреждает о месте, где велосипедисты часто выезжают на дорогу или пересекают её.',
   },
   {
     id: 'sign_A22',
@@ -42,7 +42,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'A22 — Børn',
     ru: 'Осторожно: дети (школа / детская площадка)',
     detailsDa: 'Advarer om børn på eller ved vejen (skoler, daginstitutioner, legepladser). Sænk farten betydeligt.',
-    detailsRu: 'Предупреждает о детях у дороги (школы, сады). Значительно снизьте скорость и будьте готовы к резкому появлению детей.',
+    detailsRu: 'Предупреждает о детях на дороге или у дороги (школы, детские учреждения, игровые площадки). Значительно снизьте скорость.',
   },
   {
     id: 'sign_A31',
@@ -52,7 +52,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'A31 — Glat vej',
     ru: 'Скользкая дорога',
     detailsDa: 'Advarer om særlig risiko for glat føre (regn, olie, frost eller blade). Hold større afstand og undgå hårde opbremsninger.',
-    detailsRu: 'Предупреждает о повышенной скользкости дороги. Увеличьте дистанцию и избегайте резких манёвров.',
+    detailsRu: 'Предупреждает об особом риске скользкой дороги (дождь, масло, заморозки или листья). Держите увеличенную дистанцию и избегайте резких торможений.',
   },
   {
     id: 'sign_A43',
@@ -62,7 +62,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'A43 — Indsnævring af vej',
     ru: 'Сужение проезжей части',
     detailsDa: 'Advarer om at vejen bliver smallere. Ved sammenfletning gælder lynlås-princippet; ved vognbaneskift har den skiftende vigepligt.',
-    detailsRu: 'Предупреждает о сужении дороги. Следите за разметкой: либо слияние («молния»), либо перестроение.',
+    detailsRu: 'Предупреждает о сужении дороги. При слиянии действует принцип «молнии»; при перестроении уступает тот, кто меняет полосу.',
   },
   {
     id: 'sign_A73',
@@ -102,7 +102,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'B13 — Stop (Fuld standsning)',
     ru: 'Движение без остановки запрещено (STOP)',
     detailsDa: 'Du SKAL bringe bilen til fuld stilstand ved stoplinjen (hjulene må ikke rulle) og derefter overholde ubetinget vigepligt.',
-    detailsRu: 'Обязательна полная остановка колёс у стоп-линии (или на границе видимости), после чего — безусловная уступка.',
+    detailsRu: 'Вы ДОЛЖНЫ полностью остановить автомобиль у стоп-линии (колёса не должны катиться), а затем соблюсти безусловную уступку дороги.',
   },
   {
     id: 'sign_B15',
@@ -152,7 +152,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'B19 — Modkørende skal holde tilbage',
     ru: 'Преимущество перед встречным движением',
     detailsDa: 'Blå firkant med stor hvid pil opad: modkørende har pligt til at vente, men vis stadig hensyn.',
-    detailsRu: 'Синий прямоугольник с белой стрелкой вверх: вы имеете приоритет на узком участке перед встречным транспортом.',
+    detailsRu: 'Синий прямоугольник с большой белой стрелкой вверх: встречный транспорт обязан ждать, но всё равно проявляйте осторожность.',
   },
   {
     id: 'sign_C11',
@@ -162,7 +162,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'C11 — Indkørsel forbudt',
     ru: 'Въезд запрещён («кирпич»)',
     detailsDa: 'Forbud mod at køre ind ad vejen fra denne side (typisk ved ensrettet gade). Gælder dog ofte ikke cyklister, hvis undertavle angiver "Undtaget cykler".',
-    detailsRu: 'Запрещает въезд с данной стороны (обычно на одностороннюю улицу). Если под знаком «Cykel undtaget», велосипедистам можно навстречу.',
+    detailsRu: 'Запрет на въезд на дорогу с этой стороны (обычно при одностороннем движении). Однако часто не действует на велосипедистов, если подтабличка указывает «Undtaget cykler».',
   },
   {
     id: 'sign_C19',
@@ -172,7 +172,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'C19 — Kørsel i begge retninger forbudt (Motorkøretøj)',
     ru: 'Движение механических ТС запрещено',
     detailsDa: 'Hvid cirkel med rød kant: Indkørsel forbudt i begge retninger for kørende færdsel (ofte med undertavle "Ærindekørsel tilladt").',
-    detailsRu: 'Белый круг с красной каймой (в Дании также C19/C21): движение транспорта запрещено в обоих направлениях, если нет подтаблички с исключением.',
+    detailsRu: 'Белый круг с красной каймой: въезд запрещён в обоих направлениях для движущегося транспорта (часто с подтабличкой «Ærindekørsel tilladt»).',
   },
   {
     id: 'sign_C51',
@@ -202,7 +202,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'C55 — Lokal hastighedsbegrænsning (60 km/t)',
     ru: 'Ограничение максимальной скорости 60 км/ч',
     detailsDa: 'Typisk brugt på større indfaldsveje i byzone, hvor højere hastighed end 50 km/t er tilladt frem til næste kryds.',
-    detailsRu: 'Часто применяется на крупных городских магистралях, разрешая 60 км/ч вместо стандартных 50 км/ч до следующего перекрёстка.',
+    detailsRu: 'Обычно используется на крупных подъездных дорогах в городской зоне, где до следующего перекрёстка разрешена более высокая скорость, чем 50 км/ч.',
   },
   {
     id: 'sign_C55_80',
@@ -212,7 +212,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'C55 — Lokal hastighedsbegrænsning (80 km/t)',
     ru: 'Ограничение скорости 80 км/ч',
     detailsDa: 'Angiver højeste tilladte hastighed 80 km/t (kan fx stå i større gennemfartsveje i byzone eller før skarpe kurver).',
-    detailsRu: 'Разрешает максимум 80 км/ч (может повышать лимит на городской магистрали или снижать его на трассе).',
+    detailsRu: 'Указывает максимально допустимую скорость 80 км/ч (например, на крупных магистральных улицах в городской зоне или перед крутыми поворотами).',
   },
   {
     id: 'sign_C55_110',
@@ -242,7 +242,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'C61 — Standsning forbudt',
     ru: 'Остановка и стоянка запрещены',
     detailsDa: 'Blå cirkel med rødt kryds: Du må hverken standse eller parkere (gælder i den side af vejen, hvor tavlen står, frem til næste kryds).',
-    detailsRu: 'Синий круг с красным крестом: запрещены И остановка (даже на 10 секунд), И стоянка на этой стороне дороги до следующего перекрёстка.',
+    detailsRu: 'Синий круг с красным крестом: нельзя ни останавливаться, ни парковаться (действует на той стороне дороги, где стоит знак, до следующего перекрёстка).',
   },
   {
     id: 'sign_C62',
@@ -252,7 +252,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'C62 — Parkering forbudt',
     ru: 'Стоянка запрещена (остановка до 3 мин разрешена)',
     detailsDa: 'Blå cirkel med én rød skråstreg: Parkering (> 3 min) er forbudt, men kort standsning (≤ 3 min) eller af-/påstigning er tilladt.',
-    detailsRu: 'Синий круг с одной диагональной линией: стоянка свыше 3 минут запрещена, но кратковременная остановка (до 3 мин) или посадка/высадка разрешены.',
+    detailsRu: 'Синий круг с одной красной косой линией: стоянка (> 3 мин) запрещена, но кратковременная остановка (≤ 3 мин) или посадка/высадка разрешены.',
   },
   {
     id: 'sign_D11_right',
@@ -262,7 +262,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'D11 — Påbudt kørselsretning (Højre)',
     ru: 'Предписанное направление движения (направо)',
     detailsDa: 'Blå cirkel med hvid pil: Du SKAL køre i den retning, pilen peger (gælder også hvis der ikke er andre forbudsskilte).',
-    detailsRu: 'Синий круг с белой стрелкой: движение разрешено ТОЛЬКО в указанном стрелкой направлении.',
+    detailsRu: 'Синий круг с белой стрелкой: вы ДОЛЖНЫ ехать в направлении, куда указывает стрелка (действует также, если нет других запрещающих знаков).',
   },
   {
     id: 'sign_D11_straight',
@@ -292,7 +292,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'D15 — Påbudt passage til højre for helle/hindring',
     ru: 'Объезд препятствия или островка безопасности справа',
     detailsDa: 'Blå cirkel med pil skråt ned mod højre: Du skal passere på højre side af trafikøen eller vejarbejdet.',
-    detailsRu: 'Синий круг со стрелкой вниз-вправо: препятствие или островок безопасности необходимо объезжать только справа.',
+    detailsRu: 'Синий круг со стрелкой наискосок вниз вправо: вы должны объезжать островок безопасности или дорожные работы с правой стороны.',
   },
   {
     id: 'sign_D21',
@@ -333,7 +333,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'E33 — Parkering (med tidsbegrænsning på undertavle)',
     ru: 'Парковка с ограничением времени (нужен парковочный диск P-skive)',
     detailsDa: 'Eksempel: "1 time 8-18 (8-14)" betyder maks. 1 times parkering med P-skive hverdage kl. 8–18 og lørdage kl. 8–14. Søndag og aften fri.',
-    detailsRu: 'Подтабличка «1 time 8-18 (8-14)»: макс. 1 час с парковочным диском P-skive в будни 8–18 и по субботам 8–14 (в скобках). Воскресенье и ночь — свободно.',
+    detailsRu: 'Пример: «1 time 8-18 (8-14)» означает максимум 1 час парковки с P-skive по будням 8–18 и по субботам 8–14. Воскресенье и вечер — свободно.',
   },
   {
     id: 'sign_E42',
@@ -353,7 +353,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'E43 — Motortrafikvej',
     ru: 'Дорога для автомобилей (скоростная дорога, 80 км/ч)',
     detailsDa: 'Blåt skilt med bil: Samme regler mod cyklister/fodgængere og standsning som på motorvej, men den generelle hastighedsgrænse er 80 km/t!',
-    detailsRu: 'Синий знак с силуэтом авто: запрещены пешеходы, велосипедисты и остановка, но общий лимит скорости — 80 км/ч (а не 130!).',
+    detailsRu: 'Синий знак с автомобилем: те же запреты для велосипедистов, пешеходов и остановки, что и на автомагистрали, но общий лимит скорости — 80 км/ч!',
   },
   {
     id: 'sign_E55',
@@ -388,7 +388,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Kobling (Venstre pedal)',
     ru: 'Сцепление (левая педаль)',
     detailsDa: 'Bruges KUN med venstre fod på bil med manuelt gear (automatgear har ingen kobling). Trædes helt i bund ved gearskift og start; holdes aldrig halvt nede under almindelig kørsel.',
-    detailsRu: 'Нажимается ТОЛЬКО левой ногой на автомобиле с механической коробкой (на автомате её нет). Выжимается до самого пола при переключении передач и старте.',
+    detailsRu: 'Используется ТОЛЬКО левой ногой на автомобиле с механической коробкой (на автомате сцепления нет). Выжимается до пола при переключении передач и старте; при обычной езде никогда не держится наполовину нажатой.',
   },
   {
     id: 'kontrol_bremsepedal',
@@ -419,9 +419,9 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     technicalPart: 'kabine',
     technicalHotspot: 'motorhjelm',
     da: 'Motorhjelm — Åbning i 3 trin',
-    ru: 'Капот — как открыть (3 шага с нуля)',
+    ru: 'Капот — открытие в 3 шага',
     detailsDa: '1) Træk udløserhåndtaget ved førerens venstre fod, til hjelmen klikker op. 2) Før hånden ind midt under hjelmens forkant og udløs sikkerhedskrogen. 3) Løft hjelmen helt og sæt støttepinden i hak.',
-    detailsRu: '1) Потяните рычаг внизу у левой ноги водителя до щелчка. 2) Нащупайте по центру под приоткрытым капотом предохранительный язычок и сдвиньте его. 3) Поднимите капот и зафиксируйте его упорной штангой.',
+    detailsRu: '1) Потяните рычаг открытия у левой ноги водителя, пока капот не щёлкнет вверх. 2) Просуньте руку по центру под переднюю кромку капота и отведите страховочный крючок. 3) Полностью поднимите капот и вставьте упорную штангу в паз.',
   },
   {
     id: 'kontrol_vinduesvisker',
@@ -432,7 +432,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Vinduesvisker & Sprinklerarm',
     ru: 'Дворники и подача омывателя (правый рычаг)',
     detailsDa: 'Højre stilk bag rattet: bevæg op/ned for at vælge viskerhastighed (interval, normal, hurtig). Træk armen ind mod rattet for at sprøjte sprinklervæske på forruden.',
-    detailsRu: 'Правый подрулевой рычаг: движение вверх/вниз меняет режим дворников (пауза, обычный, быстрый). Потянуть рычаг на себя — брызнуть омывателем на лобовое стекло.',
+    detailsRu: 'Правый рычаг за рулём: двигайте вверх/вниз для выбора скорости дворников (прерывистая, обычная, быстрая). Потяните рычаг к рулю, чтобы подать омывающую жидкость на лобовое стекло.',
   },
   {
     id: 'kontrol_havariblink',
@@ -443,7 +443,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Havariblink (Rød trekantknap)',
     ru: 'Аварийная сигнализация («аварийка»)',
     detailsDa: 'Knappen med rød dobbelt-trekant på midterkonsollen får alle 6 gule blinklygter til at blinke samtidig. Bruges straks ved uheld, motorstop eller som advarsel ved pludselig kø på motorvej.',
-    detailsRu: 'Кнопка с красным треугольником в центре панели зажигает одновременно все 6 поворотников. Включают сразу при поломке, ДТП или резком торможении в хвост пробки на трассе.',
+    detailsRu: 'Кнопка с красным двойным треугольником на центральной консоли заставляет все 6 жёлтых поворотников мигать одновременно. Используется сразу при ДТП, поломке двигателя или как предупреждение при внезапном заторе на автомагистрали.',
   },
   {
     id: 'kontrol_bremsevaeske',
@@ -454,7 +454,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Bremsevæskebeholder — Kontrol af væskestand',
     ru: 'Бачок тормозной жидкости — проверка уровня',
     detailsDa: 'Væskestanden skal ligge mellem MIN og MAX mærkerne. Hvis den falder hurtigt, er der en utæthed i bremsesystemet — kør ikke videre!',
-    detailsRu: 'Уровень должен быть строго между отметками MIN и MAX. Быстрое падение уровня указывает на утечку в системе — ехать запрещено!',
+    detailsRu: 'Уровень жидкости должен находиться между отметками MIN и MAX. Если он быстро падает, в тормозной системе есть утечка — дальше не ехать!',
   },
   {
     id: 'kontrol_motorolie',
@@ -465,7 +465,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Motorolie — Kontrol med oliepind',
     ru: 'Моторное масло — проверка щупом',
     detailsDa: 'Bilen skal stå plant, motoren skal være slukket (og helst hvilet lidt). Træk pinden op, tør den af, sæt den helt ned igen, træk op og aflæs mellem MIN og MAX.',
-    detailsRu: 'Авто стоит ровно, двигатель заглушен. Выньте щуп, протрите, вставьте обратно до упора, снова выньте — след масла должен быть между MIN и MAX.',
+    detailsRu: 'Автомобиль должен стоять ровно, двигатель должен быть заглушен (и желательно немного постоять). Выньте щуп, протрите его, вставьте до упора обратно, выньте и проверьте уровень между MIN и MAX.',
   },
   {
     id: 'kontrol_koelervaeske',
@@ -476,7 +476,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Kølervæske — Ekspansionsbeholder',
     ru: 'Охлаждающая жидкость (антифриз) — расширительный бачок',
     detailsDa: 'Væsken skal stå mellem MIN og MAX på den gennemsigtige beholder. Åbn ALDRIG låget, mens motoren er varm (risiko for skoldning pga. overtryk)!',
-    detailsRu: 'Уровень на холодном моторе между MIN и MAX. НИКОГДА не открывайте крышку на горячем двигателе — можно обжечься паром под давлением!',
+    detailsRu: 'Жидкость должна находиться между MIN и MAX на прозрачном бачке. НИКОГДА не открывайте крышку, пока двигатель горячий (опасность ожога из-за избыточного давления)!',
   },
   {
     id: 'kontrol_sprinklervaeske',
@@ -487,7 +487,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Sprinklervæske & Viskerblade',
     ru: 'Омыватель стёкол (голубая крышка) и щётки стеклоочистителя',
     detailsDa: 'Blå hætte med forrudesymbol. Skal indeholde sprinklervæske med frostsikring om vinteren. Viskerbladene skal kunne holde ruden ren uden striber.',
-    detailsRu: 'Крышка синего цвета со значком лобового стекла. Зимой заливается незамерзайка. Щётки не должны оставлять разводов.',
+    detailsRu: 'Синяя крышка со значком лобового стекла. Зимой должна содержать морозостойкую омывающую жидкость. Щётки должны очищать стекло начисто без полос.',
   },
   {
     id: 'kontrol_daekmonster',
@@ -498,7 +498,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Dækmønster — Lovligt minimum (1,6 mm) & TWI',
     ru: 'Глубина протектора шин — минимум 1,6 мм и индикатор TWI',
     detailsDa: 'Hovedrillerne skal have mindst 1,6 mm mønsterdybde på hele slidbanen (TWI-klodsen i rillen er 1,6 mm høj). I vinterføre (sne/is) er sommerdæk forbudt (1.000 kr./dæk) — brug min. M+S eller 3PMSF med ≥ 3 mm. Alle 4 dæk skal være af samme type.',
-    detailsRu: 'Минимум 1,6 мм по закону по всей окружности (перемычки TWI — 1,6 мм). В снег и гололёд летние шины запрещены (штраф 1.000 kr/колесо): минимум M+S (лучше 3PMSF) и ≥ 3 мм. Все 4 шины одного типа.',
+    detailsRu: 'Основные канавки должны иметь не менее 1,6 мм глубины протектора по всей беговой дорожке (перемычка TWI в канавке имеет высоту 1,6 мм). В зимних условиях (снег/лёд) летние шины запрещены (1.000 kr/шина) — используйте минимум M+S или 3PMSF с ≥ 3 мм. Все 4 шины должны быть одного типа.',
   },
   {
     id: 'kontrol_vakuum',
@@ -508,8 +508,8 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     technicalHotspot: 'bremser',
     da: 'Vakuumforstærker & Driftsbremse (Pedalprøve)',
     ru: 'Проверка вакуумного усилителя и герметичности тормозов',
-    detailsDa: '1) Sluk motoren, pump pedalen 3–4 gange til den bliver hård. 2) Hold konstant tryk og start motoren → pedalen synker let (forstærker virker). 3) Hold hårdt tryk i ca. 10 sek → pedalen må IKKE synke langsomt ned (utæthed).',
-    detailsRu: '1) На заглушенном моторе накачайте педаль 3–4 раза до жёсткости. 2) Удерживая, заведите двигатель → педаль плавно уйдёт чуть вниз. 3) При сильном нажатии 10 сек педаль не должна проваливаться.',
+    detailsDa: '1) Sluk motoren, pump pedalen 3–4 gange til den bliver hård. 2) Hold almindeligt fast tryk og start motoren → pedalen synker let (forstærker virker). 3) Hold samme tryk i ca. 10 sek → pedalen må IKKE synke langsomt ned (utæthed).',
+    detailsRu: '1) Заглушите двигатель, накачайте педаль 3–4 раза до жёсткости. 2) Удерживайте обычное уверенное нажатие и заведите двигатель → педаль слегка опустится (усилитель работает). 3) Удерживайте это же нажатие около 10 сек → педаль НЕ должна медленно проседать (утечка).',
   },
   {
     id: 'kontrol_haandbremse',
@@ -520,7 +520,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Parkeringsbremse (Håndbremse)',
     ru: 'Стояночный тормоз (ручник)',
     detailsDa: 'Skal virke mekanisk eller elektrisk og kunne holde bilen stille på en skråning. Ved mekanisk håndbremse må den ikke skulle trækkes helt op til toppen.',
-    detailsRu: 'Должен надёжно удерживать автомобиль на уклоне (действует независимо от гидравлики рабочей тормозной системы).',
+    detailsRu: 'Должен работать механически или электрически и удерживать автомобиль на уклоне. У механического ручника рычаг не должен тянуться до самого верха.',
   },
   {
     id: 'kontrol_stoddaempere',
@@ -531,7 +531,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Støddæmpere — Kontrol ved bilens hjørner',
     ru: 'Проверка амортизаторов на раскачку',
     detailsDa: 'Tryk kraftigt ned over hvert af bilens 4 hjørner og slip. Bilen skal straks gå op og stå helt stille (højst én bevægelse op — ingen gyngen).',
-    detailsRu: 'Сильно надавите на каждое из 4 крыльев автомобиля и отпустите. Кузов должен подняться и сразу замереть без повторных колебаний.',
+    detailsRu: 'Сильно надавите сверху над каждым из 4 углов автомобиля и отпустите. Автомобиль должен сразу подняться и полностью успокоиться (максимум одно движение вверх — без раскачивания).',
   },
   {
     id: 'kontrol_styretoej',
@@ -542,7 +542,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Styretøj & Ratslør (Servostyring)',
     ru: 'Рулевое управление и проверка люфта (ratslør)',
     detailsDa: 'Start motoren (så servoen virker), kig på forhjulet og drej rattet let fra side til side: Hjulet skal følge med øjeblikkeligt uden ratslør (0 cm dødgang) og uden mislyde.',
-    detailsRu: 'Заведите мотор (чтобы работал усилитель), слегка покачайте руль, глядя на переднее колесо: колесо должно откликаться мгновенно, без люфта и стуков.',
+    detailsRu: 'Заведите двигатель (чтобы работал усилитель), посмотрите на переднее колесо и слегка поверните руль из стороны в сторону: колесо должно следовать за ним мгновенно, без люфта (0 см холостого хода) и без посторонних шумов.',
   },
   {
     id: 'kontrol_positionslys',
@@ -553,7 +553,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Positionslys (Parkeringslys)',
     ru: 'Габаритные огни (Positionslys)',
     detailsDa: '2 hvide/svagt gule foran og 2 røde bagpå. Skal kunne ses tydeligt på mindst 300 meters afstand i mørke uden at blænde.',
-    detailsRu: '2 белых спереди и 2 красных сзади. Должны быть видны в темноте на расстоянии минимум 300 м и не слепить.',
+    detailsRu: '2 белых/слабо-жёлтых огня спереди и 2 красных сзади. Должны быть отчётливо видны на расстоянии минимум 300 метров в темноте и не ослеплять.',
   },
   {
     id: 'kontrol_naerlys',
@@ -564,7 +564,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Nærlys — Asymmetrisk & 1% fald',
     ru: 'Ближний свет — асимметричный пучок и уклон 1%',
     detailsDa: '2 hvide nærlys foran. Skal oplyse vejen mindst 30 meter frem uden at blænde. Lyset er asymmetrisk (lyser længere i højre side) og har et fald på ca. 1% (1 cm pr. meter).',
-    detailsRu: '2 белых фары ближнего света. Освещает минимум 30 м дороги без ослепления встречных. Луч асимметричный (выше справа) с уклоном 1% (1 см на 1 метр).',
+    detailsRu: '2 белых фары ближнего света спереди. Должен освещать дорогу минимум на 30 метров вперёд, не ослепляя встречных. Свет асимметричный (светит дальше с правой стороны) и имеет уклон около 1% (1 см на метр).',
   },
   {
     id: 'kontrol_fjernlys',
@@ -586,7 +586,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Stoplys — 3 kraftige røde lygter',
     ru: 'Стоп-сигналы (3 красных фонаря)',
     detailsDa: 'Nyere biler har 3 stoplys bagpå (2 i siderne + 1 højt i midten). De skal lyse væsentligt kraftigere end baglysene (ca. 3–5× stærkere).',
-    detailsRu: 'На современных авто 3 стоп-сигнала (два по краям и один верхний центральный). Должны гореть заметно ярче обычных задних габаритов.',
+    detailsRu: 'На более новых авто сзади 3 стоп-сигнала (2 по бокам + 1 высоко по центру). Они должны светить значительно ярче задних габаритов (примерно в 3–5 раз сильнее).',
   },
   {
     id: 'kontrol_blinklys',
@@ -597,7 +597,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Blinklys & Havariblink (60–120 blink/min)',
     ru: 'Поворотники (6 шт.) и аварийная сигнализация',
     detailsDa: 'Alle 6 gule blinklys (2 for, 2 på sider/spejle, 2 bag) skal virke. Blinkfrekvens: 60–120 blink i minuttet. Hvis en pære er sprunget, blinker kontrollampen typisk dobbelt så hurtigt.',
-    detailsRu: 'Все 6 жёлтых фонарей должны работать с частотой 60–120 миганий в минуту. Если лампа перегорела, индикатор на панели мигает вдвое быстрее.',
+    detailsRu: 'Должны работать все 6 жёлтых поворотников (2 спереди, 2 по бокам/на зеркалах, 2 сзади). Частота мигания: 60–120 миганий в минуту. Если лампа перегорела, контрольная лампа обычно мигает вдвое быстрее.',
   },
   {
     id: 'kontrol_nummerplade_refleks',
@@ -619,7 +619,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Horn & Udstødningssystem',
     ru: 'Звуковой сигнал (клаксон) и выхлопная система',
     detailsDa: 'Hornet skal give en klar, ensartet tone (må kun bruges for at afværge fare!). Udstødningssystemet skal være tæt og sidde fast uden unødig støj.',
-    detailsRu: 'Сигнал должен издавать ровный чёткий тон (используется только для предотвращения опасности!). Выхлопная труба должна быть герметичной и надёжно закреплённой.',
+    detailsRu: 'Звуковой сигнал должен давать чёткий, ровный тон (используется только для предотвращения опасности!). Выхлопная система должна быть герметичной и надёжно закреплённой без лишнего шума.',
   },
   {
     id: 'kontrol_lampe_olie',
@@ -630,7 +630,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Rød oliekande — Manglende olietryk',
     ru: 'Красная маслёнка — критически низкое давление масла',
     detailsDa: 'RØD ADVARSELSLAMPE: Stands bilen øjeblikkeligt og sluk motoren med det samme! Fortsat kørsel ødelægger motoren på sekunder.',
-    detailsRu: 'КРАСНЫЙ ИНДИКАТОР: Немедленно остановитесь и заглушите мотор! Дальнейшее движение приведёт к разрушению двигателя.',
+    detailsRu: 'КРАСНАЯ ПРЕДУПРЕЖДАЮЩАЯ ЛАМПА: немедленно остановите автомобиль и сразу заглушите двигатель! Продолжение движения разрушит двигатель за секунды.',
   },
   {
     id: 'kontrol_lampe_bremse',
@@ -712,7 +712,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Sammenfletning (Fletning)',
     ru: 'Слияние потоков (принцип «молнии»)',
     detailsDa: 'Begge bilister hjælpes ad skiftevis (én fra hver bane). Gælder fx ved B15 eller når vognbanelinjen ophører.',
-    detailsRu: 'Взаимная обязанность водителей пропускать друг друга по одному (не путать с перестроением!).',
+    detailsRu: 'Оба водителя по очереди уступают (по одному из каждой полосы): при B15 или когда линия полос кончается.',
   },
   {
     id: 'term_vognbaneskift',
@@ -730,7 +730,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Rundkørsel',
     ru: 'Круговое движение',
     detailsDa: 'Ubetinget vigepligt ved indkørsel. Blink kun til højre lige før udkørsel — aldrig til venstre ved indkørsel.',
-    detailsRu: 'Уступи всем на круге при въезде; включай только правый поворотник перед съездом.',
+    detailsRu: 'Безусловная уступка при въезде. Включайте правый поворотник только прямо перед съездом — никогда не включайте левый при въезде.',
   },
   {
     id: 'term_spejl_skulder',
@@ -766,7 +766,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Bremselængde',
     ru: 'Тормозной путь (от нажатия тормоза до остановки)',
     detailsDa: 'Stiger med hastigheden i anden potens: 2× fart = 4× bremselængde!',
-    detailsRu: 'Растёт квадратично: при увеличении скорости в 2 раза тормозной путь увеличивается в 4 раза!',
+    detailsRu: 'Растёт в квадрате скорости: 2× скорость = 4× тормозной путь!',
   },
   {
     id: 'term_standselangde',
@@ -838,7 +838,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Tættere bebygget område (Byzone)',
     ru: 'Населённый пункт (городская зона)',
     detailsDa: 'Generel hastighed 50 km/t, vigepligt for rutebusser fra stoppested, og parkering skal ske efter faste byregler.',
-    detailsRu: 'Общее ограничение 50 км/ч, обязанность уступать автобусу с остановки.',
+    detailsRu: 'Общая скорость 50 км/ч, уступка рейсовым автобусам с остановки, и парковка должна выполняться по установленным городским правилам.',
   },
   {
     id: 'term_landevej',
@@ -856,7 +856,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Motorvej & Accelerationsspor',
     ru: 'Автомагистраль и полоса разгона',
     detailsDa: 'Max 130 km/t. Kun køretøjer ≥ 50 km/t. Accelerationssporet bruges til at nå trafikfarten og flette ind.',
-    detailsRu: 'Лимит 130 км/ч, на полосе разгона наберите скорость потока и вливайтесь по принципу слияния.',
+    detailsRu: 'Макс. 130 км/ч. Только транспортные средства ≥ 50 км/ч. Полоса разгона используется, чтобы набрать скорость потока и влиться в движение.',
   },
   {
     id: 'term_noedspor',
@@ -865,7 +865,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Nødspor',
     ru: 'Аварийная полоса (обочина на автомагистрали)',
     detailsDa: 'Må KUN benyttes ved motorstop eller nødsituation — aldrig til overhaling eller almindelig kørsel.',
-    detailsRu: 'Используется ТОЛЬКО при поломке или экстренной ситуации.',
+    detailsRu: 'Можно использовать ТОЛЬКО при поломке двигателя или экстренной ситуации — никогда для обгона или обычной езды.',
   },
   {
     id: 'term_paahaengsvogn',
@@ -874,7 +874,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Påhængsvogn (Trailer)',
     ru: 'Прицеп к легковому автомобилю',
     detailsDa: 'Max 50 km/t i byzone og max 80 km/t på landevej/motorvej (100 km/t kun med Tempo 100).',
-    detailsRu: 'Ограничивает скорость авто до 80 км/ч на загородных трассах и магистралях (100 км/ч только с Tempo 100).',
+    detailsRu: 'Макс. 50 км/ч в городе и макс. 80 км/ч на загородной дороге/автомагистрали (100 км/ч только с Tempo 100).',
   },
   {
     id: 'term_standsning',
@@ -892,14 +892,14 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Parkering',
     ru: 'Стоянка (более 3 минут)',
     detailsDa: 'Enhver hensætning af køretøjet i mere end 3 minutter (medmindre der sker på-/aflæsning eller af-/påstigning).',
-    detailsRu: 'Стоянка более 3 минут без посадки/разгрузки (даже если водитель сидит в машине с включённым мотором!).',
+    detailsRu: 'Любая постановка транспортного средства дольше 3 минут (если не происходит погрузка/разгрузка или посадка/высадка).',
   },
   {
     id: 'term_p_skive',
     moduleId: 7,
     category: 'term',
     da: 'P-skive (Parkeringsskive)',
-    ru: 'Парковочные часы / диск (в правом нижнем углу лобового стекла)',
+    ru: 'Парковочный диск (P-skive)',
     detailsDa: 'Skal stilles frem til nærmeste efterfølgende kvarter ved ankomst. Det er forbudt at ændre tiden uden at flytte bilen.',
     detailsRu: 'Стрелка выставляется вперёд на ближайшие 15 минут; подкручивать время без выезда с парковки запрещено.',
   },
@@ -919,7 +919,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Tågebaglygte',
     ru: 'Задний противотуманный фонарь',
     detailsDa: 'Må kun bruges i tæt tåge, kraftig regn eller tæt snefald — aldrig i almindelig mørke eller kø.',
-    detailsRu: 'Включается только при сильном тумане, ливне или снегопаде, так как сильно слепит едущих сзади.',
+    detailsRu: 'Можно использовать только в густой туман, сильный дождь или плотный снегопад — никогда в обычной темноте или в пробке.',
   },
   {
     id: 'term_akvaplaning',
@@ -928,7 +928,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Akvaplaning',
     ru: 'Аквапланирование (потеря сцепления на воде)',
     detailsDa: 'Hjulene mister vejgreb pga. vandfilm. Slip speederen roligt og hold rattet lige — brems IKKE hårdt!',
-    detailsRu: 'При всплытии на луже плавно отпустите газ и держите руль прямо — резко не тормозите!',
+    detailsRu: 'Колёса теряют сцепление из-за водяной плёнки. Спокойно отпустите газ и держите руль прямо — НЕ тормозите резко!',
   },
   {
     id: 'term_promille',
@@ -936,8 +936,8 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     category: 'term',
     da: 'Promillegrænse (0,20 / 0,50 ‰) & Vanvidskørsel',
     ru: 'Порог алкоголя (0,20 / 0,50‰) и «безумное вождение»',
-    detailsDa: 'Nye bilister (første 3 år): skærpet grænse på 0,20 ‰ (nultolerance → kørselsforbud + ANT-kursus). Erfarne: 0,50 ‰. Ved > 2,00 ‰ (eller >100% over fartgrænsen/over 200 km/t) konfiskeres bilen!',
-    detailsRu: 'Новички (первые 3 года с 01.07.2025): строгий лимит 0,20‰ (лишение + курс ANT). Опытные: 0,50‰. Свыше 2,00‰ или >200 км/ч — конфискация автомобиля государством.',
+    detailsDa: 'Nye bilister (første 3 år): skærpet grænse fra 01.07.2025 på 0,20 ‰ (nultolerance → kørselsforbud + ANT-kursus). Erfarne: 0,50 ‰. Ved > 2,00 ‰ (eller >100% over fartgrænsen/over 200 km/t) konfiskeres bilen!',
+    detailsRu: 'Новые водители (первые 3 года): с 01.07.2025 действует строгий порог 0,20‰ (нулевая терпимость → kørselsforbud + курс ANT). Опытные: 0,50‰. При > 2,00‰ (или превышении скорости >100% / свыше 200 км/ч) автомобиль конфискуют!',
   },
   {
     id: 'term_klip',
@@ -990,8 +990,8 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     category: 'term',
     da: 'Sikkerhedsudstyr i bilen (Refleksvest & Førstehjælp)',
     ru: 'Оборудование салона (светоотражающий жилет и аптечка)',
-    detailsDa: 'Det er lovpligtigt at medbringe advarselstrekant i udlandet og stærkt anbefalet i DK; refleksvest sikrer dig ved havari på motorvej.',
-    detailsRu: 'При поломке на трассе жилет и треугольник спасают жизнь — выходите со стороны обочины и надевайте жилет до установки знака.',
+    detailsDa: 'Advarselstrekant er lovpligtig i bilen i Danmark; refleksvest sikrer dig ved havari på motorvej.',
+    detailsRu: 'Аварийный треугольник обязателен в автомобиле в Дании; светоотражающий жилет защищает вас при поломке на автомагистрали.',
   },
   {
     id: 'term_afstandsmaaling',
@@ -1000,7 +1000,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: '2-sekunders reglen',
     ru: 'Правило 2 секунд для безопасной дистанции',
     detailsDa: 'Vælg et fast punkt ved vejen (fx en lygtepæl). Når bilen foran passerer det, tæller du "et-tusind-og-en, et-tusind-og-to".',
-    detailsRu: 'Когда машина впереди проезжает ориентир (столб), вы должны досчитать до 2 секунд («1001, 1002») прежде чем проедете его сами.',
+    detailsRu: 'Выберите неподвижный ориентир у дороги (например, фонарный столб). Когда машина впереди проезжает мимо него, отсчитайте «тысяча и один, тысяча и два».',
   },
   {
     id: 'term_overhaling_hoeire',
@@ -1009,7 +1009,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Overhaling til højre (Undtagelser)',
     ru: 'Исключения для опережения справа',
     detailsDa: 'Tilladt når forankørende har trukket ind og blinker til venstre for at svinge, eller i tæt trafik (køkørsel), hvor banerne kører i forskelligt tempo.',
-    detailsRu: 'Разрешено, только если водитель впереди поворачивает налево (с включённым поворотником) или в плотном потоке (пробке).',
+    detailsRu: 'Разрешено, когда впереди идущий сместился к центру и мигает налево для поворота, или в плотном потоке (пробке), где полосы движутся в разном темпе.',
   },
   {
     id: 'term_traek_bil_havari',
@@ -1018,7 +1018,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Bugsering (Slæbning)',
     ru: 'Буксировка неисправного автомобиля',
     detailsDa: 'Max 30 km/t. Slæbetov maks. 4 m og tydeligt mærket på midten (hvis over 2 m). Forbudt at bugsere ind på motorvej (dog ud til nærmeste frakørsel).',
-    detailsRu: 'Макс. 30 км/ч, длина троса не более 4 м (при длине >2 м обозначить по центру). Въезжать на буксире на автомагистраль запрещено.',
+    detailsRu: 'Макс. 30 км/ч. Буксирный трос макс. 4 м и чётко обозначен посередине (если длиннее 2 м). Запрещено въезжать на буксире на автомагистраль (но можно съехать до ближайшего съезда).',
   },
   {
     id: 'term_spejl_indstilling',
@@ -1045,7 +1045,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Økonomisk & Miljørigtig kørsel (Økokørsel)',
     ru: 'Экономичное и экологичное вождение',
     detailsDa: 'Skift tidligt op i gear (omkring 2.000 omdr./min), spring gear over når muligt, motorbrems mod rødt lys og undgå unødig tomgang.',
-    detailsRu: 'Раннее переключение вверх (~2000 об/мин), торможение двигателем перед красным светом, исключение долгой работы на холостом ходу.',
+    detailsRu: 'Переключайтесь вверх рано (около 2.000 об/мин), пропускайте передачи при возможности, тормозите двигателем перед красным светом и избегайте лишнего холостого хода.',
   },
   {
     id: 'term_jernbaneoverskaering',
@@ -1054,7 +1054,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Jernbaneoverskæring (Tog)',
     ru: 'Железнодорожный переезд',
     detailsDa: 'Rødt blinklys eller bomme på vej ned = absolut standsning. Overhaling og parkering før/på overskæring er strengt forbudt.',
-    detailsRu: 'Красный мигающий сигнал или опускающийся шлагбаум требуют полной остановки. Обгон и остановка запрещены.',
+    detailsRu: 'Красный мигающий сигнал или опускающийся шлагбаум = безусловная остановка. Обгон и парковка перед переездом и на нём строго запрещены.',
   },
   {
     id: 'term_vognbanelinje',
@@ -1074,7 +1074,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Farlig kurve (A41)',
     ru: 'Опасный поворот',
     detailsDa: 'Advarer om et skarpt og uoverskueligt vejsving. Tilpas farten i god tid før kurven og hold helt til højre.',
-    detailsRu: 'Предупреждает о крутом закрытом повороте: снизьте скорость заранее до входа в поворот, обгон запрещён.',
+    detailsRu: 'Предупреждает о крутом и плохо просматриваемом повороте. Скорректируйте скорость заранее перед поворотом и держитесь полностью справа.',
   },
   {
     id: 'sign_c52',
@@ -1124,7 +1124,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Zone-tavle (E68)',
     ru: 'Зональное ограничение (действует через перекрёстки)',
     detailsDa: 'Gælder for alle gader i hele området indtil skiltet "Zone ophører" — ophæves IKKE efter næste vejkryds.',
-    detailsRu: 'Действует на всей территории района через все перекрёстки вплоть до знака окончания зоны.',
+    detailsRu: 'Действует на всех улицах во всей зоне вплоть до знака «Zone ophører» — НЕ отменяется после следующего перекрёстка.',
   },
   {
     id: 'term_knallert_45',
@@ -1151,7 +1151,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Højresvingsulykke & Lastbilens blinde vinkel',
     ru: 'Слепая зона грузовика при правом повороте',
     detailsDa: 'Både bilister og cyklister skal holde sig bagved en højresvingende lastbil/bus — kør aldrig op på højre side i krydset.',
-    detailsRu: 'Не заезжайте справа рядом с грузовиком или автобусом, мигающим направо на перекрёстке.',
+    detailsRu: 'И автомобилисты, и велосипедисты должны оставаться позади грузовика/автобуса, поворачивающего направо — никогда не заезжайте справа на перекрёстке.',
   },
   {
     id: 'term_3m_spaerrelinje',
@@ -1169,7 +1169,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: '12 meter ved busstoppested',
     ru: '12 м от остановки (остановка OK, стоянка запрещена)',
     detailsDa: 'Inden for 12 m fra busstoppested er PARKERING forbudt, men kort STANDSNING (<3 min) uden at genere bussen er tilladt (medmindre gul heltrukken linje).',
-    detailsRu: 'Запрещена парковка (>3 мин) по 12 м в обе стороны от знака, но быстро высадить пассажира (не мешая автобусу) можно.',
+    detailsRu: 'В пределах 12 м от автобусной остановки СТОЯНКА запрещена, но кратковременная ОСТАНОВКА (< 3 мин) без помехи автобусу разрешена (если нет сплошной жёлтой линии).',
   },
   {
     id: 'term_30m_jernbane',
@@ -1178,7 +1178,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: '30 meter fra jernbaneoverkørsel',
     ru: '30 м до ж/д переезда (стоянка запрещена)',
     detailsDa: 'Parkering er forbudt inden for 30 meter før og efter en jernbaneoverkørsel (på skinner/før overkørsel også standsning forbudt).',
-    detailsRu: 'Запрещена парковка в пределах 30 метров в обе стороны от ж/д переезда.',
+    detailsRu: 'Стоянка запрещена в пределах 30 метров до и после ж/д переезда (на самих рельсах/перед переездом также запрещена остановка).',
   },
   {
     id: 'term_gul_kantsten',
@@ -1196,7 +1196,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Højreside-parkering & Tomgangsforbud',
     ru: 'Парковка по ходу движения и запрет холостого хода',
     detailsDa: 'På tovejs vej må du kun parkere i højre side i færdselsretningen. Sluk motoren ved parkering (tomgang >1–3 min er forbudt i de fleste kommuner).',
-    detailsRu: 'На двухсторонней улице нельзя парковаться слева «против шерсти». Двигатель на стоянке нужно глушить.',
+    detailsRu: 'На двухсторонней дороге разрешено парковаться только на правой стороне по ходу движения. Глушите двигатель на парковке (холостой ход > 1–3 мин запрещён в большинстве коммун).',
   },
   {
     id: 'term_anvisninger_faerdsel',
@@ -1205,7 +1205,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Anvisninger for færdslen',
     ru: 'Распоряжения и сигналы на дороге (иерархия § 4)',
     detailsDa: 'Rangorden i trafikken: 1. Politiets tegn → 2. Lyssignal → 3. Færdselstavler & gul vejarbejdsafmærkning → 4. Færdselsregler (§ 3/26).',
-    detailsRu: 'Иерархия указаний на дороге: 1. Регулировщик → 2. Светофор → 3. Знаки и жёлтая разметка → 4. Общие правила.',
+    detailsRu: 'Иерархия на дороге: 1. Сигналы полиции → 2. Светофор → 3. Дорожные знаки и жёлтая разметка дорожных работ → 4. Общие правила движения (§ 3/26).',
   },
   {
     id: 'term_manoevreegenskaber',
@@ -1223,7 +1223,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Understyring & Overstyring',
     ru: 'Снос передней оси (Understyring) и занос зада (Overstyring)',
     detailsDa: 'Understyring: forhjulene skrider og bilen vil ligeud (slip speeder, ret lidt op). Overstyring: bagenden bryder ud (kobling ned, styr roligt mod udskridningen).',
-    detailsRu: 'Understyring — передние колёса скользят наружу поворота; Overstyring — задняя ось уходит в занос.',
+    detailsRu: 'Снос (understyring): передние колёса скользят и машину несёт прямо (отпустите газ, слегка выровняйте руль). Занос (overstyring): заднюю часть срывает (выжмите сцепление, спокойно подруливайте в сторону заноса).',
   },
   {
     id: 'term_laegeattest_fuldmagt',
@@ -1232,7 +1232,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Digital Lægeattest & Fuldmagt',
     ru: 'Цифровая медсправка (Del A+B) и доверенность школе',
     detailsDa: 'Obligatoriske krav før teoriprøve: udfyld Del A på Borger.dk før lægebesøg (Del B), vedlæg pasfoto, 8t førstehjælp (≤12 mdr.) og giv køreskolen fuldmagt via MitID.',
-    detailsRu: 'Обязательные документы допуска: медсправка у врача, 8-часовой курс первой помощи (≤12 мес.), фото и доверенность автошколе через MitID.',
+    detailsRu: 'Требования перед теорией: Del A на Borger.dk до врача (Del B), фото на паспорт, 8 ч первой помощи (≤12 мес.) и доверенность школе через MitID.',
   },
   {
     id: 'term_grundregler_par3',
@@ -1241,7 +1241,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Grundregler (§ 3 Hensynsfuld & agtpågivende)',
     ru: 'Золотое правило § 3: осторожность и бережность',
     detailsDa: 'Du må aldrig skabe fare eller ulempe — og du må aldrig "køre på din ret", hvis en anden trafikant begår en fejl.',
-    detailsRu: 'Базовый принцип ПДД Дании: не создавай опасности и никогда не «настаивай на приоритете» ценой столкновения.',
+    detailsRu: 'Нельзя создавать опасность или помеху — и нельзя «настаивать на своём праве», если другой участник ошибается.',
   },
   {
     id: 'term_tunnelsyn_reaktion',
@@ -1250,7 +1250,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Tunnelsyn, Reaktionslængde & Standselængde',
     ru: 'Туннельное зрение, путь реакции и остановочный путь',
     detailsDa: 'Standselængde = Reaktionslængde + Bremselængde. Ved høj hastighed indsnævres synsfeltet (tunnelsyn), mens bremselængden stiger med farten i anden potens (2× fart = 4× bremselængde).',
-    detailsRu: 'На скорости поле зрения сужается (туннельный взгляд), а при росте скорости в 2 раза тормозной путь увеличивается в 4 раза.',
+    detailsRu: 'Остановочный путь = путь реакции + тормозной путь. На высокой скорости поле зрения сужается (туннельный взгляд), а тормозной путь растёт пропорционально квадрату скорости (2× скорость = 4× тормозной путь).',
   },
   {
     id: 'term_glatbane_rabat',
@@ -1259,7 +1259,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Køreteknisk anlæg (Glatbane) & Høj rabat',
     ru: 'Полигон скольжения KTA (Glatbane) и съезд на обочину',
     detailsDa: 'Lovpligtigt slutmodul (Mål 9): træning på glat føre og korrekt reaktion hvis højre hjul ryger ud over en høj vejkant (slip gassen, brems ikke hårdt, styr blidt ind).',
-    detailsRu: 'Финальный полигон заноса: при съезде на высокую/мягкую обочину нельзя резко тормозить или дёргать руль влево — сбавь газ и вернись плавно.',
+    detailsRu: 'Обязательный финальный модуль (Mål 9): тренировка на скользком покрытии и правильная реакция, если правое колесо съехало на высокий край обочины (отпустите газ, не тормозите резко, плавно вернитесь обратно).',
   },
   {
     id: 'term_selvstudium_drive',
@@ -1268,7 +1268,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Selvstudium & Forløbsplan (DriveLogger / Drive4you)',
     ru: 'Самоподготовка и поэтапный учебный план автошколы',
     detailsDa: 'Obligatorisk læsning mellem teorilektioner efter Færdselsstyrelsens Undervisningsplan for kategori B (afsnit 1–10), før du må gå videre til næste skolemodul.',
-    detailsRu: 'Обязательные домашние разделы между занятиями в датской автошколе (M1–M5), без чтения которых закрыт переход на следующий этап.',
+    detailsRu: 'Обязательное чтение между уроками теории по учебной программе Færdselsstyrelsen для категории B (разделы 1–10), прежде чем перейти к следующему школьному модулю.',
   },
   {
     id: 'term_bakke_polysemy',
@@ -1288,7 +1288,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Synke (pedalen synker let vs. synker i bund)',
     ru: 'Глагол «Synke» (проседать / опускаться вниз — про педаль тормоза)',
     detailsDa: 'I spørgsmål om bremser betyder «pedalen synker let», at bremsepedalen giver sig en smule ned ved motorstart (NORMALT — vakuumforstærkeren virker). Men «synker langsomt i bund» betyder, at den bliver ved med at falde mod gulvet (FEJL — utæthed i bremsesystemet!).',
-    detailsRu: 'В билетах про тормоза «pedalen synker let» значит «педаль мягко чуть опускается вниз при запуске мотора» (это НОРМА, включился усилитель). А «synker langsomt i bund» — «медленно проваливается до пола» (это ОШИБКА и утечка жидкости!).',
+    detailsRu: 'В вопросах о тормозах «pedalen synker let» означает, что педаль тормоза немного поддаётся вниз при запуске двигателя (НОРМАЛЬНО — работает вакуумный усилитель). А «synker langsomt i bund» означает, что она продолжает падать к полу (НЕИСПРАВНОСТЬ — утечка в тормозной системе!).',
   },
   {
     id: 'term_rabat_kant',
@@ -1308,7 +1308,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     da: 'Servostyring & Ratslør (0 cm dødgang)',
     ru: 'Усилитель руля (Servostyring) и люфт руля (Ratslør)',
     detailsDa: 'Servostyring hjælper dig med at dreje rattet let og virker kun med startet motor. Ratslør (dødgang) er fri bevægelse, hvor du drejer på rattet, uden at forhjulene flytter sig. På en moderne bil med servostyring må der ikke være ratslør.',
-    detailsRu: 'Servostyring помогает легко крутить руль и работает только при заведённом моторе. Ratslør (люфт) — пустой ход, когда вы поворачиваете руль, а колёса стоят на месте. На исправном авто с усилителем люфта быть не должно (колёса реагируют сразу).',
+    detailsRu: 'Servostyring помогает легко поворачивать руль и работает только при заведённом двигателе. Ratslør (люфт) — свободный ход, когда вы поворачиваете руль, а передние колёса не двигаются. На современном авто с усилителем люфта быть не должно.',
   },
   {
     id: 'term_vakuumforstaerker',
@@ -1318,8 +1318,8 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     technicalHotspot: 'bremser',
     da: 'Vakuumforstærker (Bremseforstærker)',
     ru: 'Вакуумный усилитель тормозов (помощник вашей ноги)',
-    detailsDa: 'Et hjælpesystem, der ved startet motor gør det let at træde bremsepedalen ned uden brug af al kropsvægt. Kontrolleres ved at pumpe pedalen hård med slukket motor, holde almindeligt tryk og starte motoren — så skal pedalen synke en smule.',
-    detailsRu: 'Устройство, которое при заведённом двигателе помогает нажимать педаль тормоза без огромных усилий. Проверяем так: накачали тормоз на заглушенном моторе до твёрдости → держим как на светофоре → заводим мотор → педаль чуть опускается.',
+    detailsDa: 'Et hjælpesystem, der ved startet motor gør det let at træde bremsepedalen ned uden brug af al kropsvægt. Kontrolleres ved at pumpe pedalen hård med slukket motor, holde almindeligt tryk (som ved et rødt lys) og starte motoren — så skal pedalen synke en smule.',
+    detailsRu: 'Вспомогательная система, которая при заведённом двигателе позволяет легко нажимать педаль тормоза без приложения всей массы тела. Проверяется так: накачать педаль до твёрдости при выключенном моторе, удерживать обычное нажатие (как на красный светофор) и завести мотор — тогда педаль должна немного опуститься.',
   },
   {
     id: 'term_automatgear_koder',
@@ -1329,7 +1329,7 @@ export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
     technicalHotspot: 'pedaler',
     da: 'Automatgear (P-R-N-D · Kode 78 vs. Kode 148)',
     ru: 'Коробка-автомат (P-R-N-D) и коды прав Kode 78 / Kode 148',
-    detailsDa: 'I en bil med automatgear er der kun 2 pedaler (bremse og speeder — begge betjenes KUN med højre fod!). P = parkering, R = bakgear, N = frigear, D = kørsel frem. Prøve kun i automatgear giver Kode 78, mens prøve i automatgear + min. 7 lektioner i manuelt gear giver Kode 148.',
-    detailsRu: 'На автомате всего 2 педали (тормоз и газ — обе нажимаются ТОЛЬКО правой ногой!). P = паркинг, R = задний ход, N = нейтраль, D = езда вперёд. Сдача только на автомате даёт Kode 78, а автомат + ≥7 уроков на механике в школе даёт Kode 148 (можно водить всё).',
+    detailsDa: 'I en bil med automatgear er der kun 2 pedaler (bremse og speeder — begge betjenes KUN med højre fod!). P = parkering, R = bakgear, N = frigear, D = kørsel frem. Prøve kun i automatgear giver Kode 78, mens prøve i automatgear + min. 7 lektioner i manuelt gear hos køreskolen giver Kode 148 (ret til at køre begge).',
+    detailsRu: 'В машине с автоматом всего 2 педали (тормоз и газ — обе управляются ТОЛЬКО правой ногой!). P = паркинг, R = задний ход, N = нейтраль, D = движение вперёд. Экзамен только на автомате даёт Kode 78, а экзамен на автомате + мин. 7 уроков на механике в автошколе даёт Kode 148 (право водить оба типа).',
   },
 ];

@@ -148,7 +148,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     ],
     lawReference: 'Kontrolprøven — Lygter & Reflekser (Færdselsstyrelsen)',
     keyRuleDa: 'Nærlys ≥ 30 m (1% fald), Fjernlys ≥ 100 m (blå lampe), Nummerpladelys ≥ 20 m, Bilreflekser må IKKE være trekantede.',
-    keyRuleRu: 'Ближний ≥ 30 м, Дальний ≥ 100 м (синяя лампа), Номер ≥ 20 м, Катафоты авто НЕ треугольные.',
+    keyRuleRu: 'Ближний ≥ 30 м (1% уклон), Дальний ≥ 100 м (синяя лампа), Подсветка номера ≥ 20 м, Катафоты авто НЕ треугольные.',
   },
   {
     id: 'q_m1_4',
@@ -263,7 +263,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Двигатель должен работать (или зажигание должно быть включено для ЭУР) при проверке люфта руля на современном авто с усилителем.',
         correctAnswer: true,
         explanationDa: 'Ja. Servostyringen skal være aktiv, så du kan mærke præcist, om forhjulene følger ratbevægelsen straks uden dødgange.',
-        explanationRu: 'Да. Усилитель должен быть активен, чтобы убедиться в отсутствии люфта (0 см свободного хода).',
+        explanationRu: 'Да. Усилитель руля должен быть активен, чтобы вы могли точно почувствовать, сразу ли передние колёса следуют за движением руля без свободного хода.',
       },
       {
         id: 'q_m1_6_b',
@@ -284,7 +284,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     ],
     lawReference: 'Færdselsloven § 32 & Kontrolprøven Styretøj/Signalapparater',
     keyRuleDa: 'Intet ratslør med aktiv servo; blinklys 60–120/min; horn KUN til fareafværgelse.',
-    keyRuleRu: 'Люфт 0 см с активным усилителем; поворотники 60–120/мин; клаксон только при опасности.',
+    keyRuleRu: 'Никакого люфта руля с активным усилителем; поворотники 60–120/мин; клаксон ТОЛЬКО для предотвращения опасности.',
   },
 
   // =========================================================================
@@ -441,7 +441,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Мне разрешено выполнять разворот или движение задним ходом, если это вынудит встречные машины притормозить или ждать.',
         correctAnswer: false,
         explanationDa: 'Nej! Ved vending og bakning må du ikke være til fare eller ulempe for andre trafikanter (Færdselsloven § 18).',
-        explanationRu: 'Нет! При развороте и движении задним ходом запрещено создавать опасность или малейшую помеху другим участникам.',
+        explanationRu: 'Нет! При развороте и движении задним ходом нельзя создавать опасность или помеху другим участникам движения (Закон § 18).',
       },
       {
         id: 'q_m2_4_b',
@@ -493,7 +493,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Мне нужно настроить боковые зеркала так, чтобы большая часть боковины моей машины была видна в зеркале.',
         correctAnswer: false,
         explanationDa: 'Nej! Du bør kun se en ganske smal stribe af din egen bil (ca. 1–2 cm inderst), så spejlet viser mest muligt af den tilstødende vognbane og mindsker den blinde vinkel.',
-        explanationRu: 'Нет! Своё авто должно занимать лишь узкую полоску у внутреннего края, чтобы максимально видеть соседнюю полосу.',
+        explanationRu: 'Нет! Вы должны видеть лишь совсем узкую полоску своего авто (около 1–2 см у внутреннего края), чтобы зеркало показывало как можно больше соседней полосы и уменьшало слепую зону.',
       },
       {
         id: 'q_m2_5_c',
@@ -541,7 +541,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Мне нужно явно снизить скорость заранее перед разметкой hajtænder, чтобы другие видели моё намерение уступить.',
         correctAnswer: true,
         explanationDa: 'Ja! Færdselsloven § 26 kræver, at du ved nedsættelse af farten i god tid eller standsning tydeligt viser, at du overholder din vigepligt.',
-        explanationRu: 'Да! Закон требует заблаговременным снижением скорости чётко показать, что вы уступаете.',
+        explanationRu: 'Да! Закон о дорожном движении § 26 требует, чтобы вы заблаговременным снижением скорости или остановкой чётко показывали, что уступаете дорогу.',
       },
       {
         id: 'q_m3_1_c',
@@ -577,7 +577,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Я должен уступить автомобилю, который приближается справа.',
         correctAnswer: true,
         explanationDa: 'Ja! Når der ikke er skilte, signaler eller hajtænder, gælder højrevigepligt (Færdselsloven § 26, stk. 4).',
-        explanationRu: 'Да! При отсутствии знаков и разметки действует правило правой руки (højrevigepligt).',
+        explanationRu: 'Да! Когда нет знаков, сигналов или разметки hajtænder, действует правило правой руки (Закон § 26, ч. 4).',
       },
       {
         id: 'q_m3_2_b',
@@ -897,7 +897,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Существует точно такая же юридическая обязанность уступать автобусу вне города на дороге с лимитом 80 км/ч.',
         correctAnswer: false,
         explanationDa: 'Nej! Uden for byzone (højere hastighed) har bussen vigepligt ved igangsætning — men vær altid opmærksom og hjælp hvis det er sikkert.',
-        explanationRu: 'Нет! Вне города (при скорости >50 км/ч) автобус обязан уступать потоку при выезде с остановки.',
+        explanationRu: 'Нет! Вне городской зоны (более высокая скорость) уступать при трогании обязан сам автобус — но всегда будьте внимательны и помогите, если это безопасно.',
       },
       {
         id: 'q_m4_3_c',
@@ -1258,7 +1258,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Мне разрешено обгонять медленный трактор непосредственно перед железнодорожным переездом без шлагбаумов.',
         correctAnswer: false,
         explanationDa: 'Nej! Overhaling før og på en jernbaneoverskæring er strengt forbudt (undtagen tohjulede cykler/små knallerter eller hvis der er bomme/lyssignal med fri bane — i praksis aldrig overhale før ureguleret overgang).',
-        explanationRu: 'Нет! Обгон перед переездом и на нём запрещён законом.',
+        explanationRu: 'Нет! Обгон перед ж/д переездом и на нём строго запрещён (кроме двухколёсных велосипедов/малых мопедов или при наличии шлагбаумов/светофора со свободным путём — на практике никогда не обгоняйте перед нерегулируемым переездом).',
       },
       {
         id: 'q_m5_6_c',
@@ -1328,7 +1328,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationDa:
       'Du kører personbil med en almindelig påhængsvogn (trailer under 3.500 kg uden Tempo 100-godkendelse) og kører først på landevej, derefter på motortrafikvej (E43) og til sidst på motorvej (E42).',
     situationRu:
-      'Вы управляете легковым автомобилем с обычным прицепом (без сертификата Tempo 100) и движетесь сначала по загородной дороге, затем по motortrafikvej (E43) и автомагистрали (E42).',
+      'Вы управляете легковым автомобилем с обычным прицепом (прицеп до 3.500 кг без сертификата Tempo 100) и движетесь сначала по загородной дороге, затем по motortrafikvej (E43) и наконец по автомагистрали (E42).',
     visual: {
       type: 'scene',
       presetId: 'pov_trailer_weight',
@@ -1432,7 +1432,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Мне разрешено объехать справа автомобиль впереди, который прижался к центру и явно подаёт левый сигнал для поворота налево.',
         correctAnswer: true,
         explanationDa: 'Ja! Det er en af de klassiske lovlige undtagelser for overhaling/forbikørsel til højre (Færdselsloven § 21, stk. 1).',
-        explanationRu: 'Да! Это прямое исключение в законе: поворачивающий налево объезжается справа (если хватает ширины проезжей части).',
+        explanationRu: 'Да! Это одно из классических законных исключений для обгона/опережения справа (Закон § 21, ч. 1).',
       },
       {
         id: 'q_m6_4_b',
@@ -1542,7 +1542,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Мне разрешено высадить пассажира за 20 секунд в зоне действия знака C61 (красный крест).',
         correctAnswer: false,
         explanationDa: 'Nej! C61 betyder "Standsning forbudt" — selv 10 sekunders stop er ulovligt (medmindre trafikken tvinger dig til at holde tilbage).',
-        explanationRu: 'Нет! Знак C61 запрещает даже секундную остановку (кроме вынужденной остановки из-за светофора/пробки).',
+        explanationRu: 'Нет! C61 означает «Остановка запрещена» — даже 10-секундная остановка незаконна (если только дорожная обстановка не вынуждает вас остановиться).',
       },
     ],
     lawReference: 'Færdselsloven § 2 & § 28 — Definition af Standsning vs. Parkering',
@@ -1705,7 +1705,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Мне разрешено припарковаться на левой стороне этой односторонней улицы (по ходу движения).',
         correctAnswer: true,
         explanationDa: 'Ja! På en ensrettet vej må du lovligt standse og parkere i BÅDE højre og venstre side (Færdselsloven § 28, stk. 2).',
-        explanationRu: 'Да! На улице с односторонним движением разрешена парковка на обеих сторонах (и справа, и слева).',
+        explanationRu: 'Да! На односторонней улице законно разрешено останавливаться и парковаться как с ПРАВОЙ, так и с ЛЕВОЙ стороны (Закон § 28, ч. 2).',
       },
       {
         id: 'q_m7_5_b',
@@ -1840,7 +1840,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Законный верхний порог алкоголя для опытных водителей в Дании составляет 0,50‰ (при 0,51‰ уже наступает ответственность за нетрезвое вождение).',
         correctAnswer: true,
         explanationDa: 'Ja! For erfarne bilister er grænsen 0,50 ‰ — men for nye bilister i de første 3 år gælder en skærpet grænse på kun 0,20 ‰ (i praksis 0,0 ‰)!',
-        explanationRu: 'Да! Общий лимит — 0,50‰ (при >2,00‰ автомобиль конфискуется), но для новичков в первые 3 года с 01.07.2025 действует строгий порог 0,20‰ (фактически 0,0‰)!',
+        explanationRu: 'Да! Для опытных водителей лимит — 0,50‰, но для новых водителей в первые 3 года действует более строгий лимит всего 0,20‰ (на практике 0,0‰)!',
       },
       {
         id: 'q_m8_3_b',
@@ -1856,7 +1856,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Разрешено быстро отправить сообщение на телефоне в руках, пока автомобиль полностью стоит на красный свет светофора.',
         correctAnswer: false,
         explanationDa: 'Nej! Håndholdt mobil giver 1.500 kr. bøde + 500 kr. til Offerfonden + 1 klip i kørekortet — også når bilen holder stille i kø eller for rødt.',
-        explanationRu: 'Нет! Телефон в руках во время езды или на красном свете — 1500+500 DKK штрафа и 1 балл (klip).',
+        explanationRu: 'Нет! Телефон в руках даёт штраф 1.500 kr + 500 kr в Offerfonden (фонд помощи потерпевшим) + 1 балл (klip) в правах — даже когда авто стоит в пробке или на красный.',
       },
     ],
     lawReference: 'Færdselsloven § 53, § 55a & § 125–127 — Alkohol & Klippekort',
@@ -1874,7 +1874,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       type: 'scene',
       presetId: 'pov_accident_triangle_112',
       captionDa: 'Færdselsuheld: Sikring, advarselstrekant & alarm 112',
-      captionRu: 'Действия при ДТП: безопасность, треугольник 100 м, вызов 112',
+      captionRu: 'ДТП: безопасность на месте, аварийный треугольник и вызов 112',
     },
     subQuestions: [
       {
@@ -1935,7 +1935,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Если в дороге слипаются глаза и наваливается усталость, достаточно просто открыть окно и сделать громче музыку на последние 45 минут.',
         correctAnswer: false,
         explanationDa: 'Nej! Frisk luft og høj musik fjerner kun symptomet få minutter — mikrosøvn varer kun 1–3 sekunder og er dødelig. Hold ind på rasteplads og tag en lur (powernap 15–20 min)!',
-        explanationRu: 'Нет! Ни музыка, ни холодный воздух не предотвращают микросон. Единственное решение — остановиться на стоянке и поспать 15–20 минут.',
+        explanationRu: 'Нет! Свежий воздух и громкая музыка снимают симптом лишь на пару минут — микросон длится всего 1–3 секунды и смертельно опасен. Съезжайте на площадку отдыха и вздремните (powernap 15–20 мин)!',
       },
       {
         id: 'q_m8_5_c',
@@ -1977,7 +1977,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Все 3 стоп-сигнала сзади современного авто должны гореть заметно ярче обычных красных габаритов.',
         correctAnswer: true,
         explanationDa: 'Ja! De 3 stoplys skal lyse ca. 3–5 gange kraftigere end baglysene, så bagfrakommende straks ser, når du bremser.',
-        explanationRu: 'Да! 3 стоп-сигнала должны светить значительно ярче габаритных огней, чтобы предупреждать о торможении.',
+        explanationRu: 'Да! 3 стоп-сигнала должны светить примерно в 3–5 раз ярче задних габаритов, чтобы едущие сзади сразу видели, когда вы тормозите.',
       },
       {
         id: 'q_m1_7_b',
@@ -1985,7 +1985,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Передние и задние габаритные огни должны быть отчётливо видны в ясную темноту на расстоянии не менее 300 метров.',
         correctAnswer: true,
         explanationDa: 'Ja! Både de 2 hvide/svagt gule positionslys foran og de 2 røde baglys skal være synlige på mindst 300 m i mørke.',
-        explanationRu: 'Да! Габариты должны обеспечивать видимость автомобиля в темноте минимум за 300 м.',
+        explanationRu: 'Да! Как 2 белых/слабо-жёлтых габаритных огня спереди, так и 2 красных задних габарита должны быть видны минимум на 300 м в темноте.',
       },
       {
         id: 'q_m1_7_c',
@@ -2126,7 +2126,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Даже если я еду по главной дороге или по знаку B19, я обязан принять меры к торможению, если другой водитель не уступает мне.',
         correctAnswer: true,
         explanationDa: 'Ja! Færdselsloven § 3 pålægger alle at udvise hensyn og undgå ulykker — du må aldrig "køre på din ret".',
-        explanationRu: 'Да! Закон обязывает каждого водителя предотвращать аварию, даже если формальный приоритет на его стороне.',
+        explanationRu: 'Да! Закон о дорожном движении § 3 обязывает всех проявлять осмотрительность и избегать аварий — никогда нельзя «настаивать на своём праве».',
       },
     ],
     lawReference: 'Færdselsloven § 3 & Tavle B16 / B17 / B19',
@@ -2421,7 +2421,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Мне разрешено парковать автомобиль на проезжей части главной дороги (B16) вне населённого пункта.',
         correctAnswer: false,
         explanationDa: 'Nej! På hovedveje (B16) uden for tættere bebygget område er PARKERING på kørebanen forbudt (kort standsning ≤ 3 min er tilladt, hvis sikkert — hold dog helst i rabat/rasteplads!).',
-        explanationRu: 'Нет! На главных дорогах (B16) вне города стоянка на проезжей части запрещена.',
+        explanationRu: 'Нет! На главных дорогах (B16) вне городской зоны СТОЯНКА на проезжей части запрещена (кратковременная остановка ≤ 3 мин разрешена, если безопасно — но лучше съехать на обочину/площадку отдыха!).',
       },
       {
         id: 'q_m7_7_b',
@@ -2429,7 +2429,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Мне разрешено останавливаться или парковаться ближе 5 метров до или после железнодорожного переезда.',
         correctAnswer: false,
         explanationDa: 'Nej! På selve jernbaneoverskæringen er både standsning og parkering forbudt, og i praksis må du aldrig holde til fare/spærring af udsyn før skinner (parkering er forbudt inden for 30 m i visse overskæringer eller hvis udsynet spærres).',
-        explanationRu: 'Нет! Остановка и стоянка на переезде и в непосредственной близости с ограничением видимости запрещены.',
+        explanationRu: 'Нет! На самом ж/д переезде запрещены и остановка, и стоянка, и на практике нельзя останавливаться так, чтобы создавать опасность или закрывать обзор перед рельсами (стоянка запрещена в пределах 30 м на ряде переездов или при закрытии обзора).',
       },
       {
         id: 'q_m7_7_c',
@@ -2482,7 +2482,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Зимние шины строго обязательны в Дании по календарю (с ноября по март) даже на сухом асфальте.',
         correctAnswer: false,
         explanationDa: 'Nej! Der er ingen fast dato i kalenderen, men siden 1. juli 2025 er det ulovligt at køre med sommerdæk («åbenbart uegnede dæk» — bøde 1.000 kr. pr. dæk) i vinterføre (sne, is, sjap); brug min. M+S / 3PMSF og gerne ≥ 3 mm.',
-        explanationRu: 'Нет! Календарной даты нет, но с 01.07.2025 в снег, лёд и слякоть (vinterføre) запрещено выезжать на летних шинах (штраф 1.000 kr за колесо): нужна маркировка минимум M+S, лучше 3PMSF и протектор ≥ 3 мм (минимум по закону 1,6 мм).',
+        explanationRu: 'Нет! Фиксированной календарной даты нет, но с 1 июля 2025 года незаконно ездить на летних шинах («явно неподходящие шины» — штраф 1.000 kr за шину) в зимних условиях (снег, лёд, слякоть); используйте мин. M+S / 3PMSF и желательно ≥ 3 мм.',
       },
     ],
     lawReference: 'Færdselsloven § 41 & Færdselsstyrelsen — Glatførekørsel',
@@ -2518,7 +2518,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Если взрослый пассажир (старше 15 лет) отказывается пристегнуться в моей машине, штраф за его непристёгнутый ремень выпишут мне как водителю.',
         correctAnswer: false,
         explanationDa: 'Nej — passagerer på 15 år og derover betaler selv deres bøde (1.500 kr.). Føreren har ansvaret og får bøde + klip for børn UNDER 15 år!',
-        explanationRu: 'Нет — пассажиры с 15 лет отвечают за свой ремень сами. Водитель отвечает (штраф + балл klip) только за детей младше 15 лет!',
+        explanationRu: 'Нет — пассажиры 15 лет и старше сами оплачивают свой штраф (1.500 kr). Водитель несёт ответственность и получает штраф + klip за детей МЛАДШЕ 15 лет!',
       },
       {
         id: 'q_m8_7_c',
@@ -2531,7 +2531,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     ],
     lawReference: 'Færdselsloven § 80, § 118 & § 133a — Vanvidskørsel & Frit udsyn',
     keyRuleDa: 'Vanvidskørsel (>100% fart ved ≥100 km/t, >200 km/t, >2,00‰) = konfiskation! Alle ruder skal skrabes fri for is.',
-    keyRuleRu: 'Vanvidskørsel = конфискация авто! Все стёкла должны быть очищены ото льда; за детей <15 лет отвечает водитель.',
+    keyRuleRu: 'Vanvidskørsel (>100% скорости при ≥100 км/ч, >200 км/ч, >2,00‰) = конфискация! Все стёкла должны быть очищены ото льда.',
   },
 
   // =========================================================================
@@ -2821,7 +2821,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Стоянка (parkering) запрещена ближе 30 метров до и после железнодорожного переезда.',
         correctAnswer: true,
         explanationDa: 'Ja! Du må ikke parkere nærmere end 30 meter fra en jernbaneoverskæring (og på selve skinnerne er både standsning og parkering forbudt).',
-        explanationRu: 'Да! Стоянка запрещена ближе 30 м с обеих сторон от ж/д переезда.',
+        explanationRu: 'Да! Парковаться ближе 30 метров от ж/д переезда запрещено (а на самих путях запрещены как остановка, так и стоянка).',
       },
       {
         id: 'q_m7_8_b',
@@ -2864,7 +2864,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Обязательная программа (lovpakke B) включает закрытую площадку (manøvrebane), ночное вождение и скользкую площадку (glatbane).',
         correctAnswer: true,
         explanationDa: 'Ja! Alle tre elementer samt min. 29 teorilektioner og 16 kørelektioner på vej er lovpligtige i Danmark.',
-        explanationRu: 'Да! Программа требует минимум 29 уроков теории, 4 часа площадки, 16 часов в городе (вкл. темноту) и 4 часа glatbane.',
+        explanationRu: 'Да! Все три элемента, а также мин. 29 уроков теории и 16 уроков вождения на дороге обязательны по закону в Дании.',
       },
       {
         id: 'q_m8_8_b',
@@ -2877,10 +2877,10 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       {
         id: 'q_m8_8_c',
         da: 'Hvis jeg dumper i ét enkelt af de 3 Ja/Nej-spørgsmål på billede nr. 14 til teoriprøven, får jeg stadig et halvt point for det billede.',
-        ru: 'Если на экзамене Teoriprøven я допущу одну ошибку в подпункте Ja/Nej на картинке №14, мне всё равно зачтут полбалла за эту картинку.',
+        ru: 'Если на теоретическом экзамене я ошибусь в одном из 3 вопросов Ja/Nej на картинке № 14, я всё равно получу половину балла за эту картинку.',
         correctAnswer: false,
         explanationDa: 'Nej! Hvert af de 25 billeder skal være 100% fejlfrit for at give 1 point — én fejl i et delspørgsmål giver 0 point for hele billedet.',
-        explanationRu: 'Нет! Каждый из 25 билетов оценивается по принципу «всё или ничего» — одна ошибка в подпункте обнуляет весь билет.',
+        explanationRu: 'Нет! Каждая из 25 картинок должна быть на 100% без ошибок, чтобы дать 1 балл — одна ошибка в подвопросе даёт 0 баллов за всю картинку.',
       },
     ],
     lawReference: 'Kørekortbekendtgørelsen — Lovpakke B & Teoriprøve regler',
@@ -3133,7 +3133,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       {
         id: 'q_m2_10_a',
         da: 'En lokal hastighedsbegrænsning (C55 60 km/t) gælder normalt fortsat efter et vejkryds, selvom der ikke er opsat en ophørstavle (C56).',
-        ru: 'Знак C55 (60 км/ч) продолжает действовать после обычного перекрёстка, даже если не стоит знак отмены.',
+        ru: 'Локальное ограничение скорости (C55 60 км/ч) обычно продолжает действовать после перекрёстка, даже если не установлена отменяющая табличка (C56).',
         correctAnswer: false,
         explanationDa: 'Nej! I Danmark ophører en lokal C55-tavle ved næste vejkryds, medmindre tavlen gentages efter krydset (undtagen E68 zone-tavler).',
         explanationRu: 'Нет! В Дании локальный знак C55 (в отличие от знака «Зона») перестаёт действовать на следующем перекрёстке, если не продублирован за ним.',
@@ -3180,7 +3180,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Мне следует отключить круиз-контроль в сильный дождь и при риске аквапланирования.',
         correctAnswer: true,
         explanationDa: 'Ja! Ved akvaplaning kan fartpiloten give mere gas for at holde farten, hvilket gør udskridningen værre.',
-        explanationRu: 'Да! При потере сцепления круиз-контроль может добавить газ, чтобы удержать 80 км/ч, что усилит занос.',
+        explanationRu: 'Да! При аквапланировании круиз-контроль может подать больше газа для поддержания скорости, что усугубит занос.',
       },
       {
         id: 'q_m2_11_b',
@@ -3381,7 +3381,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     ],
     lawReference: 'Færdselsloven § 18 & § 32 — Rundkørsel med flere vognbaner',
     keyRuleDa: 'I rundkørsel gælder vognbaneskift-vigepligt mod højre bane. Blink til højre før udkørsel!',
-    keyRuleRu: 'На 2-полосном круге при смещении вправо действует приоритет правой полосы. Поворотник — вправо перед съездом!',
+    keyRuleRu: 'На кругу при смене полосы действует обязанность уступить правой полосе. Поворотник направо перед съездом!',
   },
   {
     id: 'q_m3_12',
@@ -3498,12 +3498,12 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Мне можно под знаком C51 обогнать медленный трактор, поскольку его скорость ниже 40 км/ч.',
         correctAnswer: false,
         explanationDa: 'Nej! En traktor er et firehjulet motorkøretøj og er omfattet af overhalingsforbuddet C51 (medmindre andet fremgår af undertavle).',
-        explanationRu: 'Нет! Трактор имеет 4 колеса — обгон трактора под знаком C51 запрещён.',
+        explanationRu: 'Нет! Трактор — это четырёхколёсное механическое транспортное средство, и на него распространяется запрет обгона C51 (если иное не указано на подтабличке).',
       },
       {
         id: 'q_m4_10_c',
         da: 'Tavlen C51 ophæves automatisk efter det næste vejkryds (ligesom C55), hvis tavlen ikke gentages.',
-        ru: 'Действие знака C51 («Обгон запрещён») отменяется на следующем перекрёстке, если его не продублировали.',
+        ru: 'Знак C51 автоматически отменяется после следующего перекрёстка (как и C55), если знак не продублирован.',
         correctAnswer: true,
         explanationDa: 'Ja! Lokale forbudstavler som C51 ophører efter det næste kryds, medmindre de står igen efter krydset eller ophæves af C52/C59.',
         explanationRu: 'Да! Как и другие локальные запрещающие знаки, C51 действует до конца зоны или до следующего перекрёстка.',
@@ -3546,7 +3546,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       {
         id: 'q_m4_11_c',
         da: 'Det er lovligt at vende ved hjælp af bakning hen over en cykelsti ind i en indkørsel, hvis jeg orienterer mig grundigt.',
-        ru: 'Можно выполнить разворот в 3 приёма с использованием заезда задним ходом через велодорожку/двор при тщательной проверке обстановки.',
+        ru: 'Разрешено развернуться с использованием движения задним ходом через велодорожку во въезд двора, если я тщательно контролирую обстановку.',
         correctAnswer: true,
         explanationDa: 'Ja, hvis du holder fuld vigepligt for cyklister og fodgængere på cykelsti og fortov samt færdsel på vejen — men find helst en sidevej eller P-plads.',
         explanationRu: 'Да, если нет запрещающих знаков/сплошной и вы полностью уступаете пешеходам, велосипедистам и потоку, хотя безопаснее развернуться на парковке или круге.',
@@ -3554,7 +3554,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     ],
     lawReference: 'Færdselsloven § 18 & § 46 — Vending på vej og forbud på motorvej',
     keyRuleDa: 'Vending kræver 100% fri bane uden ulempe; absolut forbudt på motorvej, motortrafikvej og over spærrelinje.',
-    keyRuleRu: 'Разворот — только без малейших помех другим; строго запрещён на автобане и через сплошную.',
+    keyRuleRu: 'Разворот требует на 100% свободной дороги без помех; абсолютно запрещён на motorvej, motortrafikvej и через сплошную линию.',
   },
   {
     id: 'q_m4_12',
@@ -3576,7 +3576,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Мне разрешено проехать на жёлтый сигнал, если на скорости 50 км/ч за 10 м я уже не смогу безопасно остановиться до стоп-линии.',
         correctAnswer: true,
         explanationDa: 'Ja! Ved 50 km/t er bremselængden plus reaktion ca. 25–30 meter. Kan du ikke standse sikkert før linjen uden risiko, skal du køre igennem krydset.',
-        explanationRu: 'Да! При 50 км/ч остановочный путь около 25–30 м — за 10 м безопасная остановка невозможна, поэтому нужно завершить проезд перекрёстка.',
+        explanationRu: 'Да! При 50 км/ч тормозной путь плюс реакция составляют около 25–30 метров. Если вы не можете безопасно остановиться до линии без риска, следует проехать через перекрёсток.',
       },
       {
         id: 'q_m4_12_b',
@@ -3679,7 +3679,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       {
         id: 'q_m5_10_c',
         da: 'Hvis tavlen i stedet har to hvide pile skråt nedad til både højre og venstre (D16), må jeg passere trafikøen på begge sider i samme kørselsretning.',
-        ru: 'Если на знаке изображены две стрелки вниз (влево и вправо), мне можно объехать островок с любой стороны.',
+        ru: 'Если вместо этого на знаке изображены две белые стрелки наискосок вниз и вправо, и влево (D16), мне можно объехать островок безопасности с обеих сторон в том же направлении движения.',
         correctAnswer: true,
         explanationDa: 'Ja! To pile på en blå rund tavle betyder valgfri passage på begge sider i færdselsretningen.',
         explanationRu: 'Да! Две расходящиеся стрелки вниз разрешают объезд препятствия как справа, так и слева.',
@@ -3726,12 +3726,12 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Мне разрешено обгонять автомобиль непосредственно перед или на ж/д переезде без шлагбаумов.',
         correctAnswer: false,
         explanationDa: 'Nej! Overhaling på og umiddelbart før jernbaneoverkørsler er forbudt (undtagen to-hjulede cykler/små knallerter ved godt udsyn).',
-        explanationRu: 'Нет! Обгон автомобилей перед и на ж/д переезде запрещён.',
+        explanationRu: 'Нет! Обгон на ж/д переездах и непосредственно перед ними запрещён (кроме двухколёсных велосипедов/малых мопедов при хорошей видимости).',
       },
     ],
     lawReference: 'Færdselsloven § 5 & § 23 — Jernbaneoverkørsler',
     keyRuleDa: 'Røde blinklys = STOP! Kør aldrig frem efter 1. tog før lyset slukker (2. tog kan komme).',
-    keyRuleRu: 'Красные мигающие огни = СТОП! Не ехать после 1-го поезда, пока не погаснут огни.',
+    keyRuleRu: 'Красные мигающие огни = СТОП! Никогда не трогайтесь после 1-го поезда, пока огни не погаснут (может идти 2-й поезд).',
   },
   {
     id: 'q_m5_12',
@@ -3857,7 +3857,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Мне разрешено включать передние противотуманные фары в ясную ночь в городе, чтобы лучше подсветить обочину.',
         correctAnswer: false,
         explanationDa: 'Nej! Tågelygter må kun bruges i tåge, tæt sne/regn (tågeforlygter kan i klart vejr dog kun tændes om dagen som erstatning for kørelys — aldrig sammen med nærlys i mørke uden tåge!).',
-        explanationRu: 'Нет! Использование противотуманок ночью в ясную погоду запрещено и наказывается штрафом.',
+        explanationRu: 'Нет! Противотуманные фары/фонари можно использовать только в туман, сильный снег/дождь (передние противотуманки в ясную погоду можно включать только днём вместо ходовых огней — никогда вместе с ближним светом в темноте без тумана!).',
       },
     ],
     lawReference: 'Færdselsloven § 33 — Tågelygter & Tågebaglygte',
@@ -3989,7 +3989,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       {
         id: 'q_m7_9_c',
         da: 'Kravet om korrekt indstillet P-skive gælder også, hvis bilen kun har standsning under 3 minutter (fx afsætning af passager).',
-        ru: 'Выставлять P-skive нужно также при кратковременной остановке (standsning) на 2 минуты для высадки пассажира.',
+        ru: 'Требование правильно выставленного P-skive действует также, если автомобиль делает лишь остановку менее чем на 3 минуты (например, высадка пассажира).',
         correctAnswer: false,
         explanationDa: 'Nej! P-skiven gælder kun ved parkering (over 3 min). Ved lovlig standsning er P-skive ikke påkrævet.',
         explanationRu: 'Нет! P-skive требуется только для парковки; при короткой остановке (до 3 минут или посадка/высадка) настройка диска не нужна.',
@@ -4030,7 +4030,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Мне разрешено сделать короткую остановку (до 3 мин) для высадки пассажира в субботу в 10:00 под знаком C62.',
         correctAnswer: true,
         explanationDa: 'Ja! C62 forbyder kun parkering — kort standsning (under 3 min / af- og pålæsning) er fortsat tilladt under C62.',
-        explanationRu: 'Да! Знак C62 запрещает только парковку — короткая остановка (standsning) под ним разрешена.',
+        explanationRu: 'Да! C62 запрещает только стоянку — кратковременная остановка (менее 3 мин / погрузка и выгрузка) под знаком C62 по-прежнему разрешена.',
       },
       {
         id: 'q_m7_10_c',
@@ -4082,7 +4082,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Мне можно ненадолго остановиться (standsning до 3 мин) напротив выезда со двора для выгрузки вещей.',
         correctAnswer: true,
         explanationDa: 'Ja! Standsning foran ind- og udkørsel er tilladt (kun parkering er forbudt foran indkørsel).',
-        explanationRu: 'Да! Запрещена именно парковка (свыше 3 мин), а короткая остановка для посадки/выгрузки допускается.',
+        explanationRu: 'Да! Остановка перед въездом и выездом разрешена (запрещена только стоянка перед въездом).',
       },
     ],
     lawReference: 'Færdselsloven § 28 & § 29 — Indkørsel & Fortov/Cykelsti',
@@ -4242,7 +4242,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Мне необходимо в первую очередь обезопасить место ДТП (аварийка, жилет, треугольник) и позвонить на 112 при наличии пострадавших.',
         correctAnswer: true,
         explanationDa: 'Ja! Altid: 1) Stands ulykken / skab sikkerhed for dig selv og andre, 2) Giv livreddende førstehjælp, 3) Tilkald 112.',
-        explanationRu: 'Да! Алгоритм первой помощи в Дании: безопасность на месте → спасение жизни → вызов 112 (при травмах).',
+        explanationRu: 'Да! Всегда: 1) Остановите аварию / обеспечьте безопасность себе и другим, 2) Окажите жизненно важную первую помощь, 3) Вызовите 112.',
       },
       {
         id: 'q_m8_11_b',
@@ -4308,7 +4308,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     ],
     lawReference: 'Teoripensum — Miljøvenlig kørsel (Grøn kørsel)',
     keyRuleDa: 'Grøn kørsel: skift tidligt op, motorbrems i gear (0 l/100 km), rigtigt dæktryk og fjern tom tagboks.',
-    keyRuleRu: 'Эко-вождение: ранняя передача вверх, торможение двигателем на передаче, правильное давление шин, снятие пустого багажника.',
+    keyRuleRu: 'Эко-вождение: раннее переключение вверх, торможение двигателем на передаче (0 л/100 км), правильное давление в шинах и снятие пустого автобокса.',
   },
   // =========================================================================
   // FULL DRIVING SCHOOL CURRICULUM EXPANSION (M1-M4: 13..18)
@@ -4443,7 +4443,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     ],
     lawReference: 'Færdselsloven § 67 & Detailforskrifter — Udsyn og ruder',
     keyRuleDa: '100% frit udsyn gennem ruder og spejle! Virkende viskere/sprinkler kræves. Kighul i is/dug = bøde/klip.',
-    keyRuleRu: 'Полный обзор через все стёкла и зеркала; исправные щётки и омыватель; «амбразура» во льду — грубое нарушение.',
+    keyRuleRu: 'На 100% свободный обзор через стёкла и зеркала! Нужны исправные дворники/омыватель. Проталина-«глазок» во льду/запотевании = штраф/klip.',
   },
   {
     id: 'q_m1_16',
@@ -4468,7 +4468,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Обязательно в Дании ездить со включённым светом круглосуточно — даже ясным солнечным днём.',
         correctAnswer: true,
         explanationDa: 'Ja! I Danmark skal alle motorkøretøjer altid køre med mindst kørelys eller nærlys tændt hele døgnet.',
-        explanationRu: 'Да! В Дании ближний свет или ДХО обязаны гореть 24 часа в сутки круглый год.',
+        explanationRu: 'Да! В Дании все механические транспортные средства всегда должны ехать с включёнными как минимум ходовыми огнями или ближним светом круглосуточно.',
       },
       {
         id: 'q_m1_16_b',
@@ -4529,7 +4529,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Я обязан всегда иметь при себе действительное водительское удостоверение (пластиковое или официальное датское цифровое) во время вождения.',
         correctAnswer: true,
         explanationDa: 'Ja! Manglende medbragt kørekort ved politikontrol giver bøde (typisk 1.000 kr).',
-        explanationRu: 'Да! Езда без водительского удостоверения при себе наказывается штрафом.',
+        explanationRu: 'Да! Отсутствие водительского удостоверения при себе на проверке полиции ведёт к штрафу (обычно 1.000 kr).',
       },
     ],
     lawReference: 'Færdselsloven § 56 & Bekendtgørelse om udstyr — Advarselstrekant & kørekort',
@@ -4566,7 +4566,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Мне можно сразу открутить крышку бачка охлаждающей жидкости на горячем двигателе, чтобы долить воды.',
         correctAnswer: false,
         explanationDa: 'Nej! Kølersystemet er under højt tryk og over 100 °C — åbner du låget på varm motor, kan kogende damp sprøjte op og give svære forbrændinger!',
-        explanationRu: 'Нет! Система под высоким давлением — при открытии крышки на горячем моторе кипяток вырвется наружу и вызовет тяжёлые ожоги.',
+        explanationRu: 'Нет! Система охлаждения находится под высоким давлением и выше 100 °C — если открыть крышку на горячем моторе, кипящий пар может вырваться наружу и вызвать тяжёлые ожоги!',
       },
       {
         id: 'q_m1_18_c',
@@ -4601,7 +4601,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Автомобиль проезжает около 14 метров только за 1 секунду моей реакции при скорости 50 км/ч (до начала торможения).',
         correctAnswer: true,
         explanationDa: 'Ja! 50 km/t ÷ 3,6 ≈ 13,9 meter pr. sekund. Ved 80 km/t kører bilen hele ca. 22 meter på ét sekund før bremsen tager fat!',
-        explanationRu: 'Да! При 50 км/ч за 1 секунду реакции вы пролетаете ~14 м, а при 80 км/ч — ~22 м ещё до касания педали тормоза.',
+        explanationRu: 'Да! 50 км/ч ÷ 3,6 ≈ 13,9 метров в секунду. При 80 км/ч автомобиль проезжает целых около 22 метров за одну секунду до срабатывания тормоза!',
       },
       {
         id: 'q_m2_13_b',
@@ -4617,7 +4617,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Гололёд может увеличить тормозной путь в 4–10 раз по сравнению с сухим летним асфальтом.',
         correctAnswer: true,
         explanationDa: 'Ja! På spejlglat is eller hårdtpakket sne er friktionen ekstremt lav, så selv gode vinterdæk kræver mangedoblet bremseafstand.',
-        explanationRu: 'Да! На гололёде сцепление падает в разы, и тормозной путь увеличивается в 4–10 раз.',
+        explanationRu: 'Да! На зеркально-гладком льду или укатанном снегу трение крайне низкое, поэтому даже хорошим зимним шинам нужен многократно увеличенный тормозной путь.',
       },
     ],
     lawReference: 'Teoripensum M2 — Reaktionstid (ca. 1 sek.) & Bremselængde',
@@ -4782,7 +4782,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Безопаснее спускаться с крутой горы с выжатым сцеплением или на нейтральной передаче (frigear).',
         correctAnswer: false,
         explanationDa: 'Nej! I frigear mister du motorbremsningen, bilen accelererer hurtigere, bremserne overopheder, og motoren bruger ekstra brændstof i tomgang!',
-        explanationRu: 'Нет! На нейтрали машина бесконтрольно разгоняется, тормоза перегреваются, и даже расход топлива выше (холостой ход вместо 0 л/100 км).',
+        explanationRu: 'Нет! На нейтрали вы теряете торможение двигателем, машина разгоняется быстрее, тормоза перегреваются, а двигатель расходует лишнее топливо на холостом ходу!',
       },
       {
         id: 'q_m2_17_c',
@@ -4790,7 +4790,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Мне запрещено начинать обгон перед вершиной подъёма, если не просматривается обратный скат.',
         correctAnswer: true,
         explanationDa: 'Ja! Overhaling før uoverskuelig bakketop er direkte ulovligt (medmindre spærrefri bane i samme retning på motorvej/2-sporet ensrettet).',
-        explanationRu: 'Да! Обгон с выездом на встречку перед закрытой вершиной холма категорически запрещён.',
+        explanationRu: 'Да! Обгон перед плохо просматриваемой вершиной подъёма прямо незаконен (если только это не полоса без сплошной в том же направлении на автобане/двухполосной односторонней дороге).',
       },
     ],
     lawReference: 'Teoripensum M2 & M6 — Nedkørsel i lavt gear & bakketop',
@@ -4993,7 +4993,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Действует безусловная обязанность уступить дорогу всем при выезде с грунтовки, парковки, АЗС или жилой зоны — даже без разметки «акульи зубы».',
         correctAnswer: true,
         explanationDa: 'Ja! Færdselsloven § 26 stk. 3 pålægger altid ubetinget vigepligt fra underordnede arealer som P-plads, markvej, tankstation og opholdsområde.',
-        explanationRu: 'Да! Выезд с прилегающих территорий (двор, АЗС, грунтовка, парковка, жилая зона) всегда означает безусловную уступку всем (и слева, и справа).',
+        explanationRu: 'Да! Закон о дорожном движении § 26 ч. 3 всегда возлагает безусловную обязанность уступать при выезде с второстепенных территорий: парковки, грунтовки, АЗС и жилой зоны.',
       },
       {
         id: 'q_m3_16_b',
@@ -5131,7 +5131,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Малый мопед (Knallert 30) едет по велодорожке, и я обязан пропускать его при правом повороте наравне с велосипедистами.',
         correctAnswer: true,
         explanationDa: 'Ja! Lille knallert (30 km/t) følger cykelstien og kan komme hurtigere end en almindelig cyklist — hold ekstra godt øje i sidespejl og skulderkig!',
-        explanationRu: 'Да! Малые мопеды и скоростные электровелосипеды едут по cykelsti, причём быстрее обычных велосипедов — будьте особенно внимательны при правом повороте!',
+        explanationRu: 'Да! Малый мопед (30 км/ч) движется по велодорожке и может приближаться быстрее обычного велосипедиста — внимательно смотрите в боковое зеркало и через плечо!',
       },
       {
         id: 'q_m4_13_c',
@@ -5139,7 +5139,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Мопедам (Knallert 30 или 45) разрешено выезжать на motortrafikvej или motorvej по правому краю дороги.',
         correctAnswer: false,
         explanationDa: 'Nej! Hverken knallert 30, knallert 45, cykler eller traktorer har adgang til motorvej eller motortrafikvej.',
-        explanationRu: 'Нет! Ни один мопед, велосипед или трактор не имеет права въезжать на motorvej и motortrafikvej.',
+        explanationRu: 'Нет! Ни knallert 30, ни knallert 45, ни велосипеды, ни тракторы не имеют доступа на автомагистраль (motorvej) или дорогу для автомобилей (motortrafikvej).',
       },
     ],
     lawReference: 'Færdselsloven § 14 & § 51 — Lille knallert (30) vs. Stor knallert (45)',
@@ -5207,7 +5207,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       {
         id: 'q_m4_15_a',
         da: 'Jeg har som bilist samme lovpligtige pligt til at holde tilbage for en rutebus fra stoppested UDEN FOR byzone (80 km/t), som jeg har inde i byzone (≤50 km/t).',
-        ru: 'Я обязан по закону уступать дорогу отъезжающему от остановки рейсовому автобусу ВНЕ города (где лимит >50 км/ч), так же как в городе.',
+        ru: 'Как водитель, я несу такую же установленную законом обязанность уступать рейсовому автобусу с остановки ВНЕ городской зоны (80 км/ч), как и внутри городской зоны (≤50 км/ч).',
         correctAnswer: false,
         explanationDa: 'Nej! Reglen i § 19 gælder KUN på veje med fartgrænse på 50 km/t eller derunder! Uden for byzone (80 km/t) skal bussen selv holde tilbage — men vis naturligvis hensyn.',
         explanationRu: 'Нет! Это известнейшая ловушка: правило уступки автобусу (§ 19) действует ТОЛЬКО там, где лимит скорости ≤ 50 км/ч! На трассе 80 км/ч уступать обязан сам автобус.',
@@ -5246,7 +5246,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       imageSrc: './images/rules/parking-pskive.jpg',
       signCode: 'E51',
       captionDa: 'Opholds- og legeområde (E51) — legende børn og 15 km/t',
-      captionRu: 'Правила движения и парковки в жилой и игровой зоне (E51)',
+      captionRu: 'Жилая и игровая зона (E51) — играющие дети и 15 км/ч',
     },
     subQuestions: [
       {
@@ -5268,7 +5268,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       {
         id: 'q_m4_16_c',
         da: 'Jeg må parkere langs venstre eller højre kantsten overalt i et opholds- og legeområde, så længe der er plads.',
-        ru: 'Мне разрешено припарковать машину в любом свободном месте вдоль дороги внутри зоны E51.',
+        ru: 'Мне разрешено парковаться вдоль левого или правого бордюра где угодно в жилой и игровой зоне, пока есть свободное место.',
         correctAnswer: false,
         explanationDa: 'Nej! I et opholds- og legeområde er parkering KUN tilladt på særskilt afmærkede parkeringspladser/båse!',
         explanationRu: 'Нет! В жилой и игровой зоне парковка строго запрещена везде, кроме специально размеченных парковочных мест!',
@@ -5406,10 +5406,10 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       {
         id: 'q_m5_13_c',
         da: 'Lokale forbudstavler (C-tavler med rød kant) bliver ophævet samlet af den runde hvide tavle C59 med sort skråstreg.',
-        ru: 'Белый круглый знак с чёрной диагональной полосой (C59) отменяет действие ранее установленных локальных запретов (например, C51 и C55).',
+        ru: 'Локальные запрещающие знаки (C-знаки с красной каймой) целиком отменяются круглым белым знаком C59 с чёрной косой полосой.',
         correctAnswer: true,
         explanationDa: 'Ja! C59 (ophør af lokal hastighedsbegrænsning / overhalingsforbud) ophæver disse tidligere lokale forbud fra tavlen og frem.',
-        explanationRu: 'Да! Знак C59 отменяет локальные запреты обгона и скорости.',
+        explanationRu: 'Да! C59 (конец локального ограничения скорости / запрета обгона) отменяет эти прежние локальные запреты от знака и далее.',
       },
     ],
     lawReference: 'Bekendtgørelse om vejafmærkning — D-påbudstavler vs. E-oplysningstavler',
@@ -5578,7 +5578,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Когда я выезжаю за знак конца города E56 (перечёркнутый городской силуэт), общий лимит скорости становится 80 км/ч, если нет других знаков.',
         correctAnswer: true,
         explanationDa: 'Ja! Uden for byzone (fra E56) er den generelle hastighedsgrænse på almindelig landevej 80 km/t.',
-        explanationRu: 'Да! За знаком E56 заканчивается город (50 км/ч) и начинается загородная дорога с общим лимитом 80 км/ч.',
+        explanationRu: 'Да! Вне городской зоны (от знака E56) общее ограничение скорости на обычной загородной дороге — 80 км/ч.',
       },
       {
         id: 'q_m5_17_c',
@@ -5745,7 +5745,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Сумма масс авто и прицепа (2.150 + 1.450 = 3.600 кг) превышает предел в 3.500 кг для обычной категории B.',
         correctAnswer: true,
         explanationDa: 'Ja! 2.150 + 1.450 = 3.600 kg (> 3.500 kg) — til den kombination kræves mindst B+ (udvidet B, op til 4.250 kg) eller BE, da anhængeren er over 750 kg!',
-        explanationRu: 'Да! Сумма 3.600 кг > 3.500 кг, а прицеп тяжелее 750 кг — для такой связки нужны права B+ (до 4.250 кг) или BE.',
+        explanationRu: 'Да! 2.150 + 1.450 = 3.600 kg (> 3.500 kg) — для такой комбинации нужны минимум B+ (расширенные права B, до 4.250 kg) или BE, так как прицеп тяжелее 750 kg!',
       },
       {
         id: 'q_m6_15_b',
@@ -5753,7 +5753,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Мне разрешено буксировать прицеп фактическим весом 1.450 кг машиной, которой по её собственному техпаспорту разрешено тянуть максимум 1.400 кг.',
         correctAnswer: false,
         explanationDa: 'Nej! Du skal overholde BEGGE grænser: 1) Kørekortets grænse (tilladt totalvægt ≤ 3.500 kg for B) OG 2) Bilens maksimale påhængsvægt (faktisk vægt må aldrig overstige 1.400 kg).',
-        explanationRu: 'Нет! Необходимо соблюдать ОБА ограничения: предел категории прав (3.500 кг) и предельную тяговую массу конкретной машины в Registreringsattest.',
+        explanationRu: 'Нет! Нужно соблюдать ОБА ограничения: 1) Предел прав (разрешённая полная масса ≤ 3.500 kg для B) И 2) Максимальную массу прицепа самого авто (фактическая масса никогда не должна превышать 1.400 kg).',
       },
       {
         id: 'q_m6_15_c',
@@ -5774,7 +5774,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationDa:
       'Du kører på en tresporet motorvej i let trafik. Højre bane er helt tom i de næste 500 meter, men du kører fast i midterste vognbane.',
     situationRu:
-      'Вы едете по трёхполосному автобану в свободном потоке. Правая полоса совершенно пуста на сотни метров вперёд, но вы продолжаете ехать в среднем ряду.',
+      'Вы едете по трёхполосной автомагистрали в лёгком потоке. Правая полоса совершенно пуста на следующие 500 метров, но вы продолжаете ехать в средней полосе.',
     visual: {
       type: 'scene',
       presetId: 'pov_motorway_exit_frakoersel',
@@ -5802,7 +5802,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       {
         id: 'q_m6_16_c',
         da: 'En bil med påhængsvogn (fx campingvogn) skal altid holde sig i de to højre baner på en tresporet motorvej og undgå 3. vognbane helt til venstre.',
-        ru: 'Автомобилям с прицепом или длиной более 7 м запрещено выезжать в самую крайнюю левую (3-ю) полосу трёхполосного автобана.',
+        ru: 'Автомобиль с прицепом (например, домом на колёсах) всегда должен держаться в двух правых полосах на трёхполосной автомагистрали и избегать 3-й полосы слева.',
         correctAnswer: true,
         explanationDa: 'Ja! Vogntog med anhænger eller køretøjer over 3.500 kg / 7 m må ikke bruge den yderste venstre bane på tresporet motorvej.',
         explanationRu: 'Да! Автопоезда с прицепами и транспорт длиннее 7 м / тяжелее 3,5 т не имеют права выезжать в 3-ю крайнюю левую полосу автобана.',
@@ -5925,7 +5925,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       {
         id: 'q_m7_13_b',
         da: 'Jeg må parkere lige før eller på toppen af en uoverskuelig bakke eller i et skarpt uoverskueligt sving, hvis der ikke står noget forbudsskilt.',
-        ru: 'Мне разрешено припарковаться перед самой вершиной закрытого холма или в глухом повороте, если там нет знаков C61/C62.',
+        ru: 'Мне разрешено парковаться прямо перед вершиной или на вершине плохо просматриваемого холма либо в крутом закрытом повороте, если там не стоит запрещающий знак.',
         correctAnswer: false,
         explanationDa: 'Nej! Standsning og parkering på uoverskuelig bakketop eller i/ved uoverskuelig kurve er altid forbudt ved lov — også uden skilte!',
         explanationRu: 'Нет! Остановка и парковка на закрытой вершине подъёма или в непросматриваемом повороте запрещены законом даже без знаков.',
@@ -5979,7 +5979,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       {
         id: 'q_m7_14_c',
         da: 'Det er en ekstra fordel altid at læse hele parkeringstavlen oppefra og ned (først hovedskilt E33, derefter alle undertavler om tidsrum og tilladte grupper).',
-        ru: 'Следует всегда читать парковочный столб целиком сверху вниз (главный знак → подтаблички времени/групп → тариф).',
+        ru: 'Дополнительно полезно всегда читать весь парковочный щит сверху вниз (сначала основной знак E33, затем все подтаблички о времени и разрешённых группах).',
         correctAnswer: true,
         explanationDa: 'Ja! Undertavler på danske parkeringsskilte gælder samlet for det hovedskilt, de sidder under.',
         explanationRu: 'Да! В Дании все ограничения и исключения на одном столбе читаются комплексно сверху вниз.',
@@ -6114,7 +6114,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Правило 10 метров у перекрёстка действует во все стороны — и ДО, и ПОСЛЕ пересечения проезжих частей/велодорожек.',
         correctAnswer: true,
         explanationDa: 'Ja! 10-meter forbuddet ved vejkryds gælder på ALLE sider rundt om krydset (før og efter!).',
-        explanationRu: 'Да! В отличие от 5 м перед переходом, запретные 10 метров у перекрёстка действуют во все стороны вокруг угла.',
+        explanationRu: 'Да! Запрет 10 метров на перекрёстке действует со ВСЕХ сторон вокруг перекрёстка (до и после!).',
       },
     ],
     lawReference: 'Færdselsloven § 29 — 5 m FØR fodgængerfelt vs. 10 m alle sider af vejkryds',
@@ -6142,7 +6142,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Мне разрешено на двухсторонней улице переехать на левую сторону и припарковаться там «против шерсти» (навстречу потоку).',
         correctAnswer: false,
         explanationDa: 'Nej! På veje med tovejs trafik er hovedreglen i Færdselsloven § 28, at du KUN må standse og parkere i HØJRE side i færdselsretningen.',
-        explanationRu: 'Нет! На двухсторонней дороге в Дании остановка и стоянка разрешены ТОЛЬКО с правой стороны по ходу движения.',
+        explanationRu: 'Нет! На дорогах с двухсторонним движением основное правило Закона § 28 гласит, что останавливаться и парковаться можно ТОЛЬКО на ПРАВОЙ стороне по ходу движения.',
       },
       {
         id: 'q_m7_18_b',
@@ -6201,7 +6201,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Открытие окна и громкая музыка являются надёжным способом победить сильную сонливость на автобане и доехать до цели.',
         correctAnswer: false,
         explanationDa: 'Nej! Frisk luft og høj musik virker kun et par minutter mod mikrosøvn — eneste sikre løsning er at køre ind på en rasteplads og sove 15–20 min!',
-        explanationRu: 'Нет! Прохладный воздух и музыка не спасают от микросна (отключения мозга на 2–5 секунд). Нужно немедленно остановиться и поспать 15–20 минут.',
+        explanationRu: 'Нет! Свежий воздух и громкая музыка действуют против микросна лишь пару минут — единственное надёжное решение это заехать на площадку отдыха и поспать 15–20 минут!',
       },
     ],
     lawReference: 'Færdselsloven § 54 — Træthed, sygdom & medicin med rød trekant',
@@ -6257,12 +6257,12 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationDa:
       'En bilist, der har haft kørekort i 1 år (førstegangserhverver), får først ét klip for at køre med håndholdt mobil og senere et klip mere for kørsel over for rødt lys.',
     situationRu:
-      'Водитель со стажем 1 год (новичок в первые 3 года) получает первый балл (klip) за телефон в руке, а затем второй — за проезд на красный свет.',
+      'Водитель со стажем 1 год (впервые получивший права — førstegangserhverver) получает сначала один балл (klip) за езду с телефоном в руке, а позже ещё один балл за проезд на красный свет.',
     visual: {
       type: 'scene',
       presetId: 'pov_alcohol_klip_law',
       captionDa: 'Klippekort: Kørselsforbud (2 klip) vs. Betinget & Ubetinget frakendelse',
-      captionRu: 'Система баллов Klip, запрет вождения для новичков и виды лишения прав',
+      captionRu: 'Баллы (Klippekort): запрет вождения (2 klip) против условного и безусловного лишения прав',
     },
     subQuestions: [
       {
@@ -6284,10 +6284,10 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       {
         id: 'q_m8_15_c',
         da: 'Ved en "ubetinget frakendelse" af kørekortet må jeg stadig køre bil i 6 måneder, indtil jeg tager en ny kontrollerende prøve.',
-        ru: 'При «безусловном лишении прав» (ubetinget frakendelse) мне разрешено временно продолжать водить машину до пересдачи экзаменов.',
+        ru: 'При «безусловном лишении» (ubetinget frakendelse) водительских прав мне всё ещё разрешено ездить на машине в течение 6 месяцев, пока я не сдам новый контрольный экзамен.',
         correctAnswer: false,
         explanationDa: 'Nej! Ved UBETINGET frakendelse inddrages kørekortet øjeblikkeligt i en bestemt periode (fx 6 mdr. eller 3 år), hvorefter ny prøve skal bestås. Ved BETINGET frakendelse må du fortsat køre i fristen, hvis du består kontrollerende teori- og køreprøve.',
-        explanationRu: 'Нет! При безусловном лишении (ubetinget) права забирают сразу на весь срок. Ездить до пересдачи можно только при условном лишении (betinget frakendelse).',
+        explanationRu: 'Нет! При БЕЗУСЛОВНОМ лишении права изымаются немедленно на определённый срок (напр., 6 мес. или 3 года), после чего нужно сдать новый экзамен. При УСЛОВНОМ лишении можно продолжать водить в отведённый срок, если сдать контрольный теоретический и практический экзамен.',
       },
     ],
     lawReference: 'Færdselsloven § 125–127 — Klippekort, Kørselsforbud & Frakendelse',
@@ -6331,12 +6331,12 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Разрешено держать ребёнка на коленях у пристёгнутого взрослого на заднем сиденье во время короткой поездки по городу.',
         correctAnswer: false,
         explanationDa: 'Nej! Hverken ved lav byfart eller korte ture må et barn sidde på skødet — ved selv 50 km/t kan ingen arme holde et barn tilbage.',
-        explanationRu: 'Нет! Ни на каких дистанциях перевозить детей на руках/коленях нельзя — каждый человек занимает отдельное место с креслом/ремнём.',
+        explanationRu: 'Нет! Ни при низкой городской скорости, ни в коротких поездках нельзя держать ребёнка на коленях — даже при 50 км/ч никакие руки не удержат ребёнка.',
       },
     ],
     lawReference: 'Færdselsloven § 80 & § 80a — Børn (<135 cm) & Bagudvendt autostol/airbag (1 klip)',
     keyRuleDa: 'Under 135 cm = autostol/pude! Bagudvendt stol foran = airbag SLUKKET! Føreren får klip for usikrede børn (<15 år).',
-    keyRuleRu: 'Рост <135 см = автокресло/бустер! Кресло спиной вперёд спереди = airbag ВЫКЛЮЧЕН! За ребёнка без кресла — klip водителю.',
+    keyRuleRu: 'Ниже 135 см = автокресло/бустер! Кресло спиной вперёд спереди = airbag ВЫКЛЮЧЕН! Водитель получает klip за непристёгнутых детей (<15 лет).',
   },
   {
     id: 'q_m8_17',
@@ -6500,7 +6500,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       {
         id: 'q_m1_20_b',
         da: 'Jeg må overhale en bil lige før eller midt i et uoverskueligt sving som vist af A41.',
-        ru: 'Мне разрешено обгонять автомобиль непосредственно перед или внутри закрытого крутого поворота.',
+        ru: 'Мне разрешено обгонять автомобиль непосредственно перед или посреди закрытого поворота, как показано знаком A41.',
         correctAnswer: false,
         explanationDa: 'Nej! Overhaling i uoverskuelige kurver med risiko for modkørende er strengt forbudt.',
         explanationRu: 'Нет! Обгон с выездом на встречную полосу в непросматриваемом повороте строго запрещён.',
@@ -6540,7 +6540,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Предупреждающий знак A43 («Сужение дороги») даёт мне автоматическое преимущество перед встречной машиной.',
         correctAnswer: false,
         explanationDa: 'Nej! A43 er kun en advarselstavle. Hvis indsnævringen eller en forhindring er i DIN side, skal du holde tilbage; ved symmetrisk indsnævring vises gensidigt hensyn (§ 3).',
-        explanationRu: 'Нет! A43 — лишь предупреждающий знак. Он не даёт приоритета: уступает тот, на чьей стороне препятствие, либо по взаимной осторожности.',
+        explanationRu: 'Нет! A43 — лишь предупреждающий знак. Если сужение или препятствие на ВАШЕЙ стороне, уступить должны вы; при симметричном сужении проявляется взаимная осмотрительность (§ 3).',
       },
       {
         id: 'q_m2_19_b',
@@ -6592,7 +6592,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Достаточно держать дистанцию в 1 секунду до грузовика на скорости 80 км/ч по сухой трассе.',
         correctAnswer: false,
         explanationDa: 'Nej! Du skal holde mindst 2 sekunders afstand (ca. 44 m ved 80 km/t) — endnu længere ved våd vej eller med anhænger.',
-        explanationRu: 'Нет! Минимальная дистанция на сухой дороге — 2 секунды (~44 м при 80 км/ч), а с прицепом и в дождь — 3–4 секунды.',
+        explanationRu: 'Нет! Нужно держать минимум 2 секунды дистанции (около 44 м при 80 км/ч) — и ещё больше на мокрой дороге или с прицепом.',
       },
       {
         id: 'q_m2_20_c',
@@ -6738,7 +6738,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     ],
     lawReference: 'Færdselsloven § 14 & § 49 — Påbudt cykelsti D21',
     keyRuleDa: 'D21 = Påbudt cykelsti! Biler og knallert 45 må IKKE køre på den. Aldrig overhal via cykelsti.',
-    keyRuleRu: 'Знак D21: для велосипедов и мопедов-30; машинам и Knallert 45 выезжать на неё для езды или обгона запрещено.',
+    keyRuleRu: 'D21 = Предписанная велодорожка! Автомобилям и knallert 45 НЕЛЬЗЯ ездить по ней. Никогда не обгоняйте по велодорожке.',
   },
   {
     id: 'q_m4_20',
@@ -6759,7 +6759,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       {
         id: 'q_m4_20_a',
         da: 'Jeg har som bilist lov til at dytte utålmodigt af cyklisterne på en cykelgade, hvis de kører to og to side om side midt på kørebanen foran mig.',
-        ru: 'Мне разрешено водителю автомобиля сигналить велосипедистам на улице Cykelgade (E49), если они едут рядом посередине дороги с низкой скоростью.',
+        ru: 'Как водитель, я имею право нетерпеливо сигналить велосипедистам на велосипедной улице, если они едут по двое рядом посередине проезжей части передо мной.',
         correctAnswer: false,
         explanationDa: 'Nej! På en cykelgade færdes cyklister på hele vejarealet som primære brugere, og biler er "gæster" — du må aldrig dytte eller presse dem!',
         explanationRu: 'Нет! На велосипедной улице хозяева дороги — велосипедисты; сигналить, поджимать и торопить их строго запрещено.',
@@ -6767,7 +6767,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       {
         id: 'q_m4_20_b',
         da: 'Det er i en cykelgade fuldt lovligt for bilister at køre 50 km/t og overhale cyklister tæt på, så længe der er tale om en byzone.',
-        ru: 'Разрешено на улице Cykelgade (E49) разгоняться до обычных городских 50 км/ч.',
+        ru: 'На велосипедной улице вполне законно для водителей ехать 50 км/ч и вплотную обгонять велосипедистов, пока речь идёт о городской зоне.',
         correctAnswer: false,
         explanationDa: 'Nej! Cykelgader er indrettet til lav hastighed (typisk skiltet 30 km/t eller derunder), og farten skal altid afpasses efter cyklisterne.',
         explanationRu: 'Нет! На Cykelgade скорость ограничивается (обычно до ~30 км/ч) и всегда подстраивается под темп велосипедистов.',
@@ -6857,7 +6857,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       {
         id: 'q_m5_20_b',
         da: 'Jeg må beholde farten på 80 km/t helt frem til stoplinjen med forventning om grønt lys, selvom jeg ikke kan se lyssignalet endnu bag et sving.',
-        ru: 'Мне разрешено держать скорость 80 км/ч вплоть до самого поворота за знаком A19 в расчёте на то, что впереди наверняка горит зелёный.',
+        ru: 'Мне разрешено сохранять скорость 80 км/ч вплоть до самой стоп-линии в ожидании зелёного света, даже если я ещё не вижу светофор за поворотом.',
         correctAnswer: false,
         explanationDa: 'Nej! A19 står ofte før uoverskuelige lyskryds eller vejarbejds-signaler, hvor biler kan holde stille i kø lige efter svinget — vær bremseklar!',
         explanationRu: 'Нет! За знаком A19 часто скрывается пробка на красный свет сразу за изгибом дороги — сбавьте газ и будьте готовы тормозить.',
@@ -6982,10 +6982,10 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       {
         id: 'q_m7_19_a',
         da: 'Jeg må parkere lovligt under denne tavle hele søndagen mellem kl. 10:00 og 15:00.',
-        ru: 'Мне разрешено припарковать машину под этим знаком C62 в воскресенье с 10:00 до 15:00.',
+        ru: 'Мне разрешено законно парковаться под этим знаком всё воскресенье между 10:00 и 15:00.',
         correctAnswer: false,
         explanationDa: 'Nej! Røde tal (10–15) på en dansk undertavle betyder netop, at forbuddet/reglen gælder SØN- og HELLIGDAGE i tidsrummet 10–15!',
-        explanationRu: 'Нет! Цифры КРАСНОГО цвета на датских табличках означают время действия правила именно в ВОСКРЕСЕНЬЕ и праздники.',
+        explanationRu: 'Нет! Красные числа (10–15) на датской подтабличке как раз означают, что запрет/правило действует по ВОСКРЕСЕНЬЯМ и ПРАЗДНИЧНЫМ ДНЯМ с 10 до 15!',
       },
       {
         id: 'q_m7_19_b',
@@ -7027,7 +7027,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       {
         id: 'q_m7_20_a',
         da: 'Jeg må vende (lave U-vending) lige før eller inde i dette kryds, fordi jeg egentlig vil køre den modsatte vej tilbage.',
-        ru: 'Мне разрешено развернуться (U-vending) на этом перекрёстке под знаком D11 («только направо»).',
+        ru: 'Мне разрешено развернуться (сделать U-разворот) прямо перед этим перекрёстком или внутри него, потому что на самом деле я хочу ехать в обратную сторону.',
         correctAnswer: false,
         explanationDa: 'Nej! D11-påbudstavlen tillader UDELUKKENDE højresving i krydset — både ligeud, venstresving og vending er strengt forbudt.',
         explanationRu: 'Нет! Круглый синий знак D11 разрешает ИСКЛЮЧИТЕЛЬНО поворот направо — ехать прямо, налево или разворачиваться запрещено.',
@@ -7075,7 +7075,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Знак C59 на загородной трассе означает, что далее скорость вообще не ограничена (или разрешено 130 км/ч).',
         correctAnswer: false,
         explanationDa: 'Nej! C59 ophæver KUN den tidligere skiltede lokale begrænsning (fx 60 km/t eller overhalingsforbud) — derefter gælder straks vejtypens generelle grænse (80 km/t på landevej, 50 i by, 130 på motorvej)!',
-        explanationRu: 'Нет! В Дании безлимитных дорог нет: C59 лишь возвращает общий лимит для данной дороги (80 км/ч на трассе, 50 в городе, 130 на автобане).',
+        explanationRu: 'Нет! Знак C59 отменяет ТОЛЬКО ранее обозначенные локальные ограничения (напр., 60 км/ч или запрет обгона) — после него сразу действует общий лимит для типа дороги (80 км/ч за городом, 50 в городе, 130 на автомагистрали)!',
       },
       {
         id: 'q_m8_19_b',
@@ -7083,12 +7083,12 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Знак C59 отменяет действие сплошной линии разметки или запрет парковки в пределах 10 м от перекрёстка.',
         correctAnswer: false,
         explanationDa: 'Nej! Vejafmærkning (spærrelinje) og lovens generelle regler (fx 5 m / 10 m, vigepligt, alkohol 0,50 ‰) ophæves aldrig af C59.',
-        explanationRu: 'Нет! Знак C59 не отменяет разметку на асфальте и общие законы ПДД (5/10 м, сплошную линию, приоритеты).',
+        explanationRu: 'Нет! Дорожная разметка (сплошная линия) и общие правила закона (напр., 5 м / 10 м, приоритет, алкоголь 0,50‰) никогда не отменяются знаком C59.',
       },
       {
         id: 'q_m8_19_c',
         da: 'Min bils generelle trailer-grænse på 80 km/t (eller 100 med Tempo 100 på motorvej) gælder stadig uændret efter C59.',
-        ru: 'Ограничение скорости для моего прицепа (80 км/ч) продолжает действовать после проезда знака C59.',
+        ru: 'Общее ограничение для моего авто с прицепом в 80 км/ч (или 100 с Tempo 100 на автомагистрали) по-прежнему действует без изменений после знака C59.',
         correctAnswer: true,
         explanationDa: 'Ja! Køretøjets egne maksimumsgrænser (fx anhænger max 80 km/t) gælder altid.',
         explanationRu: 'Да! Лимиты скорости для конкретных категорий транспорта (например, прицеп 80 км/ч) действуют всегда.',
@@ -7111,21 +7111,21 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       imageSrc: './images/rules/country-lanes.jpg',
       signCode: 'E56',
       captionDa: 'Tavle E56: Ophør af byzone (80 km/t & uoplyst landevej)',
-      captionRu: 'Знак E56: Выезд из города — новые лимиты и опасности',
+      captionRu: 'Знак E56: Конец городской зоны (80 км/ч и неосвещённая загородная дорога)',
     },
     subQuestions: [
       {
         id: 'q_m8_20_a',
         da: 'Jeg må fra tavlen E56 og frem køre op til 100 km/t i en personbil, hvis der ikke er opsat nogen hastighedstavle C55.',
-        ru: 'Мне разрешено сразу за знаком E56 («Конец города») разогнаться до 100 км/ч на легковом авто, если других знаков нет.',
+        ru: 'От знака E56 и далее мне разрешено ехать до 100 км/ч на легковом автомобиле, если не установлен знак ограничения скорости C55.',
         correctAnswer: false,
         explanationDa: 'Nej! Uden for byzone (fra E56) er den generelle fartgrænse på almindelig landevej 80 km/t — kun højere hvis en C55 eller motorvejstavle tillader det.',
-        explanationRu: 'Нет! За знаком конца города E56 на обычной дороге общий лимит — ровно 80 км/ч (быстрее можно только на автобане или под знаком C55 90+).',
+        explanationRu: 'Нет! Вне городской зоны (от E56) общий лимит скорости на обычной загородной дороге — 80 км/ч; быстрее разрешено только если это разрешает знак C55 или знак автомагистрали.',
       },
       {
         id: 'q_m8_20_b',
         da: 'Jeg skal ved mørkekørsel efter E56 beholde mit kraftige fjernlys tændt, når en modkørende bil kommer imod mig 150 meter fremme.',
-        ru: 'Я должен в темноте за городом оставлять включённым дальний свет (fjernlys), если встречная машина приближается на расстоянии 150 метров.',
+        ru: 'При езде в темноте после знака E56 я должен оставлять включённым свой яркий дальний свет, когда навстречу мне в 150 метрах едет автомобиль.',
         correctAnswer: false,
         explanationDa: 'Nej! Blænd ned til nærlys i god tid (typisk 200–300 m før modkørende), så du ikke blænder modparten.',
         explanationRu: 'Нет! Переключиться с дальнего на ближний нужно заранее (за ~200–300 м до встречного автомобиля).',
@@ -7141,7 +7141,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     ],
     lawReference: 'Færdselsloven § 29, § 33 & § 42 — E56 Ophør af byzone',
     keyRuleDa: 'Fra E56: generelt max 80 km/t (ikke 100!), blænd ned for modkørende i mørke, ingen kørebane-parkering på B16.',
-    keyRuleRu: 'За знаком E56: общий лимит 80 км/ч; в темноте переключайте дальний на ближний; не паркуйтесь на проезжей части за городом.',
+    keyRuleRu: 'После E56: общий максимум 80 км/ч (не 100!); переключайте свет перед встречными в темноте; никакой парковки на проезжей части главной дороги B16.',
   },
   // =========================================================================
   // OFFICIAL DRIVING SCHOOL & DIGITAL TEORIPRØVE EXPANSION (+40 -> 200)
@@ -7158,7 +7158,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       presetId: 'pov_trailer_weight',
       imageSrc: './images/rules/trailer.jpg',
       captionDa: 'Bilens belæsning, tyngdepunkt og bremseegenskaber (Mål 3.1)',
-      captionRu: 'Загрузка автомобиля, смещение центра тяжести и тормозной путь',
+      captionRu: 'Загрузка автомобиля, центр тяжести и тормозные свойства (Mål 3.1)',
     },
     subQuestions: [
       {
@@ -7183,7 +7183,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Фары ближнего света из-за тяжёлого груза в багажнике могут подняться вверх и начать слепить встречных водителей.',
         correctAnswer: true,
         explanationDa: 'Ja! Når bagenden synker under tung last, stiger lygternes lyskegle — brug lygtehøjdereguleringen på instrumentbrættet.',
-        explanationRu: 'Да! Когда задняя часть проседает от груза, луч фар уходит выше 1% уклона — нужно опустить их корректором фар.',
+        explanationRu: 'Да! Когда задняя часть оседает под тяжёлым грузом, световой пучок фар поднимается вверх — используйте регулятор высоты фар на приборной панели.',
       },
     ],
     lawReference: 'Undervisningsplan Mål 3.1 — Tyngdepunkt, last & bremselængde',
@@ -7196,15 +7196,15 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationDa:
       'Du kører i vinterføre med sne og sjap på kørebanen og kontrollerer bilens dæk før turen (Færdselsloven § 67, stk. 3).',
     situationRu:
-      'На дороге зимние условия (снег, лёд и слякоть). Перед выездом вы проверяете шины и маркировку на боковине.',
+      'Вы едете в зимних условиях со снегом и слякотью на проезжей части и проверяете шины автомобиля перед поездкой (Закон о дорожном движении § 67, ч. 3).',
     visual: {
       type: 'technical',
       presetId: 'tech_daek',
       imageSrc: './images/rules/tire-tread-twi.jpg',
       technicalTab: 'daek_bremser',
       technicalHotspot: 'daek',
-      captionDa: 'Dækkrav i vinterføre: M+S, 3PMSF & "åbenbart uegnede dæk"',
-      captionRu: 'Зимние шины в Дании (с 01.07.2025): маркировка M+S и 3PMSF',
+      captionDa: 'Dækkrav i vinterføre fra 01.07.2025: M+S, 3PMSF & "åbenbart uegnede dæk"',
+      captionRu: 'Требования к шинам зимой с 01.07.2025: M+S, 3PMSF и «явно неподходящие шины»',
     },
     subQuestions: [
       {
@@ -7212,8 +7212,8 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         da: 'Det er fra 1. juli 2025 ulovligt at køre ud på almindelige sommerdæk i sne, is eller sjap ("åbenbart uegnede dæk").',
         ru: 'Запрещено с 1 июля 2025 года выезжать в снег, гололёд или слякоть на обычных летних шинах («явно неподходящие шины»).',
         correctAnswer: true,
-        explanationDa: 'Ja! Kørsel i vinterføre med sommerdæk straffes med bøde på 1.000 kr. pr. dæk (4.000 kr. i alt) efter Færdselsloven § 67, stk. 3.',
-        explanationRu: 'Да! С 01.07.2025 выезд в vinterføre на летней резине наказывается штрафом 1.000 kr за каждое колесо (4.000 kr).',
+        explanationDa: 'Ja! Fra 01.07.2025 straffes kørsel i vinterføre med sommerdæk med bøde på 1.000 kr. pr. dæk (4.000 kr. i alt) efter Færdselsloven § 67, stk. 3.',
+        explanationRu: 'Да! С 01.07.2025 езда в зимних условиях на летних шинах наказывается штрафом 1.000 kr за шину (всего 4.000 kr) по Закону § 67, ч. 3.',
       },
       {
         id: 'q_m1_22_b',
@@ -7221,7 +7221,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Шина для зимних условий должна иметь как минимум маркировку M+S (а для снега и льда — символ горы со снежинкой 3PMSF).',
         correctAnswer: true,
         explanationDa: 'Ja! M+S er minimumskravet i vinterføre, mens 3PMSF dokumenterer egentlige vinteregenskaber i sne og is (gerne ≥ 3 mm mønster).',
-        explanationRu: 'Да! Минимум в зимних условиях — M+S, а знак 3PMSF подтверждает пригодность к настоящему снегу и льду.',
+        explanationRu: 'Да! M+S — минимальное требование в зимних условиях, тогда как 3PMSF подтверждает реальные зимние свойства на снегу и льду (желательно ≥ 3 мм протектора).',
       },
       {
         id: 'q_m1_22_c',
@@ -7234,7 +7234,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     ],
     lawReference: 'Færdselsloven § 67, stk. 3 — Åbenbart uegnede dæk i vinterføre',
     keyRuleDa: 'Vinterføre (sne/is/sjap): sommerdæk forbudt (1.000 kr./dæk)! Brug min. M+S / 3PMSF.',
-    keyRuleRu: 'В снег и лёд летние шины запрещены (1.000 kr/колесо): минимум M+S, лучше 3PMSF и ≥ 3 мм.',
+    keyRuleRu: 'Зимние условия (снег/лёд/слякоть): летние шины запрещены (1.000 kr/колесо)! Используйте мин. M+S / 3PMSF.',
   },
   {
     id: 'q_m1_23',
@@ -7248,7 +7248,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       presetId: 'pov_cockpit_blind_spot',
       imageSrc: './images/rules/truck-blindspot.jpg',
       captionDa: 'Store køretøjers manøvreegenskaber: udsving og blind vinkel (Mål 3.2)',
-      captionRu: 'Габариты автобуса и грузовика в повороте: вынос задней части',
+      captionRu: 'Манёвренность крупных ТС: вынос задней части и слепая зона (Mål 3.2)',
     },
     subQuestions: [
       {
@@ -7293,7 +7293,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       technicalTab: 'instrumentpanel',
       technicalHotspot: 'olie_lampe',
       captionDa: 'Rød kontrollampe vs. Gul kontrollampe på instrumentbrættet (Mål 1.1)',
-      captionRu: 'Реакция на красные и жёлтые индикаторы приборной панели',
+      captionRu: 'Красная контрольная лампа против жёлтой на приборной панели (Mål 1.1)',
     },
     subQuestions: [
       {
@@ -7331,7 +7331,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationDa:
       'Din vens bil får motorstop på en almindelig landevej, og I skal slæbe den til et værksted med et slæbetov (Mål 1.2).',
     situationRu:
-      'Машина знакомого заглохла на загородной дороге, и вы собираетесь отбуксировать её на гибком тросе (slæbetov).',
+      'У машины вашего друга заглох мотор на обычной загородной дороге, и вы должны отбуксировать её в автосервис на буксирном тросе (Mål 1.2).',
     visual: {
       type: 'scene',
       presetId: 'pov_curb_departure',
@@ -7380,7 +7380,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       presetId: 'pov_motorcycle_junction',
       imageSrc: './images/rules/motorcycle-oncoming.jpg',
       captionDa: 'Bedømmelse af en motorcykels fart og afstand (Mål 3.2 & 4.3)',
-      captionRu: 'Опасность недооценки скорости встречного мотоцикла на перекрёстке',
+      captionRu: 'Оценка скорости и расстояния мотоцикла (Mål 3.2 & 4.3)',
     },
     subQuestions: [
       {
@@ -7423,7 +7423,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       type: 'scene',
       presetId: 'pov_doorzone_passing',
       captionDa: 'Passage af holdende biler (dørzone) og møde med modkørende (Mål 7.6–7.7)',
-      captionRu: 'Объезд припаркованных (дверная зона 1 м) и правила встречного разъезда',
+      captionRu: 'Проезд мимо стоящих машин (дверная зона) и разъезд со встречными (Mål 7.6–7.7)',
     },
     subQuestions: [
       {
@@ -7440,7 +7440,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Мне следует по возможности держать боковой интервал около 1 метра при проезде мимо припаркованных машин.',
         correctAnswer: true,
         explanationDa: 'Ja! Du skal give plads nok til, at en bildør pludselig kan åbne, eller at et barn kan træde ud mellem to biler.',
-        explanationRu: 'Да! Оставляйте ~1 м («зона открытой двери»), либо снизьте скорость до минимума, если улица узкая.',
+        explanationRu: 'Да! Вы должны оставить достаточно места, чтобы автомобильная дверь могла внезапно открыться или чтобы между двумя машинами мог выйти ребёнок.',
       },
       {
         id: 'q_m2_22_c',
@@ -7467,7 +7467,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       presetId: 'pov_motorvej_merge',
       imageSrc: './images/rules/motorway-merge.jpg',
       captionDa: 'Tunnelsyn ved høj fart & uopmærksomhed bag rattet (Mål 4.1–4.2)',
-      captionRu: 'Сужение поля зрения (туннельный взгляд) и опасность отвлечения на 2 секунды',
+      captionRu: 'Туннельное зрение на высокой скорости и невнимательность за рулём (Mål 4.1–4.2)',
     },
     subQuestions: [
       {
@@ -7505,13 +7505,13 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationDa:
       'Du holder i et kryds på din forkørselsvej (hovedvej B16). En bil fra sidevejen kører ud trods sine hajtænder, som om føreren ikke har set dig (Mål 6.2 § 3).',
     situationRu:
-      'Вы едете по главной дороге B16. Со второстепенной дороги несмотря на «акульи зубы» выезжает машина — похоже, водитель вас не заметил (Mål 6.2).',
+      'Вы подъезжаете к перекрёстку по главной дороге (B16). Машина с боковой дороги выезжает несмотря на «акульи зубы», словно водитель не заметил вас (Mål 6.2 § 3).',
     visual: {
       type: 'scene',
       presetId: 'pov_hojre_vigepligt',
       imageSrc: './images/rules/right-of-way-junction.jpg',
       captionDa: 'Grundregel § 3: Hensyn & aldrig at "køre på sin ret" (Mål 6.2)',
-      captionRu: 'Базовый принцип § 3: никогда не настаивать на своём приоритете ценой ДТП',
+      captionRu: 'Базовое правило § 3: осмотрительность и отказ от «права во что бы то ни стало» (Mål 6.2)',
     },
     subQuestions: [
       {
@@ -7528,7 +7528,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Как водитель я обязан по § 3 проявлять особую осмотрительность в отношении детей, пожилых людей и людей с инвалидностью.',
         correctAnswer: true,
         explanationDa: 'Ja! Det står udtrykkeligt i Færdselsloven § 3, stk. 2 — uanset om de bløde trafikanter selv overser en regel.',
-        explanationRu: 'Да! Это прямое требование § 3, stk. 2 ко всем водителям.',
+        explanationRu: 'Да! Это прямо прописано в Законе о дорожном движении § 3, ч. 2 — независимо от того, нарушили ли сами уязвимые участники правило.',
       },
       {
         id: 'q_m2_24_c',
@@ -7554,7 +7554,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       type: 'scene',
       presetId: 'pov_overkoersel_sidewalk',
       captionDa: 'Sikker bakning og udsyn gennem bagruden (Mål 7.5)',
-      captionRu: 'Правила движения задним ходом и контроль мёртвых зон',
+      captionRu: 'Безопасное движение задним ходом и обзор через заднее стекло (Mål 7.5)',
     },
     subQuestions: [
       {
@@ -7598,7 +7598,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       presetId: 'pov_udrykning_letbane',
       imageSrc: './images/rules/letbane-crossing.jpg',
       captionDa: 'Kørsel ved letbane — ubetinget respekt for signal og skinner (Mål 7.21)',
-      captionRu: 'Переезд путей Letbane в датском городе: сигналы и приоритет',
+      captionRu: 'Вождение у трамвая Letbane — безусловное уважение к сигналам и рельсам (Mål 7.21)',
     },
     subQuestions: [
       {
@@ -7660,7 +7660,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'При двух полосах на кругу мне разрешено занять внутреннюю (левую) полосу до 3-го съезда, заранее перестроившись вправо перед выездом с уступкой соседям и велосипедистам.',
         correctAnswer: true,
         explanationDa: 'Ja! Men når du skifter fra inderste til yderste spor, har du fuldt ansvar ved vognbaneskift og skal tjekke højre spejl + skulderkig.',
-        explanationRu: 'Да! Внутренняя полоса удобна для 3-го съезда, но при перестроении в наружную полосу вы обязаны уступить тем, кто едет правее (плюс велосипедистам).',
+        explanationRu: 'Да! Но при смене полосы с внутренней на внешнюю вы несёте полную ответственность за перестроение и должны проверить правое зеркало + взгляд через плечо.',
       },
       {
         id: 'q_m3_22_c',
@@ -7681,7 +7681,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationDa:
       'Du kommer ad en villavej, hvor en sidevej munder ud fra højre (T-kryds uden skilte, uden fortov henover og uden hajtænder). Du fortsætter ligeud (Mål 7.12).',
     situationRu:
-      'Вы едете по прямой улице в жилом квартале, а справа примыкает Т-образный переулок без знаков, без «акульих зубов» и без тротуара.',
+      'Вы едете по жилой улице, где справа примыкает боковая дорога (Т-перекрёсток без знаков, без переезда через тротуар и без «акульих зубов»). Вы продолжаете ехать прямо (Mål 7.12).',
     visual: {
       type: 'scene',
       presetId: 'pov_t_kryds',
@@ -7768,7 +7768,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationDa:
       'Du holder stille i et kryds i byen. Bagfra nærmer en ambulance sig med blåt blink og sirene, og alle baner omkring dig er optaget (Mål 6.2).',
     situationRu:
-      'Вы стоите на красный свет на загруженной улице в городе. Сзади приближается скорая с синими маячками и сиреной.',
+      'Вы стоите на перекрёстке в городе. Сзади приближается машина скорой помощи с синим маячком и сиреной, а все полосы вокруг вас заняты (Mål 6.2).',
     visual: {
       type: 'scene',
       presetId: 'pov_udrykning_letbane',
@@ -7811,13 +7811,13 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationDa:
       'Du skal dreje til højre i byzone. Før krydset er kantstenen langs cykelstien ophørt og erstattet af en punkteret hvid linje i ca. 20–30 meter (Mål 7.13).',
     situationRu:
-      'Вы собираетесь повернуть направо в городе. Перед перекрёстком бордюр велодорожки сменился прерывистой линией разметки на последние 25 метров (Mål 7.13).',
+      'Вы должны повернуть направо в городе. Перед перекрёстком бордюр вдоль велодорожки прерывается и заменяется пунктирной белой линией примерно на 20–30 метров (Mål 7.13).',
     visual: {
       type: 'scene',
       presetId: 'pov_right_turn_dashed_opmarch',
       imageSrc: './images/rules/right-turn-cykelsti.jpg',
       captionDa: 'Højresving Type 2: Punkteret linje før krydset (fælles højresvingsbane)',
-      captionRu: 'Правый поворот при прерывистой линии перед перекрёстком',
+      captionRu: 'Правый поворот Тип 2: пунктирная линия перед перекрёстком (общая полоса правого поворота)',
     },
     subQuestions: [
       {
@@ -7855,7 +7855,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationDa:
       'Du nærmer dig en smal bygade skiltet med blå tavle "Cykelgade" (E49), og derefter en bred hovedgade med store ladcykler og el-løbehjul (Mål 7.10 & 4.5).',
     situationRu:
-      'Вы въезжаете на велосипедную улицу (Cykelgade), а далее встречаете грузовой электровелосипед (ladcykel) и электросамокат на проезжей части (Mål 7.10).',
+      'Вы приближаетесь к узкой городской улице со знаком «Cykelgade» (E49), а затем к широкому проспекту с крупными грузовыми велосипедами (ladcykel) и электросамокатами (Mål 7.10 & 4.5).',
     visual: {
       type: 'scene',
       presetId: 'pov_knallert_cykelgade',
@@ -7869,7 +7869,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Водители авто на улице «Cykelgade» должны ехать спокойно (~30 км/ч) и учитывать, что велосипедисты имеют приоритет и могут ехать рядом.',
         correctAnswer: true,
         explanationDa: 'Ja! På en cykelgade færdes biler på cyklisternes betingelser — du må ikke presse dem eller dytte for at komme forbi.',
-        explanationRu: 'Да! На Cykelgade приоритет у велосипедистов — держите низкую скорость (~30 км/ч) и не сигнальте.',
+        explanationRu: 'Да! На велосипедной улице машины едут на условиях велосипедистов — нельзя подгонять их или сигналить, чтобы проехать.',
       },
       {
         id: 'q_m4_22_b',
@@ -7877,7 +7877,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Водители электросамокатов (el-løbehjul) подчиняются правилам для велосипедистов (езда по cykelsti, фонари в темноте, возраст от 15 лет).',
         correctAnswer: true,
         explanationDa: 'Ja! El-løbehjul følger cykelreglerne i Danmark (skal køre på cykelsti, max 20 km/t, altid lys tændt og lovpligtig hjelm).',
-        explanationRu: 'Да! Электросамокаты едут по cykelsti, подчиняются вело-светофорам и требуют особого внимания при поворотах.',
+        explanationRu: 'Да! Электросамокаты подчиняются правилам для велосипедов в Дании (должны ехать по велодорожке, макс. 20 км/ч, всегда включённый свет и обязательный шлем).',
       },
       {
         id: 'q_m4_22_c',
@@ -7922,7 +7922,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Запрет обгона и опережения остановившегося соседа перед нерегулируемым переходом действует также перед нерегулируемыми велосипедными переездами.',
         correctAnswer: true,
         explanationDa: 'Ja! Overhaling/forbikørsel i og umiddelbart før fodgængerfelt er forbudt efter Færdselsloven § 22–23 og § 27!',
-        explanationRu: 'Да! На многополосной улице вы обязаны синхронно остановиться и убедиться, что за соседней машиной никто не идёт.',
+        explanationRu: 'Да! Обгон и опережение на пешеходном переходе и непосредственно перед ним запрещены по Закону § 22–23 и § 27!',
       },
       {
         id: 'q_m4_23_c',
@@ -7930,7 +7930,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Я обязан уступить пешеходу, который стоит на самом краю тротуара у «зебры» и готовится шагнуть на переход.',
         correctAnswer: true,
         explanationDa: 'Ja! Færdselsloven § 27 siger, at du skal afpasse farten og om nødvendigt standse for gående, der skal ud på eller befinder sig på feltet.',
-        explanationRu: 'Да! Закон защищает как идущих по переходу, так и пешеходов, собирающихся вступить на него.',
+        explanationRu: 'Да! Закон § 27 гласит, что нужно соразмерять скорость и при необходимости останавливаться перед пешеходами, которые собираются выйти на переход или находятся на нём.',
       },
     ],
     lawReference: 'Færdselsloven § 23 & § 27 — Fodgængerfelt & Overhalingsforbud',
@@ -7943,7 +7943,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationDa:
       'Du kører i byzone (50 km/t) bag en stor rød turistbus (ikke i almindelig bybus-rute), som blinker til venstre fra en vejkant, og senere møder du en almindelig gul bybus (Mål 4.5).',
     situationRu:
-      'Вы едете по городу (50 км/ч) мимо автобусной остановки: сначала видите отъезжающий туристический автобус с левым поворотником, а затем — рейсовый городской автобус.',
+      'Вы едете в городе (50 км/ч) позади большого красного туристического автобуса (не на обычном маршруте городского автобуса), который мигает налево от края дороги, а позже встречаете обычный жёлтый городской автобус (Mål 4.5).',
     visual: {
       type: 'scene',
       presetId: 'pov_bus_byzone',
@@ -7987,13 +7987,13 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationDa:
       'Du kører i et roligt villakvarter med børn på legeplads, og ser længere fremme en skolepatrulje i refleksvester ved et kryds samt skiltet A22 (Mål 4.5–4.6).',
     situationRu:
-      'Вы едете по жилой улице со знаком A22 («Дети»), а впереди у пешеходного перехода стоит школьный патруль в светоотражающих жилетах.',
+      'Вы едете по спокойному жилому кварталу с детьми на игровой площадке и видите дальше школьный патруль в светоотражающих жилетах у перекрёстка, а также знак A22 (Mål 4.5–4.6).',
     visual: {
       type: 'scene',
       presetId: 'pov_school_children_a22',
       signCode: 'A22',
       captionDa: 'Børn i trafikken & Skolepatrulje — adfærd og bremseberedskab (Mål 4.5)',
-      captionRu: 'Особенности поведения детей на дороге и сигналы школьного патруля',
+      captionRu: 'Дети в движении и школьный патруль — поведение и готовность к торможению (Mål 4.5)',
     },
     subQuestions: [
       {
@@ -8180,12 +8180,12 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Стандартный лимит скорости в жилой и игровой зоне (знак E51) составляет 30 км/ч.',
         correctAnswer: false,
         explanationDa: 'Nej! Den anbefalede/maksimale hastighed i E51 er meget lav — højst 15 km/t (ganghastighed / lav hastighed tilpasset legende børn).',
-        explanationRu: 'Нет! В зоне E51 скорость ограничена максимум 15 км/ч.',
+        explanationRu: 'Нет! Рекомендованная/максимальная скорость в зоне E51 очень низкая — не более 15 км/ч (скорость пешехода / низкая скорость под играющих детей).',
       },
       {
         id: 'q_m5_24_b',
         da: 'Kørende i et opholds- og legeområde skal vise særligt hensyn til gående, og det er forbudt at parkere uden for særligt afmærkede pladser.',
-        ru: 'Водители в зоне E51 обязаны уступать пешеходам и детям, и парковаться вне специально размеченных мест запрещено.',
+        ru: 'Водители в жилой и игровой зоне должны проявлять особое внимание к пешеходам, а парковаться вне специально размеченных мест запрещено.',
         correctAnswer: true,
         explanationDa: 'Ja! Gående må bruge hele vejbredden, kørende må ikke hindre eller bringe dem i fare, og parkering er kun tilladt på afmærkede båse.',
         explanationRu: 'Да! В зоне E51 пешеходы имеют преимущество по всей ширине дороги, а парковка разрешена только в специально размеченных карманах.',
@@ -8196,7 +8196,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Я имею преимущество (или помеху справа) при выезде из жилой и игровой зоны на обычную улицу.',
         correctAnswer: false,
         explanationDa: 'Nej! Når du forlader E51 (overkørsel/udkørsel fra område), har du ubetinget vigepligt over for al trafik på den krydsende vej (§ 26, stk. 3).',
-        explanationRu: 'Нет! Выезд из жилой зоны приравнивается к выезду со второстепенного участка — у вас безусловная обязанность уступить всем на пересекаемой дороге.',
+        explanationRu: 'Нет! Когда вы выезжаете из E51 (переезд/выезд из зоны), у вас безусловная обязанность уступить всему транспорту на пересекаемой дороге (§ 26, ч. 3).',
       },
     ],
     lawReference: 'Færdselsloven § 26, stk. 3 & § 40 — E51 Opholds- og legeområde (15 km/t)',
@@ -8232,7 +8232,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Разрешено обогнать медленное ТС непосредственно перед железнодорожным переездом или на нём при хорошей видимости.',
         correctAnswer: false,
         explanationDa: 'Nej! Overhaling før og på en jernbaneoverskæring uden fuldbomme/lysregulering — og på selve sporet — er livsfarligt og forbudt efter § 23.',
-        explanationRu: 'Нет! Обгон непосредственно перед переездом без шлагбаума/регулирования и на самих путях строго запрещён законом.',
+        explanationRu: 'Нет! Обгон перед ж/д переездом и на нём без полных шлагбаумов/светофорного регулирования — а также на самих рельсах — смертельно опасен и запрещён по § 23.',
       },
       {
         id: 'q_m5_25_c',
@@ -8260,7 +8260,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       presetId: 'pov_tunnel_lights',
       imageSrc: './images/rules/tunnel-driving.jpg',
       captionDa: 'Kørsel i tunnel — nærlys, solbriller af, hold afstand og nødprocedurer (Mål 7.20)',
-      captionRu: 'Правила вождения в тоннеле — свет, очки, дистанция и действия при пожаре',
+      captionRu: 'Вождение в туннеле — ближний свет, снять очки, дистанция и аварийные действия (Mål 7.20)',
     },
     subQuestions: [
       {
@@ -8305,7 +8305,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       signCode: 'E42',
       imageSrc: './images/rules/motorway-merge.jpg',
       captionDa: 'Motorvej E42 — hastighedstilpasning på tilkørselsbane & fletning (Mål 7.16)',
-      captionRu: 'Выезд на автомагистраль — набор скорости, слияние fletning и запрет езды по обочине',
+      captionRu: 'Автомагистраль E42 — адаптация скорости на полосе разгона и слияние fletning (Mål 7.16)',
     },
     subQuestions: [
       {
@@ -8330,7 +8330,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Включённый поворотник при перестроении через прерывистую линию на автомагистрали даёт мне право требовать, чтобы соседний ряд меня пропустил.',
         correctAnswer: false,
         explanationDa: 'Nej! Ved vognbaneskift (§ 18, stk. 2) har DU selv hele ansvaret og fuld vigepligt for trafikken i den bane, du vil ind i — blinklyset viser kun din hensigt.',
-        explanationRu: 'Нет! При обычном перестроении через прерывистую линию (vognbaneskift) поворотник НЕ даёт приоритета — уступить обязаны именно вы (в отличие от взаимного fletning без линии).',
+        explanationRu: 'Нет! При перестроении (§ 18, ч. 2) всю ответственность несёте именно ВЫ и обязаны уступить движению в полосе, куда перестраиваетесь — поворотник показывает только ваше намерение.',
       },
     ],
     lawReference: 'Færdselsloven § 18 & Undervisningsplan Mål 7.16 — Motorvej & Tilkørsel',
@@ -8365,7 +8365,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Мне можно заехать правыми колёсами на велодорожку, чтобы объехать справа машину, ждущую поворота налево.',
         correctAnswer: false,
         explanationDa: 'Nej! Cykelstien er forbeholdt cyklister (og lille knallert). Du må ikke køre eller overhale via cykelstien.',
-        explanationRu: 'Нет! Заезд на велодорожку ради объезда поворачивающей машины запрещён (§ 14).',
+        explanationRu: 'Нет! Велодорожка предназначена для велосипедистов (и малого мопеда). Ездить или обгонять по велодорожке нельзя.',
       },
       {
         id: 'q_m6_23_c',
@@ -8392,7 +8392,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       presetId: 'pov_trailer_weight',
       imageSrc: './images/rules/trailer.jpg',
       captionDa: 'Kørsel med påhængskøretøj — hastighedsgrænser og vægtgrænser i kategori B',
-      captionRu: 'Вождение с прицепом — ограничения скорости (80/100) и правила по массе для категории B',
+      captionRu: 'Вождение с прицепом — ограничения скорости и ограничения массы для категории B',
     },
     subQuestions: [
       {
@@ -8406,10 +8406,10 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       {
         id: 'q_m6_24_b',
         da: 'Summen af bilens og anhængerens tilladte totalvægt ved almindeligt kategori B-kørekort er som udgangspunkt begrænset til højst 3.500 kg (dog altid op til 750 kg anhænger).',
-        ru: 'Для обычных прав категории B сумма разрешённых максимальных масс автомобиля и прицепа ограничена порогом 3 500 кг (если прицеп тяжелее 750 кг).',
+        ru: 'Сумма разрешённой максимальной массы автомобиля и прицепа при обычных правах категории B по общему правилу ограничена максимум 3.500 кг (однако прицеп до 750 кг разрешён всегда).',
         correctAnswer: true,
         explanationDa: 'Ja! I kategori B må samlet tilladt totalvægt ikke overstige 3.500 kg (medmindre anhængeren er ≤ 750 kg, hvor bil op til 3.500 kg må trække den, så samlet max bliver 4.250 kg).',
-        explanationRu: 'Да! По категории B общая разрешённая масса сцепки не должна превышать 3 500 кг (при этом прицеп до 750 кг можно тянуть и к авто массой 3 500 кг).',
+        explanationRu: 'Да! Для категории B общая разрешённая полная масса не может превышать 3.500 кг (если только прицеп ≤ 750 кг — тогда авто до 3.500 кг может его буксировать, и общий максимум составит 4.250 кг).',
       },
       {
         id: 'q_m6_24_c',
@@ -8422,7 +8422,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     ],
     lawReference: 'Færdselsloven § 43 & Kørekortbekendtgørelsen — Anhænger, 80/100 km/t & 3.500 kg',
     keyRuleDa: 'Max 80 km/t med trailer (100 kun med Tempo 100-godkendelse)! Tjek kobling, lys og totalvægt.',
-    keyRuleRu: 'С прицепом макс. 80 км/ч (100 только с Tempo 100)! По категории B следи за порогом 3 500 кг и светотехникой.',
+    keyRuleRu: 'Макс. 80 км/ч с прицепом (100 только с допуском Tempo 100)! Проверьте сцепку, освещение и полную массу.',
   },
   {
     id: 'q_m6_25',
@@ -8458,10 +8458,10 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       {
         id: 'q_m6_25_c',
         da: 'Ved et smalt sted uden skilte, hvor min egen vognbane er blokeret af en parkeret bil, skal jeg selv holde tilbage for modkørende.',
-        ru: 'На узкой улице без знаков B18/B19, где препятствие находится на моей полосе, я обязан сам уступить встречному потоку.',
+        ru: 'В узком месте без знаков, где моя собственная полоса перекрыта припаркованным автомобилем, я сам должен уступить встречным.',
         correctAnswer: true,
         explanationDa: 'Ja! Den trafikant, der har hindringen på sin side og må køre over midten/i modkørendes bane, skal altid holde tilbage.',
-        explanationRu: 'Да! При отсутствии знаков уступает всегда тот водитель, на чьей стороне дороги находится препятствие (§ 15/18).',
+        explanationRu: 'Да! Участник движения, на чьей стороне находится препятствие и кто вынужден выезжать на середину/встречную полосу, всегда должен уступить.',
       },
     ],
     lawReference: 'Bekendtgørelse om vejafmærkning — B18/B19 & Færdselsloven § 3',
@@ -8535,7 +8535,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Разрешена кратковременная остановка (менее 3 минут для высадки пассажира) напротив выезда из двора (indkørsel).',
         correctAnswer: true,
         explanationDa: 'Ja! Foran en ind- og udkørsel er det kun PARKERING, der er forbudt — en kort standsning til af- og påstigning eller af- og pålæsning er lovlig (§ 29, stk. 3).',
-        explanationRu: 'Да! Напротив выезда со двора запрещена только СТОЯНКА (parkering); кратковременная остановка для посадки/высадки законна.',
+        explanationRu: 'Да! Перед въездом и выездом запрещена только СТОЯНКА — краткая остановка для посадки/высадки или погрузки/разгрузки законна (§ 29, ч. 3).',
       },
       {
         id: 'q_m7_22_b',
@@ -8578,7 +8578,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Ответственность за внезапное открытие двери в сторону проезжей части несёт только сам пассажир, а не водитель.',
         correctAnswer: false,
         explanationDa: 'Nej! Efter § 28 må man ikke åbne en dør til fare eller ulempe for andre — brug "hollandsk greb" (højre hånd på venstre dørhåndtag), så overkroppen automatisk drejer mod spejl og skulder.',
-        explanationRu: 'Нет! Запрещено открывать дверь, создавая помеху. Учите пассажиров и пользуйтесь «голландским захватом» (дальней рукой к замку, поворачивая корпус к зеркалу).',
+        explanationRu: 'Нет! По § 28 нельзя открывать дверь, создавая опасность или помеху другим — используйте «голландский хват» (правой рукой к левой дверной ручке), чтобы корпус автоматически поворачивался к зеркалу и плечу.',
       },
       {
         id: 'q_m7_23_b',
@@ -8594,7 +8594,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Разрешена остановка или парковка вторым рядом (рядом с уже припаркованной у тротуара машиной), если включить «аварийку».',
         correctAnswer: false,
         explanationDa: 'Nej! Dobbeltparkering ud for en anden holdende bil langs kørebanekanten er forbudt (§ 28, stk. 3) — og havariblink giver aldrig ret til ulovlig standsning.',
-        explanationRu: 'Нет! Остановка и парковка вторым рядом строго запрещены, а включённая аварийная сигнализация не даёт права нарушать правила парковки.',
+        explanationRu: 'Нет! Двойная парковка рядом с другим стоящим у края дороги авто запрещена (§ 28, ч. 3) — а аварийка никогда не даёт права на незаконную остановку.',
       },
     ],
     lawReference: 'Færdselsloven § 28 & Undervisningsplan Mål 4.3/7.6 — Dørzone, 1 m & dobbeltparkering',
@@ -8631,7 +8631,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Можно оставить машину на проезжей части или у края неосвещённой загородной дороги ночью с полностью выключенными габаритами.',
         correctAnswer: false,
         explanationDa: 'Nej! Ved standsning/parkering på uoplyst vej (så bilen ikke tydeligt kan ses på afstand) SKAL positionslys og baglys (parkeringslys) holdes tændt (§ 33).',
-        explanationRu: 'Нет! На неосвещённой дороге в тёмное время суток стоящая на проезжей части машина обязана иметь включённые габаритные огни (positionslys).',
+        explanationRu: 'Нет! При остановке/стоянке на неосвещённой дороге (если авто не видно отчётливо издалека) габаритные огни и задние фонари (стояночный свет) ДОЛЖНЫ быть включены (§ 33).',
       },
       {
         id: 'q_m7_24_c',
@@ -8652,7 +8652,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     situationDa:
       'Du ankommer til en offentlig parkeringsplads med skiltet E33 og undertavle "2 timer (kl. 8–18)" samt særligt afmærkede pladser.',
     situationRu:
-      'Вы заезжаете на парковку со знаком E33, подтабличкой ограничения времени «2 timer (08–18)» и специализированными местами.',
+      'Вы приезжаете на общественную парковку со знаком E33, подтабличкой «2 timer (kl. 8–18)» и специально размеченными местами.',
     visual: {
       type: 'scene',
       presetId: 'pov_parking_meters',
@@ -8713,7 +8713,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Мне нужно немедленно резко крутануть руль влево, чтобы как можно быстрее заскочить правыми колёсами обратно через высокую кромку асфальта.',
         correctAnswer: false,
         explanationDa: 'Nej! Et hurtigt ryk over en høj kant sender bilen ukontrolleret på tværs over i modkørende vognbane eller ud i udskridning (Mål 9.5).',
-        explanationRu: 'Нет! Резкий выворот руля через высокий край асфальта вышвыривает машину на встречную полосу или в занос.',
+        explanationRu: 'Нет! Быстрый рывок через высокий край уводит машину неконтролируемо поперёк на встречную полосу или в занос (Mål 9.5).',
       },
       {
         id: 'q_m8_21_b',
@@ -8729,12 +8729,12 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Допустимо по новым правилам Дании выезжать на скользкую заснеженную/обледеневшую дорогу зимой на летних шинах с остатком протектора 2,0 мм.',
         correctAnswer: false,
         explanationDa: 'Nej! Siden ændringen af § 67, stk. 3 er kørsel på "åbenbart uegnede dæk" i vinterføre ulovligt og straffes med bøde på 1.000 kr. pr. dæk (4.000 kr. for en hel bil).',
-        explanationRu: 'Нет! По обновлённому закону (§ 67, ч. 3) езда на «явно неподходящих шинах» (летних) по снегу и льду наказывается штрафом 1 000 крон за каждое колесо.',
+        explanationRu: 'Нет! После изменения § 67, ч. 3 езда на «явно неподходящих шинах» в зимних условиях незаконна и наказывается штрафом 1.000 kr за шину (4.000 kr за весь автомобиль).',
       },
     ],
     lawReference: 'Undervisningsplan Mål 9.5 (KTA Glatbane) & Færdselsloven § 67, stk. 3 (Vinterdæk)',
     keyRuleDa: 'Høj rabat: hold fast i rattet, slip gassen — aldrig ryk til venstre! I vinterføre: brug lovlige vinterdæk.',
-    keyRuleRu: 'Высокая обочина: держи руль прямо, сбавь газ и возвращайся плавно! В гололёд — только зимние шины (иначе 4×1000 kr).',
+    keyRuleRu: 'Высокая обочина: держите руль крепко, отпустите газ — никогда не дёргайте влево! В зимних условиях используйте законные зимние шины.',
   },
   {
     id: 'q_m8_22',
@@ -8747,16 +8747,16 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
       type: 'scene',
       presetId: 'pov_alcohol_klip_law',
       captionDa: 'Alkoholregler 2025/2026: 0,20 ‰ for nybagte bilister (første 3 år) vs 0,50 ‰',
-      captionRu: 'Новые правила по алкоголю 2025/2026: 0,20 ‰ для новичков и последствия превышения',
+      captionRu: 'Правила алкоголя 2025/2026: 0,20‰ для новых водителей (первые 3 года) против 0,50‰',
     },
     subQuestions: [
       {
         id: 'q_m8_22_a',
         da: 'Fra 2025/2026 gælder en skærpet alkoholgrænse på 0,20 promille i de første 3 år som ny bilist (frem for 0,50 promille).',
-        ru: 'Для новых водителей (в первые 3 года после получения первых прав) действует пониженный порог 0,20 ‰ вместо стандартных 0,50 ‰.',
+        ru: 'С 2025/2026 года действует более строгий лимит алкоголя в 0,20 промилле в первые 3 года как для нового водителя (вместо 0,50 промилле).',
         correctAnswer: true,
         explanationDa: 'Ja! Nye førere er i de første 3 år underlagt 0,20 ‰-grænsen (svarer i praksis til 0 genstande / nul-tolerance), mens øvrige bilister har 0,50 ‰.',
-        explanationRu: 'Да! По новым правилам для молодых/новых водителей первые 3 года лимит снижен до 0,20 ‰ (фактически ноль алкоголя).',
+        explanationRu: 'Да! Для новых водителей в первые 3 года действует порог 0,20‰ (на практике соответствует 0 порций / нулевой терпимости), тогда как для остальных водителей — 0,50‰.',
       },
       {
         id: 'q_m8_22_b',
@@ -8799,7 +8799,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
         ru: 'Меня допустят к официальному экзамену Teoriprøven без действующего сертификата первой помощи (8 часов, не старше 1 года) и цифровой медсправки (Digital Lægeattest).',
         correctAnswer: false,
         explanationDa: 'Nej! Kommunen/Borgerservice godkender først din ansøgning, når alle 4 krav i tjeklisten er på plads: Pasfoto, Digital Lægeattest (Del A+B), 8t Førstehjælp (≤12 mdr.) og Fuldmagt.',
-        explanationRu: 'Нет! Заявка на экзамен не будет одобрена без полного пакета Tjekliste: фото, Digital Lægeattest, 8-часового курса Førstehjælp (≤12 мес.) и доверенности Fuldmagt через MitID.',
+        explanationRu: 'Нет! Коммуна/Borgerservice одобрит вашу заявку только тогда, когда все 4 требования чек-листа готовы: фото на паспорт, Digital Lægeattest (Del A+B), курс первой помощи 8 ч (≤12 мес.) и доверенность (Fuldmagt).',
       },
       {
         id: 'q_m8_23_b',
@@ -8820,7 +8820,7 @@ export const QUESTIONS_BANK: TeoriQuestion[] = [
     ],
     lawReference: 'Kørekortbekendtgørelsen & Undervisningsplan Kat. B — Tjekliste (4 dokumenter) & Mål 10.1–10.3',
     keyRuleDa: 'Tjekliste: Pasfoto + Digital Lægeattest + 8t Førstehjælp (≤12 mdr.) + Fuldmagt! Teoriprøve: 25 billeder, min. 20 rigtige.',
-    keyRuleRu: '4 обязательных документа Tjekliste + этапы M1–M5. На экзамене: 25 минут, 25 ситуаций, проходной ≥ 20/25.',
+    keyRuleRu: 'Чек-лист: Pasfoto + Digital Lægeattest + 8 ч Førstehjælp (≤12 мес.) + Fuldmagt! Теоретический экзамен: 25 картинок, мин. 20 правильных.',
   },
   {
     id: 'q_m8_24',

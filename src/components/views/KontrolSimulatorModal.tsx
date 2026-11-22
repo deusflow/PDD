@@ -41,24 +41,24 @@ const KONTROL_QUESTIONS: KontrolQuestion[] = [
     tab: 'motorrum',
     hotspot: 'bremsevaeske',
     promptDa: 'Vis mig beholderen til bremsevæske, og fortæl hvordan du kontrollerer standen.',
-    promptRu: 'Покажите бачок тормозной жидкости и объясните, как проверяется её уровень.',
+    promptRu: 'Покажите бачок тормозной жидкости и расскажите, как проверяется её уровень.',
     options: [
       {
-        ru: 'Уровень должен быть строго между отметками MIN и MAX без подтёков в бачке.',
+        ru: 'Уровень жидкости должен быть между отметками MIN и MAX в бачке.',
         da: 'Væskestanden skal ligge mellem MIN og MAX i beholderen.',
       },
       {
-        ru: 'Бачок должен быть залит до самого горлышка (выше MAX), иначе пропадёт давление.',
+        ru: 'Бачок должен быть заполнен до самой крышки выше отметки MAX.',
         da: 'Beholderen skal være fyldt helt op til låget over MAX.',
       },
       {
-        ru: 'Тормозную жидкость проверяют щупом на заведённом двигателе.',
+        ru: 'Тормозную жидкость проверяют измерительным щупом при заведённом двигателе.',
         da: 'Bremsevæske kontrolleres med målepind med motoren tændt.',
       },
     ],
     correctIndex: 0,
     normRu:
-      'Уровень тормозной жидкости проверяется визуально по стенке бачка (между MIN и MAX). Падение ниже MIN указывает на износ колодок или утечку — ехать опасно.',
+      'Уровень должен быть между отметками MIN и MAX. Если он ниже MIN, возможна утечка или износ тормозных накладок.',
     normDa:
       'Standen skal være mellem MIN og MAX. Er den under MIN, kan der være utæthed eller slidte bremsebelægninger.',
   },
@@ -67,24 +67,24 @@ const KONTROL_QUESTIONS: KontrolQuestion[] = [
     tab: 'motorrum',
     hotspot: 'motorolie',
     promptDa: 'Hvordan kontrollerer du, at der er tilstrækkelig motorolie på bilen?',
-    promptRu: 'Как вы проверяете, достаточно ли моторного масла в двигателе?',
+    promptRu: 'Как вы проверяете, достаточно ли моторного масла в автомобиле?',
     options: [
       {
-        ru: 'Только на заведённом двигателе смотрю, чтобы из заливной горловины шел пар.',
+        ru: 'При работающем двигателе и открытой масляной крышке.',
         da: 'Med motoren i gang og åbent oliedæksel.',
       },
       {
-        ru: 'На ровной площадке при выключенном моторе: вытащить щуп, протереть, вставить и убедиться, что след между MIN и MAX.',
+        ru: 'На горизонтальной поверхности при выключенном моторе: протереть щуп, вставить его снова и проверить, что масло между MIN и MAX.',
         da: 'På vandret underlag med slukket motor: tør oliepinden af, sæt den i igen og tjek, at olien er mellem MIN og MAX.',
       },
       {
-        ru: 'Масло проверяют только по синей лампе на приборной панели.',
+        ru: 'Только по синей контрольной лампе на приборной панели.',
         da: 'Kun via den blå kontrollampe i instrumentpanelet.',
       },
     ],
     correctIndex: 1,
     normRu:
-      'Авто стоит ровно, двигатель заглушен (остужен пару минут). Вынимаете щуп (oliepind), протираете тряпкой, вставляете до упора и снова достаёте — след должен быть между MIN и MAX.',
+      'Автомобиль должен стоять горизонтально с выключенным двигателем. Уровень масла должен находиться между отметками MIN и MAX на щупе.',
     normDa:
       'Bilen skal stå vandret med slukket motor. Olien skal ligge mellem mærkerne MIN og MAX på oliepinden.',
   },
@@ -93,24 +93,24 @@ const KONTROL_QUESTIONS: KontrolQuestion[] = [
     tab: 'motorrum',
     hotspot: 'koelervaeske',
     promptDa: 'Hvor sidder kølervæsken, og hvad skal du passe på ved kontrol?',
-    promptRu: 'Где находится охлаждающая жидкость и о чём важно помнить при её проверке?',
+    promptRu: 'Где находится охлаждающая жидкость и на что нужно обращать внимание при проверке?',
     options: [
       {
-        ru: 'Открывать крышку сразу после поездки, чтобы стравить давление.',
+        ru: 'Всегда открывать крышку сразу после поездки.',
         da: 'Åbn altid låget straks efter kørsel.',
       },
       {
-        ru: 'Уровень между MIN и MAX смотрят снаружи; пробку открывают только на холодном двигателе (риск ожога паром).',
+        ru: 'Уровень должен быть между MIN и MAX; никогда не открывайте бачок на горячем двигателе из-за опасности ожога.',
         da: 'Standen skal være mellem MIN og MAX; åbn aldrig beholderen på varm motor pga. skoldningsfare.',
       },
       {
-        ru: 'Заливается обычная вода из-под крана без антифриза.',
+        ru: 'Используется только обычная водопроводная вода.',
         da: 'Der bruges kun almindeligt postevand.',
       },
     ],
     correctIndex: 1,
     normRu:
-      'Смотрим уровень через полупрозрачный бачок (между MIN и MAX). На горячем двигателе система под давлением — откручивать крышку запрещено, кипяток вырвется вверх.',
+      'Проверяйте уровень снаружи между MIN и MAX. Горячая охлаждающая жидкость находится под давлением и может вызвать серьёзные ожоги.',
     normDa:
       'Kontrollér standen udvendigt mellem MIN og MAX. Varm kølervæske er under tryk og kan give alvorlige forbrændinger.',
   },
@@ -119,24 +119,24 @@ const KONTROL_QUESTIONS: KontrolQuestion[] = [
     tab: 'daek_bremser',
     hotspot: 'bremser',
     promptDa: 'Hvordan kontrollerer du bremseforstærkeren (vakuumforstærkeren) og at bremserne er tætte?',
-    promptRu: 'Как проверить вакуумный усилитель тормозов и герметичность тормозной системы?',
+    promptRu: 'Как вы проверяете усилитель тормозов (вакуумный усилитель) и герметичность тормозов?',
     options: [
       {
-        ru: 'Заглушить мотор, нажать на тормоз 4–5 раз (педаль станет твёрдой), удерживая её запустить мотор — педаль должна слегка провалиться вниз.',
+        ru: 'Накачать педаль до жёсткости при выключенном моторе, удерживать нажатие и завести двигатель — педаль должна немного опуститься.',
         da: 'Pump pedalen hård med slukket motor, hold trykket og start motoren – pedalen skal synke en smule.',
       },
       {
-        ru: 'Разогнаться до 80 км/ч и дёрнуть ручной тормоз.',
+        ru: 'Разогнаться до 80 км/ч и потянуть ручной тормоз.',
         da: 'Kør 80 km/t og træk håndbremsen.',
       },
       {
-        ru: 'Педаль при удержании в течение 30 секунд должна медленно уйти в самый пол.',
+        ru: 'Педаль должна медленно уходить до самого пола при постоянном нажатии.',
         da: 'Pedalen skal langsomt synke helt i bund under konstant tryk.',
       },
     ],
     correctIndex: 0,
     normRu:
-      'Два теста на Kontrolprøven: 1) При удерживании педали она НЕ должна опускаться (герметичность). 2) Если накачать её на заглушенном авто и завести мотор — она чуть уходит вниз (вакуумный усилитель работает).',
+      'При постоянном нажатии педаль не должна опускаться (герметичность). Когда двигатель запускается с ногой на педали, она должна слегка опуститься (вакуумный усилитель работает).',
     normDa:
       'Ved konstant tryk må pedalen ikke synke (tæthed). Når motoren startes med foden på pedalen, skal den synke let (vakuumforstærkeren virker).',
   },
@@ -145,24 +145,24 @@ const KONTROL_QUESTIONS: KontrolQuestion[] = [
     tab: 'daek_bremser',
     hotspot: 'daek',
     promptDa: 'Hvad er lovkravet til dækmønster, og hvordan tjekker du dækkene inden kørsel?',
-    promptRu: 'Какое законное требование к протектору шин и как вы их проверяете?',
+    promptRu: 'Какое законное требование к протектору шин и как вы проверяете шины перед поездкой?',
     options: [
       {
-        ru: 'Минимум 1,0 мм, если нет дождя.',
+        ru: 'Минимум 1,0 мм в сухую погоду.',
         da: 'Mindst 1,0 mm i tørt vejr.',
       },
       {
-        ru: 'Минимум 1,6 мм по основным канавкам (по индикаторам TWI), одинаковый тип шин на всех 4 колёсах, правильное давление и отсутствие грыж/порезов.',
+        ru: 'Минимум 1,6 мм основного протектора (индикаторы TWI), одинаковый тип шин на всех 4 колёсах, правильное давление и отсутствие повреждений/трещин.',
         da: 'Mindst 1,6 mm hovedmønster (TWI-indikatorer), samme dæktype på alle 4 hjul, korrekt dæktryk og ingen skader/revner.',
       },
       {
-        ru: 'Главное, чтобы на передней оси были зимние шины, на задней — летние.',
+        ru: 'Спереди обязательны зимние шины, а сзади — летние.',
         da: 'Vinterdæk foran og sommerdæk bagpå er påbudt.',
       },
     ],
     correctIndex: 1,
     normRu:
-      'Закон Дании требует минимум 1,6 мм по всему главному рисунку протектора (перемычки TWI). В зимних условиях (снег/лёд) летняя резина запрещена (штраф 1.000 kr за колесо): нужна маркировка минимум M+S, а лучше 3PMSF и ≥ 3 мм.',
+      'Закон требует минимум 1,6 мм глубины протектора (TWI). В зимних условиях (снег/лёд) летние шины запрещены (штраф 1.000 kr за шину) — используйте минимум M+S / 3PMSF и желательно ≥ 3 мм.',
     normDa:
       'Lovkravet er mindst 1,6 mm dækmønster (TWI). I vinterføre (sne/is) er sommerdæk forbudt (1.000 kr. bøde pr. dæk) — brug min. M+S / 3PMSF og helst ≥ 3 mm.',
   },
@@ -171,24 +171,24 @@ const KONTROL_QUESTIONS: KontrolQuestion[] = [
     tab: 'daek_bremser',
     hotspot: 'stoddaempere',
     promptDa: 'Hvordan kontrollerer du til kontrolprøven, at bilens støddæmpere virker korrekt?',
-    promptRu: 'Как на экзамене проверяют исправность амортизаторов (støddæmpere)?',
+    promptRu: 'Как на контрольной проверке (kontrolprøve) проверить исправность амортизаторов автомобиля?',
     options: [
       {
-        ru: 'Сильно надавить на каждый угол авто и отпустить: кузов должен подняться и сразу остановиться без повторного раскачивания.',
+        ru: 'Сильно надавить вниз над каждым колесом и отпустить: машина должна быстро успокоиться без последующей раскачки.',
         da: 'Tryk kraftigt ned over hvert hjul og slip: bilen skal falde hurtigt til ro uden at gynge efter.',
       },
       {
-        ru: 'Машина должна мягко качнуться вверх-вниз 3–4 раза после отпускания.',
+        ru: 'Машина должна раскачиваться вверх-вниз 3–4 раза после этого.',
         da: 'Bilen skal gynge 3-4 gange op og ned bagefter.',
       },
       {
-        ru: 'Амортизаторы проверяют только по уровню жидкости в багажнике.',
+        ru: 'Проверяются только через бачок в багажнике.',
         da: 'Kontrolleres kun via en beholder i bagagerummet.',
       },
     ],
     correctIndex: 0,
     normRu:
-      'Нажимаем всем весом на крыло над каждым колесом и отпускаем: исправный амортизатор гасит колебание за 1 возврат (авто не прыгает как мячик), амортизатор также не должен быть в масляных подтёках.',
+      'Надавите на автомобиль вниз у каждого угла и отпустите — он должен сразу успокоиться без последующих колебаний и без утечек масла.',
     normDa:
       'Tryk bilen ned ved hvert hjørne og slip – den skal falde straks til ro uden eftersving og uden olielækage.',
   },
@@ -197,24 +197,24 @@ const KONTROL_QUESTIONS: KontrolQuestion[] = [
     tab: 'daek_bremser',
     hotspot: 'styretoej',
     promptDa: 'Hvad kontrollerer du ved styretøjet (rattet), når motoren er tændt?',
-    promptRu: 'Что вы проверяете в рулевом управлении (styretøj)?',
+    promptRu: 'Что вы проверяете в рулевом управлении (руле), когда двигатель заведён?',
     options: [
       {
-        ru: 'Допускается свободный люфт руля до 5 см, пока колёса начнут поворачивать.',
+        ru: 'До 5 см люфта руля — это совершенно нормально.',
         da: 'Op til 5 cm rat-slør er helt normalt.',
       },
       {
-        ru: 'Свободного люфта (slør) быть не должно: колёса сразу реагируют на поворот руля, без стуков и заеданий.',
+        ru: 'Люфта в руле быть не должно: колёса должны сразу следовать за поворотом руля без посторонних шумов.',
         da: 'Der må ikke være slør i rattet: hjulene skal straks følge ratbevægelsen uden mislyde.',
       },
       {
-        ru: 'При повороте руля до упора должен загораться аварийный сигнал.',
+        ru: 'При полном вывороте руля должна включаться аварийная сигнализация.',
         da: 'Havariblinket skal tænde ved fuldt ratudslag.',
       },
     ],
     correctIndex: 1,
     normRu:
-      'Встаньте у водительской двери, приоткройте окно, запустите двигатель (усилитель включён) и слегка покачайте руль влево-вправо: переднее колесо должно откликаться мгновенно, без люфта (ingen slør) и стуков.',
+      'При заведённом двигателе руль слегка поворачивают из стороны в сторону — передние колёса должны следовать за ним мгновенно, без холостого хода (люфта).',
     normDa:
       'Med tændt motor drejes rattet let fra side til side – forhjulene skal følge med øjeblikkeligt uden døgang (slør).',
   },
@@ -223,24 +223,24 @@ const KONTROL_QUESTIONS: KontrolQuestion[] = [
     tab: 'lygter',
     hotspot: 'naerlys',
     promptDa: 'Hvad er kravene til bilens nærlys (blændfrit lys)?',
-    promptRu: 'Каковы законные требования к ближнему свету фар (nærlys)?',
+    promptRu: 'Каковы требования к ближнему свету фар (ближнему неослепляющему свету)?',
     options: [
       {
-        ru: 'Освещает дорогу минимум на 30 м вперёд, имеет асимметричный луч с наклоном вниз 1% (не слепит встречных).',
+        ru: 'Должен освещать дорогу минимум на 30 м вперёд с уклоном 1% (1 см на метр), не ослепляя.',
         da: 'Skal oplyse vejen mindst 30 meter frem med et fald på 1 % (1 cm pr. meter) uden at blænde.',
       },
       {
-        ru: 'Освещает минимум на 100 м и горит только ночью.',
+        ru: 'Освещает минимум на 100 м вперёд и может использоваться только ночью.',
         da: 'Oplyser mindst 100 meter frem og må kun bruges om natten.',
       },
       {
-        ru: 'Всегда включает синюю лампу на приборной панели.',
+        ru: 'Всегда включает синюю контрольную лампу на приборной панели.',
         da: 'Tænder altid en blå kontrollampe i instrumentpanelet.',
       },
     ],
     correctIndex: 0,
     normRu:
-      'Nærlys освещает дорогу не менее чем на 30 м, правый край светит чуть дальше для обочины, световой пучок снижается на 1% (1 см на 1 м), чтобы не слепить встречный транспорт.',
+      'Ближний свет должен светить минимум на 30 м вперёд, иметь асимметричную картину света и уклон около 1%, не ослепляя встречный транспорт.',
     normDa:
       'Nærlyset skal lyse mindst 30 m frem, have asymmetrisk lysbillede og et fald på ca. 1 % uden at blænde modkørende.',
   },
@@ -249,24 +249,24 @@ const KONTROL_QUESTIONS: KontrolQuestion[] = [
     tab: 'lygter',
     hotspot: 'fjernlys',
     promptDa: 'Hvad skal du vide og vise prøvesagkyndigen om bilens fjernlys ved kontrolprøven?',
-    promptRu: 'Что обязательно нужно знать и показать инспектору о дальнем свете (fjernlys)?',
+    promptRu: 'Что нужно знать и показать экзаменатору о дальнем свете автомобиля на контрольной проверке?',
     options: [
       {
-        ru: 'Дальний свет светит минимум на 100 м вперёд, а на приборной панели обязательно горит СИНЯЯ контрольная лампа.',
+        ru: 'Должен освещать дорогу минимум на 100 м вперёд, и на приборной панели должна гореть СИНЯЯ контрольная лампа.',
         da: 'Skal oplyse vejen mindst 100 meter frem, og en BLÅ kontrollampe skal lyse i instrumentbrættet.',
       },
       {
-        ru: 'На приборной панели должна гореть зелёная лампа.',
+        ru: 'На приборной панели должна гореть зелёная контрольная лампа.',
         da: 'En grøn kontrollampe skal lyse på instrumentpanelet.',
       },
       {
-        ru: 'Дальний свет проверяют только включением аварийки.',
+        ru: 'Проверяется вместе с аварийной сигнализацией.',
         da: 'Kontrolleres sammen med katastrofeblink.',
       },
     ],
     correctIndex: 0,
     normRu:
-      'Две обязательные цифры/факта для дальнего света: дистанция освещения минимум 100 м + обязательная СИНЯЯ лампа на приборной панели (blå kontrollampe).',
+      'Дальний свет должен освещать минимум на 100 м вперёд и иметь видимую синюю контрольную лампу на приборной панели.',
     normDa:
       'Fjernlyset skal oplyse mindst 100 m frem og have en synlig blå kontrollampe i instrumentbrættet.',
   },
@@ -275,24 +275,24 @@ const KONTROL_QUESTIONS: KontrolQuestion[] = [
     tab: 'instrumentpanel',
     hotspot: 'olie_lampe',
     promptDa: 'Under kørslen begynder den røde olielampe (eller røde bremselampe) at lyse. Hvad gør du?',
-    promptRu: 'Во время движения загорелась красная лампа давления масла или тормозной системы. Ваши действия?',
+    promptRu: 'Во время движения загорается красная лампа масла (или красная тормозная лампа). Что вы делаете?',
     options: [
       {
-        ru: 'Ехать дальше до ближайшего автосервиса (до 50 км).',
+        ru: 'Ехать дальше до ближайшего автосервиса.',
         da: 'Kør videre til nærmeste værksted.',
       },
       {
-        ru: 'Немедленно и безопасно остановиться и заглушить двигатель — красный символ означает критическую неисправность!',
+        ru: 'Немедленно безопасно остановить автомобиль и заглушить двигатель — красная лампа означает серьёзную неисправность.',
         da: 'Stands bilen øjeblikkeligt på en sikker måde og sluk motoren – rød lampe betyder alvorlig fejl.',
       },
       {
-        ru: 'Игнорировать, пока не загорится ещё и жёлтая лампа.',
+        ru: 'Подождать, пока не загорится ещё и жёлтая лампа.',
         da: 'Vent til en gul lampe også tænder.',
       },
     ],
     correctIndex: 1,
     normRu:
-      'Золотое правило приборной панели: КРАСНЫЙ знак = остановиться немедленно (давление масла / тормоза / перегрев)! ЖЁЛТЫЙ = можно осторожно доехать до сервиса (ABS, Check Engine).',
+      'Красная контрольная лампа = остановиться немедленно (риск поломки двигателя или потери тормозов). Жёлтая лампа = ехать осторожно в автосервис.',
     normDa:
       'Rød kontrollampe = stands øjeblikkeligt (risiko for motorhavari eller bremsetab). Gul lampe = kør forsigtigt til værksted.',
   },
