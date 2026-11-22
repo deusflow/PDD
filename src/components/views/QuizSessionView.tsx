@@ -19,6 +19,7 @@ import { BOX_META, getSRSRecord } from '../../services/srsEngine';
 import { LanguageMode, SRSRecord, TeoriQuestion } from '../../types';
 import { BilingualText } from '../common/BilingualText';
 import { SpeakButton } from '../common/SpeakButton';
+import { TheoryBilingual } from '../common/TheoryBilingual';
 import { CarTechnicalSVG } from '../visuals/CarTechnicalSVG';
 import { DanishRoadSignSVG, PSkiveSVG } from '../visuals/DanishRoadSignSVG';
 import { TrafficSceneSVG } from '../visuals/TrafficSceneSVG';
@@ -694,13 +695,12 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
                       ) : (
                         <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
                       )}
-                      <BilingualText
-                        da={sq.explanationDa}
+                      <TheoryBilingual
                         ru={sq.explanationRu}
-                        mode={languageMode}
-                        revealInExplanation
-                        daClassName="text-xs font-medium"
-                        ruClassName="text-xs"
+                        da={sq.explanationDa}
+                        mode={languageMode === 'da_only' ? 'both' : languageMode}
+                        compact
+                        ruClassName="text-xs font-medium leading-relaxed"
                       />
                     </div>
                     <SpeakButton id={`exp_${sq.id}`} text={sq.explanationDa} />
@@ -783,13 +783,12 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
                 <span>{question.lawReference}</span>
               </div>
               <div className="mt-1.5 flex items-start justify-between gap-2">
-                <BilingualText
-                  da={question.keyRuleDa}
+                <TheoryBilingual
                   ru={question.keyRuleRu}
-                  mode={languageMode}
-                  revealInExplanation
-                  daClassName="text-xs sm:text-sm font-semibold"
-                  ruClassName="text-xs"
+                  da={question.keyRuleDa}
+                  mode={languageMode === 'da_only' ? 'both' : languageMode}
+                  compact
+                  ruClassName="text-xs sm:text-sm font-semibold leading-relaxed"
                 />
                 <SpeakButton id={`rule_${question.id}`} text={question.keyRuleDa} />
               </div>

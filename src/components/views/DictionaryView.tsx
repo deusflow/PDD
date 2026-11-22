@@ -14,6 +14,7 @@ import { DictionaryCategoryFilter, LanguageMode, SRSRecord } from '../../types';
 import { extractOrdnetLookupWords, getOrdnetUrl } from '../../utils/ordnet';
 import { BilingualText } from '../common/BilingualText';
 import { SpeakButton } from '../common/SpeakButton';
+import { TheoryBilingual } from '../common/TheoryBilingual';
 import { DictionaryVisualThumbnail } from '../visuals/DictionaryVisualThumbnail';
 import { SignBlitzModal } from './SignBlitzModal';
 
@@ -281,12 +282,12 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({
                         daClassName="text-sm font-bold leading-snug"
                         ruClassName="text-xs leading-snug"
                       />
-                      <BilingualText
-                        da={entry.detailsDa}
+                      <TheoryBilingual
                         ru={entry.detailsRu}
+                        da={entry.detailsDa}
                         mode={languageMode}
-                        daClassName="text-xs font-normal leading-relaxed text-zinc-600 dark:text-zinc-300"
-                        ruClassName="text-xs leading-relaxed text-zinc-500 dark:text-zinc-400"
+                        compact
+                        ruClassName="text-xs leading-relaxed text-zinc-700 dark:text-zinc-300"
                       />
                     </div>
                   </div>

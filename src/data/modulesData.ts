@@ -86,12 +86,12 @@ export const MODULES_DATA: ModuleInfo[] = [
         whyDa: 'Hvis sæde og spejle er indstillet forkert, kan du hverken bremse helt igennem i en nødsituation eller se cyklister bagud — og prøvesagkyndigen holder øje med dette, før bilen overhovedet starter.',
         pointsRu: [
           'Подголовник (nakkestøtte) настраивается по высоте так, чтобы его верхний край был вровень с макушкой головы (защита шеи при ударе сзади).',
-          'Водительское кресло (слева) и спинка настроены так, чтобы при выжатом до упора сцеплении колено оставалось чуть согнутым, а запястья доставали до верха руля.',
+          'Водительское кресло (слева) и спинка настроены так, чтобы при выжатом до упора сцеплении (а на автомате — педали тормоза) колено оставалось чуть согнутым, а запястья доставали до верха руля.',
           'В Дании обязателен знак аварийной остановки (advarselstrekant); жилет, аптечка и буксировочный крюк настоятельно рекомендуются. Водитель всегда имеет при себе права.',
         ],
         pointsDa: [
           'Nakkestøtten indstilles i højden, så overkanten flugter med toppen af hovedet (beskyttelse af nakken ved påkørsel bagfra).',
-          'Førersædet (til venstre) og ryglænet indstilles, så knæet forbliver let bøjet ved fuldt nedtrådt kobling, og håndleddene når toppen af rattet.',
+          'Førersædet (til venstre) og ryglænet indstilles, så knæet forbliver let bøjet ved fuldt nedtrådt kobling (på automatgear: bremsepedalen), og håndleddene når toppen af rattet.',
           'I Danmark er advarselstrekant lovpligtig i bilen; sikkerhedsvest, førstehjælpskasse og slæbetov anbefales stærkt. Føreren skal altid medbringe kørekort.',
         ],
         trapRu: 'В Дании огнетушитель и аптечка в личной легковой машине НЕ обязательны по закону (в отличие от ряда других стран), а вот аварийный треугольник — строго обязателен!',
@@ -444,6 +444,22 @@ export const MODULES_DATA: ModuleInfo[] = [
           'Når du passerer parkerede biler, se efter tændte lygter, drejede forhjul eller fødder under biler, og hold ca. 1 m afstand',
           'Hvis forhindringen ligger i din egen vejbane, sæt farten ned i tide og hold tilbage for modkørende trafik',
         ],
+        comparePair: {
+          headingRu: 'Не путай! Препятствие на вашей стороне vs на встречной',
+          headingDa: 'Forveksl ikke! Forhindring i din vs. modkørendes side',
+          left: {
+            labelRu: 'Препятствие на ВАШЕЙ стороне',
+            labelDa: 'Forhindring i DIN side',
+            summaryRu: 'Припаркованные машины или ремонт перед вами → ВЫ уступаете и ждёте, пока проедет встречный.',
+            summaryDa: 'Parkeret bil/arbejde foran dig → DU holder tilbage for modkørende (medmindre B19 giver dig forkørselsret).',
+          },
+          right: {
+            labelRu: 'Препятствие на ВСТРЕЧНОЙ стороне',
+            labelDa: 'Forhindring i MODKØRENDES side',
+            summaryRu: 'Встречный обязан пропустить вас, но по § 3 всегда следите, тормозит ли он.',
+            summaryDa: 'Modkørende skal holde tilbage for dig, men vær altid klar til at bremse efter § 3.',
+          },
+        },
         visual: {
           kind: 'pov',
           presetId: 'pov_doorzone_passing',
@@ -553,6 +569,22 @@ export const MODULES_DATA: ModuleInfo[] = [
           'Tæl mindst "en-tusind-og-en, en-tusind-og-to" (2 sek.)',
           'Øg afstanden til 3–4 sekunder i regn eller mørke',
         ],
+        comparePair: {
+          headingRu: 'Не путай! Путь реакции vs Тормозной путь при росте скорости ×2',
+          headingDa: 'Forveksl ikke! Reaktionslængde vs. Bremselængde ved 2× fart',
+          left: {
+            labelRu: 'Путь реакции (~1 сек)',
+            labelDa: 'Reaktionslængde (ca. 1 sek.)',
+            summaryRu: 'Расстояние, пока мозг замечает опасность и нога переносится на педаль. При 2× скорости растёт в 2 раза.',
+            summaryDa: 'Strækningen fra du opdager faren, til bremsen røres. Ved dobbelt fart bliver den 2× så lang.',
+          },
+          right: {
+            labelRu: 'Тормозной путь',
+            labelDa: 'Bremselængde (fysisk energi)',
+            summaryRu: 'Сколько скользит машина с нажатым тормозом. При 2× скорости растёт в 4 раза (в квадрате)!',
+            summaryDa: 'Strækningen med bremserne i bund. Ved dobbelt fart bliver den 4× så lang (kvadratet på farten)!',
+          },
+        },
         visual: {
           kind: 'pov',
           presetId: 'pov_distance_2s',
@@ -569,12 +601,12 @@ export const MODULES_DATA: ModuleInfo[] = [
         whyDa: 'Bilen stopper ikke i det sekund, du ser en fare: først kører den videre under din reaktionstid, og først derefter bremser den. De enkle formler her er både livreddende og faste gengangere til teoriprøven.',
         pointsRu: [
           'При скорости 50 км/ч за 1 секунду реакции авто проезжает ~14 м (при 80 км/ч — ~22 м). При росте скорости в 2 раза тормозной путь растёт в 4 раза!',
-          'На мокром льду тормозной путь длиннее в 4–10 раз — на затяжном спуске включайте пониженную передачу (торможение двигателем), чтобы не перегреть тормоза.',
+          'На мокром льду тормозной путь длиннее в 4–10 раз — на затяжном спуске замедляйтесь мотором (отпустите газ: на механике включите пониженную передачу, на автомате машина в D сама притормаживает двигателем, не переключая в N!), чтобы не перегреть тормоза.',
           'Движение задним ходом (bakning) на перекрёстке или через тротуар требует полной уступки всем; камера заднего вида не заменяет обзор в зеркала и поворот головы.',
         ],
         pointsDa: [
           'Ved 50 km/t kører bilen ca. 14 meter på 1 sekunds reaktionstid (ved 80 km/t ca. 22 meter). Ved fordobling af hastigheden bliver bremselængden 4 gange længere!',
-          'På våd is er bremselængden 4–10 gange længere — på lange nedkørsler vælger du et lavere gear (motorbremsning) for ikke at overophede bremserne.',
+          'På våd is er bremselængden 4–10 gange længere — på lange nedkørsler bruger du motorbremsning (slip speederen helt og vælg lavere gear på manuelt gear — i automatgear bliver du i D og skifter ikke til N!), så bremserne ikke overopheder.',
           'Bakning i kryds eller over fortov kræver ubetinget hensyn og tilbageholdenhed for alle; bakkamera erstatter aldrig spejle og kig bagud.',
         ],
         trapRu: 'Держать телефон в руке даже на светофоре в Дании запрещено (1.500 kr штраф + 1 klip), а звуковой сигнал (horn) разрешён ТОЛЬКО для предотвращения опасности!',
@@ -605,12 +637,12 @@ export const MODULES_DATA: ModuleInfo[] = [
         pointsRu: [
           'Отъезжая от обочины/парковки, вы безусловно уступаете всем авто и велосипедистам. Поворотник не даёт приоритета!',
           'При развороте и езде задним ходом нельзя заставлять других тормозить или менять траекторию (смотрите через заднее стекло, не только в камеру).',
-          'Økokørsel: переключайтесь вверх ~2000–2500 об/мин, тормозите двигателем на передаче (подача топлива = 0), избегайте холостого хода.',
+          'Økokørsel: переключайтесь вверх ~2000–2500 об/мин (на автомате просто плавно давите газ), тормозите двигателем (уберите ногу с газа заранее перед светофором — подача топлива = 0), избегайте холостого хода.',
         ],
         pointsDa: [
           'Ved igangsætning fra kantsten eller parkeringsplads skal du ubetinget holde tilbage for alle biler og cyklister. Blinklys giver ikke forkørselsret!',
           'Ved vending og bakning må du ikke tvinge andre til at bremse eller ændre kurs (kig ud gennem bagruden, ikke kun i kameraet).',
-          'Økokørsel: skift op ved ca. 2000–2500 omdr./min, motorbrems i gear (brændstoftilførsel = 0) og undgå unødig tomgang.',
+          'Økokørsel: skift op ved ca. 2000–2500 omdr./min (på automatgear: giv roligt og jævnt gas), motorbrems ved at slippe speederen tidligt (brændstoftilførsel = 0) og undgå unødig tomgang.',
         ],
         trapRu: 'Многие новички думают, что включённый левый поворотник при отъезде от тротуара даёт им право выехать. Нет — он лишь сообщает о намерении.',
         trapDa: 'Mange begyndere tror, at tændt venstre blinklys ved igangsætning fra fortov giver ret til at køre ud. Nej — blinklyset viser kun din hensigt.',
@@ -699,6 +731,24 @@ export const MODULES_DATA: ModuleInfo[] = [
           'Genkend spids-ned-trekanten B11 (ubetinget vigepligt) og blå cirkel (D = påbud om kørselsretning eller vognbane)',
           'Blå firkanter (E) giver oplysning eller markerer byzone/zoner (E55); enkeltstående C51/C55-tavler ophæves normalt ved næste kryds',
         ],
+        comparePair: {
+          headingRu: 'Не путай! Красный круг C (Запрет) vs Синий круг D (Предписание)',
+          headingDa: 'Forveksl ikke! Rød cirkel C (Forbud) vs. Blå cirkel D (Påbud)',
+          left: {
+            signCode: 'C51',
+            labelRu: 'C — Красный круг = ЗАПРЕТ',
+            labelDa: 'C — Rød rand = FORBUD',
+            summaryRu: 'Показывает, чего делать НЕЛЬЗЯ (нельзя обгонять C51, нельзя выше скорости C55, нельзя въезжать C19).',
+            summaryDa: 'Viser hvad du IKKE må (overhaling forbudt C51, fartgrænse C55, indkørsel forbudt C19).',
+          },
+          right: {
+            signCode: 'D11',
+            labelRu: 'D — Синий круг = ОБЯЗАН',
+            labelDa: 'D — Blå cirkel = PÅBUD',
+            summaryRu: 'Жёсткий приказ, куда или как ехать ОБЯЗАТЕЛЬНО (только прямо, объезд островка справа D15).',
+            summaryDa: 'Streng pligt til bestemt retning eller bane (tvungen kørselsretning D11, forbi helle D15).',
+          },
+        },
         visual: {
           kind: 'pov',
           presetId: 'pov_sign_shapes_abcde',
@@ -737,6 +787,22 @@ export const MODULES_DATA: ModuleInfo[] = [
           'Tjek om der er pile: «500 m» = afstand hen til faren/forbuddet; «↑ 500 m ↑» = strækning; «↑ / ↓» = fremad/ophør ved tavlen',
           'Aflæs tidsskemaet rigtigt: sorte tal uden parentes (8–18) = hverdage, sorte tal i parentes (8–14) = lørdag, røde tal = søn- og helligdag',
         ],
+        comparePair: {
+          headingRu: 'Не путай! «500 m» без стрелок vs «↑ 500 m ↑» со стрелками',
+          headingDa: 'Forveksl ikke! «500 m» uden pile vs. «↑ 500 m ↑» med pile',
+          left: {
+            labelRu: '«500 m» (Без стрелок)',
+            labelDa: '«500 m» (Uden pile)',
+            summaryRu: 'Означает «НАЧНЁТСЯ ЧЕРЕЗ 500 метров» от этого столба.',
+            summaryDa: 'Betyder «om 500 meter» begynder faren eller reglen længere fremme.',
+          },
+          right: {
+            labelRu: '«↑ 500 m ↑» (Со стрелками)',
+            labelDa: '«↑ 500 m ↑» (Med pile)',
+            summaryRu: 'Означает «ДЕЙСТВУЕТ НА ПРОТЯЖЕНИИ 500 метров» прямо отсюда и дальше.',
+            summaryDa: 'Betyder «gælder på hele strækningen» over de næste 500 meter.',
+          },
+        },
         visual: {
           kind: 'pov',
           presetId: 'pov_undertavler',
@@ -776,6 +842,22 @@ export const MODULES_DATA: ModuleInfo[] = [
           'Hold alle 4 hjul helt fri af spærrelinje og skraveret spærreflade — selv ét hjul over linjen er forbudt',
           'Ved gul vejarbejdsafmærkning følger du altid de gule striber; ved rødt lys standses helt FØR cykelboksen foran bilerne',
         ],
+        comparePair: {
+          headingRu: 'Не путай! Обычный пунктир vs Длинный пунктир (Varslingslinje)',
+          headingDa: 'Forveksl ikke! Almindelig vognbanelinje vs. Varslingslinje',
+          left: {
+            labelRu: 'Короткий штрих (Vognbanelinje)',
+            labelDa: 'Korte streger (Vognbanelinje)',
+            summaryRu: 'Обычное разделение полос: при хорошем обзоре можно свободно перестраиваться и обгонять.',
+            summaryDa: 'Almindelig skillelinje: du må skifte bane og overhale, når der er frit udsyn.',
+          },
+          right: {
+            labelRu: 'Длинный штрих (Varslingslinje)',
+            labelDa: 'Lange streger (Varslingslinje)',
+            summaryRu: 'Предупреждает о скорой сплошной или опасной зоне — начинать новый обгон через неё ЗАПРЕЩЕНО!',
+            summaryDa: 'Advarer om kommende spærrelinje eller fare — du må IKKE påbegynde en ny overhaling over den!',
+          },
+        },
         visual: {
           kind: 'pov',
           presetId: 'pov_spaerrelinje_spaerreflade',
@@ -813,6 +895,22 @@ export const MODULES_DATA: ModuleInfo[] = [
           'Aflæs gult lys og vurder afstanden til stoplinjen (~35 m ved 50 km/t)',
           'Ved slukket eller gult blink: følg tavlerne B11/B13 eller højrevigepligt',
         ],
+        comparePair: {
+          headingRu: 'Не путай! Постоянный жёлтый свет vs Мигающий жёлтый свет',
+          headingDa: 'Forveksl ikke! Fast gult lys vs. Blinkende gult lys',
+          left: {
+            labelRu: 'Постоянный жёлтый (перед красным)',
+            labelDa: 'Fast gult lyssignal',
+            summaryRu: 'Означает СТОП перед стоп-линией! Проехать можно только если не успеваете безопасно остановиться.',
+            summaryDa: 'Betyder STOP før stoplinjen (kun køre videre, hvis du er så tæt på, at sikker opbremsning er umulig).',
+          },
+          right: {
+            labelRu: 'Мигающий жёлтый (Ночью / сбой)',
+            labelDa: 'Blinkende gult lyssignal',
+            summaryRu: 'Светофор не работает как регулятор! Смотрите на знаки B11 / B16 или помеху справа и пешеходов.',
+            summaryDa: 'Lyssignalet regulerer ikke vigepligten: følg tavler/hajtænder (eller højrevigepligt) og vis særligt hensyn.',
+          },
+        },
         visual: {
           kind: 'pov',
           presetId: 'pov_yellow_traffic_light',
@@ -962,6 +1060,23 @@ export const MODULES_DATA: ModuleInfo[] = [
           'Ved knækket hovedvej under B16 giver du altid blinktegn, når du ændrer fysisk retning (også hvis du bliver på hovedvejen)',
           'Ved udkørsel fra opholdsområde (E51), gårdsplads eller markvej gælder ubetinget vigepligt for al trafik på tværvejen',
         ],
+        comparePair: {
+          headingRu: 'Не путай! Т-перекрёсток без знаков vs с «акульими зубами»',
+          headingDa: 'Forveksl ikke! Ureguleret T-kryds vs. T-kryds med hajtænder',
+          left: {
+            labelRu: 'Нет знаков и нет «зубов»',
+            labelDa: 'Hverken skilte eller hajtænder',
+            summaryRu: 'Главная ошибка иностранцев! Прямая улица НЕ главная — вы уступаете выезжающему справа (Højrevigepligt).',
+            summaryDa: 'Den lige vej har IKKE forkørselsret! Hvis sidevejen kommer fra højre uden hajtænder, skal du holde tilbage.',
+          },
+          right: {
+            signCode: 'B11',
+            labelRu: 'Есть «акульи зубы» или B11',
+            labelDa: 'Hajtænder / B11 på sidevejen',
+            summaryRu: 'Улица со знаками и треугольниками на асфальте безусловно уступает, а вы едете без остановки.',
+            summaryDa: 'Sidevejen med B11/hajtænder har ubetinget vigepligt, og trafikken på den gennemgående vej har forkørselsret.',
+          },
+        },
         visual: {
           kind: 'pov',
           presetId: 'pov_t_kryds',
@@ -1054,6 +1169,22 @@ export const MODULES_DATA: ModuleInfo[] = [
           'Hold tilbage for al modkørende trafik, der skal ligeud eller til højre — husk også modkørende cyklister på cykelstien',
           'Passer modkørende venstresvingende biler med HØJRE side mod hinanden før krydsets midte (kort venstresving), medmindre vejmarkering viser andet',
         ],
+        comparePair: {
+          headingRu: 'Не путай! Короткий (стандарт) vs Длинный левый поворот',
+          headingDa: 'Forveksl ikke! Kort vs. Langt venstresving',
+          left: {
+            labelRu: 'Короткий поворот (Kort)',
+            labelDa: 'Kort venstresving (Normal)',
+            summaryRu: 'Стандарт в Дании: обе встречные машины поворачивают налево ПЕРЕД центром, разъезжаясь ПРАВЫМИ бортами.',
+            summaryDa: 'Normalen i Danmark: I svinger til venstre FORAN hinanden og passerer højre side mod højre side.',
+          },
+          right: {
+            labelRu: 'Длинный поворот (Langt)',
+            labelDa: 'Langt venstresving (Sjælden)',
+            summaryRu: 'Только если разметка/островок заставляет объехать центр перекрёстка — тогда разъезд за центром левыми бортами.',
+            summaryDa: 'Kun når særlig afmærkning eller helle kræver, at I kører rundt om midten af krydset og passerer bag om hinanden.',
+          },
+        },
         visual: {
           kind: 'pov',
           presetId: 'pov_left_turn_kort',
@@ -1257,6 +1388,23 @@ export const MODULES_DATA: ModuleInfo[] = [
           'Kontroller, at det er en rutebus i fast rute, der blinker til venstre ud fra stoppestedet (ikke en turistbus med havariblink)',
           'I byzone sætter du farten ned og holder tilbage for bussen; forbi enhver holdende bus skal du være klar på krydsende passagerer',
         ],
+        comparePair: {
+          headingRu: 'Не путай! Отъезд автобуса В ГОРОДЕ vs ЗА ГОРОДОМ',
+          headingDa: 'Forveksl ikke! Bus fra stoppested i byzone vs. uden for byzone',
+          left: {
+            signCode: 'E55',
+            labelRu: 'В ГОРОДЕ (Byzone E55, ≤ 50 км/ч)',
+            labelDa: 'I byzone (E55, ≤ 50 km/t)',
+            summaryRu: 'Автобус включил левый поворотник — вы ОБЯЗАНЫ притормозить и выпустить его с остановки.',
+            summaryDa: 'Når bussen blinker til venstre fra stoppestedet, SKAL du sænke farten og give den plads til at køre ud.',
+          },
+          right: {
+            labelRu: 'ЗА ГОРОДОМ (Landevej, 80 км/ч)',
+            labelDa: 'Uden for byzone (Landevej)',
+            summaryRu: 'Вы не обязаны уступать по закону (автобус ждёт просвет), но всегда держите ногу наготове.',
+            summaryDa: 'Her har bussen selv vigepligt ved igangsætning, men vis altid hensyn og vær klar over for passagerer.',
+          },
+        },
         visual: {
           kind: 'pov',
           presetId: 'pov_bus_byzone',
@@ -1566,6 +1714,22 @@ export const MODULES_DATA: ModuleInfo[] = [
           'Husk de 3 eneste undtagelser til forbikørsel højre om: forankørende blinker og trækker til venstre, tæt køkørsel eller vognbanepile',
           'På motorvej trækker du straks tilbage til højre bane efter overhaling; med trailer undgås 3. bane, og nødspor er kun til nødstop',
         ],
+        comparePair: {
+          headingRu: 'Не путай! Обгон СЛЕВА (правило) vs Опережение СПРАВА (исключения)',
+          headingDa: 'Forveksl ikke! Overhaling til venstre vs. forbikørsel højre om',
+          left: {
+            labelRu: 'Обычный обгон (ТОЛЬКО слева)',
+            labelDa: 'Normal overhaling (til venstre)',
+            summaryRu: 'В Дании обгоняют слева; справа в свободных полосах на автобане опережать («подрезать») запрещено!',
+            summaryDa: 'Normalt overhaler man venstre om; på motorvej må du ikke bare køre hurtigere i højre bane og køre forbi.',
+          },
+          right: {
+            labelRu: 'Когда МОЖНО справа',
+            labelDa: 'Lovlig forbikørsel til højre',
+            summaryRu: '1) Передний занял середину и мигает налево; 2) Плотная пробка (køkørsel); 3) Разные стрелки/направления полос.',
+            summaryDa: '1) Bilen foran blinker til venstre for at svinge; 2) Tæt kø i alle baner; 3) Vognbaner med pil til forskellige retninger.',
+          },
+        },
         visual: {
           kind: 'pov',
           presetId: 'pov_motorvej_merge',
@@ -1657,13 +1821,13 @@ export const MODULES_DATA: ModuleInfo[] = [
         whyRu: 'Даже легковую машину с прицепом нельзя цеплять на глаз: по датскому закону вес считают по «разрешённой максимальной массе» (Totalvægt) в техпаспорте, а не по тому, пустой ли прицеп сейчас.',
         whyDa: 'Du må ikke bare koble en trailer på efter mavefornemmelse: loven regner altid med den tilladte totalvægt på registreringsattesten, ikke hvor meget den tomme trailer vejer lige nu.',
         pointsRu: [
-          'Базовое правило категории B: (Totalvægt машины) + (Totalvægt прицепа) ≤ 3.500 kg.',
-          'Смотрите в техпаспорте авто графу «Største påhængsvægt med/uden bremser» — полная масса прицепа не должна превышать лимит самой машины!',
-          'Прицеп без собственных тормозов (uden bremser) обычно ограничен 750 kg или половиной снаряжённой массы авто.',
+          'Базовое правило категории B: (Tilladt totalvægt машины) + (Tilladt totalvægt прицепа) ≤ 3.500 kg. Totalvægt — это максимальный разрешённый вес по документам (а не вес пустого прицепа сейчас!).',
+          'Смотрите в техпаспорте авто графу «Største påhængsvægt med/uden bremser» — сколько килограммов фаркопу машины разрешено тянуть (прицеп не должен быть тяжелее этого лимита!).',
+          'Прицеп без собственных тормозов (uden bremser) обычно ограничен 750 kg или половиной снаряжённой массы авто (Køreklar/egenvægt).',
         ],
         pointsDa: [
-          'Grundregel for kategori B: (Bilens tilladte totalvægt) + (Trailerens tilladte totalvægt) ≤ 3.500 kg.',
-          'Tjek bilens registreringsattest under «Største påhængsvægt med/uden bremser» — trailerens faktiske totalvægt må aldrig overstige bilens grænse!',
+          'Grundregel for kategori B: (Bilens tilladte totalvægt) + (Trailerens tilladte totalvægt) ≤ 3.500 kg. Tilladt totalvægt er bilens/trailerens maks. tilladte vægt på attesten (ikke dens tomme vægt nu!).',
+          'Tjek bilens registreringsattest under «Største påhængsvægt med/uden bremser» — hvor mange kg selve bilens træk må trække (trailerens faktiske totalvægt må aldrig overstige denne grænse!).',
           'En trailer uden egne bremser (uden bremser) er normalt begrænset til højst 750 kg eller halvdelen af bilens køreklar/egenvægt.',
         ],
         exceptionsRu: 'Исключение: к автомобилю с totalvægt до 3.500 kg ВСЕГДА можно прицепить лёгкий прицеп до 750 kg (общая масса автопоезда до 4.250 kg), если это разрешает техпаспорт авто.',
@@ -1680,6 +1844,22 @@ export const MODULES_DATA: ModuleInfo[] = [
           'Tjek "Største påhængsvægt m/u bremser" på bilens registreringsattest',
           'Husk max 80 km/t med trailer (kun 100 km/t med godkendt Tempo 100)',
         ],
+        comparePair: {
+          headingRu: 'Не путай! Вес ПО ПАСПОРТУ (Tilladt totalvægt) vs вес ПУСТОГО прицепа',
+          headingDa: 'Forveksl ikke! Tilladt totalvægt på attest vs. tom vægt lige nu',
+          left: {
+            labelRu: 'Права B: сумма по ПАСПОРТУ',
+            labelDa: 'Kategori B: Tilladt totalvægt',
+            summaryRu: 'Складывайте «Tilladt totalvægt» авто + прицепа из техпаспорта (≤ 3.500 kg), даже если прицеп совсем пустой!',
+            summaryDa: 'Læg bilens + trailerens «tilladte totalvægt» sammen på papirerne (≤ 3.500 kg), også selvom traileren er helt tom.',
+          },
+          right: {
+            labelRu: 'Лимит фаркопа авто (Faktisk vægt)',
+            labelDa: 'Bilens trækgrænse (Påhængsvægt)',
+            summaryRu: 'Реальный вес гружёного прицепа сейчас не должен превысить графу «Største påhængsvægt» в техпаспорте машины.',
+            summaryDa: 'Trailerens faktiske vægt her og nu må aldrig overstige bilens «største påhængsvægt med/uden bremser».',
+          },
+        },
         visual: {
           kind: 'pov',
           presetId: 'pov_trailer_weight',
@@ -1999,13 +2179,13 @@ export const MODULES_DATA: ModuleInfo[] = [
           'Ночью и при плохой видимости дневных огней (kørelys) недостаточно — включайте ближний/дальний свет (должны гореть задние габариты!).',
           'Переключение с дальнего на ближний: за 200–300 м до встречной машины и за 100–150 м при приближении сзади.',
           'Задняя противотуманка (Tågebaglygte) — только в сильный туман, ливень или снегопад; выключайте, как только сзади появилась машина.',
-          'Аквапланирование: плавно отпустите газ (или выжмите сцепление) и держите руль прямо — не тормозите резко! Мосты и лес замерзают первыми («чёрный лёд» при 0…+2 °C).',
+          'Аквапланирование: плавно отпустите газ (на механике выжмите сцепление, на автомате просто уберите ногу с газа, НЕ переключаясь в N!) и держите руль прямо — не тормозите резко! Мосты и лес замерзают первыми («чёрный лёд» при 0…+2 °C).',
         ],
         pointsDa: [
           'Om natten og ved nedsat sigtbarhed er kørelys ikke nok — tænd nærlys eller fjernlys (baglygterne skal være tændt!).',
           'Blænd ned fra fjernlys til nærlys: 200–300 m før modkørende biler og 100–150 m bag forankørende biler.',
           'Tågebaglygte må kun bruges i tæt tåge, kraftig regn eller snefald; sluk den, så snart en bil nærmer sig bagfra.',
-          'Akvaplaning: slip speederen blødt (eller træd koblingen ned) og hold rattet lige — brems ikke hårdt! Broer og skovstrækninger fryser først («sort is» ved 0…+2 °C).',
+          'Akvaplaning: slip speederen blødt (ved manuelt gear trædes koblingen ned; på automatgear løfter du blot foden fra speederen uden at skifte til N!) og hold rattet lige — brems ikke hårdt! Broer og skovstrækninger fryser først («sort is» ved 0…+2 °C).',
         ],
         trapRu: 'Частая ошибка новых авто: ездить вечером на режиме «Auto» / kørelys, когда сзади фонари не горят. В сумерки и дождь всегда переводите свет на принудительный ближний!',
         trapDa: 'En klassisk fejl i nyere biler: at køre om aftenen på «Auto» / kørelys, hvor baglygterne er slukkede. I skumring og regn skal du altid sætte lyset på fast nærlys!',
@@ -2035,12 +2215,12 @@ export const MODULES_DATA: ModuleInfo[] = [
         whyDa: 'Sidst i forløbet skal alle elever på glatbane (KTA) for at øve nødbremse, undvigemanøvrer og udskridning. Når du kender reaktionen på forhånd — især ved høj vejkant — undgår du panik i rattet.',
         pointsRu: [
           'Высокий/мягкий край обочины (Høj/blød rabat, Mål 9.5): если правые колёса съехали с асфальта на обочину — НИКОГДА не дёргайте резко руль влево и не бейте по тормозам! Плавно сбросьте газ, выровняйтесь вдоль дороги, затем под пологим углом вернитесь на асфальт.',
-          'Аквапланирование и чёрный лёд (Mål 9.1–9.2): на мокром льду (0…+2 °C) и в колее тормозной путь длиннее до 4–10 раз. Выжмите сцепление / отпустите газ и смотрите туда, куда хотите направить машину (взгляд ведёт руль!).',
+          'Аквапланирование и чёрный лёд (Mål 9.1–9.2): на мокром льду (0…+2 °C) и в колее тормозной путь длиннее до 4–10 раз. Выжмите сцепление / на автомате просто плавно отпустите педаль газа (НЕ переключая в N и не ударяя по тормозу!) и смотрите туда, куда хотите направить машину (взгляд ведёт руль!).',
           'ABS vs ESP (Mål 9.3–9.4): с ABS жмите педаль тормоза максимально сильно до остановки и объезжайте препятствие; ESP подтормаживает отдельные колёса при сносе/заносе.',
         ],
         pointsDa: [
           'Høj/blød rabat (Mål 9.5): hvis højre hjulpar kommer ud over asfaltkanten på rabatten — ryk ALDRIG skarpt i rattet til venstre og hug ikke bremserne i! Slip speederen roligt, ret bilen op langs vejen, og styr derefter i en flad vinkel tilbage på asfalten.',
-          'Akvaplaning og sort is (Mål 9.1–9.2): på våd is (0…+2 °C) og i hjulspor er bremselængden op til 4–10 gange længere. Træd koblingen ned / slip speederen og kig derhen, hvor du vil køre (blikket styrer rattet!).',
+          'Akvaplaning og sort is (Mål 9.1–9.2): på våd is (0…+2 °C) og i hjulspor er bremselængden op til 4–10 gange længere. Træd koblingen ned / på automatgear slippes speederen blot roligt (uden at skifte til N eller hugge bremsen!) og kig derhen, hvor du vil køre (blikket styrer rattet!).',
           'ABS vs. ESP (Mål 9.3–9.4): med ABS træder du bremsepedalen helt i bund til stilstand og styrer uden om forhindringen; ESP bremser enkelte hjul automatisk ved udskridning.',
         ],
         attentionStepsRu: [
@@ -2053,6 +2233,22 @@ export const MODULES_DATA: ModuleInfo[] = [
           'Hjul ude i høj rabat: hold rattet roligt ligeud og sænk farten før blidt returslag',
           'Ved skrid: kobling ned / slip gas, kig i fri retning og styr blidt med',
         ],
+        comparePair: {
+          headingRu: 'Не путай! Съезд на обочину (Rabat) — ❌ ошибка vs ✅ спасение',
+          headingDa: 'Forveksl ikke! Hjul i høj rabat — ❌ panik vs. ✅ sikker teknik',
+          left: {
+            labelRu: '❌ Смертельная ошибка',
+            labelDa: '❌ Farlig fejlreaktion',
+            summaryRu: 'Резко дёрнуть руль влево и нажать тормоз в пол — колесо цепляет край асфальта и авто бросает на встречку!',
+            summaryDa: 'At rive hårdt i rattet til venstre og hugge bremserne i — bilen kan slingre direkte over i modkørende trafik!',
+          },
+          right: {
+            labelRu: '✅ Правильный выход',
+            labelDa: '✅ Rigtig reaktion',
+            summaryRu: 'Отпустите газ (тормоз не трогать!), держите руль ровно вдоль дороги, погасите скорость и мягко вернитесь на асфальт.',
+            summaryDa: 'Slip blot speederen (brems ikke hårdt), hold rattet lige langs kanten til farten er lav, og styr blidt tilbage.',
+          },
+        },
         visual: {
           kind: 'pov',
           presetId: 'pov_soft_shoulder_rabat',
@@ -2162,6 +2358,22 @@ export const MODULES_DATA: ModuleInfo[] = [
           'Hold aldrig mobilen i hånden under kørsel (heller ikke ved rødt lys — det koster straks 1 klip + 1.500 kr. bøde!)',
           'Ved uheld følges altid rækkefølgen: 1) havariblink + sikkerhedsvest → 2) advarselstrekant (50/100 m) → 3) hjælp og ring 112 (personskade) eller 114',
         ],
+        comparePair: {
+          headingRu: 'Не путай! Правила для НОВИЧКА (первые 3 года) vs Опытного водителя',
+          headingDa: 'Forveksl ikke! Ny bilist (første 3 år) vs. Erfaren bilist',
+          left: {
+            labelRu: 'Новичок (первые 3 года)',
+            labelDa: 'Førstegangserhverver (3 år)',
+            summaryRu: 'С 01.07.2025 лимит алкоголя 0,20 ‰ (фактически 0!), а права забирают (kørselsforbud) уже после 2 klip!',
+            summaryDa: 'Fra 01.07.2025 maks. 0,20 ‰ promille (faktisk nul!) og kørselsforbud allerede efter 2 klip på 3 år!',
+          },
+          right: {
+            labelRu: 'Опытный (> 3 лет стажа)',
+            labelDa: 'Erfaren bilist (> 3 år)',
+            summaryRu: 'Законный порог алкоголя 0,50 ‰, а условное лишение с пересдачей наступает после 3 klip за 3 года.',
+            summaryDa: 'Promillegrænse 0,50 ‰ og betinget frakendelse udløses efter 3 klip inden for 3 år.',
+          },
+        },
         visual: {
           kind: 'pov',
           presetId: 'pov_alcohol_klip_law',
@@ -2197,6 +2409,22 @@ export const MODULES_DATA: ModuleInfo[] = [
           'Placer advarselstrekant mindst 50 m bagved (100 m på motorvej)',
           'Ved personskade: ring 112 · Kun materiel skade: udveksle oplysninger',
         ],
+        comparePair: {
+          headingRu: 'Не путай! Когда при ДТП звонить 112 vs Когда НЕ звонить',
+          headingDa: 'Forveksl ikke! Personskade (112) vs. Kun materiel skade',
+          left: {
+            labelRu: 'Есть пострадавшие / угроза жизни',
+            labelDa: 'Personskade eller alvorlig fare',
+            summaryRu: 'Аварийка + жилет + треугольник 50/100 м + звонок 112 и первая помощь до приезда скорой/полиции.',
+            summaryDa: 'Havariblink + refleksvest + advarselstrekant 50/100 m + ring 112 straks og giv førstehjælp.',
+          },
+          right: {
+            labelRu: 'Только царапина / бампер (без травм)',
+            labelDa: 'Kun mindre materiel skade',
+            summaryRu: 'На 112 НЕ звонить! Уберите машины с проезжей части (чтобы не мешать потоку) и обменяйтесь страховкой.',
+            summaryDa: 'Ring IKKE 112! Flyt bilerne af vejen, hvis de spærrer, og udveksl navn, telefon og forsikringsoplysninger.',
+          },
+        },
         visual: {
           kind: 'pov',
           presetId: 'pov_accident_triangle_112',

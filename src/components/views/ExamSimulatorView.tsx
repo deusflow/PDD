@@ -25,6 +25,7 @@ import { buildExamQuestions, buildHardcoreExamQuestions } from '../../services/s
 import { ExamAttemptSummary, LanguageMode, SRSRecord, TeoriQuestion } from '../../types';
 import { BilingualText } from '../common/BilingualText';
 import { SpeakButton } from '../common/SpeakButton';
+import { TheoryBilingual } from '../common/TheoryBilingual';
 import { CarTechnicalSVG } from '../visuals/CarTechnicalSVG';
 import { DanishRoadSignSVG, PSkiveSVG } from '../visuals/DanishRoadSignSVG';
 import { TrafficSceneSVG } from '../visuals/TrafficSceneSVG';
@@ -834,13 +835,12 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
                                 </span>
                               </div>
                               <div className="mt-1.5 border-t border-zinc-200/60 pt-1.5 dark:border-zinc-800">
-                                <BilingualText
-                                  da={sq.explanationDa}
+                                <TheoryBilingual
                                   ru={sq.explanationRu}
-                                  mode={languageMode}
-                                  revealInExplanation
-                                  daClassName="text-[11px] font-normal"
-                                  ruClassName="text-[11px]"
+                                  da={sq.explanationDa}
+                                  mode={languageMode === 'da_only' ? 'both' : languageMode}
+                                  compact
+                                  ruClassName="text-[11px] sm:text-xs font-normal leading-relaxed"
                                 />
                               </div>
                             </div>

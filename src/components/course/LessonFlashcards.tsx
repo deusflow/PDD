@@ -8,6 +8,7 @@ import {
 } from '../../services/sessionPersistence';
 import { DictionaryEntry, LanguageMode } from '../../types';
 import { SpeakButton } from '../common/SpeakButton';
+import { TheoryBilingual } from '../common/TheoryBilingual';
 import { DictionaryVisualThumbnail } from '../visuals/DictionaryVisualThumbnail';
 
 interface LessonFlashcardsProps {
@@ -193,14 +194,12 @@ export const LessonFlashcards: React.FC<LessonFlashcardsProps> = ({
               <div className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
                 {languageMode !== 'da_only' ? card.ru : card.da}
               </div>
-              <p className="text-[15px] leading-7 text-zinc-700 dark:text-zinc-300">
-                {languageMode !== 'da_only' ? card.detailsRu : card.detailsDa}
-              </p>
-              {languageMode !== 'da_only' && (
-                <p className="border-t border-zinc-200/70 pt-2.5 text-xs leading-relaxed text-zinc-400 dark:border-zinc-800">
-                  {card.detailsDa}
-                </p>
-              )}
+              <TheoryBilingual
+                ru={card.detailsRu}
+                da={card.detailsDa}
+                mode={languageMode}
+                ruClassName="text-[15px] leading-7 text-zinc-700 dark:text-zinc-300"
+              />
             </div>
 
             <div className="text-center text-xs text-zinc-400">

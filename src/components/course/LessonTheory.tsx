@@ -12,6 +12,7 @@ import { LanguageMode, ModuleCheatRule } from '../../types';
 import { BilingualText } from '../common/BilingualText';
 import { RuleVisualBlock } from '../common/RuleVisualBlock';
 import { SpeakButton } from '../common/SpeakButton';
+import { TheoryBilingual } from '../common/TheoryBilingual';
 import { CarTechnicalSVG } from '../visuals/CarTechnicalSVG';
 import { DanishRoadSignSVG } from '../visuals/DanishRoadSignSVG';
 import { LessonHeroIllustration } from '../visuals/LessonHeroIllustration';
@@ -190,8 +191,11 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
                       {languageMode !== 'da_only' ? metric.labelRu : metric.labelDa}
                     </div>
                     {languageMode === 'both' && (
-                      <div className="mt-0.5 text-[11px] text-zinc-400 dark:text-zinc-500">
-                        {metric.labelDa}
+                      <div className="mt-1 flex items-start gap-1 text-[11px] text-teal-900/80 dark:text-teal-300/85">
+                        <span className="inline-flex shrink-0 items-center rounded bg-teal-100 px-1 py-0.5 text-[9px] font-bold tracking-wide text-teal-800 dark:bg-teal-950 dark:text-teal-300">
+                          DA
+                        </span>
+                        <span>{metric.labelDa}</span>
                       </div>
                     )}
                   </div>
@@ -243,7 +247,13 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
               />
             </div>
 
-            <RuleVisualBlock rule={rule} moduleId={mod.id} languageMode={languageMode} compactVisual />
+            <RuleVisualBlock
+              rule={rule}
+              moduleId={mod.id}
+              ruleIndex={index}
+              languageMode={languageMode}
+              compactVisual
+            />
           </div>
         );
       }
@@ -363,26 +373,39 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
             <div className="grid gap-6 lg:grid-cols-2 lg:items-start">
               <ul className="space-y-2.5">
                 {mod.cheatSheet.map((r, idx) => (
-                  <li key={idx} className="flex items-start gap-2.5 text-[15px] leading-6">
-                    <CheckCircle2 className="mt-1 h-4 w-4 shrink-0 text-teal-600 dark:text-teal-400" />
-                    <span className="font-medium text-zinc-800 dark:text-zinc-200">
-                      {languageMode !== 'da_only' ? r.titleRu : r.titleDa}
-                    </span>
+                  <li key={idx} className="flex items-start justify-between gap-2.5 text-[15px] leading-6">
+                    <div className="flex min-w-0 flex-1 items-start gap-2.5">
+                      <CheckCircle2 className="mt-1 h-4 w-4 shrink-0 text-teal-600 dark:text-teal-400" />
+                      <TheoryBilingual
+                        ru={r.titleRu}
+                        da={r.titleDa}
+                        mode={languageMode}
+                        compact
+                        ruClassName="font-medium"
+                      />
+                    </div>
+                    <SpeakButton id={`sum_r_${mod.id}_${idx}`} text={r.titleDa} />
                   </li>
                 ))}
               </ul>
 
               {keyRules.length > 0 && (
                 <div className="space-y-2.5 rounded-2xl border border-zinc-200/80 bg-zinc-50/60 p-4 dark:border-zinc-800 dark:bg-zinc-950/40">
-                  <div className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
+                  <div className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
                     Ловушки на экзамене
                   </div>
                   {keyRules.map((q) => (
                     <div
                       key={q.id}
-                      className="rounded-xl border border-zinc-200/70 bg-white px-3.5 py-2.5 text-xs leading-relaxed text-zinc-700 sm:text-sm dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
+                      className="flex items-start justify-between gap-2 rounded-xl border border-zinc-200/70 bg-white px-3.5 py-2.5 text-xs leading-relaxed sm:text-sm dark:border-zinc-800 dark:bg-zinc-900"
                     >
-                      {languageMode !== 'da_only' ? q.keyRuleRu : q.keyRuleDa}
+                      <TheoryBilingual
+                        ru={q.keyRuleRu}
+                        da={q.keyRuleDa}
+                        mode={languageMode}
+                        compact
+                      />
+                      <SpeakButton id={`sum_q_${q.id}`} text={q.keyRuleDa} />
                     </div>
                   ))}
                 </div>
@@ -401,26 +424,58 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
         key={`${mod.id}_${slideIndex}`}
         className="nordic-card p-6 sm:p-8 motion-safe:animate-slide-step"
       >
-        <div className="mb-4 flex items-center justify-between">
-          <span className="text-xs font-medium text-zinc-400">
-            Слайд {slideIndex + 1} из {slides.length}
-          </span>
-          <div className="flex items-center gap-1.5">
-            {slides.map((_, idx) => (
-              <button
-                key={idx}
-                type="button"
-                aria-label={`Слайд ${idx + 1}`}
-                onClick={() => goToSlide(idx)}
-                className={`h-1.5 rounded-full transition-all ${
-                  idx === slideIndex
-                    ? 'w-5 bg-teal-600 dark:bg-teal-400'
-                    : idx < slideIndex
-                      ? 'w-2 bg-teal-300 dark:bg-teal-800'
-                      : 'w-2 bg-zinc-200 dark:bg-zinc-700'
-                }`}
-              />
-            ))}
+        <div className="mb-4 space-y-2.5">
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">
+              Шаг {slideIndex + 1} из {slides.length} · Маршрут урока
+            </span>
+            <span className="text-[11px] font-medium text-teal-700 dark:text-teal-400">
+              {Math.round(((slideIndex + 1) / slides.length) * 100)}%
+            </span>
+          </div>
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
+            {slides.map((s, idx) => {
+              const label =
+                s.kind === 'cover'
+                  ? languageMode === 'da_only'
+                    ? 'Oversigt'
+                    : 'Введение'
+                  : s.kind === 'rule'
+                    ? `${s.index + 1}. ${(languageMode === 'da_only' ? s.rule.titleDa : s.rule.titleRu).split(/[:(—]/)[0].trim().slice(0, 20)}`
+                    : s.kind === 'visual'
+                      ? mod.id === 1
+                        ? languageMode === 'da_only'
+                          ? 'Bilskema'
+                          : 'Схема авто'
+                        : languageMode === 'da_only'
+                          ? 'Skilte'
+                          : 'Знаки'
+                      : s.kind === 'algorithms'
+                        ? languageMode === 'da_only'
+                          ? 'Trin'
+                          : 'Алгоритм'
+                        : languageMode === 'da_only'
+                          ? 'Opsummering'
+                          : 'Итог';
+              const isCurrent = idx === slideIndex;
+              const isVisited = idx < slideIndex;
+              return (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => goToSlide(idx)}
+                  className={`shrink-0 rounded-lg border px-2.5 py-1 text-[11px] font-semibold transition-all ${
+                    isCurrent
+                      ? 'border-teal-600 bg-teal-600 text-white shadow-sm dark:border-teal-500 dark:bg-teal-500'
+                      : isVisited
+                        ? 'border-teal-200/80 bg-teal-50/70 text-teal-800 hover:bg-teal-100 dark:border-teal-900/60 dark:bg-teal-950/40 dark:text-teal-300'
+                        : 'border-zinc-200/80 bg-zinc-50 text-zinc-600 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800'
+                  }`}
+                >
+                  {label}
+                </button>
+              );
+            })}
           </div>
         </div>
 

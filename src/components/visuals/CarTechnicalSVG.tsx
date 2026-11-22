@@ -4,6 +4,7 @@ import {
   CheckCircle2,
   ExternalLink,
   Eye,
+  GraduationCap,
   HelpCircle,
   Wrench,
 } from 'lucide-react';
@@ -36,6 +37,8 @@ interface HotspotInfo {
   okRu?: string;
   failDa?: string;
   failRu?: string;
+  examDa: string;
+  examRu: string;
 }
 
 const HOTSPOTS: HotspotInfo[] = [
@@ -55,6 +58,8 @@ const HOTSPOTS: HotspotInfo[] = [
     okRu: 'Правая нога свободно переставляется с газа на тормоз с пятки; на автомате левая нога спокойно стоит на площадке.',
     failDa: 'At bremse med venstre fod i en bil med automatgear — man hugger næsten altid bremsen alt for hårdt i bund!',
     failRu: 'Попытаться притормозить левой ногой на автомате: по привычке ударите по тормозу со всей силы до резкого блока колёс.',
+    examDa: 'Ved manuelt gear styrer venstre fod koblingen, og højre fod bremse og speeder. På automatgear bruger jeg kun højre fod.',
+    examRu: '«На механике левая нога для сцепления, правая для тормоза и газа; на автомате работает только правая нога.»',
   },
   {
     id: 'motorhjelm',
@@ -71,6 +76,8 @@ const HOTSPOTS: HotspotInfo[] = [
     okRu: 'Капот надёжно зафиксирован штангой, а при закрытии опускается с ~20 см и защёлкивается без люфта.',
     failDa: 'At glemme den skjulte sikkerhedskrog ude foran eller køre af sted uden at hjelmen er klikket helt i lås.',
     failRu: 'Тянуть приподнятый капот силой, не нащупав вторую защёлку, либо недозакрыть капот перед поездкой.',
+    examDa: 'Jeg trækker i udløsergrebet ved venstre fod, udløser sikkerhedslåsen under forkanten og sætter støttepinden fast.',
+    examRu: '«Тяну рычаг у левой ноги, отвожу страховочный крючок под кромкой спереди и ставлю упорную штангу.»',
   },
   {
     id: 'lyskontakt',
@@ -87,6 +94,8 @@ const HOTSPOTS: HotspotInfo[] = [
     okRu: 'В непогоду горят и передние фары, и задние красные фонари; при дальнем свете на приборке горит синяя лампа.',
     failDa: 'At stole blindt på «Auto» i regn/tåge, så baglygterne er helt slukkede og biler bagfra ser dig for sent.',
     failRu: 'Полагаться только на режим Auto в дождь или туман — задние габариты могут не включиться!',
+    examDa: 'I mørke, regn og tåge drejer jeg lyskontakten manuelt til nærlys, så både for- og baglygter er tændt.',
+    examRu: '«В дождь, туман и туннель я вручную переключаю свет на ближний (Nærlys), чтобы точно горели задние габариты.»',
   },
   {
     id: 'visker_havari',
@@ -103,6 +112,8 @@ const HOTSPOTS: HotspotInfo[] = [
     okRu: 'Стекло очищается равномерно за пару взмахов, а аварийка мигает одновременно на всех 6 фонарях.',
     failDa: 'Slidte viskerblade, der smører snavs ud i blinde striber, eller tom sprinklerbeholder midt i salt og sjap.',
     failRu: 'Пустой бачок омывателя или порванные резинки щёток, размазывающие грязь по стеклу на солнце.',
+    examDa: 'Højre stilk styrer visker og sprinkler for klart udsyn, og den røde trekant tænder alle 6 havariblink ved uheld eller pludselig fare.',
+    examRu: '«Правый рычаг чистит стекло омывателем, а красная кнопка аварийки включает сразу все 6 поворотников при поломке или резком заторе.»',
   },
   {
     id: 'saede_spejle',
@@ -119,6 +130,8 @@ const HOTSPOTS: HotspotInfo[] = [
     okRu: 'Педаль жмётся до упора без отрыва поясницы, а боковые зеркала смотрят на соседние полосы, а не на ваши ручки дверей.',
     failDa: 'Strakt ben ved bremsning, nakkestøtte nede i nakken eller sidespejle rettet så langt ind, at halvdelen viser din egen bildør.',
     failRu: 'Прямая нога при нажатии тормоза, заваленная далеко назад спинка или зеркала, повёрнутые внутрь на собственный кузов.',
+    examDa: 'Jeg indstiller sædet med let bøjet knæ ved fuldt pedaltryk, nakkestøtten i højde med hovedets top og spejlene med frit udsyn bagud.',
+    examRu: '«При полностью выжатой педали колено чуть согнуто, верх подголовника на уровне макушки, и все 3 зеркала настроены без лишнего захвата своего кузова.»',
   },
 
   // 1. Motorrum (over real engine bay photo)
@@ -130,13 +143,15 @@ const HOTSPOTS: HotspotInfo[] = [
     whyDa: 'Kølervæsken forhindrer motoren i at overophede og koge over (eller fryse til is om vinteren). Uden kølervæske ødelægges topstykket hurtigt.',
     whyRu: 'Антифриз отводит жар от работающего двигателя (как радиатор в доме, только наоборот) и не даёт мотору закипеть летом или замёрзнуть зимой.',
     lookDa: 'Gennemsigtig rund plastikbeholder med LYSRØD væske og blåt/sort tryklåg øverst til venstre under hjelmen.',
-    lookRu: 'Полупрозрачный округлый бачок с РОЗОВОЙ (иногда зелёной или синей) жидкостью сверху слева под капотом; на крышке нарисован градусник/книжка.',
+    lookRu: 'Полупрозрачный округлый бачок с РОЗОВОЙ (иногда зелёной или синей) жидкостью сверху слева под капотом; на крышке нарисована книжка/термометр.',
     checkDa: 'Standen skal ligge mellem MIN og MAX på beholderens side. Åbn ALDRIG låget, mens motoren er varm — overtryk kan sprøjte kogende væske ud!',
     checkRu: 'Посмотрите на метки MIN и MAX сбоку бачка, НЕ откручивая крышку! На горячем двигателе внутри высокое давление — можно обжечься паром.',
     okDa: 'Lyserød/klar væske mellem MIN og MAX på kold motor, ingen lækager eller rustfarvet snavs.',
     okRu: 'Уровень между отметками MIN и MAX, жидкость прозрачная розового/цветного оттенка, бачок закрыт.',
     failDa: 'Væskestanden er under MIN, beholderen er helt tom, eller du forsøger at skrue låget af på varm motor.',
     failRu: 'Уровень ниже MIN, пустой бачок (мотор перегревается!) или попытка открыть крышку сразу после поездки.',
+    examDa: 'Væskestanden aflæses udvendigt mellem MIN og MAX. Jeg åbner aldrig låget på varm motor pga. skoldningsfare.',
+    examRu: '«Уровень антифриза проверяю снаружи между MIN и MAX и никогда не открываю крышку на горячем моторе.»',
   },
   {
     id: 'sprinklervaeske',
@@ -153,6 +168,8 @@ const HOTSPOTS: HotspotInfo[] = [
     okRu: 'В бачке есть жидкость, а форсунки бодро брызгают на стекло при нажатии правого рычага на себя.',
     failDa: 'Tom beholder eller almindeligt postevand om vinteren, der fryser til is i dyser og slanger.',
     failRu: 'Пустой бачок или летняя вода при минусовой температуре — щётки только размажут соль белой плёнкой.',
+    examDa: 'Jeg kontrollerer, at der er tilstrækkelig frostsikret sprinklervæske i beholderen med blåt låg, og at sprinkleren sprøjter på ruden.',
+    examRu: '«Проверяю наличие незамерзающей жидкости в бачке с синей крышкой и работу форсунок из салона.»',
   },
   {
     id: 'motorolie',
@@ -169,6 +186,8 @@ const HOTSPOTS: HotspotInfo[] = [
     okRu: 'След чистого/янтарного масла ровно между рисками MIN и MAX на конце щупа.',
     failDa: 'Olien er under MIN (skal efterfyldes før kørsel) eller aflæst mens motoren kører eller bilen holder skævt.',
     failRu: 'Уровень ниже MIN (или кончик щупа сухой) либо проверка на заведённом моторе/крутом уклоне.',
+    examDa: 'Bilen skal stå plant med slukket motor: jeg trækker oliepinden op, tørrer den af, sætter den helt i igen og kontrollerer, at olien ligger mellem MIN og MAX.',
+    examRu: '«На ровной площадке при заглушенном моторе вынимаю щуп, протираю, вставляю снова и проверяю уровень между MIN и MAX.»',
   },
   {
     id: 'bremsevaeske',
@@ -185,6 +204,8 @@ const HOTSPOTS: HotspotInfo[] = [
     okRu: 'Жидкость находится между MIN и MAX и держит стабильный уровень.',
     failDa: 'Under MIN eller hurtigt faldende stand = alvorlig utæthed i bremsesystemet — kør IKKE videre!',
     failRu: 'Уровень упал ниже MIN или быстро снижается — возможна утечка в тормозной магистрали, ехать запрещено!',
+    examDa: 'Standen skal ligge mellem MIN og MAX uden at falde hurtigt — falder den under MIN, kan systemet være utæt.',
+    examRu: '«Уровень тормозной жидкости должен быть между MIN и MAX; резкое падение ниже MIN означает возможную утечку.»',
   },
   {
     id: 'batteri',
@@ -201,6 +222,8 @@ const HOTSPOTS: HotspotInfo[] = [
     okRu: 'Батарея не болтается, контакты чистые и затянутые, после старта мотора красная лампа АКБ гаснет.',
     failDa: 'Løst batteri, irrede/løse polsko eller tændt rød batterilampe under kørsel (generatoren lader ikke).',
     failRu: 'Аккумулятор шатается в креплении, клеммы окислены/болтаются или на ходу горит красная иконка батареи.',
+    examDa: 'Jeg tjekker, at batteriet er spændt sikkert fast, og at kabelskoene sidder stramt og rent på polerne.',
+    examRu: '«Аккумулятор должен быть надёжно закреплён, а клеммы плотно затянуты и чисты.»',
   },
 
   // 2. Dæk, Bremser & Styretøj
@@ -219,6 +242,8 @@ const HOTSPOTS: HotspotInfo[] = [
     okRu: 'Протектор заметно глубже перемычки TWI (для зимы от 3 мм), на боках нет грыж и порезов, все 4 шины одного сезона.',
     failDa: 'Gummiklodsen TWI flugter med dækkets overflade (< 1,6 mm), bule/revne i dæksiden eller sommerdæk på én aksel og vinterdæk på den anden.',
     failRu: 'Рисунок сравнялся с меткой TWI («лысая» шина < 1,6 мм), видны грыжи/корды или стоят летние шины спереди и зимние сзади.',
+    examDa: 'Alle 4 dæk skal have mindst 1,6 mm mønster i hovedrillerne (over TWI-mærkerne), samme dæktype hele vejen rundt og ingen skader.',
+    examRu: '«Протектор минимум 1,6 мм (выше перемычек TWI), все 4 шины одного типа и без повреждений; в снег/гололёд — зимние.»',
   },
   {
     id: 'bremser',
@@ -235,6 +260,8 @@ const HOTSPOTS: HotspotInfo[] = [
     okRu: 'Слегка опустилась при запуске двигателя (усилитель включился — это НОРМА!) и дальше 10 секунд стоит на одном уровне, не уходя в пол.',
     failDa: 'Pedalen forbliver stenhård ved motorstart (forstærker defekt) ELLER bliver ved med at synke langsomt mod gulvet (utæthed/lækage — kør IKKE!).',
     failRu: 'Осталась каменной при запуске (сломан усилитель) ИЛИ продолжает медленно проваливаться к полу за 10 сек (утечка в системе — ехать нельзя!).',
+    examDa: 'Jeg pumper pedalen hård med slukket motor, holder et fast tryk og starter motoren: pedalen skal synke lidt (vakuumforstærkeren virker) og derefter ikke synke videre.',
+    examRu: '«Накачиваю педаль на заглушенном моторе, завожу — педаль слегка проседает (усилитель работает), и за 10 сек больше не опускается (система герметична).»',
   },
   {
     id: 'haandbremse',
@@ -251,6 +278,8 @@ const HOTSPOTS: HotspotInfo[] = [
     okRu: 'Машина стоит мёртво, а после снятия с ручника красная лампа `(!)` / `(P)` на панели сразу гаснет.',
     failDa: 'Håndtaget skal helt op i loftet før det bider, bilen ruller, eller håndbremsen hænger og lyser rødt under kørsel.',
     failRu: 'Машина откатывается на ручнике или рычаг уходит до самого верха почти без сопротивления.',
+    examDa: 'Parkeringsbremsen skal kunne holde bilen sikkert på skråning, og den røde P-lampe skal slukke, når den er løsnet.',
+    examRu: '«Ручник надёжно удерживает машину на уклоне, а при снятии с него красная лампа P на панели гаснет.»',
   },
   {
     id: 'stoddaempere',
@@ -267,6 +296,8 @@ const HOTSPOTS: HotspotInfo[] = [
     okRu: 'Кузов поднимается ровно один раз и сразу замирает как влитой.',
     failDa: 'Bilen bliver ved med at gynge op og ned som en trampolin (2–3+ gange efter du slipper) — dæmperen er slidt op.',
     failRu: 'Машина продолжает качаться вверх-вниз 2–3 раза после отпускания (как мячик на пружине) — амортизатор изношен.',
+    examDa: 'Når jeg trykker kraftigt ned over hvert hjørne og slipper, skal bilen rejse sig én gang og straks falde til ro uden at gynge.',
+    examRu: '«Надавливаю на каждый из 4 углов кузова и отпускаю — машина поднимается 1 раз и сразу останавливается без раскачки.»',
   },
   {
     id: 'styretoej',
@@ -283,6 +314,8 @@ const HOTSPOTS: HotspotInfo[] = [
     okRu: 'Едва вы шевельнули руль — переднее колесо в ту же секунду повернулось вслед за ним.',
     failDa: 'Rattet kan drejes et par centimeter frem og tilbage, mens forhjulet står helt stille (dødgang/slør — skal på værksted!).',
     failRu: 'Руль свободно ходит на несколько сантиметров впустую, а колесо остаётся неподвижным — есть люфт, нужна диагностика на СТО.',
+    examDa: 'Der må normalt ikke være ratslør: med startet motor (servostyring) skal forhjulene straks følge rattets bevægelser.',
+    examRu: '«Люфта быть не должно: при заведённом двигателе (работает усилитель) колёса должны сразу же реагировать на поворот руля.»',
   },
 
   // 3. Lygter
@@ -301,6 +334,8 @@ const HOTSPOTS: HotspotInfo[] = [
     okRu: 'Обе пары огней светят ровно, без перегоревших ламп.',
     failDa: 'En pære er sprunget, eller du kører rundt om natten kun med positionslys (det giver ingen sigtbarhed fremad!).',
     failRu: 'Езда ночью только на габаритах (дорогу не видно!) или не горит одна из сторон.',
+    examDa: '2 hvide positionslys foran og 2 røde bagpå skal kunne ses tydeligt på mindst 300 meters afstand uden at blænde.',
+    examRu: '«Спереди 2 белых огня, сзади 2 красных — в темноте видны минимум за 300 метров и не слепят.»',
   },
   {
     id: 'naerlys',
@@ -317,6 +352,8 @@ const HOTSPOTS: HotspotInfo[] = [
     okRu: 'Обе фары светят ровно (не «в небо»), и задние габариты гарантированно включены.',
     failDa: 'Én pære er død («énøjet» bil), eller forlygterne peger for højt op pga. tung bagage (glemte lygtehøjden!).',
     failRu: 'Не горит одна фара или забыли опустить корректор фар при полной загрузке багажника (слепите встречных).',
+    examDa: 'Nærlys skal oplyse vejen mindst 30 m frem med et fald på ca. 1 % (1 cm pr. meter) uden at blænde modkørende.',
+    examRu: '«Ближний свет освещает минимум 30 м вперёд с наклоном вниз 1% (1 см на метр), не ослепляя встречных.»',
   },
   {
     id: 'fjernlys',
@@ -333,6 +370,8 @@ const HOTSPOTS: HotspotInfo[] = [
     okRu: 'Свет бьёт далеко вперёд, а синий индикатор на приборной панели ярко сигнализирует об этом водителю.',
     failDa: 'Blå lampe lyser ikke, eller du glemmer at blænde ned i tide for modkørende, cyklister og toge.',
     failRu: 'Едете на дальнем свете в освещённом городе или слепите встречного водителя/велосипедиста.',
+    examDa: 'Fjernlys skal oplyse vejen mindst 100 m frem, og der skal lyse en blå kontrollampe på instrumentbrættet.',
+    examRu: '«Дальний свет светит минимум на 100 м вперёд, и при его включении обязательно горит СИНЯЯ лампа на панели.»',
   },
   {
     id: 'stoplys',
@@ -349,6 +388,8 @@ const HOTSPOTS: HotspotInfo[] = [
     okRu: 'Загораются все 3 фонаря сразу, и светят заметно ярче обычных красных габаритов.',
     failDa: 'Én eller flere stoplygter er sprunget (typisk det høje midterstoplys eller én sidepære).',
     failRu: 'Не горит одна из боковых ламп или центральный стоп-сигнал.',
+    examDa: 'Alle 3 stoplys skal lyse kraftigere end baglyset øjeblikkeligt, når jeg træder på bremsepedalen.',
+    examRu: '«Все 3 стоп-сигнала должны загораться сразу при нажатии тормоза и светить ярче обычных габаритов.»',
   },
   {
     id: 'blinklys',
@@ -365,6 +406,8 @@ const HOTSPOTS: HotspotInfo[] = [
     okRu: 'Все 6 фонарей мигают ярко и в ровном ритме.',
     failDa: 'Blinker lampen inde i bilen dobbelt så hurtigt? Så er en udvendig blinklyspære næsten altid sprunget!',
     failRu: 'Стрелка на панели вдруг стала щёлкать вдвое быстрее обычного — верный признак, что снаружи перегорела лампочка!',
+    examDa: 'Alle 6 blinklys skal lyse gult/orange og blinke 60–120 gange i minuttet — hurtig blink inde i bilen betyder en sprungen pære.',
+    examRu: '«Все 6 поворотников должны мигать жёлтым 60–120 раз в минуту; двойная скорость щелчков в салоне = перегорела лампа.»',
   },
   {
     id: 'nummerplade',
@@ -374,13 +417,15 @@ const HOTSPOTS: HotspotInfo[] = [
     whyDa: 'Nummerpladen skal kunne aflæses i mørke, og de bagerste røde reflekser gør din bil synlig på lang afstand, selv hvis al strøm og lys svigter om natten.',
     whyRu: 'Подсветка делает номер читаемым в темноте, а красные катафоты отражают свет чужих фар, даже если машина стоит заглушенной без аккумулятора.',
     lookDa: 'Små hvide lamper lige over den bagerste nummerplade + 2 RØDE ikke-trekantede reflekser integreret i bagkofanger eller baglygter.',
-    lookRu: 'Белые лампочки прямо над задним номером + 2 КРАСНЫХ нетреугольных катафота в заднем бампере или фонарях.',
+    lookRu: 'Белые лампочки прямо над задним номерным знаком + 2 КРАСНЫХ нетреугольных катафота в заднем бампере или фонарях.',
     checkDa: 'Hvidt nummerpladelys skal gøre pladen læsbar på min. 20 m i mørke. En personbils 2 bagreflekser må ALDRIG være trekantede (trekant = kun trailer/påhængsvogn!).',
     checkRu: 'Подсветка номера (белая, минимум с 20 м читаемость) горит вместе с габаритами/ближним светом. У легковой машины сзади 2 красных катафота НЕ треугольной формы (треугольники — только для прицепов!).',
     okDa: 'Hvidt lys oplyser hele bagnummerpladen, og begge røde ikke-trekantede reflekser er hele og rene.',
     okRu: 'Номер чётко подсвечен белым светом, оба катафота целые и чистые.',
     failDa: 'Mørk nummerplade (sprungen pære), rødt lys på nummerpladen eller knækket/manglende refleks.',
     failRu: 'Подсветка номера не горит совсем или разбиты задние отражатели.',
+    examDa: 'Nummerpladelyset skal være hvidt og gøre pladen læsbar på mindst 20 m, og de 2 røde bagreflekser må ikke være trekantede.',
+    examRu: '«Белая подсветка номера читается минимум с 20 м, а сзади у легковой 2 красных нетреугольных катафота.»',
   },
   {
     id: 'horn',
@@ -397,6 +442,8 @@ const HOTSPOTS: HotspotInfo[] = [
     okRu: 'Сигнал чёткий, громкий и ровный.',
     failDa: 'Helt tavst horn, skrattende tone eller brug af hornet uden reel fare (fx af irritation i kø).',
     failRu: 'Клаксон молчит или хрипит при нажатии.',
+    examDa: 'Hornet skal give en klar, ensartet tone og må kun bruges til at afværge overhængende fare.',
+    examRu: '«Сигнал должен звучать ровно и чисто, а использовать его на дороге можно только при угрозе аварии.»',
   },
 
   // 4. Instrumentpanel
@@ -415,6 +462,8 @@ const HOTSPOTS: HotspotInfo[] = [
     okRu: 'Погасла сразу после запуска двигателя.',
     failDa: 'Forbliver rød eller blinker under kørsel — kør IKKE videre til tankstation eller værksted!',
     failRu: 'Горит красным на заведённом двигателе — ехать дальше категорически нельзя (вызывайте эвакуатор / звоните в автошколу).',
+    examDa: 'Hvis den røde olielampe lyser under kørsel, skal jeg standse sikkert med det samme og slukke motoren.',
+    examRu: '«Если на ходу загорелась красная маслёнка, нужно немедленно безопасно остановиться и заглушить двигатель.»',
   },
   {
     id: 'bremse_lampe',
@@ -431,6 +480,8 @@ const HOTSPOTS: HotspotInfo[] = [
     okRu: 'Сразу гаснет после снятия машины с ручника.',
     failDa: 'Rød `(!)` lyser stadig under kørsel med håndbremsen helt nede = bremsefejl eller manglende bremsevæske!',
     failRu: 'Ручник полностью опущен, а красный `(!)` горит на ходу = утечка тормозной жидкости или отказ контура.',
+    examDa: 'Lampen lyser normalt ved trukket håndbremse, men lyser den med håndbremsen nede, skal jeg standse straks (bremsefejl / for lidt bremsevæske).',
+    examRu: '«Если ручник опущен, а красная (!) горит на ходу — немедленно останавливаюсь, возможна утечка тормозной жидкости.»',
   },
   {
     id: 'temp_lampe',
@@ -447,6 +498,8 @@ const HOTSPOTS: HotspotInfo[] = [
     okRu: 'Гаснут сразу после запуска двигателя.',
     failDa: 'Lyser rødt under kørsel — du risikerer motorhavari eller pludseligt strømsvigt midt i trafikken.',
     failRu: 'Горят красным во время езды — продолжение поездки грозит закипанием/заклиниванием двигателя или полным отказом электрики.',
+    examDa: 'En rød advarselslampe betyder altid: stands sikkert straks og sluk motoren — ved høj temperatur åbner jeg aldrig varm kølervæske.',
+    examRu: '«Красная лампа всегда требует безопасной остановки и выключения мотора; горячий антифриз не открываю.»',
   },
   {
     id: 'abs_lampe',
@@ -463,6 +516,8 @@ const HOTSPOTS: HotspotInfo[] = [
     okRu: 'Все жёлтые иконки погасли через пару секунд после запуска мотора.',
     failDa: 'Lyser gult konstant under kørsel — må ikke ignoreres i ugevis, men kræver værkstedsbesøg med ekstra forsigtig kørsel.',
     failRu: 'Постоянно горит жёлтым на ходу: на скользкой дороге при резком торможении без ABS колёса пойдут юзом — пора на СТО.',
+    examDa: 'En gul lampe betyder fejl i fx ABS/ESP, men de almindelige bremser virker stadig — jeg kan køre forsigtigt til værksted.',
+    examRu: '«Жёлтая лампа означает сбой помощника (ABS/ESP), но обычные тормоза работают — можно аккуратно доехать до СТО.»',
   },
 ];
 
@@ -1012,6 +1067,28 @@ export const CarTechnicalSVG: React.FC<CarTechnicalSVGProps> = ({
               )}
             </div>
           )}
+
+          {/* 5. Concise Exam Answer Phrase for Inspector */}
+          <div className="flex items-start justify-between gap-2.5 rounded-lg border border-indigo-200/80 bg-indigo-50/55 px-3 py-2.5 dark:border-indigo-900/50 dark:bg-indigo-950/25">
+            <div className="min-w-0 flex-1">
+              <div className="mb-1 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-indigo-800 dark:text-indigo-300">
+                <GraduationCap className="h-3.5 w-3.5 shrink-0" />
+                <span>
+                  {languageMode === 'da_only'
+                    ? 'Kort svar til prøvesagkyndigen'
+                    : 'Как коротко сказать инспектору на экзамене'}
+                </span>
+              </div>
+              <TheoryBilingual
+                ru={currentInfo.examRu}
+                da={currentInfo.examDa}
+                mode={languageMode}
+                compact
+                ruClassName="text-xs sm:text-[13px] font-medium leading-snug text-indigo-950 dark:text-indigo-100"
+              />
+            </div>
+            <SpeakButton id={`tech_exam_${currentInfo.id}`} text={currentInfo.examDa} />
+          </div>
         </div>
       )}
     </div>

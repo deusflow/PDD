@@ -485,15 +485,20 @@ export const KontrolSimulatorModal: React.FC<KontrolSimulatorModalProps> = ({
                       {q.promptRu}
                     </p>
                   )}
-                  <p
-                    className={`${
+                  <div
+                    className={
                       languageMode === 'da_only'
                         ? 'text-sm font-bold text-zinc-900 dark:text-zinc-50'
-                        : 'text-xs font-medium text-zinc-600 dark:text-zinc-300'
-                    }`}
+                        : 'flex items-start gap-1.5 text-xs font-medium text-teal-950/90 dark:text-teal-200/90'
+                    }
                   >
-                    «{q.promptDa}»
-                  </p>
+                    {languageMode !== 'da_only' && (
+                      <span className="mt-0.5 inline-flex shrink-0 items-center rounded bg-teal-100 px-1.5 py-0.5 text-[10px] font-bold tracking-wide text-teal-800 dark:bg-teal-950 dark:text-teal-300">
+                        DA
+                      </span>
+                    )}
+                    <span>«{q.promptDa}»</span>
+                  </div>
                   <div className="flex flex-wrap items-center gap-1.5 pt-1">
                     {extractOrdnetLookupWords(q.promptDa, 3).map((word) => (
                       <a
@@ -522,7 +527,7 @@ export const KontrolSimulatorModal: React.FC<KontrolSimulatorModalProps> = ({
                   initialTab={q.tab}
                   activeHotspot={isAnswered ? q.hotspot : undefined}
                   languageMode={languageMode}
-                  compact
+                  compact={!isAnswered}
                   lockedTab
                 />
                 {!isAnswered && (
@@ -577,13 +582,18 @@ export const KontrolSimulatorModal: React.FC<KontrolSimulatorModalProps> = ({
                             </div>
                           )}
                           <div
-                            className={`${
+                            className={
                               languageMode === 'da_only'
                                 ? 'text-xs font-semibold text-zinc-900 dark:text-zinc-100'
-                                : 'text-[11px] text-zinc-500 dark:text-zinc-400'
-                            }`}
+                                : 'flex items-start gap-1.5 text-[11px] leading-snug text-teal-950/85 dark:text-teal-200/90'
+                            }
                           >
-                            {opt.da}
+                            {languageMode !== 'da_only' && (
+                              <span className="mt-0.5 inline-flex shrink-0 items-center rounded bg-teal-100 px-1 py-0.5 text-[9px] font-bold tracking-wide text-teal-800 dark:bg-teal-950 dark:text-teal-300">
+                                DA
+                              </span>
+                            )}
+                            <span>{opt.da}</span>
                           </div>
                         </div>
                       </button>

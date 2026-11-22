@@ -25,6 +25,7 @@ import { extractOrdnetLookupWords, getOrdnetUrl } from '../../utils/ordnet';
 import { BilingualText } from '../common/BilingualText';
 import { RuleVisualBlock } from '../common/RuleVisualBlock';
 import { SpeakButton } from '../common/SpeakButton';
+import { TheoryBilingual } from '../common/TheoryBilingual';
 import { LessonTheory } from '../course/LessonTheory';
 import { CarTechnicalSVG } from '../visuals/CarTechnicalSVG';
 import { DanishRoadSignSVG } from '../visuals/DanishRoadSignSVG';
@@ -449,8 +450,11 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
                 <h1 className="text-xl font-bold tracking-tight text-zinc-900 sm:text-2xl dark:text-zinc-100">
                   {mod.titleRu}
                 </h1>
-                <div className="mt-0.5 text-sm font-medium text-zinc-500 dark:text-zinc-400">
-                  {mod.titleDa}
+                <div className="mt-1 inline-flex items-center gap-1.5 text-sm font-medium text-teal-950/85 dark:text-teal-200/90">
+                  <span className="inline-flex shrink-0 items-center rounded bg-teal-100 px-1.5 py-0.5 text-[10px] font-bold tracking-wide text-teal-800 dark:bg-teal-950 dark:text-teal-300">
+                    DA
+                  </span>
+                  <span>{mod.titleDa}</span>
                 </div>
               </div>
             ) : (
@@ -556,8 +560,11 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
                       <div className="mt-1 text-xs font-semibold text-zinc-800 dark:text-zinc-200">
                         {metric.labelRu}
                       </div>
-                      <div className="text-[11px] text-zinc-500 dark:text-zinc-400">
-                        {metric.labelDa}
+                      <div className="mt-0.5 flex items-start gap-1 text-[11px] text-teal-900/80 dark:text-teal-300/85">
+                        <span className="inline-flex shrink-0 items-center rounded bg-teal-100 px-1 py-0.5 text-[9px] font-bold tracking-wide text-teal-800 dark:bg-teal-950 dark:text-teal-300">
+                          DA
+                        </span>
+                        <span>{metric.labelDa}</span>
                       </div>
                     </>
                   ) : (
@@ -627,7 +634,13 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
                   </div>
 
                   <div className="mt-3 border-t border-zinc-200/70 pt-3 dark:border-zinc-800">
-                    <RuleVisualBlock rule={rule} moduleId={mod.id} languageMode={languageMode} compactVisual />
+                    <RuleVisualBlock
+                      rule={rule}
+                      moduleId={mod.id}
+                      ruleIndex={idx}
+                      languageMode={languageMode}
+                      compactVisual
+                    />
                   </div>
                 </div>
               ))}
@@ -756,12 +769,12 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
                               daClassName="text-sm font-bold"
                               ruClassName="text-xs"
                             />
-                            <BilingualText
-                              da={entry.detailsDa}
+                            <TheoryBilingual
                               ru={entry.detailsRu}
+                              da={entry.detailsDa}
                               mode={languageMode}
-                              daClassName="text-xs font-normal text-zinc-600 dark:text-zinc-300"
-                              ruClassName="text-[11px]"
+                              compact
+                              ruClassName="text-xs leading-relaxed text-zinc-700 dark:text-zinc-300"
                             />
                           </div>
                         </div>

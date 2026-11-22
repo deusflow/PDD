@@ -370,8 +370,11 @@ export const QuickNumbersModal: React.FC<QuickNumbersModalProps> = ({
                     </div>
 
                     {item.daTerm && (
-                      <div className="mt-2 border-t border-zinc-200/60 pt-1.5 text-[11px] font-medium text-zinc-500 dark:border-zinc-800/80 dark:text-zinc-400">
-                        DA: {item.daTerm}
+                      <div className="mt-2 flex items-start gap-1.5 border-t border-zinc-200/60 pt-2 text-xs leading-snug text-teal-950/85 dark:border-zinc-800/80 dark:text-teal-200/90">
+                        <span className="mt-0.5 inline-flex shrink-0 items-center rounded bg-teal-100 px-1.5 py-0.5 text-[10px] font-bold tracking-wide text-teal-800 dark:bg-teal-950 dark:text-teal-300">
+                          DA
+                        </span>
+                        <span>{item.daTerm}</span>
                       </div>
                     )}
                   </div>

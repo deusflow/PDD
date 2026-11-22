@@ -1,8 +1,8 @@
 import React from 'react';
 import { Camera } from 'lucide-react';
 import { LanguageMode } from '../../types';
-import { BilingualText } from '../common/BilingualText';
 import { SpeakButton } from '../common/SpeakButton';
+import { TheoryBilingual } from '../common/TheoryBilingual';
 
 interface HeroSceneMeta {
   imageSrc: string;
@@ -121,28 +121,13 @@ export const LessonHeroIllustration: React.FC<LessonHeroIllustrationProps> = ({
               <span>{languageMode === 'da_only' ? meta.titleDa : meta.titleRu}</span>
             </div>
 
-            {languageMode === 'both' ? (
-              <div className="space-y-1">
-                <p className="text-xs leading-relaxed text-zinc-700 sm:text-sm dark:text-zinc-200">
-                  {meta.captionRu}
-                </p>
-                <p className="text-[11px] leading-relaxed text-zinc-500 dark:text-zinc-400">
-                  DA: {meta.captionDa}
-                </p>
-              </div>
-            ) : languageMode === 'spoiler' ? (
-              <BilingualText
-                da={meta.captionDa}
-                ru={meta.captionRu}
-                mode="spoiler"
-                daClassName="text-xs sm:text-sm font-normal leading-relaxed"
-                ruClassName="text-xs leading-relaxed"
-              />
-            ) : (
-              <p className="text-xs leading-relaxed text-zinc-700 sm:text-sm dark:text-zinc-200">
-                {meta.captionDa}
-              </p>
-            )}
+            <TheoryBilingual
+              ru={meta.captionRu}
+              da={meta.captionDa}
+              mode={languageMode}
+              compact
+              ruClassName="text-xs leading-relaxed text-zinc-700 sm:text-sm dark:text-zinc-200"
+            />
           </div>
 
           <SpeakButton
