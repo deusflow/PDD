@@ -5,8 +5,10 @@ import {
   CourseState,
   DictionaryEntry,
   ModuleCourseProgress,
+  ModuleInfo,
   SRSRecord,
   TeoriQuestion,
+  UiLanguage,
   UserAppState,
 } from '../types';
 import { getSRSRecord } from './srsEngine';
@@ -66,9 +68,14 @@ export function canModulePass(
   return progress.bestFirstTryScore >= getModulePassThreshold(moduleId) && failed.length === 0;
 }
 
-function pluralizeQuestions(count: number): string {
+function pluralizeQuestions(count: number, uiLang: UiLanguage = 'ru'): string {
   const mod10 = count % 10;
   const mod100 = count % 100;
+  if (uiLang === 'uk') {
+    if (mod10 === 1 && mod100 !== 11) return 'питання';
+    if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return 'питання';
+    return 'питань';
+  }
   if (mod10 === 1 && mod100 !== 11) return 'вопрос';
   if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return 'вопроса';
   return 'вопросов';
@@ -155,7 +162,11 @@ function buildCheckpointQuestions(srsMap: Record<string, SRSRecord>): TeoriQuest
   return shuffleItems(selected);
 }
 
-export function getNextCourseStep(state: UserAppState, now: number = Date.now()): CourseStep {
+export function getNextCourseStep(
+  state: UserAppState,
+  now: number = Date.now(),
+  uiLang: UiLanguage = state.uiLang ?? 'ru'
+): CourseStep {
   let firstUnpassedModuleId: number | null = null;
   for (let m = 1; m <= 8; m += 1) {
     if (!getModuleProgress(state.course, m).passed) {
@@ -189,7 +200,10 @@ export function getNextCourseStep(state: UserAppState, now: number = Date.now())
         return {
           kind: 'review',
           questions: picked,
-          reason: `Перед Уроком ${m} закрепим ${picked.length} ${pluralizeQuestions(picked.length)}, которые пора повторить`,
+          reason:
+            uiLang === 'uk'
+              ? `Перед Уроком ${m} закріпимо ${picked.length} ${pluralizeQuestions(picked.length, uiLang)}, які час повторити`
+              : `Перед Уроком ${m} закрепим ${picked.length} ${pluralizeQuestions(picked.length, uiLang)}, которые пора повторить`,
         };
       }
     }
@@ -240,7 +254,12 @@ export function getNextCourseStep(state: UserAppState, now: number = Date.now())
   return { kind: 'ready' };
 }
 
-export function getCourseOverview(state: UserAppState, now: number = Date.now()): CourseOverview {
+export function getCourseOverview(
+  state: UserAppState,
+  now: number = Date.now(),
+  uiLang: UiLanguage = state.uiLang ?? 'ru',
+  modulesData: ModuleInfo[] = MODULES_DATA
+): CourseOverview {
   let completedModules = 0;
   let firstUnpassed = 8;
   let foundUnpassed = false;
@@ -268,52 +287,81 @@ export function getCourseOverview(state: UserAppState, now: number = Date.now())
   rawPercent += Math.min(REQUIRED_MOCK_EXAM_STREAK, state.course.mockExamStreak) * 7;
 
   const percent = Math.min(100, Math.round(rawPercent));
-  const nextStep = getNextCourseStep(state, now);
+  const nextStep = getNextCourseStep(state, now, uiLang);
+  const isUk = uiLang === 'uk';
 
-  let stepLabel = 'Курс пройден';
-  let stepDescription = `Все уроки и ${REQUIRED_MOCK_EXAM_STREAK} пробных экзамена успешно сданы.`;
+  let stepLabel = isUk ? 'Курс пройдено' : 'Курс пройден';
+  let stepDescription = isUk
+    ? `Усі уроки та ${REQUIRED_MOCK_EXAM_STREAK} пробні іспити успішно складено.`
+    : `Все уроки и ${REQUIRED_MOCK_EXAM_STREAK} пробных экзамена успешно сданы.`;
 
   switch (nextStep.kind) {
     case 'review':
-      stepLabel = `Повторение · ${nextStep.questions.length} ${pluralizeQuestions(nextStep.questions.length)}`;
+      stepLabel = isUk
+        ? `Повторення · ${nextStep.questions.length} ${pluralizeQuestions(nextStep.questions.length, uiLang)}`
+        : `Повторение · ${nextStep.questions.length} ${pluralizeQuestions(nextStep.questions.length, uiLang)}`;
       stepDescription = nextStep.reason;
       break;
     case 'theory': {
-      const mod = MODULES_DATA.find((x) => x.id === nextStep.moduleId);
-      stepLabel = `Урок ${nextStep.moduleId} · Теория`;
+      const mod = modulesData.find((x) => x.id === nextStep.moduleId);
+      stepLabel = isUk ? `Урок ${nextStep.moduleId} · Теорія` : `Урок ${nextStep.moduleId} · Теория`;
       stepDescription = mod
-        ? `Изучите ключевые правила темы «${mod.titleRu}».`
-        : 'Короткая лекция перед практикой.';
+        ? isUk
+          ? `Вивчіть ключові правила теми «${mod.titleRu}».`
+          : `Изучите ключевые правила темы «${mod.titleRu}».`
+        : isUk
+          ? 'Коротка лекція перед практикою.'
+          : 'Короткая лекция перед практикой.';
       break;
     }
     case 'flashcards':
-      stepLabel = `Урок ${nextStep.moduleId} · Карточки`;
-      stepDescription = `Закрепите ${nextStep.entryIds.length} важных терминов и знаков темы.`;
+      stepLabel = isUk ? `Урок ${nextStep.moduleId} · Картки` : `Урок ${nextStep.moduleId} · Карточки`;
+      stepDescription = isUk
+        ? `Закріпіть ${nextStep.entryIds.length} важливих термінів і знаків теми.`
+        : `Закрепите ${nextStep.entryIds.length} важных терминов и знаков темы.`;
       break;
     case 'quiz': {
-      const mod = MODULES_DATA.find((x) => x.id === nextStep.moduleId);
+      const mod = modulesData.find((x) => x.id === nextStep.moduleId);
       const minScore = getModulePassThreshold(nextStep.moduleId);
-      stepLabel = `Урок ${nextStep.moduleId} · Тест (${nextStep.questions.length} вопр.)`;
+      stepLabel = isUk
+        ? `Урок ${nextStep.moduleId} · Тест (${nextStep.questions.length} пит.)`
+        : `Урок ${nextStep.moduleId} · Тест (${nextStep.questions.length} вопр.)`;
       stepDescription = mod
-        ? `Проверьте знания по теме «${mod.titleRu}» (нужно ≥ ${minScore} из ${nextStep.questions.length}).`
-        : 'Тест по изученной теме.';
+        ? isUk
+          ? `Перевірте знання з теми «${mod.titleRu}» (потрібно ≥ ${minScore} з ${nextStep.questions.length}).`
+          : `Проверьте знания по теме «${mod.titleRu}» (нужно ≥ ${minScore} из ${nextStep.questions.length}).`
+        : isUk
+          ? 'Тест за вивченою темою.'
+          : 'Тест по изученной теме.';
       break;
     }
     case 'fix':
-      stepLabel = `Урок ${nextStep.moduleId} · Работа над ошибками`;
-      stepDescription = `Исправьте ${nextStep.questions.length} ${pluralizeQuestions(nextStep.questions.length)}, чтобы закрыть урок.`;
+      stepLabel = isUk
+        ? `Урок ${nextStep.moduleId} · Робота над помилками`
+        : `Урок ${nextStep.moduleId} · Работа над ошибками`;
+      stepDescription = isUk
+        ? `Виправте ${nextStep.questions.length} ${pluralizeQuestions(nextStep.questions.length, uiLang)}, щоб закрити урок.`
+        : `Исправьте ${nextStep.questions.length} ${pluralizeQuestions(nextStep.questions.length, uiLang)}, чтобы закрыть урок.`;
       break;
     case 'checkpoint':
-      stepLabel = 'Контрольная · Уроки 1–4';
-      stepDescription = '12 смешанных билетов по первым четырём темам (нужно ≥ 10).';
+      stepLabel = isUk ? 'Контрольна · Уроки 1–4' : 'Контрольная · Уроки 1–4';
+      stepDescription = isUk
+        ? '12 змішаних білетів за першими чотирма темами (потрібно ≥ 10).'
+        : '12 смешанных билетов по первым четырём темам (нужно ≥ 10).';
       break;
     case 'mock_exam':
-      stepLabel = `Пробный экзамен · ${state.course.mockExamStreak + 1} из ${REQUIRED_MOCK_EXAM_STREAK}`;
-      stepDescription = `Сдайте ${REQUIRED_MOCK_EXAM_STREAK} экзамена подряд (≥ 20/25), чтобы подтвердить полную готовность.`;
+      stepLabel = isUk
+        ? `Пробний іспит · ${state.course.mockExamStreak + 1} з ${REQUIRED_MOCK_EXAM_STREAK}`
+        : `Пробный экзамен · ${state.course.mockExamStreak + 1} из ${REQUIRED_MOCK_EXAM_STREAK}`;
+      stepDescription = isUk
+        ? `Складіть ${REQUIRED_MOCK_EXAM_STREAK} іспити поспіль (≥ 20/25), щоб підтвердити повну готовність.`
+        : `Сдайте ${REQUIRED_MOCK_EXAM_STREAK} экзамена подряд (≥ 20/25), чтобы подтвердить полную готовность.`;
       break;
     case 'ready':
-      stepLabel = 'Вы готовы к Teoriprøven';
-      stepDescription = 'Весь курс пройден: поддерживайте форму пробными экзаменами.';
+      stepLabel = isUk ? 'Ви готові до Teoriprøven' : 'Вы готовы к Teoriprøven';
+      stepDescription = isUk
+        ? 'Увесь курс пройдено: підтримуйте форму пробними іспитами.'
+        : 'Весь курс пройден: поддерживайте форму пробными экзаменами.';
       break;
   }
 

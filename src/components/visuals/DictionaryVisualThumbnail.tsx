@@ -1,6 +1,7 @@
 import React from 'react';
 import { Disc, Gauge, Lightbulb, Wrench } from 'lucide-react';
-import { DictionaryEntry } from '../../types';
+import { useUiLang } from '../../i18n/UiLangContext';
+import { DictionaryEntry, UiLanguage } from '../../types';
 import { DanishRoadSignSVG, PSkiveSVG } from './DanishRoadSignSVG';
 import { TrafficSceneSVG } from './TrafficSceneSVG';
 
@@ -69,7 +70,11 @@ const MODULE_DEFAULT_SCENE: Record<number, string> = {
   8: 'pov_night_fog_lights',
 };
 
-function getHotspotBadge(hotspot?: string): { label: string; icon: React.ReactNode } {
+function getHotspotBadge(
+  hotspot?: string,
+  uiLang: UiLanguage = 'ru'
+): { label: string; icon: React.ReactNode } {
+  const isUk = uiLang === 'uk';
   if (!hotspot) {
     return { label: 'Kontrol', icon: <Wrench className="h-5 w-5" /> };
   }
@@ -81,7 +86,7 @@ function getHotspotBadge(hotspot?: string): { label: string; icon: React.ReactNo
     hotspot === 'nummerplade' ||
     hotspot === 'horn'
   ) {
-    return { label: 'Огни', icon: <Lightbulb className="h-5 w-5" /> };
+    return { label: isUk ? 'Вогні' : 'Огни', icon: <Lightbulb className="h-5 w-5" /> };
   }
   if (
     hotspot === 'daek' ||
@@ -90,7 +95,7 @@ function getHotspotBadge(hotspot?: string): { label: string; icon: React.ReactNo
     hotspot === 'stoddaempere' ||
     hotspot === 'styretoej'
   ) {
-    return { label: 'Ходовая', icon: <Disc className="h-5 w-5" /> };
+    return { label: isUk ? 'Ходова' : 'Ходовая', icon: <Disc className="h-5 w-5" /> };
   }
   return { label: 'Капот', icon: <Wrench className="h-5 w-5" /> };
 }
@@ -104,6 +109,7 @@ export const DictionaryVisualThumbnail: React.FC<DictionaryVisualThumbnailProps>
   entry,
   size = 'sm',
 }) => {
+  const { uiLang } = useUiLang();
   if (entry.signCode) {
     return (
       <div
@@ -137,7 +143,7 @@ export const DictionaryVisualThumbnail: React.FC<DictionaryVisualThumbnailProps>
   }
 
   if (entry.category === 'kontrol' || entry.technicalHotspot) {
-    const { label, icon } = getHotspotBadge(entry.technicalHotspot);
+    const { label, icon } = getHotspotBadge(entry.technicalHotspot, uiLang);
     return (
       <div
         className={

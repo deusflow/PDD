@@ -8,7 +8,7 @@ import {
   Volume2,
   X,
 } from 'lucide-react';
-import { DICTIONARY_ENTRIES } from '../../data/signsAndGlossary';
+import { useUiLang } from '../../i18n/UiLangContext';
 import { BOX_META, getSRSRecord } from '../../services/srsEngine';
 import { DictionaryCategoryFilter, LanguageMode, SRSRecord } from '../../types';
 import { extractOrdnetLookupWords, getOrdnetUrl } from '../../utils/ordnet';
@@ -36,6 +36,7 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({
   onCategoryChange,
   onRecordEntryReview,
 }) => {
+  const { pick, dictionary } = useUiLang();
   const [query, setQuery] = useState('');
   const [customPhrase, setCustomPhrase] = useState('Anvisninger for færdslen');
   const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>(initialCategory);
@@ -53,7 +54,7 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return DICTIONARY_ENTRIES.filter((entry) => {
+    return dictionary.filter((entry) => {
       if (categoryFilter === 'sign_kontrol') {
         if (entry.category !== 'sign' && entry.category !== 'kontrol') return false;
       } else if (categoryFilter !== 'all' && entry.category !== categoryFilter) {
@@ -74,25 +75,25 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({
         (entry.signCode?.toLowerCase().includes(q) ?? false)
       );
     });
-  }, [query, categoryFilter, statusFilter, srsMap]);
+  }, [query, categoryFilter, statusFilter, srsMap, dictionary]);
 
   const signCount = useMemo(
-    () => DICTIONARY_ENTRIES.filter((entry) => entry.category === 'sign').length,
-    []
+    () => dictionary.filter((entry) => entry.category === 'sign').length,
+    [dictionary]
   );
 
   const counts = useMemo(() => {
     let unknown = 0;
     let learning = 0;
     let mastered = 0;
-    for (const e of DICTIONARY_ENTRIES) {
+    for (const e of dictionary) {
       const box = getSRSRecord(srsMap, e.id).box;
       if (box <= 1) unknown += 1;
       else if (box <= 3) learning += 1;
       else mastered += 1;
     }
     return { unknown, learning, mastered };
-  }, [srsMap]);
+  }, [srsMap, dictionary]);
 
   return (
     <div className="space-y-5 animate-fade-in">
@@ -101,10 +102,17 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({
         <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
           <div>
             <h1 className="text-lg font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
-              Словарь и Шпаргалка (Ordbog &amp; Hurtig-Tjek)
+              {pick(
+                'Словарь и Шпаргалка (Ordbog & Hurtig-Tjek)',
+                'Словник і Шпаргалка (Ordbog & Hurtig-Tjek)'
+              )}
             </h1>
             <p className="text-xs text-zinc-500 dark:text-zinc-400">
-              {DICTIONARY_ENTRIES.length} карточек: датские термины, {signCount} дорожных знаков и весь Kontrolprøven
+              {dictionary.length}{' '}
+              {pick(
+                `карточек: датские термины, ${signCount} дорожных знаков и весь Kontrolprøven`,
+                `карток: данські терміни, ${signCount} дорожніх знаків та увесь Kontrolprøven`
+              )}
             </p>
           </div>
           <div className="flex items-center gap-3">
@@ -114,10 +122,11 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({
               className="inline-flex items-center gap-1.5 rounded-xl bg-teal-600 px-3.5 py-2 text-xs font-bold text-white shadow-sm transition-colors hover:bg-teal-500"
             >
               <Signpost className="h-3.5 w-3.5" />
-              Блиц по знакам (10)
+              {pick('Блиц по знакам (10)', 'Бліц по знаках (10)')}
             </button>
             <div className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">
-              Найдено: <span className="text-zinc-900 dark:text-zinc-100">{filtered.length}</span>
+              {pick('Найдено:', 'Знайдено:')}{' '}
+              <span className="text-zinc-900 dark:text-zinc-100">{filtered.length}</span>
             </div>
           </div>
         </div>
@@ -130,14 +139,17 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Поиск по базе (hajtænder, C62, vigepligt, manøvre)..."
+              placeholder={pick(
+                'Поиск по базе (hajtænder, C62, vigepligt, manøvre)...',
+                'Пошук по базі (hajtænder, C62, vigepligt, manøvre)...'
+              )}
               className="h-10 w-full rounded-2xl border border-zinc-200 bg-zinc-50 pl-10 pr-10 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-zinc-400 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 dark:focus:border-zinc-600"
             />
             {query && (
               <button
                 type="button"
                 onClick={() => setQuery('')}
-                aria-label="Очистить поиск"
+                aria-label={pick('Очистить поиск', 'Очистити пошук')}
                 className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-1 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200"
               >
                 <X className="h-4 w-4" />
@@ -151,7 +163,10 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({
               type="text"
               value={customPhrase}
               onChange={(e) => setCustomPhrase(e.target.value)}
-              placeholder="Вставьте слово/фразу (напр. Anvisninger for færdslen)"
+              placeholder={pick(
+                'Вставьте слово/фразу (напр. Anvisninger for færdslen)',
+                'Вставте слово/фразу (напр. Anvisninger for færdslen)'
+              )}
               className="min-w-[160px] flex-1 bg-transparent text-xs font-medium text-zinc-900 placeholder:text-zinc-400 focus:outline-none dark:text-zinc-100"
             />
             {customPhrase.trim() && (
@@ -159,8 +174,11 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({
                 <SpeakButton
                   id="dict_custom_phrase"
                   text={customPhrase.trim()}
-                  label="Озвучить"
-                  title="Озвучить введённую фразу по-датски (da-DK)"
+                  label={pick('Озвучить', 'Озвучити')}
+                  title={pick(
+                    'Озвучить введённую фразу по-датски (da-DK)',
+                    'Озвучити введену фразу данською (da-DK)'
+                  )}
                 />
                 {extractOrdnetLookupWords(customPhrase, 2).map((w) => (
                   <a
@@ -168,7 +186,10 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({
                     href={getOrdnetUrl(w)}
                     target="_blank"
                     rel="noreferrer"
-                    title={`Открыть «${w}» на ordnet.dk/ddo (студийная озвучка и формы слова)`}
+                    title={pick(
+                      `Открыть «${w}» на ordnet.dk/ddo (студийная озвучка и формы слова)`,
+                      `Відкрити «${w}» на ordnet.dk/ddo (студійна озвучка і форми слова)`
+                    )}
                     className="inline-flex items-center gap-1 rounded-lg border border-teal-200 bg-teal-50 px-2 py-1 text-[11px] font-semibold text-teal-800 transition-colors hover:bg-teal-100 dark:border-teal-800/70 dark:bg-teal-950/50 dark:text-teal-300"
                   >
                     <span>DDO: {w}</span>
@@ -184,10 +205,10 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({
         <div className="mt-3.5 flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-wrap gap-1.5">
             {[
-              { id: 'all', label: 'Все' },
-              { id: 'sign_kontrol', label: 'Знаки + Kontrolprøven' },
-              { id: 'term', label: 'Термины' },
-              { id: 'sign', label: 'Знаки' },
+              { id: 'all', label: pick('Все', 'Усі') },
+              { id: 'sign_kontrol', label: pick('Знаки + Kontrolprøven', 'Знаки + Kontrolprøven') },
+              { id: 'term', label: pick('Термины', 'Терміни') },
+              { id: 'sign', label: pick('Знаки', 'Знаки') },
               { id: 'kontrol', label: 'Kontrolprøven' },
             ].map((cat) => (
               <button
@@ -207,10 +228,10 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({
 
           <div className="flex flex-wrap gap-1.5">
             {[
-              { id: 'all', label: `Любой статус` },
-              { id: 'unknown', label: `Не знаю (${counts.unknown})` },
-              { id: 'learning', label: `Повторяю (${counts.learning})` },
-              { id: 'mastered', label: `Выучил (${counts.mastered})` },
+              { id: 'all', label: pick('Любой статус', 'Будь-який статус') },
+              { id: 'unknown', label: `${pick('Не знаю', 'Не знаю')} (${counts.unknown})` },
+              { id: 'learning', label: `${pick('Повторяю', 'Повторюю')} (${counts.learning})` },
+              { id: 'mastered', label: `${pick('Выучил', 'Вивчив')} (${counts.mastered})` },
             ].map((st) => (
               <button
                 key={st.id}
@@ -232,7 +253,10 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({
       {/* Results Grid */}
       {filtered.length === 0 ? (
         <div className="nordic-card p-10 text-center text-sm text-zinc-500 dark:text-zinc-400">
-          По вашему запросу ничего не найдено. Попробуйте изменить фильтры.
+          {pick(
+            'По вашему запросу ничего не найдено. Попробуйте изменить фильтры.',
+            'За вашим запитом нічого не знайдено. Спробуйте змінити фільтри.'
+          )}
         </div>
       ) : (
         <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
@@ -241,10 +265,10 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({
             const meta = BOX_META[rec.box];
             const catLabel =
               entry.category === 'sign'
-                ? 'Знак'
+                ? pick('Знак', 'Знак')
                 : entry.category === 'kontrol'
                   ? 'Kontrolprøven'
-                  : 'Термин';
+                  : pick('Термин', 'Термін');
             const ddoWords = extractOrdnetLookupWords(entry.da, 3);
 
             return (
@@ -257,7 +281,7 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({
                     <div className="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
                       <span className="font-semibold text-zinc-700 dark:text-zinc-300">{catLabel}</span>
                       <span className="opacity-40">•</span>
-                      <span>Урок {entry.moduleId}</span>
+                      <span>{pick('Урок', 'Урок')} {entry.moduleId}</span>
                     </div>
                     <div className="flex items-center gap-1.5">
                       <span
@@ -303,7 +327,10 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({
                           href={getOrdnetUrl(w)}
                           target="_blank"
                           rel="noreferrer"
-                          title={`Открыть «${w}» на Den Danske Ordbog (аудио и транскрипция)`}
+                          title={pick(
+                            `Открыть «${w}» на Den Danske Ordbog (аудио и транскрипция)`,
+                            `Відкрити «${w}» на Den Danske Ordbog (аудіо і транскрипція)`
+                          )}
                           className="inline-flex items-center gap-0.5 rounded-md border border-zinc-200/80 bg-zinc-50 px-1.5 py-0.5 text-[10px] font-medium text-teal-700 transition-colors hover:border-teal-300 hover:bg-teal-50 dark:border-zinc-800 dark:bg-zinc-950 dark:text-teal-400 dark:hover:border-teal-800"
                         >
                           <span>{w}</span>
@@ -321,7 +348,7 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({
                       className="inline-flex flex-1 items-center justify-center gap-1 rounded-xl border border-rose-200 bg-white py-1.5 text-xs font-semibold text-rose-700 transition-colors hover:bg-rose-50 dark:border-rose-900/60 dark:bg-zinc-900 dark:text-rose-400"
                     >
                       <RotateCcw className="h-3.5 w-3.5" />
-                      Не знаю (Box 1)
+                      {pick('Не знаю (Box 1)', 'Не знаю (Box 1)')}
                     </button>
                     <button
                       type="button"
@@ -329,7 +356,7 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({
                       className="inline-flex flex-1 items-center justify-center gap-1 rounded-xl border border-emerald-200 bg-emerald-50/80 py-1.5 text-xs font-semibold text-emerald-700 transition-colors hover:bg-emerald-100 dark:border-emerald-900/60 dark:bg-emerald-950/50 dark:text-emerald-300"
                     >
                       <CheckCircle2 className="h-3.5 w-3.5" />
-                      Выучил (+Box)
+                      {pick('Выучил (+Box)', 'Вивчив (+Box)')}
                     </button>
                   </div>
                 </div>

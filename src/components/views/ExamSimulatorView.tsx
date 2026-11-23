@@ -17,8 +17,8 @@ import {
   Volume2,
   XCircle,
 } from 'lucide-react';
-import { MODULES_DATA } from '../../data/modulesData';
 import { QUESTIONS_BANK } from '../../data/questionsBank';
+import { useUiLang } from '../../i18n/UiLangContext';
 import { danishSpeech } from '../../services/speech';
 import { COURSE_EXAM_DRAFT_KEY, EXAM_DRAFT_KEY } from '../../services/sessionPersistence';
 import { buildExamQuestions, buildHardcoreExamQuestions } from '../../services/srsEngine';
@@ -107,6 +107,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
   onFinishExam,
   onTrainFailedQuestions,
 }) => {
+  const { uiLang, pick, modules, questions, getQuestion } = useUiLang();
   const draftKey = autoStart ? COURSE_EXAM_DRAFT_KEY : EXAM_DRAFT_KEY;
   const [initialAutoDraft] = useState<{
     draft: ExamDraft;
@@ -363,8 +364,8 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
     const cfg = EXAM_CONFIG[examIntensity];
     const selected =
       examIntensity === 'hardcore'
-        ? buildHardcoreExamQuestions(QUESTIONS_BANK, 25, srsMap)
-        : buildExamQuestions(QUESTIONS_BANK, 25, srsMap);
+        ? buildHardcoreExamQuestions(questions, 25, srsMap)
+        : buildExamQuestions(questions, 25, srsMap);
     setExamQuestions(selected);
     setCurrentIndex(0);
     setAnswers({});
@@ -414,10 +415,13 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
             </div>
             <div>
               <h1 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
-                Симулятор реального экзамена (Teoriprøven)
+                {pick('Симулятор реального экзамена (Teoriprøven)', 'Симулятор реального іспиту (Teoriprøven)')}
               </h1>
               <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                Официальный формат Færdselsstyrelsen • Kategori B ({QUESTIONS_BANK.length} билетов в базе)
+                {pick(
+                  `Официальный формат Færdselsstyrelsen • Kategori B (${questions.length} билетов в базе)`,
+                  `Офіційний формат Færdselsstyrelsen • Kategori B (${questions.length} білетів у базі)`
+                )}
               </p>
             </div>
           </div>
@@ -434,14 +438,17 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
             >
               <div className="flex items-center justify-between gap-2">
                 <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
-                  Стандартный Teoriprøven
+                  {pick('Стандартный Teoriprøven', 'Стандартний Teoriprøven')}
                 </span>
                 <span className="rounded-md bg-emerald-100 px-1.5 py-0.5 text-[10px] font-bold text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
                   25:00 · ≥ 20/25
                 </span>
               </div>
               <p className="mt-1 text-[11px] leading-relaxed text-zinc-500 dark:text-zinc-400">
-                Официальный баланс по всем 8 модулям программы, приоритет на слабые темы Box 1.
+                {pick(
+                  'Официальный баланс по всем 8 модулям программы, приоритет на слабые темы Box 1.',
+                  'Офіційний баланс за всіма 8 модулями програми, пріоритет на слабкі теми Box 1.'
+                )}
               </p>
             </button>
 
@@ -457,14 +464,17 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
               <div className="flex items-center justify-between gap-2">
                 <span className="inline-flex items-center gap-1 text-xs font-bold text-rose-700 dark:text-rose-300">
                   <Flame className="h-3.5 w-3.5" />
-                  Ловушки и сложные билеты
+                  {pick('Ловушки и сложные билеты', 'Пастки та складні білети')}
                 </span>
                 <span className="rounded-md bg-rose-100 px-1.5 py-0.5 text-[10px] font-bold text-rose-800 dark:bg-rose-950 dark:text-rose-300">
                   20:00 · ≥ 22/25
                 </span>
               </div>
               <p className="mt-1 text-[11px] leading-relaxed text-zinc-500 dark:text-zinc-400">
-                Упор на vigepligt, 5м/10м/12м парковки, Glatbane, 0,20‰, тоннель и ваши ошибки Box 1.
+                {pick(
+                  'Упор на vigepligt, 5м/10м/12м парковки, Glatbane, 0,20‰, тоннель и ваши ошибки Box 1.',
+                  'Акцент на vigepligt, паркування 5м/10м/12м, Glatbane, 0,20‰, тунель та ваші помилки Box 1.'
+                )}
               </p>
             </button>
           </div>
@@ -472,29 +482,33 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
           <div className="mt-4 grid grid-cols-3 gap-3">
             <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-3.5 text-center dark:border-zinc-800 dark:bg-zinc-950/60">
               <div className="text-xl font-extrabold text-zinc-900 dark:text-zinc-100">25</div>
-              <div className="text-[11px] text-zinc-500 dark:text-zinc-400">Билетов</div>
+              <div className="text-[11px] text-zinc-500 dark:text-zinc-400">{pick('Билетов', 'Білетів')}</div>
             </div>
             <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-3.5 text-center dark:border-zinc-800 dark:bg-zinc-950/60">
               <div className="text-xl font-extrabold text-zinc-900 dark:text-zinc-100">
                 {formatTimer(activeConfig.durationSec)}
               </div>
-              <div className="text-[11px] text-zinc-500 dark:text-zinc-400">Лимит времени</div>
+              <div className="text-[11px] text-zinc-500 dark:text-zinc-400">{pick('Лимит времени', 'Ліміт часу')}</div>
             </div>
             <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-3.5 text-center dark:border-zinc-800 dark:bg-zinc-950/60">
               <div className="text-xl font-extrabold text-emerald-600 dark:text-emerald-400">
                 ≥ {activeConfig.passThreshold} / 25
               </div>
-              <div className="text-[11px] text-zinc-500 dark:text-zinc-400">Для сдачи</div>
+              <div className="text-[11px] text-zinc-500 dark:text-zinc-400">{pick('Для сдачи', 'Для складання')}</div>
             </div>
           </div>
 
           <div className="mt-5 space-y-2 rounded-2xl border border-amber-200/80 bg-amber-50/60 p-4 text-xs leading-relaxed text-amber-900 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-200">
-            <div className="font-bold">Строгие правила оценки:</div>
+            <div className="font-bold">{pick('Строгие правила оценки:', 'Суворі правила оцінювання:')}</div>
             <ul className="list-disc space-y-1 pl-4">
-              <li>В каждой ситуации 3–4 вопроса «Ja / Nej».</li>
-              <li>Ошибка хотя бы в одном подпункте обнуляет весь вопрос (0 баллов).</li>
-              <li>Во время экзамена подсказки и разбор скрыты до завершения.</li>
-              <li>Все билеты с ошибками автоматически отправятся в <strong>Box 1</strong> для проработки.</li>
+              <li>{pick('В каждой ситуации 3–4 вопроса «Ja / Nej».', 'У кожній ситуації 3–4 питання «Ja / Nej».')}</li>
+              <li>{pick('Ошибка хотя бы в одном подпункте обнуляет весь вопрос (0 баллов).', 'Помилка хоча б в одному підпункті анулює все питання (0 балів).')}</li>
+              <li>{pick('Во время экзамена подсказки и разбор скрыты до завершения.', 'Під час іспиту підказки та розбір приховані до завершення.')}</li>
+              <li>
+                {pick('Все билеты с ошибками автоматически отправятся в ', 'Усі білети з помилками автоматично потраплять у ')}
+                <strong>Box 1</strong>
+                {pick(' для проработки.', ' для опрацювання.')}
+              </li>
             </ul>
           </div>
 
@@ -511,10 +525,13 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
               <Volume2 className={`mt-0.5 h-4 w-4 shrink-0 ${officialMode ? 'text-teal-600 dark:text-teal-400' : 'text-zinc-500'}`} />
               <div>
                 <div className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
-                  Официальный режим Teoriprøven (строгий)
+                  {pick('Официальный режим Teoriprøven (строгий)', 'Офіційний режим Teoriprøven (суворий)')}
                 </div>
                 <div className="mt-0.5 text-[11px] leading-relaxed text-zinc-600 dark:text-zinc-400">
-                  Автоматически зачитывает ситуацию на датском (da-DK) и отключает возврат на прошлые билеты — как на реальном экзамене.
+                  {pick(
+                    'Автоматически зачитывает ситуацию на датском (da-DK) и отключает возврат на прошлые билеты — как на реальном экзамене.',
+                    'Автоматично зачитує ситуацію данською (da-DK) і вимикає повернення до попередніх білетів — як на реальному іспиті.'
+                  )}
                 </div>
               </div>
             </div>
@@ -525,16 +542,16 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
                   : 'bg-zinc-200 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400'
               }`}
             >
-              {officialMode ? 'ВКЛ' : 'ВЫКЛ'}
+              {officialMode ? pick('ВКЛ', 'УВІМК') : pick('ВЫКЛ', 'ВИМК')}
             </span>
           </button>
 
           {pendingDraft && (
             <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-teal-200 bg-teal-50/80 p-3.5 text-xs dark:border-teal-800/70 dark:bg-teal-950/35">
               <div className="text-teal-900 dark:text-teal-200">
-                <div className="font-bold">Найден незавершённый экзамен</div>
+                <div className="font-bold">{pick('Найден незавершённый экзамен', 'Знайдено незавершений іспит')}</div>
                 <div className="mt-0.5 text-[11px] opacity-85">
-                  Заполнено {draftAnswered}/{pendingDraft.questions.length} • Осталось{' '}
+                  {pick('Заполнено', 'Заповнено')} {draftAnswered}/{pendingDraft.questions.length} • {pick('Осталось', 'Залишилось')}{' '}
                   {formatTimer(pendingDraft.draft.secondsLeft)}
                 </div>
               </div>
@@ -544,14 +561,14 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
                   onClick={discardExamDraft}
                   className="rounded-xl border border-teal-300/80 bg-white px-3 py-1.5 font-semibold text-teal-800 transition-colors hover:bg-teal-50 dark:border-teal-700 dark:bg-zinc-900 dark:text-teal-300"
                 >
-                  Сбросить
+                  {pick('Сбросить', 'Скинути')}
                 </button>
                 <button
                   type="button"
                   onClick={resumeExamDraft}
                   className="rounded-xl bg-teal-600 px-3.5 py-1.5 font-bold text-white transition-colors hover:bg-teal-500"
                 >
-                  Продолжить ({draftAnswered}/{pendingDraft.questions.length})
+                  {pick('Продолжить', 'Продовжити')} ({draftAnswered}/{pendingDraft.questions.length})
                 </button>
               </div>
             </div>
@@ -563,7 +580,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
             className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-zinc-900 py-3.5 text-sm font-bold text-white shadow-md transition-all hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
           >
             <Play className="h-4 w-4 fill-current" />
-            Начать новый экзамен (25 вопросов)
+            {pick('Начать новый экзамен (25 вопросов)', 'Почати новий іспит (25 питань)')}
           </button>
         </div>
 
@@ -571,7 +588,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
         {examHistory.length > 0 && (
           <div className="nordic-card p-5">
             <h2 className="mb-3 text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-              История попыток
+              {pick('История попыток', 'Історія спроб')}
             </h2>
             <div className="space-y-2">
               {examHistory.slice(0, 6).map((attempt) => (
@@ -586,10 +603,12 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
                       <XCircle className="h-4 w-4 text-rose-500" />
                     )}
                     <span className="font-semibold text-zinc-900 dark:text-zinc-100">
-                      {attempt.passed ? 'Bestået (Сдал)' : 'Ikke bestået (Не сдал)'}
+                      {attempt.passed
+                        ? pick('Bestået (Сдал)', 'Bestået (Склав)')
+                        : pick('Ikke bestået (Не сдал)', 'Ikke bestået (Не склав)')}
                     </span>
                     <span className="text-zinc-400">
-                      • {new Date(attempt.date).toLocaleDateString('ru-RU')}
+                      • {new Date(attempt.date).toLocaleDateString(uiLang === 'uk' ? 'uk-UA' : 'ru-RU')}
                     </span>
                   </div>
                   <div className="font-bold tabular-nums text-zinc-800 dark:text-zinc-200">
@@ -605,11 +624,11 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
   }
 
   if (phase === 'review' && lastSummary) {
-    const failedQuestions = examQuestions.filter(
-      (q) => !q.subQuestions.every((sq) => answers[sq.id] === sq.correctAnswer)
-    );
+    const failedQuestions = examQuestions
+      .filter((q) => !q.subQuestions.every((sq) => answers[sq.id] === sq.correctAnswer))
+      .map((q) => getQuestion(q));
 
-    const moduleBreakdown = MODULES_DATA.map((mod) => {
+    const moduleBreakdown = modules.map((mod) => {
       const qs = examQuestions.filter((q) => q.moduleId === mod.id);
       const passedCount = qs.filter((q) =>
         q.subQuestions.every((sq) => answers[sq.id] === sq.correctAnswer)
@@ -637,16 +656,17 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
               </div>
               <div>
                 <div className="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-                  Результат экзамена {examIntensity === 'hardcore' ? '• Ловушки и сложные билеты' : ''}
+                  {pick('Результат экзамена', 'Результат іспиту')}{' '}
+                  {examIntensity === 'hardcore' ? pick('• Ловушки и сложные билеты', '• Пастки та складні білети') : ''}
                 </div>
                 <h2 className="text-2xl font-extrabold text-zinc-900 dark:text-zinc-100">
                   {lastSummary.passed
-                    ? 'Bestået! Экзамен сдан'
-                    : 'Ikke bestået — Не сдан'}
+                    ? pick('Bestået! Экзамен сдан', 'Bestået! Іспит складено')
+                    : pick('Ikke bestået — Не сдан', 'Ikke bestået — Не складено')}
                 </h2>
                 <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                  Верных билетов: <strong>{lastSummary.score}</strong> из {lastSummary.total}{' '}
-                  (минимум {activeConfig.passThreshold}) • Время: {formatTimer(lastSummary.durationSeconds)}
+                  {pick('Верных билетов:', 'Правильних білетів:')} <strong>{lastSummary.score}</strong> {pick('из', 'із')} {lastSummary.total}{' '}
+                  ({pick('минимум', 'мінімум')} {activeConfig.passThreshold}) • {pick('Время:', 'Час:')} {formatTimer(lastSummary.durationSeconds)}
                 </p>
               </div>
             </div>
@@ -658,7 +678,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
                   onClick={onBackToCourse}
                   className="inline-flex items-center gap-1.5 rounded-xl bg-teal-600 px-5 py-2.5 text-xs font-bold text-white shadow-sm transition-colors hover:bg-teal-500"
                 >
-                  Вернуться к курсу
+                  {pick('Вернуться к курсу', 'Повернутися до курсу')}
                 </button>
               )}
               {failedQuestions.length > 0 && (
@@ -668,7 +688,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
                   className="inline-flex items-center gap-1.5 rounded-xl bg-rose-600 px-4 py-2.5 text-xs font-bold text-white transition-colors hover:bg-rose-500"
                 >
                   <RotateCcw className="h-3.5 w-3.5" />
-                  Разобрать ошибки ({failedQuestions.length})
+                  {pick('Разобрать ошибки', 'Розібрати помилки')} ({failedQuestions.length})
                 </button>
               )}
               {!onBackToCourse && (
@@ -677,7 +697,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
                   onClick={startExam}
                   className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-4 py-2.5 text-xs font-bold text-zinc-800 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200"
                 >
-                  Новый экзамен
+                  {pick('Новый экзамен', 'Новий іспит')}
                 </button>
               )}
             </div>
@@ -689,7 +709,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
           <div className="mb-3 flex items-center gap-2">
             <BarChart3 className="h-4 w-4 text-teal-600 dark:text-teal-400" />
             <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
-              Разбор точности по темам автошколы (M1–M8)
+              {pick('Разбор точности по темам автошколы (M1–M8)', 'Розбір точності за темами автошколи (M1–M8)')}
             </h3>
           </div>
           <div className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-4">
@@ -738,7 +758,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
         <div className="nordic-card p-5">
           <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
             <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
-              Детальный разбор всех 25 билетов по Færdselsloven
+              {pick('Детальный разбор всех 25 билетов по Færdselsloven', 'Детальний розбір усіх 25 білетів за Færdselsloven')}
             </h3>
             {failedQuestions.length > 1 && (
               <button
@@ -751,17 +771,21 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
                 className="rounded-lg border border-rose-200 bg-rose-50 px-3 py-1 text-xs font-semibold text-rose-700 transition-colors hover:bg-rose-100 dark:border-rose-900/60 dark:bg-rose-950/40 dark:text-rose-300"
               >
                 {expandedReviewId === 'all_failed'
-                  ? 'Свернуть ошибки'
-                  : `Раскрыть все ошибки (${failedQuestions.length})`}
+                  ? pick('Свернуть ошибки', 'Згорнути помилки')
+                  : `${pick('Раскрыть все ошибки', 'Розгорнути всі помилки')} (${failedQuestions.length})`}
               </button>
             )}
           </div>
           <p className="mb-4 text-xs text-zinc-500 dark:text-zinc-400">
-            Все билеты с ошибками автоматически перенесены в Box 1 (Критическая зона). Нажмите на любой билет, чтобы раскрыть подробный разбор.
+            {pick(
+              'Все билеты с ошибками автоматически перенесены в Box 1 (Критическая зона). Нажмите на любой билет, чтобы раскрыть подробный разбор.',
+              'Усі білети з помилками автоматично перенесені до Box 1 (Критична зона). Натисніть на будь-який білет, щоб розкрити детальний розбір.'
+            )}
           </p>
 
           <div className="space-y-2.5">
-            {examQuestions.map((q, idx) => {
+            {examQuestions.map((rawQ, idx) => {
+              const q = getQuestion(rawQ);
               const passed = q.subQuestions.every((sq) => answers[sq.id] === sq.correctAnswer);
               const isOpen =
                 (expandedReviewId === 'all_failed' && !passed) ||
@@ -799,7 +823,9 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
                       </span>
                     </div>
                     <span className="shrink-0 text-[11px] font-semibold text-zinc-500">
-                      {passed ? '+1 балл' : '0 баллов → Box 1'}
+                      {passed
+                        ? pick('+1 балл', '+1 бал')
+                        : pick('0 баллов → Box 1', '0 балів → Box 1')}
                     </span>
                   </button>
 
@@ -841,12 +867,15 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
                                   daClassName="font-semibold text-xs"
                                   ruClassName="text-[11px]"
                                 />
-                                <span className="shrink-0 rounded-md bg-white px-2 py-0.5 text-[11px] font-bold text-zinc-800 dark:bg-zinc-900 dark:text-zinc-200">
-                                  Ответ: {userAns === undefined ? '—' : userAns ? 'Ja' : 'Nej'} •{' '}
-                                  Верно: {sq.correctAnswer ? 'Ja' : 'Nej'}
-                                </span>
+                                <div className="flex shrink-0 items-center gap-1.5">
+                                  <SpeakButton id={`rev_sq_${sq.id}`} text={sq.da} />
+                                  <span className="rounded-md bg-white px-2 py-0.5 text-[11px] font-bold text-zinc-800 dark:bg-zinc-900 dark:text-zinc-200">
+                                    {pick('Ответ', 'Відповідь')}: {userAns === undefined ? '—' : userAns ? 'Ja' : 'Nej'} •{' '}
+                                    {pick('Верно', 'Правильно')}: {sq.correctAnswer ? 'Ja' : 'Nej'}
+                                  </span>
+                                </div>
                               </div>
-                              <div className="mt-1.5 border-t border-zinc-200/60 pt-1.5 dark:border-zinc-800">
+                              <div className="mt-1.5 flex items-start justify-between gap-2 border-t border-zinc-200/60 pt-1.5 dark:border-zinc-800">
                                 <TheoryBilingual
                                   ru={sq.explanationRu}
                                   da={sq.explanationDa}
@@ -854,6 +883,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
                                   compact
                                   ruClassName="text-[11px] sm:text-xs font-normal leading-relaxed"
                                 />
+                                <SpeakButton id={`rev_exp_${sq.id}`} text={sq.explanationDa} />
                               </div>
                             </div>
                           );
@@ -876,7 +906,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
   }
 
   // Active exam view
-  const question = examQuestions[currentIndex];
+  const question = getQuestion(examQuestions[currentIndex]);
   const focusedSubIdx = question.subQuestions.findIndex((sq) => answers[sq.id] === undefined);
   const answeredCount = examQuestions.filter((q) =>
     q.subQuestions.every((sq) => answers[sq.id] !== undefined)
@@ -921,14 +951,14 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
 
         <div className="flex items-center gap-2 text-xs font-semibold text-zinc-600 dark:text-zinc-400">
           <span>
-            Вопрос {currentIndex + 1} из {examQuestions.length} • Заполнено: {answeredCount}/
+            {pick('Вопрос', 'Питання')} {currentIndex + 1} {pick('из', 'із')} {examQuestions.length} • {pick('Заполнено', 'Заповнено')}: {answeredCount}/
             {examQuestions.length}
           </span>
           {!officialMode && (
             <button
               type="button"
               onClick={() => toggleFlag(question.id)}
-              title="Отметить билет для перепроверки (клавиша F)"
+              title={pick('Отметить билет для перепроверки (клавиша F)', 'Позначити білет для перевірки (клавіша F)')}
               className={`inline-flex items-center gap-1 rounded-lg border px-2 py-1 text-[11px] font-bold transition-colors ${
                 flaggedIds[question.id]
                   ? 'border-amber-400 bg-amber-50 text-amber-800 dark:border-amber-600 dark:bg-amber-950/60 dark:text-amber-300'
@@ -936,7 +966,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
               }`}
             >
               <Bookmark className={`h-3 w-3 ${flaggedIds[question.id] ? 'fill-current' : ''}`} />
-              {flaggedIds[question.id] ? 'Отмечен' : 'На проверку'}
+              {flaggedIds[question.id] ? pick('Отмечен', 'Позначено') : pick('На проверку', 'На перевірку')}
             </button>
           )}
         </div>
@@ -947,14 +977,14 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
           className="inline-flex items-center gap-1.5 rounded-xl bg-rose-600 px-3.5 py-1.5 text-xs font-bold text-white transition-colors hover:bg-rose-500"
         >
           <Flag className="h-3.5 w-3.5" />
-          Завершить
+          {pick('Завершить', 'Завершити')}
         </button>
       </div>
 
       {confirmIncomplete && unansweredCount > 0 && (
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-xs text-amber-900 dark:border-amber-900/60 dark:bg-amber-950/40 dark:text-amber-200">
           <span>
-            Не заполнено билетов: <strong>{unansweredCount}</strong>. Неотвеченные билеты будут засчитаны как ошибки.
+            {pick('Не заполнено билетов:', 'Не заповнено білетів:')} <strong>{unansweredCount}</strong>. {pick('Неотвеченные билеты будут засчитаны как ошибки.', 'Невідповідані білети будуть зараховані як помилки.')}
           </span>
           <div className="flex items-center gap-2">
             <button
@@ -962,7 +992,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
               onClick={() => setConfirmIncomplete(false)}
               className="rounded-lg border border-amber-300 bg-white px-3 py-1 font-semibold text-amber-900 dark:border-amber-700 dark:bg-zinc-900 dark:text-amber-200"
             >
-              Вернуться
+              {pick('Вернуться', 'Повернутися')}
             </button>
             <button
               type="button"
@@ -972,7 +1002,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
               }}
               className="rounded-lg bg-rose-600 px-3 py-1 font-semibold text-white hover:bg-rose-500"
             >
-              Всё равно сдать
+              {pick('Всё равно сдать', 'Все одно скласти')}
             </button>
           </div>
         </div>
@@ -993,9 +1023,9 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
               onClick={() => goToQuestion(idx)}
               title={
                 lockedBack
-                  ? 'В официальном режиме возврат назад отключён'
+                  ? pick('В официальном режиме возврат назад отключён', 'В офіційному режимі повернення назад вимкнено')
                   : isFlagged
-                    ? 'Отмечен для проверки'
+                    ? pick('Отмечен для проверки', 'Позначено для перевірки')
                     : undefined
               }
               className={`relative h-7 min-w-[28px] rounded-lg border text-[11px] font-bold transition-all ${
@@ -1019,7 +1049,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
         })}
         {officialMode && (
           <span className="ml-2 rounded-lg bg-teal-50 px-2 py-1 text-[10px] font-semibold text-teal-700 dark:bg-teal-950/60 dark:text-teal-300">
-            Официальный режим · без возврата назад
+            {pick('Официальный режим · без возврата назад', 'Офіційний режим · без повернення назад')}
           </span>
         )}
       </div>
@@ -1043,7 +1073,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
                   id={`ex_all_${question.id}`}
                   text={question.situationDa}
                   sequence={buildFullTicketSequence(question)}
-                  label="Озвучить билет"
+                  label={pick('Озвучить билет', 'Озвучити білет')}
                 />
                 <SpeakButton id={`ex_sit_${question.id}`} text={question.situationDa} />
               </div>
@@ -1113,7 +1143,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
             className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 px-3.5 py-2 text-xs font-semibold text-zinc-700 transition-colors hover:bg-zinc-50 disabled:opacity-35 dark:border-zinc-800 dark:text-zinc-300"
           >
             <ChevronLeft className="h-4 w-4" />
-            Предыдущий
+            {pick('Предыдущий', 'Попередній')}
           </button>
 
           {currentIndex + 1 < examQuestions.length ? (
@@ -1122,7 +1152,7 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
               onClick={() => goToQuestion(Math.min(examQuestions.length - 1, currentIndex + 1))}
               className="inline-flex items-center gap-1.5 rounded-xl bg-zinc-900 px-5 py-2 text-xs font-bold text-white transition-colors hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900"
             >
-              Следующий
+              {pick('Следующий', 'Наступний')}
               <ChevronRight className="h-4 w-4" />
             </button>
           ) : (
@@ -1131,13 +1161,13 @@ export const ExamSimulatorView: React.FC<ExamSimulatorViewProps> = ({
               onClick={handleRequestFinish}
               className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-5 py-2 text-xs font-bold text-white transition-colors hover:bg-emerald-500"
             >
-              Сдать экзамен ({answeredCount}/{examQuestions.length})
+              {pick('Сдать экзамен', 'Скласти іспит')} ({answeredCount}/{examQuestions.length})
               <CheckCircle2 className="h-4 w-4" />
             </button>
           )}
         </div>
         <p className="mt-2.5 text-center text-[11px] text-zinc-400 dark:text-zinc-500">
-          Клавиатура: 1 / J = Ja · 2 / N = Nej {!officialMode ? '· F = На проверку ' : ''}· → / Enter = Далее
+          {pick('Клавиатура:', 'Клавіатура:')} 1 / J = Ja · 2 / N = Nej {!officialMode ? pick('· F = На проверку ', '· F = На перевірку ') : ''}· → / Enter = {pick('Далее', 'Далі')}
         </p>
           </div>
         </div>

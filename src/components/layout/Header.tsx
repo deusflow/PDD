@@ -11,7 +11,7 @@ import {
   Search,
   Sun,
 } from 'lucide-react';
-import { ActiveTab, LanguageMode, ThemeMode } from '../../types';
+import { ActiveTab, LanguageMode, ThemeMode, UiLanguage } from '../../types';
 
 interface HeaderProps {
   activeTab: ActiveTab;
@@ -19,6 +19,8 @@ interface HeaderProps {
   onTabChange: (tab: ActiveTab) => void;
   languageMode: LanguageMode;
   onLanguageModeChange: (mode: LanguageMode) => void;
+  uiLang: UiLanguage;
+  onUiLangChange: (lang: UiLanguage) => void;
   theme: ThemeMode;
   onThemeToggle: () => void;
   onOpenOnboarding: () => void;
@@ -26,53 +28,68 @@ interface HeaderProps {
   dueBadgeCount: number;
 }
 
-const TABS: Array<{ id: ActiveTab; label: string; shortLabel: string; icon: React.ReactNode }> = [
-  {
-    id: 'dashboard',
-    label: 'Меню',
-    shortLabel: 'Меню',
-    icon: <Compass className="h-4 w-4" />,
-  },
-  {
-    id: 'modules',
-    label: 'Справочник (8 тем)',
-    shortLabel: 'Темы',
-    icon: <BookOpen className="h-4 w-4" />,
-  },
-  {
-    id: 'exam',
-    label: 'Экзамен',
-    shortLabel: 'Экзамен',
-    icon: <FileCheck2 className="h-4 w-4" />,
-  },
-  {
-    id: 'dictionary',
-    label: 'Словарь и знаки',
-    shortLabel: 'Словарь',
-    icon: <Search className="h-4 w-4" />,
-  },
-];
-
-const LANG_OPTIONS: Array<{ id: LanguageMode; label: string; hint: string }> = [
-  { id: 'both', label: 'DA / RU', hint: 'Сразу оба языка' },
-  { id: 'spoiler', label: 'Spoiler', hint: 'Русский по клику' },
-  { id: 'da_only', label: 'Kun DA', hint: 'Чистый датский экзамен' },
-];
-
 export const Header: React.FC<HeaderProps> = ({
   activeTab,
   inActiveSession = false,
   onTabChange,
   languageMode,
   onLanguageModeChange,
+  uiLang,
+  onUiLangChange,
   theme,
   onThemeToggle,
   onOpenOnboarding,
   onOpenBackup,
   dueBadgeCount,
 }) => {
+  const isUk = uiLang === 'uk';
   const isCourseFocus = activeTab === 'course';
   const showBackToMenu = activeTab !== 'dashboard' || inActiveSession;
+
+  const tabs: Array<{ id: ActiveTab; label: string; shortLabel: string; icon: React.ReactNode }> = [
+    {
+      id: 'dashboard',
+      label: isUk ? 'Меню' : 'Меню',
+      shortLabel: isUk ? 'Меню' : 'Меню',
+      icon: <Compass className="h-4 w-4" />,
+    },
+    {
+      id: 'modules',
+      label: isUk ? 'Довідник (8 тем)' : 'Справочник (8 тем)',
+      shortLabel: isUk ? 'Теми' : 'Темы',
+      icon: <BookOpen className="h-4 w-4" />,
+    },
+    {
+      id: 'exam',
+      label: isUk ? 'Іспит' : 'Экзамен',
+      shortLabel: isUk ? 'Іспит' : 'Экзамен',
+      icon: <FileCheck2 className="h-4 w-4" />,
+    },
+    {
+      id: 'dictionary',
+      label: isUk ? 'Словник і знаки' : 'Словарь и знаки',
+      shortLabel: isUk ? 'Словник' : 'Словарь',
+      icon: <Search className="h-4 w-4" />,
+    },
+  ];
+
+  const langOptions: Array<{ id: LanguageMode; label: string; hint: string }> = [
+    {
+      id: 'both',
+      label: isUk ? 'DA / UA' : 'DA / RU',
+      hint: isUk ? 'Одразу обидві мови' : 'Сразу оба языка',
+    },
+    {
+      id: 'spoiler',
+      label: 'Spoiler',
+      hint: isUk ? 'Українська за кліком' : 'Русский по клику',
+    },
+    {
+      id: 'da_only',
+      label: 'Kun DA',
+      hint: isUk ? 'Чистий данський іспит' : 'Чистый датский экзамен',
+    },
+  ];
 
   return (
     <header className="sticky top-0 z-30 border-b border-zinc-200/70 bg-white/85 backdrop-blur-md dark:border-zinc-800/80 dark:bg-zinc-950/85">
@@ -86,10 +103,10 @@ export const Header: React.FC<HeaderProps> = ({
                 type="button"
                 onClick={() => onTabChange('dashboard')}
                 className="inline-flex h-8 items-center gap-1 rounded-xl border border-zinc-200/80 bg-zinc-50 px-2.5 text-xs font-semibold text-zinc-700 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
-                title="Вернуться в главное меню"
+                title={isUk ? 'Повернутися до головного меню' : 'Вернуться в главное меню'}
               >
                 <ArrowLeft className="h-3.5 w-3.5" />
-                <span>Меню</span>
+                <span>{isUk ? 'Меню' : 'Меню'}</span>
               </button>
             )}
 
@@ -105,11 +122,11 @@ export const Header: React.FC<HeaderProps> = ({
                 <div className="flex items-center gap-1.5 text-sm font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
                   <span>Kørekort B</span>
                   <span className="hidden rounded-md bg-zinc-100 px-1.5 py-0.5 text-[10px] font-semibold text-zinc-600 md:inline-block dark:bg-zinc-800 dark:text-zinc-400">
-                    Дания
+                    {isUk ? 'Данія' : 'Дания'}
                   </span>
                 </div>
                 <p className="hidden text-[11px] text-zinc-500 sm:block dark:text-zinc-400">
-                  ПДД и техосмотр
+                  {isUk ? 'ПДР і техогляд' : 'ПДД и техосмотр'}
                 </p>
               </div>
             </button>
@@ -117,14 +134,34 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Right Controls */}
           <div className="flex items-center gap-1.5">
+            {/* Separate Ukrainian Language Button */}
+            <button
+              type="button"
+              onClick={() => onUiLangChange(isUk ? 'ru' : 'uk')}
+              aria-pressed={isUk}
+              title={
+                isUk
+                  ? 'Увімкнено українську мову (натисніть, щоб повернути російську)'
+                  : 'Переключить всё приложение и переводы на украинский язык'
+              }
+              className={`inline-flex h-8 shrink-0 items-center gap-1 rounded-xl border px-2.5 text-[11px] font-bold transition-all ${
+                isUk
+                  ? 'border-sky-500 bg-sky-50 text-sky-800 shadow-sm dark:border-sky-400 dark:bg-sky-950/70 dark:text-sky-200'
+                  : 'border-zinc-200/80 bg-white text-zinc-600 hover:border-sky-300 hover:text-sky-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-sky-700 dark:hover:text-sky-300'
+              }`}
+            >
+              <span>🇺🇦</span>
+              <span>УКР</span>
+            </button>
+
             {/* Language Switcher */}
             <div
               className="flex items-center rounded-xl border border-zinc-200/80 bg-zinc-100/80 p-0.5 dark:border-zinc-800 dark:bg-zinc-900"
               role="group"
-              aria-label="Режим языка"
+              aria-label={isUk ? 'Режим мови' : 'Режим языка'}
             >
               <Languages className="mx-1.5 hidden h-3.5 w-3.5 text-zinc-400 md:block" />
-              {LANG_OPTIONS.map((opt) => {
+              {langOptions.map((opt) => {
                 const active = languageMode === opt.id;
                 return (
                   <button
@@ -149,8 +186,8 @@ export const Header: React.FC<HeaderProps> = ({
                 <button
                   type="button"
                   onClick={onOpenBackup}
-                  title="Бэкап и перенос прогресса"
-                  aria-label="Бэкап и перенос прогресса"
+                  title={isUk ? 'Бекап і перенесення прогресу' : 'Бэкап и перенос прогресса'}
+                  aria-label={isUk ? 'Бекап і перенесення прогресу' : 'Бэкап и перенос прогресса'}
                   className="inline-flex h-8 w-8 items-center justify-center rounded-xl border border-zinc-200/80 bg-white text-zinc-600 transition-colors hover:bg-zinc-50 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
                 >
                   <HardDriveDownload className="h-4 w-4" />
@@ -159,8 +196,8 @@ export const Header: React.FC<HeaderProps> = ({
                 <button
                   type="button"
                   onClick={onOpenOnboarding}
-                  title="Как работает тренажёр и правила экзамена?"
-                  aria-label="Как работает тренажёр"
+                  title={isUk ? 'Як працює тренажер і правила іспиту?' : 'Как работает тренажёр и правила экзамена?'}
+                  aria-label={isUk ? 'Як працює тренажер' : 'Как работает тренажёр'}
                   className="inline-flex h-8 w-8 items-center justify-center rounded-xl border border-zinc-200/80 bg-white text-zinc-600 transition-colors hover:bg-zinc-50 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
                 >
                   <HelpCircle className="h-4 w-4" />
@@ -172,8 +209,16 @@ export const Header: React.FC<HeaderProps> = ({
             <button
               type="button"
               onClick={onThemeToggle}
-              title={theme === 'dark' ? 'Светлая тема' : 'Тёмная тема'}
-              aria-label="Переключить тему"
+              title={
+                theme === 'dark'
+                  ? isUk
+                    ? 'Світла тема'
+                    : 'Светлая тема'
+                  : isUk
+                    ? 'Темна тема'
+                    : 'Тёмная тема'
+              }
+              aria-label={isUk ? 'Перемкнути тему' : 'Переключить тему'}
               className="inline-flex h-8 w-8 items-center justify-center rounded-xl border border-zinc-200/80 bg-white text-zinc-600 transition-colors hover:bg-zinc-50 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
             >
               {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
@@ -185,9 +230,9 @@ export const Header: React.FC<HeaderProps> = ({
         {!isCourseFocus && (
           <nav
             className="-mb-px flex gap-1 overflow-x-auto pb-1.5 pt-0.5 sm:gap-2"
-            aria-label="Разделы"
+            aria-label={isUk ? 'Розділи' : 'Разделы'}
           >
-            {TABS.map((tab) => {
+            {tabs.map((tab) => {
               const active = !inActiveSession && activeTab === tab.id;
               return (
                 <button

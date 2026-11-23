@@ -8,6 +8,7 @@ import {
   Upload,
   X,
 } from 'lucide-react';
+import { useUiLang } from '../../i18n/UiLangContext';
 import { StorageManager } from '../../services/storage';
 import { UserAppState } from '../../types';
 
@@ -26,6 +27,7 @@ export const BackupSyncModal: React.FC<BackupSyncModalProps> = ({
   onRestoreState,
   onResetAll,
 }) => {
+  const { pick } = useUiLang();
   const [syncInput, setSyncInput] = useState('');
   const [copied, setCopied] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{ type: 'ok' | 'err'; text: string } | null>(
@@ -54,10 +56,22 @@ export const BackupSyncModal: React.FC<BackupSyncModalProps> = ({
     try {
       await navigator.clipboard.writeText(generatedSyncCode);
       setCopied(true);
-      setStatusMessage({ type: 'ok', text: 'Код синхронизации скопирован в буфер обмена.' });
+      setStatusMessage({
+        type: 'ok',
+        text: pick(
+          'Код синхронизации скопирован в буфер обмена.',
+          'Код синхронізації скопійовано до буфера обміну.'
+        ),
+      });
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      setStatusMessage({ type: 'err', text: 'Не удалось скопировать автоматически — выделите строку вручную.' });
+      setStatusMessage({
+        type: 'err',
+        text: pick(
+          'Не удалось скопировать автоматически — выделите строку вручную.',
+          'Не вдалося скопіювати автоматично — виділіть рядок вручну.'
+        ),
+      });
     }
   };
 
@@ -66,11 +80,20 @@ export const BackupSyncModal: React.FC<BackupSyncModalProps> = ({
       const next = StorageManager.decodeSyncString(syncInput);
       onRestoreState(next);
       setSyncInput('');
-      setStatusMessage({ type: 'ok', text: 'Прогресс успешно перенесён из кода синхронизации!' });
+      setStatusMessage({
+        type: 'ok',
+        text: pick(
+          'Прогресс успешно перенесён из кода синхронизации!',
+          'Прогрес успішно перенесено з коду синхронізації!'
+        ),
+      });
     } catch (err) {
       setStatusMessage({
         type: 'err',
-        text: err instanceof Error ? err.message : 'Ошибка чтения кода синхронизации.',
+        text:
+          err instanceof Error
+            ? err.message
+            : pick('Ошибка чтения кода синхронизации.', 'Помилка читання коду синхронізації.'),
       });
     }
   };
@@ -84,7 +107,10 @@ export const BackupSyncModal: React.FC<BackupSyncModalProps> = ({
     a.download = `dk-korekort-backup-${new Date().toISOString().slice(0, 10)}.json`;
     a.click();
     URL.revokeObjectURL(url);
-    setStatusMessage({ type: 'ok', text: 'Файл резервной копии .json скачан.' });
+    setStatusMessage({
+      type: 'ok',
+      text: pick('Файл резервной копии .json скачан.', 'Файл резервної копії .json завантажено.'),
+    });
   };
 
   const handleUploadJson = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -96,11 +122,20 @@ export const BackupSyncModal: React.FC<BackupSyncModalProps> = ({
         const text = String(reader.result ?? '');
         const next = StorageManager.importFromJson(text);
         onRestoreState(next);
-        setStatusMessage({ type: 'ok', text: 'Прогресс восстановлен из файла .json!' });
+        setStatusMessage({
+          type: 'ok',
+          text: pick(
+            'Прогресс восстановлен из файла .json!',
+            'Прогрес відновлено з файлу .json!'
+          ),
+        });
       } catch (err) {
         setStatusMessage({
           type: 'err',
-          text: err instanceof Error ? err.message : 'Некорректный файл .json.',
+          text:
+            err instanceof Error
+              ? err.message
+              : pick('Некорректный файл .json.', 'Некоректний файл .json.'),
         });
       }
     };
@@ -111,7 +146,10 @@ export const BackupSyncModal: React.FC<BackupSyncModalProps> = ({
   const handleReset = () => {
     onResetAll();
     setConfirmReset(false);
-    setStatusMessage({ type: 'ok', text: 'Весь прогресс сброшен.' });
+    setStatusMessage({
+      type: 'ok',
+      text: pick('Весь прогресс сброшен.', 'Увесь прогрес скинуто.'),
+    });
   };
 
   return (
@@ -120,7 +158,7 @@ export const BackupSyncModal: React.FC<BackupSyncModalProps> = ({
       onClick={onClose}
       role="dialog"
       aria-modal="true"
-      aria-label="Бэкап и перенос прогресса"
+      aria-label={pick('Бэкап и перенос прогресса', 'Бекап і перенесення прогресу')}
     >
       <div
         onClick={(e) => e.stopPropagation()}
@@ -129,16 +167,19 @@ export const BackupSyncModal: React.FC<BackupSyncModalProps> = ({
         <div className="flex items-start justify-between gap-3">
           <div>
             <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">
-              Бэкап и перенос прогресса
+              {pick('Бэкап и перенос прогресса', 'Бекап і перенесення прогресу')}
             </h2>
             <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
-              Все ответы автоматически сохраняются в localStorage. Здесь можно перенести прогресс на телефон или сохранить файл.
+              {pick(
+                'Все ответы автоматически сохраняются в localStorage. Здесь можно перенести прогресс на телефон или сохранить файл.',
+                'Усі відповіді автоматично зберігаються в localStorage. Тут можна перенести прогрес на телефон або зберегти файл.'
+              )}
             </p>
           </div>
           <button
             type="button"
             onClick={onClose}
-            aria-label="Закрыть"
+            aria-label={pick('Закрыть', 'Закрити')}
             className="rounded-xl p-1.5 text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
           >
             <X className="h-5 w-5" />
@@ -161,7 +202,7 @@ export const BackupSyncModal: React.FC<BackupSyncModalProps> = ({
         <div className="mt-5 rounded-2xl border border-zinc-200 bg-zinc-50/70 p-4 dark:border-zinc-800 dark:bg-zinc-950/50">
           <div className="flex items-center justify-between gap-2">
             <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-              Быстрый код синхронизации (Base64 Sync)
+              {pick('Быстрый код синхронизации (Base64 Sync)', 'Швидкий код синхронізації (Base64 Sync)')}
             </h3>
             <button
               type="button"
@@ -169,11 +210,14 @@ export const BackupSyncModal: React.FC<BackupSyncModalProps> = ({
               className="inline-flex items-center gap-1.5 rounded-lg bg-zinc-900 px-2.5 py-1 text-xs font-semibold text-white transition-colors hover:bg-zinc-700 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
             >
               {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
-              {copied ? 'Скопировано' : 'Копировать код'}
+              {copied ? pick('Скопировано', 'Скопійовано') : pick('Копировать код', 'Копіювати код')}
             </button>
           </div>
           <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
-            Скопируйте эту строку и вставьте на другом устройстве (телефоне или ноутбуке).
+            {pick(
+              'Скопируйте эту строку и вставьте на другом устройстве (телефоне или ноутбуке).',
+              'Скопіюйте цей рядок і вставте на іншому пристрої (телефоні або ноутбуці).'
+            )}
           </p>
           <textarea
             readOnly
@@ -185,7 +229,7 @@ export const BackupSyncModal: React.FC<BackupSyncModalProps> = ({
 
           <div className="mt-3 border-t border-zinc-200/80 pt-3 dark:border-zinc-800">
             <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300">
-              Вставить код с другого устройства:
+              {pick('Вставить код с другого устройства:', 'Вставити код з іншого пристрою:')}
             </label>
             <div className="mt-1.5 flex gap-2">
               <input
@@ -202,7 +246,7 @@ export const BackupSyncModal: React.FC<BackupSyncModalProps> = ({
                 className="inline-flex items-center gap-1.5 rounded-xl bg-sky-600 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-sky-500 disabled:opacity-40"
               >
                 <RefreshCw className="h-3.5 w-3.5" />
-                Применить
+                {pick('Применить', 'Застосувати')}
               </button>
             </div>
           </div>
@@ -211,7 +255,7 @@ export const BackupSyncModal: React.FC<BackupSyncModalProps> = ({
         {/* Section 2: JSON File */}
         <div className="mt-4 rounded-2xl border border-zinc-200 bg-zinc-50/70 p-4 dark:border-zinc-800 dark:bg-zinc-950/50">
           <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-            Резервная копия файлом (.json)
+            {pick('Резервная копия файлом (.json)', 'Резервна копія файлом (.json)')}
           </h3>
           <div className="mt-3 grid grid-cols-2 gap-2.5">
             <button
@@ -220,7 +264,7 @@ export const BackupSyncModal: React.FC<BackupSyncModalProps> = ({
               className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs font-semibold text-zinc-800 transition-colors hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
             >
               <Download className="h-4 w-4" />
-              Скачать .json
+              {pick('Скачать .json', 'Завантажити .json')}
             </button>
             <button
               type="button"
@@ -228,7 +272,7 @@ export const BackupSyncModal: React.FC<BackupSyncModalProps> = ({
               className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs font-semibold text-zinc-800 transition-colors hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
             >
               <Upload className="h-4 w-4" />
-              Загрузить .json
+              {pick('Загрузить .json', 'Вибрати .json')}
             </button>
             <input
               ref={fileInputRef}
@@ -244,10 +288,13 @@ export const BackupSyncModal: React.FC<BackupSyncModalProps> = ({
         <div className="mt-4 flex items-center justify-between rounded-2xl border border-rose-200/70 bg-rose-50/40 p-4 dark:border-rose-900/50 dark:bg-rose-950/20">
           <div>
             <div className="text-xs font-semibold text-rose-800 dark:text-rose-300">
-              Сбросить весь прогресс
+              {pick('Сбросить весь прогресс', 'Скинути весь прогрес')}
             </div>
             <div className="text-[11px] text-rose-600/80 dark:text-rose-400/70">
-              Обнулит все 5 коробок Лейтнера и историю экзаменов
+              {pick(
+                'Обнулит все 5 коробок Лейтнера и историю экзаменов',
+                'Обнулить усі 5 коробок Лейтнера та історію іспитів'
+              )}
             </div>
           </div>
           {!confirmReset ? (
@@ -257,7 +304,7 @@ export const BackupSyncModal: React.FC<BackupSyncModalProps> = ({
               className="inline-flex items-center gap-1.5 rounded-xl border border-rose-300 bg-white px-3 py-1.5 text-xs font-semibold text-rose-700 transition-colors hover:bg-rose-50 dark:border-rose-800 dark:bg-zinc-900 dark:text-rose-400"
             >
               <Trash2 className="h-3.5 w-3.5" />
-              Сбросить
+              {pick('Сбросить', 'Скинути')}
             </button>
           ) : (
             <div className="flex items-center gap-1.5">
@@ -266,14 +313,14 @@ export const BackupSyncModal: React.FC<BackupSyncModalProps> = ({
                 onClick={handleReset}
                 className="rounded-xl bg-rose-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-rose-500"
               >
-                Подтвердить
+                {pick('Подтвердить', 'Підтвердити')}
               </button>
               <button
                 type="button"
                 onClick={() => setConfirmReset(false)}
                 className="rounded-xl px-2 py-1.5 text-xs font-medium text-zinc-600 dark:text-zinc-400"
               >
-                Отмена
+                {pick('Отмена', 'Скасувати')}
               </button>
             </div>
           )}

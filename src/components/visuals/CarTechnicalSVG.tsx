@@ -8,6 +8,8 @@ import {
   HelpCircle,
   Wrench,
 } from 'lucide-react';
+import { CAR_HOTSPOTS_UK, CAR_TABS_UK } from '../../data/uk/visualsUk';
+import { useUiLang } from '../../i18n/UiLangContext';
 import { LanguageMode, TechnicalTabId } from '../../types';
 import { extractOrdnetLookupWords, getOrdnetUrl } from '../../utils/ordnet';
 import { SpeakButton } from '../common/SpeakButton';
@@ -551,6 +553,7 @@ export const CarTechnicalSVG: React.FC<CarTechnicalSVGProps> = ({
   lockedTab = false,
   className = '',
 }) => {
+  const { uiLang, pick } = useUiLang();
   const uid = useId().replace(/:/g, '');
   const [tab, setTab] = useState<TechnicalTabId>(initialTab);
   const [selectedId, setSelectedId] = useState<string>(() => {
@@ -570,10 +573,32 @@ export const CarTechnicalSVG: React.FC<CarTechnicalSVGProps> = ({
     }
   }, [activeHotspot]);
 
-  const tabHotspots = HOTSPOTS.filter((h) => h.tab === tab);
+  const localizeHotspot = (h: HotspotInfo): HotspotInfo => {
+    if (uiLang !== 'uk') return h;
+    const uk = CAR_HOTSPOTS_UK[h.id];
+    if (!uk) return h;
+    return {
+      ...h,
+      labelRu: uk.labelUk,
+      whyRu: uk.whyUk,
+      lookRu: uk.lookUk,
+      checkRu: uk.checkUk,
+      okRu: uk.okUk ?? h.okRu,
+      failRu: uk.failUk ?? h.failRu,
+      examRu: uk.examUk,
+    };
+  };
+
+  const tabHotspots = HOTSPOTS.filter((h) => h.tab === tab).map(localizeHotspot);
   const currentInfo =
-    HOTSPOTS.find((h) => h.id === selectedId && h.tab === tab) ?? tabHotspots[0];
-  const activeTabInfo = TABS.find((t) => t.id === tab);
+    tabHotspots.find((h) => h.id === selectedId) ?? tabHotspots[0];
+  const rawActiveTabInfo = TABS.find((t) => t.id === tab);
+  const activeTabInfo = rawActiveTabInfo
+    ? {
+        ...rawActiveTabInfo,
+        ru: uiLang === 'uk' ? (CAR_TABS_UK[rawActiveTabInfo.id] ?? rawActiveTabInfo.ru) : rawActiveTabInfo.ru,
+      }
+    : undefined;
 
   const handleSelectTab = (nextTab: TechnicalTabId) => {
     setTab(nextTab);
@@ -832,7 +857,7 @@ export const CarTechnicalSVG: React.FC<CarTechnicalSVGProps> = ({
             <span className="font-semibold text-zinc-800 dark:text-zinc-200">
               {languageMode === 'da_only'
                 ? `Interaktiv oversigt: ${activeTabInfo.da}`
-                : `Интерактивная схема: ${activeTabInfo.ru}`}
+                : `${pick('Интерактивная схема:', 'Інтерактивна схема:')} ${activeTabInfo.ru}`}
             </span>
             {languageMode !== 'da_only' && (
               <span className="inline-flex items-center gap-1 rounded-md bg-teal-50 px-2 py-0.5 text-[11px] font-semibold text-teal-800 dark:bg-teal-950/60 dark:text-teal-300">
@@ -845,6 +870,7 @@ export const CarTechnicalSVG: React.FC<CarTechnicalSVGProps> = ({
         <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-3 lg:grid-cols-5">
           {TABS.map((t) => {
             const isActive = tab === t.id;
+            const tabTitle = uiLang === 'uk' ? (CAR_TABS_UK[t.id] ?? t.ru) : t.ru;
             return (
               <button
                 key={t.id}
@@ -857,7 +883,7 @@ export const CarTechnicalSVG: React.FC<CarTechnicalSVGProps> = ({
                 }`}
               >
                 <div className="font-semibold leading-tight">
-                  {languageMode === 'da_only' || languageMode === 'spoiler' ? t.da : t.ru}
+                  {languageMode === 'da_only' || languageMode === 'spoiler' ? t.da : tabTitle}
                 </div>
                 {languageMode === 'both' && (
                   <div
@@ -879,17 +905,23 @@ export const CarTechnicalSVG: React.FC<CarTechnicalSVGProps> = ({
         <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl border border-zinc-200 bg-zinc-950 dark:border-zinc-800">
           <img
             src="./images/rules/engine-bay-fluids.jpg"
-            alt="Реальное фото подкапотного пространства учебного автомобиля"
+            alt={pick(
+              'Реальное фото подкапотного пространства учебного автомобиля',
+              'Реальне фото підкапотного простору навчального автомобіля'
+            )}
             className="h-full w-full select-none object-cover object-center"
           />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-zinc-950/65 via-transparent to-zinc-950/20" />
           <div className="pointer-events-none absolute left-3 top-2.5 rounded-lg bg-zinc-950/75 px-2.5 py-1 text-[11px] font-semibold text-zinc-100 backdrop-blur-sm">
-            {compact ? 'Нажмите на метку (1–5)' : 'Нажмите на любую метку прямо на фото (1–5)'}
+            {compact
+              ? pick('Нажмите на метку (1–5)', 'Натисніть на мітку (1–5)')
+              : pick('Нажмите на любую метку прямо на фото (1–5)', 'Натисніть на будь-яку мітку просто на фото (1–5)')}
           </div>
 
           {ENGINE_BAY_PINS.map((pin) => {
             const isActive = currentInfo?.id === pin.id;
-            const pinInfo = HOTSPOTS.find((h) => h.id === pin.id);
+            const rawPinInfo = HOTSPOTS.find((h) => h.id === pin.id);
+            const pinInfo = rawPinInfo ? localizeHotspot(rawPinInfo) : undefined;
             return (
               <div
                 key={pin.id}
@@ -991,7 +1023,11 @@ export const CarTechnicalSVG: React.FC<CarTechnicalSVGProps> = ({
           <div className="rounded-lg border border-teal-200/75 bg-teal-50/60 px-3 py-2.5 dark:border-teal-900/50 dark:bg-teal-950/25">
             <div className="mb-1 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-teal-800 dark:text-teal-300">
               <HelpCircle className="h-3.5 w-3.5 shrink-0" />
-              <span>{languageMode === 'da_only' ? 'Hvorfor tjekker man det?' : 'Зачем это проверять?'}</span>
+              <span>
+                {languageMode === 'da_only'
+                  ? 'Hvorfor tjekker man det?'
+                  : pick('Зачем это проверять?', 'Навіщо це перевіряти?')}
+              </span>
             </div>
             <TheoryBilingual
               ru={currentInfo.whyRu}
@@ -1004,9 +1040,16 @@ export const CarTechnicalSVG: React.FC<CarTechnicalSVGProps> = ({
 
           {/* 2. Where / How to spot it */}
           <div className="rounded-lg border border-sky-200/70 bg-sky-50/55 px-3 py-2.5 dark:border-sky-900/50 dark:bg-sky-950/25">
-            <div className="mb-1 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-sky-800 dark:text-sky-300">
-              <Eye className="h-3.5 w-3.5 shrink-0" />
-              <span>{languageMode === 'da_only' ? 'Sådan finder du den' : 'Как узнать на глаз'}</span>
+            <div className="mb-1 flex items-center justify-between gap-2 text-[11px] font-bold uppercase tracking-wider text-sky-800 dark:text-sky-300">
+              <div className="flex items-center gap-1.5">
+                <Eye className="h-3.5 w-3.5 shrink-0" />
+                <span>
+                  {languageMode === 'da_only'
+                    ? 'Sådan finder du den'
+                    : pick('Как узнать на глаз', 'Як упізнати на око')}
+                </span>
+              </div>
+              <SpeakButton id={`tech_look_${currentInfo.id}`} text={currentInfo.lookDa} />
             </div>
             <TheoryBilingual
               ru={currentInfo.lookRu}
@@ -1021,7 +1064,11 @@ export const CarTechnicalSVG: React.FC<CarTechnicalSVGProps> = ({
           <div className="rounded-lg border border-zinc-200/80 bg-white px-3 py-2.5 dark:border-zinc-800 dark:bg-zinc-950/60">
             <div className="mb-1 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
               <Wrench className="h-3.5 w-3.5 shrink-0 text-teal-600 dark:text-teal-400" />
-              <span>{languageMode === 'da_only' ? 'Kontrol på prøven' : 'Как проверить руками'}</span>
+              <span>
+                {languageMode === 'da_only'
+                  ? 'Kontrol på prøven'
+                  : pick('Как проверить руками', 'Як перевірити руками')}
+              </span>
             </div>
             <TheoryBilingual
               ru={currentInfo.checkRu}
@@ -1037,9 +1084,14 @@ export const CarTechnicalSVG: React.FC<CarTechnicalSVGProps> = ({
             <div className="grid gap-2 sm:grid-cols-2">
               {currentInfo.okRu && (
                 <div className="rounded-lg border border-emerald-200/80 bg-emerald-50/70 px-3 py-2 dark:border-emerald-900/50 dark:bg-emerald-950/25">
-                  <div className="mb-1 flex items-center gap-1 text-[11px] font-bold text-emerald-800 dark:text-emerald-300">
-                    <CheckCircle2 className="h-3.5 w-3.5 shrink-0" />
-                    <span>{languageMode === 'da_only' ? 'Normalt' : 'Норма'}</span>
+                  <div className="mb-1 flex items-center justify-between gap-1 text-[11px] font-bold text-emerald-800 dark:text-emerald-300">
+                    <div className="flex items-center gap-1">
+                      <CheckCircle2 className="h-3.5 w-3.5 shrink-0" />
+                      <span>{languageMode === 'da_only' ? 'Normalt' : pick('Норма', 'Норма')}</span>
+                    </div>
+                    {currentInfo.okDa && (
+                      <SpeakButton id={`tech_ok_${currentInfo.id}`} text={currentInfo.okDa} />
+                    )}
                   </div>
                   <TheoryBilingual
                     ru={currentInfo.okRu}
@@ -1052,9 +1104,18 @@ export const CarTechnicalSVG: React.FC<CarTechnicalSVGProps> = ({
               )}
               {currentInfo.failRu && (
                 <div className="rounded-lg border border-rose-200/80 bg-rose-50/70 px-3 py-2 dark:border-rose-900/50 dark:bg-rose-950/25">
-                  <div className="mb-1 flex items-center gap-1 text-[11px] font-bold text-rose-800 dark:text-rose-300">
-                    <AlertCircle className="h-3.5 w-3.5 shrink-0" />
-                    <span>{languageMode === 'da_only' ? 'Fejl / Ikke tilladt' : 'Ошибка / Поломка'}</span>
+                  <div className="mb-1 flex items-center justify-between gap-1 text-[11px] font-bold text-rose-800 dark:text-rose-300">
+                    <div className="flex items-center gap-1">
+                      <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+                      <span>
+                        {languageMode === 'da_only'
+                          ? 'Fejl / Ikke tilladt'
+                          : pick('Ошибка / Поломка', 'Помилка / Поломка')}
+                      </span>
+                    </div>
+                    {currentInfo.failDa && (
+                      <SpeakButton id={`tech_fail_${currentInfo.id}`} text={currentInfo.failDa} />
+                    )}
                   </div>
                   <TheoryBilingual
                     ru={currentInfo.failRu}
@@ -1076,7 +1137,10 @@ export const CarTechnicalSVG: React.FC<CarTechnicalSVGProps> = ({
                 <span>
                   {languageMode === 'da_only'
                     ? 'Kort svar til prøvesagkyndigen'
-                    : 'Как коротко сказать инспектору на экзамене'}
+                    : pick(
+                        'Как коротко сказать инспектору на экзамене',
+                        'Як коротко сказати інспектору на іспиті'
+                      )}
                 </span>
               </div>
               <TheoryBilingual

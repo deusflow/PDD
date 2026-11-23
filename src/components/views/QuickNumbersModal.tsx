@@ -9,6 +9,8 @@ import {
   ShieldAlert,
   X,
 } from 'lucide-react';
+import { NUMBER_GROUPS_UK } from '../../data/uk/visualsUk';
+import { useUiLang } from '../../i18n/UiLangContext';
 import { LanguageMode } from '../../types';
 import { SpeakButton } from '../common/SpeakButton';
 
@@ -271,6 +273,8 @@ export const QuickNumbersModal: React.FC<QuickNumbersModalProps> = ({
   languageMode,
   onClose,
 }) => {
+  const { uiLang, pick } = useUiLang();
+
   useEffect(() => {
     if (!isOpen) return;
     const onKeyDown = (e: KeyboardEvent) => {
@@ -281,6 +285,8 @@ export const QuickNumbersModal: React.FC<QuickNumbersModalProps> = ({
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
+
+  const isUk = uiLang === 'uk';
 
   return (
     <div
@@ -305,10 +311,13 @@ export const QuickNumbersModal: React.FC<QuickNumbersModalProps> = ({
                 id="quick-numbers-title"
                 className="text-base font-bold text-zinc-900 dark:text-zinc-50"
               >
-                Все цифры ПДД Дании за 2 минуты
+                {pick('Все цифры ПДД Дании за 2 минуты', 'Усі цифри ПДР Данії за 2 хвилини')}
               </h2>
               <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                Шпаргалка перед экзаменом · 5 ключевых блоков чисел и норм
+                {pick(
+                  'Шпаргалка перед экзаменом · 5 ключевых блоков чисел и норм',
+                  'Шпаргалка перед іспитом · 5 ключових блоків чисел і норм'
+                )}
               </p>
             </div>
           </div>
@@ -316,7 +325,7 @@ export const QuickNumbersModal: React.FC<QuickNumbersModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            aria-label="Закрыть шпаргалку"
+            aria-label={pick('Закрыть шпаргалку', 'Закрити шпаргалку')}
             className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200/80 text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-900 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
           >
             <X className="h-4 w-4" />
@@ -325,77 +334,89 @@ export const QuickNumbersModal: React.FC<QuickNumbersModalProps> = ({
 
         {/* Scrollable Content */}
         <div className="flex-1 space-y-6 overflow-y-auto px-6 py-5">
-          {NUMBER_GROUPS.map((group) => (
-            <section key={group.id} className="space-y-3">
-              <div className="flex items-center justify-between border-b border-zinc-200/70 pb-2 dark:border-zinc-800">
-                <div className="flex items-center gap-2">
-                  {group.icon}
-                  <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
-                    {languageMode === 'da_only' ? group.titleDa : group.titleRu}
-                  </h3>
-                </div>
-                {languageMode !== 'da_only' && (
-                  <span className="text-xs font-medium text-zinc-400 dark:text-zinc-500">
-                    {group.titleDa}
-                  </span>
-                )}
-              </div>
-
-              <div className="grid gap-3 md:grid-cols-2">
-                {group.items.map((item) => (
-                  <div
-                    key={item.id}
-                    className="flex flex-col justify-between rounded-xl border border-zinc-200/80 bg-zinc-50/70 p-3.5 dark:border-zinc-800 dark:bg-zinc-950/60"
-                  >
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="space-y-1">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <span
-                            className={`rounded-lg bg-white px-2.5 py-0.5 text-sm font-extrabold shadow-sm ring-1 ring-zinc-200/80 dark:bg-zinc-900 dark:ring-zinc-700 ${group.accent}`}
-                          >
-                            {item.value}
-                          </span>
-                          <span className="text-xs font-semibold text-zinc-900 dark:text-zinc-100">
-                            {item.labelRu}
-                          </span>
-                        </div>
-                        <p className="text-xs leading-relaxed text-zinc-600 dark:text-zinc-400">
-                          {item.noteRu}
-                        </p>
-                      </div>
-
-                      {item.daTerm && (
-                        <SpeakButton id={`num_${item.id}`} text={item.daTerm} size="sm" />
-                      )}
-                    </div>
-
-                    {item.daTerm && (
-                      <div className="mt-2 flex items-start gap-1.5 border-t border-zinc-200/60 pt-2 text-xs leading-snug text-teal-950/85 dark:border-zinc-800/80 dark:text-teal-200/90">
-                        <span className="mt-0.5 inline-flex shrink-0 items-center rounded bg-teal-100 px-1.5 py-0.5 text-[10px] font-bold tracking-wide text-teal-800 dark:bg-teal-950 dark:text-teal-300">
-                          DA
-                        </span>
-                        <span>{item.daTerm}</span>
-                      </div>
-                    )}
+          {NUMBER_GROUPS.map((group) => {
+            const grpUk = isUk ? NUMBER_GROUPS_UK[group.id] : undefined;
+            const groupTitle = grpUk?.titleUk ?? group.titleRu;
+            return (
+              <section key={group.id} className="space-y-3">
+                <div className="flex items-center justify-between border-b border-zinc-200/70 pb-2 dark:border-zinc-800">
+                  <div className="flex items-center gap-2">
+                    {group.icon}
+                    <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+                      {languageMode === 'da_only' ? group.titleDa : groupTitle}
+                    </h3>
                   </div>
-                ))}
-              </div>
-            </section>
-          ))}
+                  {languageMode !== 'da_only' && (
+                    <span className="text-xs font-medium text-zinc-400 dark:text-zinc-500">
+                      {group.titleDa}
+                    </span>
+                  )}
+                </div>
+
+                <div className="grid gap-3 md:grid-cols-2">
+                  {group.items.map((item) => {
+                    const itemUk = grpUk?.items?.[item.id];
+                    return (
+                      <div
+                        key={item.id}
+                        className="flex flex-col justify-between rounded-xl border border-zinc-200/80 bg-zinc-50/70 p-3.5 dark:border-zinc-800 dark:bg-zinc-950/60"
+                      >
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="space-y-1">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <span
+                                className={`rounded-lg bg-white px-2.5 py-0.5 text-sm font-extrabold shadow-sm ring-1 ring-zinc-200/80 dark:bg-zinc-900 dark:ring-zinc-700 ${group.accent}`}
+                              >
+                                {itemUk?.valueUk ?? item.value}
+                              </span>
+                              <span className="text-xs font-semibold text-zinc-900 dark:text-zinc-100">
+                                {itemUk?.labelUk ?? item.labelRu}
+                              </span>
+                            </div>
+                            <p className="text-xs leading-relaxed text-zinc-600 dark:text-zinc-400">
+                              {itemUk?.noteUk ?? item.noteRu}
+                            </p>
+                          </div>
+
+                          {item.daTerm && (
+                            <SpeakButton id={`num_${item.id}`} text={item.daTerm} size="sm" />
+                          )}
+                        </div>
+
+                        {item.daTerm && (
+                          <div className="mt-2 flex items-start gap-1.5 border-t border-zinc-200/60 pt-2 text-xs leading-snug text-teal-950/85 dark:border-zinc-800/80 dark:text-teal-200/90">
+                            <span className="mt-0.5 inline-flex shrink-0 items-center rounded bg-teal-100 px-1.5 py-0.5 text-[10px] font-bold tracking-wide text-teal-800 dark:bg-teal-950 dark:text-teal-300">
+                              DA
+                            </span>
+                            <span>{item.daTerm}</span>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </section>
+            );
+          })}
         </div>
 
         {/* Footer */}
         <div className="flex items-center justify-between border-t border-zinc-200/80 bg-zinc-50/70 px-6 py-3.5 dark:border-zinc-800 dark:bg-zinc-950/50">
           <div className="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
             <Car className="h-4 w-4 text-teal-600 dark:text-teal-400" />
-            <span>Эти цифры проверяются в 70% билетов Teoriprøven и на Kontrolprøven.</span>
+            <span>
+              {pick(
+                'Эти цифры проверяются в 70% билетов Teoriprøven и на Kontrolprøven.',
+                'Ці цифри перевіряються в 70% білетів Teoriprøven і на Kontrolprøven.'
+              )}
+            </span>
           </div>
           <button
             type="button"
             onClick={onClose}
             className="rounded-xl bg-zinc-900 px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-white"
           >
-            Понятно, закрыть
+            {pick('Понятно, закрыть', 'Зрозуміло, закрити')}
           </button>
         </div>
       </div>

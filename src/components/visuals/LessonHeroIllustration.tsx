@@ -1,5 +1,7 @@
 import React from 'react';
 import { Camera } from 'lucide-react';
+import { LESSON_HERO_UK } from '../../data/uk/visualsUk';
+import { useUiLang } from '../../i18n/UiLangContext';
 import { LanguageMode } from '../../types';
 import { SpeakButton } from '../common/SpeakButton';
 import { TheoryBilingual } from '../common/TheoryBilingual';
@@ -98,7 +100,12 @@ export const LessonHeroIllustration: React.FC<LessonHeroIllustrationProps> = ({
   languageMode,
   className = '',
 }) => {
-  const meta = LESSON_HERO_META[moduleId] ?? LESSON_HERO_META[1];
+  const { uiLang } = useUiLang();
+  const baseMeta = LESSON_HERO_META[moduleId] ?? LESSON_HERO_META[1];
+  const ukOverlay = uiLang === 'uk' ? LESSON_HERO_UK[moduleId] ?? LESSON_HERO_UK[1] : undefined;
+  const meta = ukOverlay
+    ? { ...baseMeta, titleRu: ukOverlay.titleUk, captionRu: ukOverlay.captionUk }
+    : baseMeta;
 
   return (
     <div

@@ -10,6 +10,7 @@ import {
   XCircle,
 } from 'lucide-react';
 import { QUESTIONS_BANK } from '../../data/questionsBank';
+import { useUiLang } from '../../i18n/UiLangContext';
 import {
   clearQuizDraft,
   loadQuizDraft,
@@ -142,6 +143,7 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
   onRestartWithQuestions,
   onExit,
 }) => {
+  const { uiLang, pick, getQuestion } = useUiLang();
   const [initialQuiz] = useState<ResolvedQuizInit>(() =>
     resolveInitialQuizState(draftKey, initialQuestions, moduleId, srsMap)
   );
@@ -195,7 +197,7 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
     return (
       <div className="nordic-card mx-auto max-w-2xl p-8 text-center">
         <p className="text-sm text-zinc-600 dark:text-zinc-400">
-          В этой выборке пока нет вопросов.
+          {pick('В этой выборке пока нет вопросов.', 'У цій вибірці поки що немає питань.')}
         </p>
         <button
           type="button"
@@ -203,7 +205,7 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
           className="mt-4 inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-4 py-2 text-sm font-semibold text-white dark:bg-zinc-100 dark:text-zinc-900"
         >
           <ArrowLeft className="h-4 w-4" />
-          В главное меню
+          {pick('В главное меню', 'До головного меню')}
         </button>
       </div>
     );
@@ -217,7 +219,7 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
     const retriesCount = history.filter((h) => h.wasRetry).length;
     const failedInThisSession = firstPassAttempts
       .filter((h) => !h.passed)
-      .map((h) => h.question);
+      .map((h) => getQuestion(h.question));
 
     const hasNextModule =
       moduleId !== undefined && moduleId < 8 && Boolean(onContinueToNextModule);
@@ -232,7 +234,9 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
               </div>
               <div>
                 <h2 className="text-xl font-bold text-zinc-900 sm:text-2xl dark:text-zinc-100">
-                  {moduleId ? `Тест Урока ${moduleId} завершён` : 'Тренировка завершена'}
+                  {moduleId
+                    ? pick(`Тест Урока ${moduleId} завершён`, `Тест Уроку ${moduleId} завершено`)
+                    : pick('Тренировка завершена', 'Тренування завершено')}
                 </h2>
                 <p className="text-xs text-zinc-500 sm:text-sm dark:text-zinc-400">{title}</p>
               </div>
@@ -247,7 +251,7 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
                     {passedCount}/{totalCount}
                   </div>
                   <div className="mt-0.5 text-[11px] font-medium text-zinc-500 dark:text-zinc-400">
-                    Верно с 1-го раза
+                    {pick('Верно с 1-го раза', 'Правильно з 1-го разу')}
                   </div>
                 </div>
                 <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-3.5 text-center dark:border-zinc-800 dark:bg-zinc-950/60">
@@ -255,7 +259,7 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
                     {totalCount > 0 ? Math.round((passedCount / totalCount) * 100) : 0}%
                   </div>
                   <div className="mt-0.5 text-[11px] font-medium text-zinc-500 dark:text-zinc-400">
-                    Точность
+                    {pick('Точность', 'Точність')}
                   </div>
                 </div>
                 <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-3.5 text-center dark:border-zinc-800 dark:bg-zinc-950/60">
@@ -263,7 +267,7 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
                     {retriesCount}
                   </div>
                   <div className="mt-0.5 text-[11px] font-medium text-zinc-500 dark:text-zinc-400">
-                    Повторов ошибок
+                    {pick('Повторов ошибок', 'Повторів помилок')}
                   </div>
                 </div>
               </div>
@@ -283,7 +287,7 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
                     }}
                     className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-teal-600 px-6 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-teal-500"
                   >
-                    <span>Продолжить</span>
+                    <span>{pick('Продолжить', 'Продовжити')}</span>
                     <ArrowRight className="h-4 w-4" />
                   </button>
                 </div>
@@ -298,7 +302,7 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
                       }}
                       className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-emerald-600 py-3.5 text-sm font-bold text-white shadow-sm transition-colors hover:bg-emerald-500"
                     >
-                      <span>Перейти к следующему уроку (Урок {moduleId + 1})</span>
+                      <span>{pick(`Перейти к следующему уроку (Урок ${moduleId + 1})`, `Перейти до наступного уроку (Урок ${moduleId + 1})`)}</span>
                       <ArrowRight className="h-4 w-4" />
                     </button>
                   )}
@@ -310,9 +314,9 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
                         if (draftKey) clearQuizDraft(draftKey);
                         onRestartWithQuestions(
                           moduleId
-                            ? `Исправление ошибок Урока ${moduleId}`
-                            : 'Повтор билетов с ошибками',
-                          `Повторное закрепление (${failedInThisSession.length} вопр.)`,
+                            ? pick(`Исправление ошибок Урока ${moduleId}`, `Виправлення помилок Уроку ${moduleId}`)
+                            : pick('Повтор билетов с ошибками', 'Повтор білетів із помилками'),
+                          `${pick('Повторное закрепление', 'Повторне закріплення')} (${failedInThisSession.length} ${pick('вопр.', 'пит.')})`,
                           failedInThisSession,
                           moduleId
                         );
@@ -320,7 +324,7 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
                       className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-rose-200 bg-rose-50 py-3 text-sm font-bold text-rose-700 transition-colors hover:bg-rose-100 dark:border-rose-900/60 dark:bg-rose-950/40 dark:text-rose-300"
                     >
                       <RotateCcw className="h-4 w-4" />
-                      <span>Повторить только билеты с ошибками ({failedInThisSession.length})</span>
+                      <span>{pick('Повторить только билеты с ошибками', 'Повторити лише білети з помилками')} ({failedInThisSession.length})</span>
                     </button>
                   )}
 
@@ -334,7 +338,7 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
                         }}
                         className="flex-1 rounded-2xl border border-zinc-200 bg-white py-3 text-xs font-semibold text-zinc-800 transition-colors hover:bg-zinc-50 sm:text-sm dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
                       >
-                        К списку уроков
+                        {pick('К списку уроков', 'До списку уроків')}
                       </button>
                     )}
                     <button
@@ -342,7 +346,7 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
                       onClick={handleExitWithCleanup}
                       className="flex-1 rounded-2xl bg-zinc-900 py-3 text-xs font-semibold text-white transition-colors hover:bg-zinc-800 sm:text-sm dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
                     >
-                      В главное меню
+                      {pick('В главное меню', 'До головного меню')}
                     </button>
                   </div>
                 </div>
@@ -351,15 +355,16 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
 
             <div className="space-y-2.5 lg:col-span-7">
               <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-                Итоги по билетам ({firstPassAttempts.length})
+                {pick('Итоги по билетам', 'Підсумки за білетами')} ({firstPassAttempts.length})
               </h3>
               <div className="max-h-72 space-y-2 overflow-y-auto pr-1 lg:max-h-[420px]">
                 {firstPassAttempts.map((item, idx) => {
-                  const rec = getSRSRecord(srsMap, item.question.id);
+                  const localizedQ = getQuestion(item.question);
+                  const rec = getSRSRecord(srsMap, localizedQ.id);
                   const meta = BOX_META[rec.box];
                   return (
                     <div
-                      key={`${item.question.id}_${idx}`}
+                      key={`${localizedQ.id}_${idx}`}
                       className="flex items-center justify-between gap-3 rounded-xl border border-zinc-200/80 px-3.5 py-2.5 dark:border-zinc-800"
                     >
                       <div className="flex min-w-0 items-center gap-2.5">
@@ -370,15 +375,15 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
                         )}
                         <span className="truncate text-xs font-medium text-zinc-800 sm:text-sm dark:text-zinc-200">
                           {languageMode !== 'da_only'
-                            ? item.question.situationRu
-                            : item.question.situationDa}
+                            ? localizedQ.situationRu
+                            : localizedQ.situationDa}
                         </span>
                       </div>
                       {mode !== 'course' && (
                         <span
                           className={`shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-semibold ${meta.badgeClass}`}
                         >
-                          Box {rec.box} • {meta.labelRu}
+                          Box {rec.box} • {uiLang === 'uk' ? meta.labelUk : meta.labelRu}
                         </span>
                       )}
                     </div>
@@ -393,7 +398,7 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
   }
 
   const currentItem = queue[currentIndex];
-  const question = currentItem.question;
+  const question = getQuestion(currentItem.question);
   const currentRecord = submittedRecord ?? getSRSRecord(srsMap, question.id);
   const boxMeta = BOX_META[currentRecord.box];
 
@@ -526,7 +531,7 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
             className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-xs font-semibold text-zinc-700 transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
-            Выйти
+            {pick('Выйти', 'Вийти')}
           </button>
 
           <div className="text-center">
@@ -540,7 +545,7 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
             {currentItem.isRetry && (
               <span className="inline-flex items-center gap-1 rounded-full bg-rose-100 px-2 py-0.5 text-[10px] font-bold text-rose-700 dark:bg-rose-950 dark:text-rose-300">
                 <RotateCcw className="h-3 w-3" />
-                Повтор Box 1
+                {pick('Повтор Box 1', 'Повтор Box 1')}
               </span>
             )}
             <span className="rounded-xl border border-zinc-200 bg-white px-2.5 py-1 text-xs font-bold tabular-nums text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200">
@@ -556,11 +561,11 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
           <div className="flex items-center gap-2">
             {currentItem.isRetry && (
               <span className="rounded-full bg-rose-100 px-2 py-0.5 text-[10px] font-semibold text-rose-700 dark:bg-rose-950 dark:text-rose-300">
-                Повтор ошибки
+                {pick('Повтор ошибки', 'Повтор помилки')}
               </span>
             )}
             <span className="font-semibold tabular-nums text-zinc-700 dark:text-zinc-300">
-              Вопрос {currentIndex + 1} из {queue.length}
+              {pick('Вопрос', 'Питання')} {currentIndex + 1} {pick('из', 'із')} {queue.length}
             </span>
           </div>
         </div>
@@ -586,15 +591,15 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
                 question.situationDa,
                 ...question.subQuestions.map((s, i) => `${i + 1}. ${s.da}`),
               ]}
-              label="Озвучить билет"
-              title="Прослушать ситуацию и все утверждения подряд"
+              label={pick('Озвучить билет', 'Озвучити білет')}
+              title={pick('Прослушать ситуацию и все утверждения подряд', 'Прослухати ситуацію та всі твердження поспіль')}
             />
           </div>
           {mode !== 'course' && (
             <span
               className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[11px] font-semibold ${boxMeta.badgeClass}`}
             >
-              Box {currentRecord.box} • {boxMeta.labelRu}
+              Box {currentRecord.box} • {uiLang === 'uk' ? boxMeta.labelUk : boxMeta.labelRu}
             </span>
           )}
         </div>
@@ -660,8 +665,8 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
                   {/* Ja / Nej toggles */}
                   <div className="flex shrink-0 items-center gap-2 self-end sm:self-start">
                     {[
-                      { val: true, da: 'Ja', ru: 'Да' },
-                      { val: false, da: 'Nej', ru: 'Нет' },
+                      { val: true, da: 'Ja', ru: pick('Да', 'Так') },
+                      { val: false, da: 'Nej', ru: pick('Нет', 'Ні') },
                     ].map((btn) => {
                       const selected = chosen === btn.val;
                       const isTargetCorrect = isSubmitted && sq.correctAnswer === btn.val;
@@ -727,9 +732,9 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
         {!isSubmitted ? (
           <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
             <span className="text-xs text-zinc-500 dark:text-zinc-400">
-              Ответьте на все «Ja / Nej» · Клавиши: <kbd className="rounded bg-zinc-100 px-1 py-0.5 font-mono text-[10px] dark:bg-zinc-800">1</kbd> Ja /{' '}
+              {pick('Ответьте на все «Ja / Nej» · Клавиши:', 'Відповідайте на всі «Ja / Nej» · Клавіші:')} <kbd className="rounded bg-zinc-100 px-1 py-0.5 font-mono text-[10px] dark:bg-zinc-800">1</kbd> Ja /{' '}
               <kbd className="rounded bg-zinc-100 px-1 py-0.5 font-mono text-[10px] dark:bg-zinc-800">2</kbd> Nej ·{' '}
-              <kbd className="rounded bg-zinc-100 px-1 py-0.5 font-mono text-[10px] dark:bg-zinc-800">Enter</kbd> Проверить
+              <kbd className="rounded bg-zinc-100 px-1 py-0.5 font-mono text-[10px] dark:bg-zinc-800">Enter</kbd> {pick('Проверить', 'Перевірити')}
             </span>
             <button
               type="button"
@@ -737,7 +742,7 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
               onClick={handleSubmit}
               className="inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-40 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
             >
-              Проверить ответ
+              {pick('Проверить ответ', 'Перевірити відповідь')}
             </button>
           </div>
         ) : (
@@ -759,21 +764,21 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
                 <div>
                   <div className="text-sm font-bold">
                     {isQuestionPassed
-                      ? 'Билет полностью верен (+1 балл)!'
-                      : 'Ошибка в подпункте — билет не засчитан (0 баллов)'}
+                      ? pick('Билет полностью верен (+1 балл)!', 'Білет повністю правильний (+1 бал)!')
+                      : pick('Ошибка в подпункте — билет не засчитан (0 баллов)', 'Помилка в підпункті — білет не зараховано (0 балів)')}
                   </div>
                   <div className="mt-0.5 text-xs opacity-90">
                     {isQuestionPassed
                       ? mode === 'course'
-                        ? 'Верно! Билет зачтён.'
-                        : `Перемещено в Box ${currentRecord.box} (${boxMeta.intervalRu}).`
+                        ? pick('Верно! Билет зачтён.', 'Правильно! Білет зараховано.')
+                        : `${pick('Перемещено в', 'Переміщено в')} Box ${currentRecord.box} (${uiLang === 'uk' ? boxMeta.intervalUk : boxMeta.intervalRu}).`
                       : mode === 'course'
                         ? !currentItem.isRetry
-                          ? 'Допущена ошибка — мы вернём этот билет в конце теста.'
-                          : 'Разберите пояснение и двигайтесь дальше.'
+                          ? pick('Допущена ошибка — мы вернём этот билет в конце теста.', 'Допущено помилку — ми повернемо цей білет наприкінці тесту.')
+                          : pick('Разберите пояснение и двигайтесь дальше.', 'Розберіть пояснення і рухайтеся далі.')
                         : requeueFailuresInSession && !currentItem.isRetry
-                          ? 'Отправлено в Box 1 (Критическая зона) и добавлено на повтор в конце этой сессии.'
-                          : 'Отправлено в Box 1 (Критическая зона) для немедленного повторения.'}
+                          ? pick('Отправлено в Box 1 (Критическая зона) и добавлено на повтор в конце этой сессии.', 'Відправлено в Box 1 (Критична зона) і додано на повтор наприкінці цієї сесії.')
+                          : pick('Отправлено в Box 1 (Критическая зона) для немедленного повторения.', 'Відправлено в Box 1 (Критична зона) для негайного повторення.')}
                   </div>
                 </div>
               </div>
@@ -783,7 +788,9 @@ export const QuizSessionView: React.FC<QuizSessionViewProps> = ({
                 onClick={handleNext}
                 className="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-xl bg-zinc-900 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
               >
-                {currentIndex + 1 < queue.length ? 'Следующий вопрос' : 'Завершить сессию'}
+                {currentIndex + 1 < queue.length
+                  ? pick('Следующий вопрос', 'Наступне питання')
+                  : pick('Завершить сессию', 'Завершити сесію')}
                 <ArrowRight className="h-4 w-4" />
               </button>
             </div>

@@ -1,9 +1,16 @@
 import React, { createContext, useContext, useId } from 'react';
+import { DRIVER_POV_LABELS_UK } from '../../data/uk/visualsUk';
+import { useUiLang } from '../../i18n/UiLangContext';
 import { DanishRoadSignSVG, PSkiveSVG } from './DanishRoadSignSVG';
 
-const SvgIdContext = createContext<{ uid: string; hideHints: boolean }>({
+const SvgIdContext = createContext<{
+  uid: string;
+  hideHints: boolean;
+  tr: (text: string) => string;
+}>({
   uid: 'pov',
   hideHints: false,
+  tr: (t) => t,
 });
 
 interface DriverPOVSceneSVGProps {
@@ -245,10 +252,11 @@ const BadgePill: React.FC<{ x: number; y: number; text: string; tone?: 'dark' | 
   text,
   tone = 'dark',
 }) => {
-  const { hideHints } = useContext(SvgIdContext);
+  const { hideHints, tr } = useContext(SvgIdContext);
   if (hideHints) return null;
+  const label = tr(text);
   const bg = tone === 'warn' ? '#B45309' : tone === 'teal' ? '#0F766E' : '#18181B';
-  const width = Math.max(120, text.length * 6.5 + 24);
+  const width = Math.max(120, label.length * 6.5 + 24);
   return (
     <g transform={`translate(${x}, ${y})`}>
       <rect
@@ -264,7 +272,7 @@ const BadgePill: React.FC<{ x: number; y: number; text: string; tone?: 'dark' | 
         strokeWidth="1"
       />
       <text x={width / 2} y="15.5" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="700">
-        {text}
+        {label}
       </text>
     </g>
   );
@@ -308,7 +316,9 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
   hideHints = false,
   className = '',
 }) => {
+  const { uiLang } = useUiLang();
   const uid = useId().replace(/:/g, '');
+  const tr = (text: string): string => (uiLang === 'uk' ? (DRIVER_POV_LABELS_UK[text] ?? text) : text);
   const renderContent = () => {
     switch (presetId) {
       case 'pov_spejl_skulder':
@@ -567,7 +577,7 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
                   Bil + Påhængsvogn ≤ 3.500 kg
                 </text>
                 <text x="292" y="178" textAnchor="middle" fill="#5EEAD4" fontSize="9.8" fontWeight="600">
-                  Лёгкий прицеп ≤ 750 kg → итого до 4.250 kg
+                  {tr('Лёгкий прицеп ≤ 750 kg → итого до 4.250 kg')}
                 </text>
               </>
             )}
@@ -634,15 +644,15 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
                 ‰
               </text>
               <text x="65" y="76" textAnchor="middle" fill="#FFFFFF" fontSize="11.5" fontWeight="700">
-                Алкоголь
+                {tr('Алкоголь')}
               </text>
               {!hideHints && (
                 <>
                   <text x="65" y="102" textAnchor="middle" fill="#CBD5E1" fontSize="9.2">
-                    0,20‰ нов. / 0,50‰ общ.
+                    {tr('0,20‰ нов. / 0,50‰ общ.')}
                   </text>
                   <text x="65" y="122" textAnchor="middle" fill="#FCA5A5" fontSize="9.5">
-                    &gt; 2,00‰ = конфискация
+                    {tr('> 2,00‰ = конфискация')}
                   </text>
                 </>
               )}
@@ -655,7 +665,7 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
                 KLIP
               </text>
               <text x="65" y="76" textAnchor="middle" fill="#FFFFFF" fontSize="11.5" fontWeight="700">
-                Новичок (0–3 г.)
+                {tr('Новичок (0–3 г.)')}
               </text>
               {!hideHints && (
                 <>
@@ -663,7 +673,7 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
                     2 klip = Kørselsforbud!
                   </text>
                   <text x="65" y="122" textAnchor="middle" fill="#CBD5E1" fontSize="9.5">
-                    Опытный: 3 klip / 3 г.
+                    {tr('Опытный: 3 klip / 3 г.')}
                   </text>
                 </>
               )}
@@ -673,15 +683,15 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
               <rect x="0" y="0" width="130" height="162" rx="14" fill="#0F172A" fillOpacity="0.9" stroke="#14B8A6" strokeWidth="1.8" />
               <polygon points="65,18 45,52 85,52" fill="#0F172A" stroke="#EF4444" strokeWidth="3.5" strokeLinejoin="round" />
               <text x="65" y="76" textAnchor="middle" fill="#FFFFFF" fontSize="11.5" fontWeight="700">
-                ДТП и помощь
+                {tr('ДТП и помощь')}
               </text>
               {!hideHints && (
                 <>
                   <text x="65" y="102" textAnchor="middle" fill="#5EEAD4" fontSize="9.8">
-                    Треугольник: 50 / 100 м
+                    {tr('Треугольник: 50 / 100 м')}
                   </text>
                   <text x="65" y="122" textAnchor="middle" fill="#CBD5E1" fontSize="9.5">
-                    112 травмы · 114 полиция
+                    {tr('112 травмы · 114 полиция')}
                   </text>
                 </>
               )}
@@ -790,11 +800,11 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
                 !
               </text>
               <text x="97" y="108" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="700">
-                Лекарства / Усталость
+                {tr('Лекарства / Усталость')}
               </text>
               {!hideHints && (
                 <text x="97" y="128" textAnchor="middle" fill="#FCA5A5" fontSize="9.5">
-                  Приравнено к § 54 (как алкоголь!)
+                  {tr('Приравнено к § 54 (как алкоголь!)')}
                 </text>
               )}
             </g>
@@ -805,18 +815,18 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
                 SYN
               </text>
               <text x="97" y="64" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="700">
-                Страховка + Техосмотр
+                {tr('Страховка + Техосмотр')}
               </text>
               {!hideHints && (
                 <>
                   <text x="97" y="86" textAnchor="middle" fill="#5EEAD4" fontSize="9.8" fontWeight="600">
-                    Ansvarsforsikring = ОБЯЗАТЕЛЬНА
+                    {tr('Ansvarsforsikring = ОБЯЗАТЕЛЬНА')}
                   </text>
                   <text x="97" y="108" textAnchor="middle" fill="#CBD5E1" fontSize="9.8">
-                    1-й Syn: 4 года · Далее: каждые 2 г.
+                    {tr('1-й Syn: 4 года · Далее: каждые 2 г.')}
                   </text>
                   <text x="97" y="128" textAnchor="middle" fill="#FDE68A" fontSize="9.5">
-                    Новичок 3 года: лишение за 2 klip!
+                    {tr('Новичок 3 года: лишение за 2 klip!')}
                   </text>
                 </>
               )}
@@ -854,11 +864,11 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
                 <rect x="28" y="138" width="404" height="58" rx="14" fill="#0F172A" fillOpacity="0.9" stroke="#F59E0B" strokeOpacity="0.55" strokeWidth="1.5" />
                 <rect x="46" y="152" width="110" height="12" rx="6" fill="#38BDF8" />
                 <text x="166" y="162" fill="#E0F2FE" fontSize="10" fontWeight="700">
-                  Реакция (~1 сек): 2× скорость → 2× м
+                  {tr('Реакция (~1 сек): 2× скорость → 2× м')}
                 </text>
                 <rect x="46" y="172" width="215" height="12" rx="6" fill="#F59E0B" />
                 <text x="270" y="182" fill="#FDE68A" fontSize="10" fontWeight="700">
-                  Торможение: 2× скорость → 4× м!
+                  {tr('Торможение: 2× скорость → 4× м!')}
                 </text>
               </>
             )}
@@ -1115,16 +1125,16 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
                 </text>
                 <rect x="44" y="34" width="372" height="148" rx="16" fill="#0F172A" fillOpacity="0.92" stroke="#EF4444" strokeWidth="2" />
                 <text x="230" y="64" textAnchor="middle" fill="#FCA5A5" fontSize="13.5" fontWeight="800">
-                  VANVIDSKØRSEL = КОНФИСКАЦИЯ АВТО!
+                  {tr('VANVIDSKØRSEL = КОНФИСКАЦИЯ АВТО!')}
                 </text>
                 <text x="230" y="96" textAnchor="middle" fill="#FFFFFF" fontSize="11.5" fontWeight="700">
-                  • Скорость &gt; 200 км/ч ИЛИ ≥ +100% (при &gt;100 км/ч)
+                  {tr('• Скорость > 200 км/ч ИЛИ ≥ +100% (при >100 км/ч)')}
                 </text>
                 <text x="230" y="122" textAnchor="middle" fill="#FFFFFF" fontSize="11.5" fontWeight="700">
-                  • Алкоголь &gt; 2,00‰ (даже на чужой машине!)
+                  {tr('• Алкоголь > 2,00‰ (даже на чужой машине!)')}
                 </text>
                 <text x="230" y="152" textAnchor="middle" fill="#FDE68A" fontSize="10.5" fontWeight="600">
-                  Штраф + тюрьма + лишение прав + продажа авто на аукционе
+                  {tr('Штраф + тюрьма + лишение прав + продажа авто на аукционе')}
                 </text>
               </>
             )}
@@ -1148,16 +1158,16 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
               <>
                 <rect x="34" y="32" width="392" height="156" rx="16" fill="#0F172A" fillOpacity="0.9" stroke="#38BDF8" strokeWidth="1.8" />
                 <text x="230" y="62" textAnchor="middle" fill="#5EEAD4" fontSize="13.5" fontWeight="800">
-                  Дети (&lt; 135 см) и подушка безопасности
+                  {tr('Дети (< 135 см) и подушка безопасности')}
                 </text>
                 <text x="230" y="94" textAnchor="middle" fill="#FFFFFF" fontSize="11.5" fontWeight="700">
-                  Автокресло / бустер обязательны до роста 135 см
+                  {tr('Автокресло / бустер обязательны до роста 135 см')}
                 </text>
                 <text x="230" y="122" textAnchor="middle" fill="#FCA5A5" fontSize="11.5" fontWeight="700">
-                  Спереди спиной вперёд = AIRBAG ОБЯЗАТЕЛЬНО ОТКЛЮЧИТЬ!
+                  {tr('Спереди спиной вперёд = AIRBAG ОБЯЗАТЕЛЬНО ОТКЛЮЧИТЬ!')}
                 </text>
                 <text x="230" y="152" textAnchor="middle" fill="#CBD5E1" fontSize="10.5" fontWeight="600">
-                  Водитель отвечает за пристёгивание всех пассажиров до 15 лет
+                  {tr('Водитель отвечает за пристёгивание всех пассажиров до 15 лет')}
                 </text>
               </>
             )}
@@ -1242,7 +1252,7 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
               <line x1="66" y1="30" x2="104" y2="30" stroke="#38BDF8" strokeWidth="1.2" />
               {!hideHints && (
                 <text x="59" y="60" textAnchor="middle" fill="#5EEAD4" fontSize="8.8" fontWeight="700">
-                  Подголовник = верх
+                  {tr('Подголовник = верх')}
                 </text>
               )}
             </g>
@@ -1503,14 +1513,14 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
             </defs>
             <rect x="0" y="0" width="460" height="250" fill={`url(#${uid}_roadmap)`} />
             <text x="230" y="38" textAnchor="middle" fill="#FFFFFF" fontSize="14.5" fontWeight="800">
-              Путь в датской автошколе (Lovpakke B)
+              {tr('Путь в датской автошколе (Lovpakke B)')}
             </text>
             <line x1="65" y1="114" x2="395" y2="114" stroke="#5EEAD4" strokeWidth="3" strokeDasharray="6 6" opacity="0.45" />
             {[
-              { x: 24, n: '1', t: hideHints ? 'Теория' : '29 ч теории', s: 'Правила + тесты' },
-              { x: 130, n: '2', t: hideHints ? 'Площадка' : '4 ч Manøvre', s: 'Manøvrebane' },
-              { x: 236, n: '3', t: hideHints ? 'Город' : '16 ч город', s: '+ ночное вожд.' },
-              { x: 342, n: '4', t: hideHints ? 'Glatbane' : '4 ч Glatbane', s: 'KTA заносы' },
+              { x: 24, n: '1', t: tr(hideHints ? 'Теория' : '29 ч теории'), s: tr('Правила + тесты') },
+              { x: 130, n: '2', t: tr(hideHints ? 'Площадка' : '4 ч Manøvre'), s: 'Manøvrebane' },
+              { x: 236, n: '3', t: tr(hideHints ? 'Город' : '16 ч город'), s: tr('+ ночное вожд.') },
+              { x: 342, n: '4', t: tr(hideHints ? 'Glatbane' : '4 ч Glatbane'), s: tr('KTA заносы') },
             ].map((item) => (
               <g key={item.n} transform={`translate(${item.x}, 66)`}>
                 <rect x="0" y="0" width="94" height="92" rx="14" fill="#0F172A" fillOpacity="0.82" stroke="#14B8A6" strokeWidth="1.6" />
@@ -1530,10 +1540,10 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
               <>
                 <rect x="24" y="176" width="412" height="48" rx="12" fill="#0F172A" fillOpacity="0.88" stroke="#5EEAD4" strokeOpacity="0.35" strokeWidth="1.4" />
                 <text x="230" y="196" textAnchor="middle" fill="#5EEAD4" fontSize="11" fontWeight="700">
-                  Pasfoto + Lægeattest + Førstehjælp (8 ч) + Fuldmagt
+                  {tr('Pasfoto + Lægeattest + Førstehjælp (8 ч) + Fuldmagt')}
                 </text>
                 <text x="230" y="213" textAnchor="middle" fill="#E2E8F0" fontSize="10.5">
-                  Финал: Teoriprøve (≥20/25) → Kontrolprøve + Praktisk køreprøve
+                  {tr('Финал: Teoriprøve (≥20/25) → Kontrolprøve + Praktisk køreprøve')}
                 </text>
               </>
             )}
@@ -1543,7 +1553,7 @@ export const DriverPOVSceneSVG: React.FC<DriverPOVSceneSVGProps> = ({
   };
 
   return (
-    <SvgIdContext.Provider value={{ uid, hideHints }}>
+    <SvgIdContext.Provider value={{ uid, hideHints, tr }}>
       <div className={`relative overflow-hidden rounded-xl border border-zinc-200 bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-950 ${className}`}>
         {imageSrc ? (
           <div className="aspect-[16/9] w-full overflow-hidden bg-zinc-100 dark:bg-zinc-950">

@@ -5,6 +5,7 @@ import {
   ModuleCourseProgress,
   SRSRecord,
   ThemeMode,
+  UiLanguage,
   UserAppState,
 } from '../types';
 import { clearAllSessionPersistence } from './sessionPersistence';
@@ -87,6 +88,17 @@ function sanitizeCourseState(raw: unknown): CourseState {
   };
 }
 
+export function detectUrlUiLang(): UiLanguage {
+  if (typeof window === 'undefined') return 'ru';
+  try {
+    const param = new URLSearchParams(window.location.search).get('lang')?.toLowerCase();
+    if (param === 'uk' || param === 'ua') return 'uk';
+  } catch {
+    // ignore malformed URL
+  }
+  return 'ru';
+}
+
 export function getDefaultState(): UserAppState {
   const prefersDark =
     typeof window !== 'undefined' &&
@@ -97,6 +109,7 @@ export function getDefaultState(): UserAppState {
     version: 2,
     hasSeenOnboarding: false,
     languageMode: 'both',
+    uiLang: detectUrlUiLang(),
     theme: prefersDark ? 'dark' : 'light',
     srs: {},
     examHistory: [],
@@ -139,6 +152,9 @@ function validateAndMigrateState(raw: unknown): UserAppState | null {
       ? obj.languageMode
       : defaults.languageMode;
 
+  const uiLang: UiLanguage =
+    obj.uiLang === 'uk' || obj.uiLang === 'ru' ? obj.uiLang : defaults.uiLang ?? 'ru';
+
   const theme: ThemeMode =
     obj.theme === 'light' || obj.theme === 'dark' ? obj.theme : defaults.theme;
 
@@ -171,6 +187,7 @@ function validateAndMigrateState(raw: unknown): UserAppState | null {
     version: 2,
     hasSeenOnboarding: Boolean(obj.hasSeenOnboarding),
     languageMode,
+    uiLang,
     theme,
     srs: sanitizeSRSMap(obj.srs),
     examHistory,
@@ -269,6 +286,7 @@ export const StorageManager = {
       v: 2,
       o: state.hasSeenOnboarding ? 1 : 0,
       l: state.languageMode,
+      ul: state.uiLang ?? 'ru',
       t: state.theme,
       sc: state.sessionsCompleted,
       eh: state.examHistory,
@@ -355,6 +373,7 @@ export const StorageManager = {
       version: payload.v,
       hasSeenOnboarding: Boolean(payload.o),
       languageMode: payload.l,
+      uiLang: payload.ul,
       theme: payload.t,
       sessionsCompleted: payload.sc,
       examHistory: payload.eh,

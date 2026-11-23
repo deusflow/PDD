@@ -16,56 +16,70 @@ export const BOX_META: Record<
   BoxLevel,
   {
     labelRu: string;
+    labelUk: string;
     labelDa: string;
     intervalRu: string;
+    intervalUk: string;
     colorClass: string;
     badgeClass: string;
   }
 > = {
   0: {
     labelRu: 'Не изучено',
+    labelUk: 'Не вивчено',
     labelDa: 'Ny / Ikke set',
     intervalRu: 'Ещё не открыто',
+    intervalUk: 'Ще не відкрито',
     colorClass: 'bg-zinc-300 dark:bg-zinc-700',
     badgeClass:
       'border-zinc-200 bg-zinc-100 text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300',
   },
   1: {
     labelRu: 'Критическая зона',
+    labelUk: 'Критична зона',
     labelDa: 'Fejl / Kritisk',
     intervalRu: 'Сейчас и след. сессия',
+    intervalUk: 'Зараз і наст. сесія',
     colorClass: 'bg-rose-500',
     badgeClass:
       'border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-900/60 dark:bg-rose-950/50 dark:text-rose-300',
   },
   2: {
     labelRu: 'На закреплении',
+    labelUk: 'На закріпленні',
     labelDa: 'Indlæring',
     intervalRu: 'Через 4 ч / 1 сессию',
+    intervalUk: 'Через 4 год / 1 сесію',
     colorClass: 'bg-amber-500',
     badgeClass:
       'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-900/60 dark:bg-amber-950/50 dark:text-amber-300',
   },
   3: {
     labelRu: 'Знакомо',
+    labelUk: 'Знайомо',
     labelDa: 'Kendt',
     intervalRu: 'Через 1 день',
+    intervalUk: 'Через 1 день',
     colorClass: 'bg-sky-500',
     badgeClass:
       'border-sky-200 bg-sky-50 text-sky-700 dark:border-sky-900/60 dark:bg-sky-950/50 dark:text-sky-300',
   },
   4: {
     labelRu: 'Уверенно',
+    labelUk: 'Впевнено',
     labelDa: 'Sikker',
     intervalRu: 'Через 3 дня',
+    intervalUk: 'Через 3 дні',
     colorClass: 'bg-emerald-500',
     badgeClass:
       'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-900/60 dark:bg-emerald-950/50 dark:text-emerald-300',
   },
   5: {
     labelRu: 'Готов к экзамену',
+    labelUk: 'Готово до іспиту',
     labelDa: 'Mestret',
     intervalRu: 'Через 7 дней',
+    intervalUk: 'Через 7 днів',
     colorClass: 'bg-teal-600 dark:bg-teal-400',
     badgeClass:
       'border-teal-200 bg-teal-50 text-teal-800 dark:border-teal-900/60 dark:bg-teal-950/50 dark:text-teal-300',

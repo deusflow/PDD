@@ -9,6 +9,8 @@ import {
   X,
   XCircle,
 } from 'lucide-react';
+import { KONTROL_QUESTIONS_UK } from '../../data/uk/visualsUk';
+import { useUiLang } from '../../i18n/UiLangContext';
 import { LanguageMode, TechnicalTabId } from '../../types';
 import { extractOrdnetLookupWords, getOrdnetUrl } from '../../utils/ordnet';
 import { SpeakButton } from '../common/SpeakButton';
@@ -303,6 +305,7 @@ export const KontrolSimulatorModal: React.FC<KontrolSimulatorModalProps> = ({
   languageMode,
   onClose,
 }) => {
+  const { uiLang, pick } = useUiLang();
   const [index, setIndex] = useState(0);
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
   const [correctCount, setCorrectCount] = useState(0);
@@ -353,7 +356,16 @@ export const KontrolSimulatorModal: React.FC<KontrolSimulatorModalProps> = ({
 
   if (!isOpen) return null;
 
-  const q = KONTROL_QUESTIONS[index];
+  const rawQ = KONTROL_QUESTIONS[index];
+  const ukQ = uiLang === 'uk' ? KONTROL_QUESTIONS_UK[rawQ.id] : undefined;
+  const q = ukQ
+    ? {
+        ...rawQ,
+        promptRu: ukQ.promptUk,
+        normRu: ukQ.normUk,
+        options: rawQ.options.map((o, idx) => ({ ...o, ru: ukQ.optionsUk[idx] ?? o.ru })),
+      }
+    : rawQ;
   const isAnswered = selectedIdx !== null;
   const isCorrect = selectedIdx === q.correctIndex;
 
@@ -397,10 +409,13 @@ export const KontrolSimulatorModal: React.FC<KontrolSimulatorModalProps> = ({
                 id="kontrol-sim-title"
                 className="text-base font-bold text-zinc-900 dark:text-zinc-50"
               >
-                Опрос инспектора · Kontrolprøven
+                {pick('Опрос инспектора · Kontrolprøven', 'Опитування інспектора · Kontrolprøven')}
               </h2>
               <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                10 реальных устных вопросов перед выездом на практический экзамен
+                {pick(
+                  '10 реальных устных вопросов перед выездом на практический экзамен',
+                  '10 реальних усних запитань перед виїздом на практичний іспит'
+                )}
               </p>
             </div>
           </div>
@@ -408,13 +423,14 @@ export const KontrolSimulatorModal: React.FC<KontrolSimulatorModalProps> = ({
           <div className="flex items-center gap-3">
             {!finished && (
               <span className="rounded-lg bg-zinc-100 px-2.5 py-1 text-xs font-semibold text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200">
-                Вопрос {index + 1} / {KONTROL_QUESTIONS.length} · Верно: {correctCount}
+                {pick('Вопрос', 'Питання')} {index + 1} / {KONTROL_QUESTIONS.length} ·{' '}
+                {pick('Верно', 'Вірно')}: {correctCount}
               </span>
             )}
             <button
               type="button"
               onClick={onClose}
-              aria-label="Закрыть тренажёр Kontrolprøven"
+              aria-label={pick('Закрыть тренажёр Kontrolprøven', 'Закрити тренажер Kontrolprøven')}
               className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200/80 text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-900 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
             >
               <X className="h-4 w-4" />
@@ -436,12 +452,19 @@ export const KontrolSimulatorModal: React.FC<KontrolSimulatorModalProps> = ({
             </div>
             <div className="space-y-1.5">
               <h3 className="text-xl font-bold text-zinc-900 dark:text-zinc-50">
-                Результат Kontrolprøven: {correctCount} из {KONTROL_QUESTIONS.length}
+                {pick('Результат Kontrolprøven:', 'Результат Kontrolprøven:')} {correctCount}{' '}
+                {pick('из', 'з')} {KONTROL_QUESTIONS.length}
               </h3>
               <p className="max-w-md text-sm text-zinc-600 dark:text-zinc-400">
                 {correctCount >= 9
-                  ? 'Отлично! Вы уверенно знаете устройство автомобиля, нормы света и критические ошибки — готовы к устной части экзамена.'
-                  : 'Хорошая тренировка! На реальном экзамене инспектор задаёт 2–4 вопроса, и незнание базовых норм может стоить допуска к выезду.'}
+                  ? pick(
+                      'Отлично! Вы уверенно знаете устройство автомобиля, нормы света и критические ошибки — готовы к устной части экзамена.',
+                      'Чудово! Ви впевнено знаєте будову автомобіля, норми світла та критичні помилки — готові до усної частини іспиту.'
+                    )
+                  : pick(
+                      'Хорошая тренировка! На реальном экзамене инспектор задаёт 2–4 вопроса, и незнание базовых норм может стоить допуска к выезду.',
+                      'Гарне тренування! На реальному іспиті інспектор ставить 2–4 запитання, і незнання базових норм може коштувати допуску до виїзду.'
+                    )}
               </p>
             </div>
 
@@ -452,14 +475,14 @@ export const KontrolSimulatorModal: React.FC<KontrolSimulatorModalProps> = ({
                 className="inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-5 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-white"
               >
                 <RotateCcw className="h-4 w-4" />
-                Пройти заново
+                {pick('Пройти заново', 'Пройти знову')}
               </button>
               <button
                 type="button"
                 onClick={onClose}
                 className="rounded-xl border border-zinc-200 px-5 py-2.5 text-xs font-semibold text-zinc-700 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-200 dark:hover:bg-zinc-800"
               >
-                Закрыть
+                {pick('Закрыть', 'Закрити')}
               </button>
             </div>
           </div>
@@ -478,7 +501,7 @@ export const KontrolSimulatorModal: React.FC<KontrolSimulatorModalProps> = ({
               <div className="flex items-start justify-between gap-3">
                 <div className="space-y-1">
                   <div className="text-[11px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
-                    Инспектор спрашивает (Sagkyndig)
+                    {pick('Инспектор спрашивает (Sagkyndig)', 'Інспектор запитує (Sagkyndig)')}
                   </div>
                   {languageMode !== 'da_only' && (
                     <p className="text-sm font-bold text-zinc-900 dark:text-zinc-50">
@@ -532,7 +555,10 @@ export const KontrolSimulatorModal: React.FC<KontrolSimulatorModalProps> = ({
                 />
                 {!isAnswered && (
                   <p className="mt-2 text-center text-[11px] text-zinc-400">
-                    После ответа нужный узел подсветится на схеме автоматически
+                    {pick(
+                      'После ответа нужный узел подсветится на схеме автоматически',
+                      'Після відповіді потрібний вузол підсвітиться на схемі автоматично'
+                    )}
                   </p>
                 )}
               </div>
@@ -559,44 +585,49 @@ export const KontrolSimulatorModal: React.FC<KontrolSimulatorModalProps> = ({
                     }
 
                     return (
-                      <button
+                      <div
                         key={optIdx}
-                        type="button"
-                        disabled={isAnswered}
-                        onClick={() => handleSelectOption(optIdx)}
-                        className={`flex w-full items-start gap-3 rounded-xl border p-3.5 text-left transition-all ${cardClass}`}
+                        className={`flex w-full items-start gap-2 rounded-xl border p-3 transition-all ${cardClass}`}
                       >
-                        <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-zinc-300 text-[11px] font-bold text-zinc-500 dark:border-zinc-700 dark:text-zinc-400">
-                          {isAnswered && isThisCorrect ? (
-                            <CheckCircle2 className="h-4 w-4 text-teal-600 dark:text-teal-400" />
-                          ) : isAnswered && isThisSelected ? (
-                            <XCircle className="h-4 w-4 text-rose-600 dark:text-rose-400" />
-                          ) : (
-                            optIdx + 1
-                          )}
-                        </span>
-                        <div className="space-y-1">
-                          {languageMode !== 'da_only' && (
-                            <div className="text-xs font-semibold leading-snug text-zinc-900 dark:text-zinc-100">
-                              {opt.ru}
-                            </div>
-                          )}
-                          <div
-                            className={
-                              languageMode === 'da_only'
-                                ? 'text-xs font-semibold text-zinc-900 dark:text-zinc-100'
-                                : 'flex items-start gap-1.5 text-[11px] leading-snug text-teal-950/85 dark:text-teal-200/90'
-                            }
-                          >
-                            {languageMode !== 'da_only' && (
-                              <span className="mt-0.5 inline-flex shrink-0 items-center rounded bg-teal-100 px-1 py-0.5 text-[9px] font-bold tracking-wide text-teal-800 dark:bg-teal-950 dark:text-teal-300">
-                                DA
-                              </span>
+                        <button
+                          type="button"
+                          disabled={isAnswered}
+                          onClick={() => handleSelectOption(optIdx)}
+                          className="flex flex-1 items-start gap-3 text-left"
+                        >
+                          <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-zinc-300 text-[11px] font-bold text-zinc-500 dark:border-zinc-700 dark:text-zinc-400">
+                            {isAnswered && isThisCorrect ? (
+                              <CheckCircle2 className="h-4 w-4 text-teal-600 dark:text-teal-400" />
+                            ) : isAnswered && isThisSelected ? (
+                              <XCircle className="h-4 w-4 text-rose-600 dark:text-rose-400" />
+                            ) : (
+                              optIdx + 1
                             )}
-                            <span>{opt.da}</span>
+                          </span>
+                          <div className="space-y-1">
+                            {languageMode !== 'da_only' && (
+                              <div className="text-xs font-semibold leading-snug text-zinc-900 dark:text-zinc-100">
+                                {opt.ru}
+                              </div>
+                            )}
+                            <div
+                              className={
+                                languageMode === 'da_only'
+                                  ? 'text-xs font-semibold text-zinc-900 dark:text-zinc-100'
+                                  : 'flex items-start gap-1.5 text-[11px] leading-snug text-teal-950/85 dark:text-teal-200/90'
+                              }
+                            >
+                              {languageMode !== 'da_only' && (
+                                <span className="mt-0.5 inline-flex shrink-0 items-center rounded bg-teal-100 px-1 py-0.5 text-[9px] font-bold tracking-wide text-teal-800 dark:bg-teal-950 dark:text-teal-300">
+                                  DA
+                                </span>
+                              )}
+                              <span>{opt.da}</span>
+                            </div>
                           </div>
-                        </div>
-                      </button>
+                        </button>
+                        <SpeakButton id={`kontrol_opt_${q.id}_${optIdx}`} text={opt.da} />
+                      </div>
                     );
                   })}
                 </div>
@@ -609,8 +640,13 @@ export const KontrolSimulatorModal: React.FC<KontrolSimulatorModalProps> = ({
                         : 'border-rose-200 bg-rose-50/70 text-rose-900 dark:border-rose-900/60 dark:bg-rose-950/30 dark:text-rose-200'
                     }`}
                   >
-                    <div className="mb-1 font-bold">
-                      {isCorrect ? 'Верный ответ · Норма закона:' : 'Запомните точную норму:'}
+                    <div className="mb-1 flex items-center justify-between gap-2 font-bold">
+                      <span>
+                        {isCorrect
+                          ? pick('Верный ответ · Норма закона:', 'Правильна відповідь · Норма закону:')
+                          : pick('Запомните точную норму:', 'Запам’ятайте точну норму:')}
+                      </span>
+                      <SpeakButton id={`kontrol_norm_${q.id}`} text={q.normDa} />
                     </div>
                     {languageMode !== 'da_only' && <p>{q.normRu}</p>}
                     <p className={languageMode !== 'da_only' ? 'mt-1 text-[11px] opacity-85' : ''}>
@@ -628,8 +664,11 @@ export const KontrolSimulatorModal: React.FC<KontrolSimulatorModalProps> = ({
           <div className="flex items-center justify-between border-t border-zinc-200/80 bg-zinc-50/70 px-6 py-3.5 dark:border-zinc-800 dark:bg-zinc-950/50">
             <span className="text-xs text-zinc-500 dark:text-zinc-400">
               {isAnswered
-                ? 'Нажмите «Дальше» для следующего вопроса инспектора'
-                : 'Выберите правильный вариант ответа'}
+                ? pick(
+                    'Нажмите «Дальше» для следующего вопроса инспектора',
+                    'Натисніть «Далі» для наступного питання інспектора'
+                  )
+                : pick('Выберите правильный вариант ответа', 'Оберіть правильний варіант відповіді')}
             </span>
             <button
               type="button"
@@ -637,7 +676,9 @@ export const KontrolSimulatorModal: React.FC<KontrolSimulatorModalProps> = ({
               onClick={handleNext}
               className="inline-flex items-center gap-1.5 rounded-xl bg-zinc-900 px-4 py-2 text-xs font-semibold text-white transition-all hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-40 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-white"
             >
-              {index + 1 >= KONTROL_QUESTIONS.length ? 'Завершить опрос' : 'Дальше'}
+              {index + 1 >= KONTROL_QUESTIONS.length
+                ? pick('Завершить опрос', 'Завершити опитування')
+                : pick('Дальше', 'Далі')}
               <ArrowRight className="h-3.5 w-3.5" />
             </button>
           </div>

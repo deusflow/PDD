@@ -14,8 +14,7 @@ import {
   Wrench,
   Zap,
 } from 'lucide-react';
-import { QUESTIONS_BANK } from '../../data/questionsBank';
-import { DICTIONARY_ENTRIES } from '../../data/signsAndGlossary';
+import { useUiLang } from '../../i18n/UiLangContext';
 import {
   getCourseOverview,
   getDueReviewQuestionsForPassedModules,
@@ -56,30 +55,31 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   onOpenDictionary,
   onOpenLessonsReference,
 }) => {
+  const { uiLang, pick, modules, questions, dictionary } = useUiLang();
   const [showStats, setShowStats] = useState(false);
   const [isNumbersOpen, setIsNumbersOpen] = useState(false);
   const [isKontrolOpen, setIsKontrolOpen] = useState(false);
 
-  const overview = getCourseOverview(appState);
+  const overview = getCourseOverview(appState, Date.now(), uiLang, modules);
   const dueReviewQuestions = getDueReviewQuestionsForPassedModules(appState);
 
   const allDatabaseIds = [
-    ...QUESTIONS_BANK.map((q) => q.id),
-    ...DICTIONARY_ENTRIES.map((d) => d.id),
+    ...questions.map((q) => q.id),
+    ...dictionary.map((d) => d.id),
   ];
 
   const overallStats = computeProgressStats(allDatabaseIds, appState.srs);
   const questionStats = computeProgressStats(
-    QUESTIONS_BANK.map((q) => q.id),
+    questions.map((q) => q.id),
     appState.srs
   );
   const dictionaryStats = computeProgressStats(
-    DICTIONARY_ENTRIES.map((d) => d.id),
+    dictionary.map((d) => d.id),
     appState.srs
   );
 
-  const failedQuestions = QUESTIONS_BANK.filter((q) => getSRSRecord(appState.srs, q.id).box === 1);
-  const unseenQuestions = QUESTIONS_BANK.filter((q) => getSRSRecord(appState.srs, q.id).box === 0);
+  const failedQuestions = questions.filter((q) => getSRSRecord(appState.srs, q.id).box === 1);
+  const unseenQuestions = questions.filter((q) => getSRSRecord(appState.srs, q.id).box === 0);
   const isFreshUser =
     overview.percent === 0 && overallStats.seenItems === 0 && appState.sessionsCompleted === 0;
   const heroModuleId = Math.min(8, Math.max(1, overview.currentModuleId));
@@ -116,14 +116,16 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 {dueReviewQuestions.length > 0 && (
                   <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-700 dark:bg-amber-950/60 dark:text-amber-300">
                     <RefreshCw className="h-3 w-3" />
-                    <span>Пора повторить: {dueReviewQuestions.length}</span>
+                    <span>{pick('Пора повторить:', 'Час повторити:')} {dueReviewQuestions.length}</span>
                   </span>
                 )}
               </div>
 
               <div>
                 <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-100">
-                  {isFreshUser ? 'Начать обучение по ПДД Дании' : 'Продолжить обучение'}
+                  {isFreshUser
+                    ? pick('Начать обучение по ПДД Дании', 'Почати навчання з ПДР Данії')
+                    : pick('Продолжить обучение', 'Продовжити навчання')}
                 </h1>
                 <p className="mt-1.5 max-w-xl text-[15px] leading-relaxed text-zinc-600 dark:text-zinc-400">
                   {overview.stepDescription}
@@ -138,7 +140,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   />
                 </div>
                 <span className="text-xs font-semibold tabular-nums text-zinc-500 dark:text-zinc-400">
-                  Курс: {overview.percent}% • Уроков: {overview.completedModules}/8
+                  {pick('Курс', 'Курс')}: {overview.percent}% • {pick('Уроков', 'Уроків')}: {overview.completedModules}/8
                 </span>
               </div>
             </div>
@@ -149,7 +151,11 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 onClick={onStartCourse}
                 className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-teal-600 px-7 text-sm font-semibold text-white shadow-sm transition-all hover:bg-teal-500 sm:w-auto"
               >
-                <span>{isFreshUser ? 'Начать курс' : 'Продолжить курс'}</span>
+                <span>
+                  {isFreshUser
+                    ? pick('Начать курс', 'Почати курс')
+                    : pick('Продолжить курс', 'Продовжити курс')}
+                </span>
                 <ArrowRight className="h-4 w-4" />
               </button>
 
@@ -158,7 +164,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 onClick={onOpenLessonsReference}
                 className="rounded-lg bg-white/75 px-2.5 py-1 text-xs font-medium text-zinc-700 backdrop-blur-sm transition-colors hover:bg-white hover:text-zinc-950 dark:bg-zinc-900/75 dark:text-zinc-300 dark:hover:bg-zinc-900 dark:hover:text-zinc-100"
               >
-                Открыть справочник 8 тем
+                {pick('Открыть справочник 8 тем', 'Відкрити довідник 8 тем')}
               </button>
             </div>
           </div>
@@ -170,10 +176,10 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             <div className="flex items-center justify-between">
               <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
                 <BarChart3 className="h-3.5 w-3.5 text-teal-600 dark:text-teal-400" />
-                Готовность к Teoriprøven
+                {pick('Готовность к Teoriprøven', 'Готовність до Teoriprøven')}
               </span>
               <span className="text-xs font-bold tabular-nums text-zinc-700 dark:text-zinc-300">
-                {QUESTIONS_BANK.length} билетов
+                {questions.length} {pick('билетов', 'білетів')}
               </span>
             </div>
 
@@ -183,7 +189,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   {overallStats.coveragePercent}%
                 </div>
                 <div className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">
-                  Охвачено ({overallStats.seenItems}/{overallStats.totalItems})
+                  {pick('Охвачено', 'Охоплено')} ({overallStats.seenItems}/{overallStats.totalItems})
                 </div>
               </div>
               <div className="rounded-xl border border-zinc-200/80 bg-zinc-50/70 p-3 dark:border-zinc-800 dark:bg-zinc-950/50">
@@ -191,7 +197,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   {overallStats.masteryPercent}%
                 </div>
                 <div className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">
-                  Закреплено (Box 4–5)
+                  {pick('Закреплено (Box 4–5)', 'Закріплено (Box 4–5)')}
                 </div>
               </div>
             </div>
@@ -201,13 +207,13 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             <span className="flex items-center gap-1.5 font-medium text-zinc-600 dark:text-zinc-400">
               <Layers className="h-3.5 w-3.5 text-zinc-400" />
               {failedQuestions.length > 0
-                ? `Ошибок Box 1: ${failedQuestions.length}`
-                : 'Ошибок в Box 1 нет'}
+                ? `${pick('Ошибок Box 1:', 'Помилок Box 1:')} ${failedQuestions.length}`
+                : pick('Ошибок в Box 1 нет', 'Помилок у Box 1 немає')}
             </span>
             <span className="font-semibold tabular-nums text-zinc-500 dark:text-zinc-400">
               {appState.examHistory.length > 0
-                ? `Экзамен: ${Math.max(...appState.examHistory.map((e) => e.score))}/25`
-                : 'Сессий: ' + appState.sessionsCompleted}
+                ? `${pick('Экзамен:', 'Іспит:')} ${Math.max(...appState.examHistory.map((e) => e.score))}/25`
+                : `${pick('Сессий:', 'Сесій:')} ${appState.sessionsCompleted}`}
             </span>
           </div>
         </aside>
@@ -227,23 +233,26 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   type="button"
                   onClick={() =>
                     onStartCustomSession(
-                      'Исправление ошибок',
-                      'Билеты из Box 1, в которых были ошибки',
+                      pick('Исправление ошибок', 'Виправлення помилок'),
+                      pick('Билеты из Box 1, в которых были ошибки', 'Білети з Box 1, у яких були помилки'),
                       failedQuestions
                     )
                   }
                   className="rounded-full bg-rose-50 px-2.5 py-0.5 text-[11px] font-semibold text-rose-700 transition-colors hover:bg-rose-100 dark:bg-rose-950/60 dark:text-rose-300"
                 >
-                  Ошибок: {failedQuestions.length}
+                  {pick('Ошибок:', 'Помилок:')} {failedQuestions.length}
                 </button>
               )}
             </div>
 
             <h2 className="mt-3.5 text-base font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
-              Умная тренировка
+              {pick('Умная тренировка', 'Розумне тренування')}
             </h2>
             <p className="mt-1 text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">
-              Ошибки (Box 1), повторения (Box 2–3) и новые билеты — выберите размер сета.
+              {pick(
+                'Ошибки (Box 1), повторения (Box 2–3) и новые билеты — выберите размер сета.',
+                'Помилки (Box 1), повторення (Box 2–3) та нові білети — оберіть розмір сету.'
+              )}
             </p>
           </div>
 
@@ -255,14 +264,14 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 className="inline-flex h-10 flex-1 items-center justify-center gap-1.5 rounded-xl border border-zinc-200/90 bg-white px-3 text-xs font-semibold text-zinc-900 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800"
               >
                 <Play className="h-3.5 w-3.5 fill-current" />
-                <span>10 вопр.</span>
+                <span>{pick('10 вопр.', '10 пит.')}</span>
               </button>
               <button
                 type="button"
                 onClick={() => onStartSmartSession(20)}
                 className="inline-flex h-10 flex-1 items-center justify-center gap-1.5 rounded-xl border border-zinc-200/80 bg-zinc-50 px-3 text-xs font-semibold text-zinc-700 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200 dark:hover:bg-zinc-800"
               >
-                <span>20 вопр.</span>
+                <span>{pick('20 вопр.', '20 пит.')}</span>
               </button>
             </div>
             {unseenQuestions.length > 0 && (
@@ -270,14 +279,17 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 type="button"
                 onClick={() =>
                   onStartCustomSession(
-                    'Только новые билеты (Box 0)',
-                    `Ещё не изученные ситуации по всем темам (${Math.min(10, unseenQuestions.length)} из ${unseenQuestions.length})`,
+                    pick('Только новые билеты (Box 0)', 'Лише нові білети (Box 0)'),
+                    pick(
+                      `Ещё не изученные ситуации по всем темам (${Math.min(10, unseenQuestions.length)} из ${unseenQuestions.length})`,
+                      `Ще не вивчені ситуації за всіма темами (${Math.min(10, unseenQuestions.length)} з ${unseenQuestions.length})`
+                    ),
                     buildSmartSession(unseenQuestions, appState.srs, 10)
                   )
                 }
                 className="inline-flex h-8 w-full items-center justify-center rounded-lg border border-sky-200/80 bg-sky-50/70 px-3 text-[11px] font-semibold text-sky-700 transition-colors hover:bg-sky-100 dark:border-sky-900/60 dark:bg-sky-950/30 dark:text-sky-300"
               >
-                Только новые · Box 0 ({unseenQuestions.length})
+                {pick('Только новые · Box 0', 'Лише нові · Box 0')} ({unseenQuestions.length})
               </button>
             )}
           </div>
@@ -292,16 +304,19 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               </div>
               <span className="text-[11px] font-medium text-zinc-400">
                 {appState.examHistory.length > 0
-                  ? `Лучший: ${Math.max(...appState.examHistory.map((e) => e.score))}/25`
-                  : '25 билетов · 25 мин'}
+                  ? `${pick('Лучший:', 'Найкращий:')} ${Math.max(...appState.examHistory.map((e) => e.score))}/25`
+                  : pick('25 билетов · 25 мин', '25 білетів · 25 хв')}
               </span>
             </div>
 
             <h2 className="mt-3.5 text-base font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
-              Пробный экзамен
+              {pick('Пробный экзамен', 'Пробний іспит')}
             </h2>
             <p className="mt-1 text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">
-              Строгий симулятор Teoriprøven: минимум 20 из 25 для сдачи.
+              {pick(
+                'Строгий симулятор Teoriprøven: минимум 20 из 25 для сдачи.',
+                'Суворий симулятор Teoriprøven: мінімум 20 з 25 для складання.'
+              )}
             </p>
           </div>
 
@@ -310,7 +325,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             onClick={onOpenExam}
             className="mt-4 inline-flex h-10 w-full items-center justify-center gap-1.5 rounded-xl border border-zinc-200/90 bg-white px-4 text-xs font-semibold text-zinc-900 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800"
           >
-            <span>Запустить экзамен</span>
+            <span>{pick('Запустить экзамен', 'Запустити іспит')}</span>
             <ArrowRight className="h-3.5 w-3.5" />
           </button>
         </div>
@@ -323,15 +338,18 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 <Signpost className="h-5 w-5" />
               </div>
               <span className="text-[11px] font-medium text-zinc-400">
-                {DICTIONARY_ENTRIES.length} карточек
+                {dictionary.length} {pick('карточек', 'карток')}
               </span>
             </div>
 
             <h2 className="mt-3.5 text-base font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
-              Знаки и словарь
+              {pick('Знаки и словарь', 'Знаки та словник')}
             </h2>
             <p className="mt-1 text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">
-              Дорожные знаки, устные ответы Kontrolprøven и термины с озвучкой.
+              {pick(
+                'Дорожные знаки, устные ответы Kontrolprøven и термины с озвучкой.',
+                'Дорожні знаки, усні відповіді Kontrolprøven та терміни з озвучкою.'
+              )}
             </p>
           </div>
 
@@ -341,14 +359,14 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               onClick={onOpenSignsAndKontrol}
               className="inline-flex h-10 flex-1 items-center justify-center rounded-xl border border-zinc-200/90 bg-white px-3 text-xs font-semibold text-zinc-900 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800"
             >
-              Знаки и авто
+              {pick('Знаки и авто', 'Знаки та авто')}
             </button>
             <button
               type="button"
               onClick={onOpenDictionary}
               className="inline-flex h-10 items-center justify-center rounded-xl border border-zinc-200/80 bg-zinc-50 px-3 text-xs font-medium text-zinc-600 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-300 dark:hover:bg-zinc-800"
             >
-              Словарь
+              {pick('Словарь', 'Словник')}
             </button>
           </div>
         </div>
@@ -367,10 +385,13 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             </div>
             <div>
               <div className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
-                Все цифры ПДД за 2 минуты
+                {pick('Все цифры ПДД за 2 минуты', 'Усі цифри ПДР за 2 хвилини')}
               </div>
               <div className="text-[11px] text-zinc-500 dark:text-zinc-400">
-                Отступы 5/10/12/30 м, скорости, прицеп 3.500 kg, свет, алкоголь и Lovpakke B
+                {pick(
+                  'Отступы 5/10/12/30 м, скорости, прицеп 3.500 kg, свет, алкоголь и Lovpakke B',
+                  'Відступи 5/10/12/30 м, швидкості, причіп 3.500 kg, світло, алкоголь і Lovpakke B'
+                )}
               </div>
             </div>
           </div>
@@ -388,10 +409,13 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             </div>
             <div>
               <div className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
-                Опрос инспектора · Kontrolprøven
+                {pick('Опрос инспектора · Kontrolprøven', 'Опитування інспектора · Kontrolprøven')}
               </div>
               <div className="text-[11px] text-zinc-500 dark:text-zinc-400">
-                10 устных заданий перед выездом: капот, вакуум тормозов, шины 1,6 мм, фары и лампы
+                {pick(
+                  '10 устных заданий перед выездом: капот, вакуум тормозов, шины 1,6 мм, фары и лампы',
+                  '10 усних завдань перед виїздом: капот, вакуум гальм, шини 1,6 мм, фари та лампи'
+                )}
               </div>
             </div>
           </div>
@@ -409,8 +433,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           <div className="flex items-center gap-2 text-xs font-semibold text-zinc-700 dark:text-zinc-300">
             <BarChart3 className="h-4 w-4 text-teal-600 dark:text-teal-400" />
             <span>
-              Подробная статистика · Охват {overallStats.coveragePercent}% · Усвоено{' '}
-              {overallStats.masteryPercent}%
+              {pick('Подробная статистика · Охват', 'Детальна статистика · Охоплення')} {overallStats.coveragePercent}% ·{' '}
+              {pick('Усвоено', 'Засвоєно')} {overallStats.masteryPercent}%
             </span>
           </div>
           {showStats ? (
@@ -425,7 +449,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             <div className="grid gap-3 sm:grid-cols-2">
               <div className="rounded-xl border border-zinc-200/80 bg-zinc-50/70 p-3.5 dark:border-zinc-800 dark:bg-zinc-950/50">
                 <div className="flex items-center justify-between text-xs font-semibold">
-                  <span className="text-zinc-700 dark:text-zinc-300">Охват базы (Coverage)</span>
+                  <span className="text-zinc-700 dark:text-zinc-300">
+                    {pick('Охват базы (Coverage)', 'Охоплення бази (Coverage)')}
+                  </span>
                   <span className="text-sky-600 dark:text-sky-400">{overallStats.coveragePercent}%</span>
                 </div>
                 <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-800">
@@ -435,14 +461,16 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   />
                 </div>
                 <div className="mt-2 flex flex-wrap justify-between gap-2 text-[11px] text-zinc-500 dark:text-zinc-400">
-                  <span>Билеты: {questionStats.seenItems}/{questionStats.totalItems}</span>
-                  <span>Знаки/Термины/Kontrol: {dictionaryStats.seenItems}/{dictionaryStats.totalItems}</span>
+                  <span>{pick('Билеты:', 'Білети:')} {questionStats.seenItems}/{questionStats.totalItems}</span>
+                  <span>{pick('Знаки/Термины/Kontrol:', 'Знаки/Терміни/Kontrol:')} {dictionaryStats.seenItems}/{dictionaryStats.totalItems}</span>
                 </div>
               </div>
 
               <div className="rounded-xl border border-zinc-200/80 bg-zinc-50/70 p-3.5 dark:border-zinc-800 dark:bg-zinc-950/50">
                 <div className="flex items-center justify-between text-xs font-semibold">
-                  <span className="text-zinc-700 dark:text-zinc-300">Усвоение (Box 4–5)</span>
+                  <span className="text-zinc-700 dark:text-zinc-300">
+                    {pick('Усвоение (Box 4–5)', 'Засвоєння (Box 4–5)')}
+                  </span>
                   <span className="text-teal-600 dark:text-teal-400">{overallStats.masteryPercent}%</span>
                 </div>
                 <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-800">
@@ -452,8 +480,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   />
                 </div>
                 <div className="mt-2 flex flex-wrap justify-between gap-2 text-[11px] text-zinc-500 dark:text-zinc-400">
-                  <span>Билеты: {questionStats.masteredItems}/{questionStats.totalItems}</span>
-                  <span>Карточки: {dictionaryStats.masteredItems}/{dictionaryStats.totalItems}</span>
+                  <span>{pick('Билеты:', 'Білети:')} {questionStats.masteredItems}/{questionStats.totalItems}</span>
+                  <span>{pick('Карточки:', 'Картки:')} {dictionaryStats.masteredItems}/{dictionaryStats.totalItems}</span>
                 </div>
               </div>
             </div>
@@ -461,7 +489,12 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             <div>
               <div className="mb-2 flex items-center gap-1.5 text-xs font-semibold text-zinc-500 dark:text-zinc-400">
                 <Layers className="h-3.5 w-3.5" />
-                <span>Коробки запоминания Лейтнера (билеты Teoriprøven)</span>
+                <span>
+                  {pick(
+                    'Коробки запоминания Лейтнера (билеты Teoriprøven)',
+                    'Коробки запам’ятовування Лейтнера (білети Teoriprøven)'
+                  )}
+                </span>
               </div>
               <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
                 {([0, 1, 2, 3, 4, 5] as BoxLevel[]).map((box) => {
@@ -481,7 +514,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                         {questionStats.boxCounts[box]}
                       </div>
                       <div className="truncate text-[10px] text-zinc-500 dark:text-zinc-400">
-                        {meta.labelRu}
+                        {uiLang === 'uk' ? meta.labelUk : meta.labelRu}
                       </div>
                     </div>
                   );

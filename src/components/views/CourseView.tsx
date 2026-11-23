@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { MODULES_DATA } from '../../data/modulesData';
+import { useUiLang } from '../../i18n/UiLangContext';
 import {
   CHECKPOINT_MIN_PASS_SCORE,
   CourseStep,
@@ -102,10 +102,13 @@ export const CourseView: React.FC<CourseViewProps> = ({
   onOpenSmartTraining,
   onExit,
 }) => {
-  const [activeStep, setActiveStep] = useState<CourseStep>(() => getNextCourseStep(appState));
+  const { uiLang, pick, modules } = useUiLang();
+  const [activeStep, setActiveStep] = useState<CourseStep>(() =>
+    getNextCourseStep(appState, Date.now(), uiLang)
+  );
   const [stepKey, setStepKey] = useState<string>(() => `step_${Date.now()}`);
   const [showInterstitial, setShowInterstitial] = useState<boolean>(() =>
-    shouldShowInterstitial(getNextCourseStep(appState), appState)
+    shouldShowInterstitial(getNextCourseStep(appState, Date.now(), uiLang), appState)
   );
   const [celebrating, setCelebrating] = useState<{
     moduleId: number;
@@ -125,7 +128,7 @@ export const CourseView: React.FC<CourseViewProps> = ({
   useEffect(() => {
     if (!pendingTransition) return;
 
-    const nextStep = getNextCourseStep(appState);
+    const nextStep = getNextCourseStep(appState, Date.now(), uiLang);
 
     if (pendingTransition.kind === 'after_lesson_quiz') {
       const nowPassed = getModuleProgress(appState.course, pendingTransition.moduleId).passed;
@@ -146,7 +149,10 @@ export const CourseView: React.FC<CourseViewProps> = ({
     if (pendingTransition.kind === 'after_checkpoint') {
       if (!pendingTransition.passed) {
         setCheckpointRetryBanner(
-          `Результат: ${pendingTransition.score} из ${pendingTransition.total}. Для прохождения нужно минимум ${CHECKPOINT_MIN_PASS_SCORE}. Ошибки добавлены к повторению — попробуйте ещё раз.`
+          pick(
+            `Результат: ${pendingTransition.score} из ${pendingTransition.total}. Для прохождения нужно минимум ${CHECKPOINT_MIN_PASS_SCORE}. Ошибки добавлены к повторению — попробуйте ещё раз.`,
+            `Результат: ${pendingTransition.score} із ${pendingTransition.total}. Для проходження потрібно щонайменше ${CHECKPOINT_MIN_PASS_SCORE}. Помилки додані до повторення — спробуйте ще раз.`
+          )
         );
       } else {
         setCheckpointRetryBanner(null);
@@ -158,9 +164,9 @@ export const CourseView: React.FC<CourseViewProps> = ({
     setShowInterstitial(shouldShowInterstitial(nextStep, appState));
     setPendingTransition(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [appState, pendingTransition]);
+  }, [appState, pendingTransition, pick, uiLang]);
 
-  const overview = getCourseOverview(appState);
+  const overview = getCourseOverview(appState, Date.now(), uiLang, modules);
   const activeModuleId =
     celebrating?.moduleId ??
     (activeStep.kind === 'theory' ||
@@ -194,7 +200,7 @@ export const CourseView: React.FC<CourseViewProps> = ({
           onTrainFailedQuestions={onTrainFailedQuestions}
           onBackToCourse={() => {
             setExtraMockExam(false);
-            const next = getNextCourseStep(appState);
+            const next = getNextCourseStep(appState, Date.now(), uiLang);
             setActiveStep(next);
             setShowInterstitial(shouldShowInterstitial(next, appState));
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -205,21 +211,24 @@ export const CourseView: React.FC<CourseViewProps> = ({
 
     // Celebration screen after closing a module
     if (celebrating !== null) {
-      const mod = MODULES_DATA.find((m) => m.id === celebrating.moduleId);
+      const mod = modules.find((m) => m.id === celebrating.moduleId);
       const nextButtonText =
         activeStep.kind === 'checkpoint'
-          ? 'К контрольной по урокам 1–4'
+          ? pick('К контрольной по урокам 1–4', 'До контрольної за уроками 1–4')
           : activeStep.kind === 'mock_exam'
-            ? 'К финальному экзамену'
+            ? pick('К финальному экзамену', 'До фінального іспиту')
             : activeStep.kind === 'review'
-              ? 'Продолжить'
-              : `Урок ${celebrating.moduleId + 1}`;
+              ? pick('Продолжить', 'Продовжити')
+              : `${pick('Урок', 'Урок')} ${celebrating.moduleId + 1}`;
 
       return (
         <CourseInterstitial
           variant="lesson_passed"
-          title={`Урок ${celebrating.moduleId} пройден`}
-          description={`Тема «${mod?.titleRu ?? ''}» успешно закреплена.`}
+          title={pick(`Урок ${celebrating.moduleId} пройден`, `Урок ${celebrating.moduleId} пройдено`)}
+          description={pick(
+            `Тема «${mod?.titleRu ?? ''}» успешно закреплена.`,
+            `Тему «${mod?.titleRu ?? ''}» успішно закріплено.`
+          )}
           statsText={celebrating.scoreText}
           buttonLabel={nextButtonText}
           onPrimary={() => {
@@ -239,17 +248,23 @@ export const CourseView: React.FC<CourseViewProps> = ({
       return (
         <CourseInterstitial
           variant="ready"
-          title="Вы готовы к Teoriprøven"
-          description={`Все 8 уроков, контрольная и серия из ${REQUIRED_MOCK_EXAM_STREAK} пробных экзаменов подряд успешно пройдены.`}
-          statsText={`Пройдено уроков: 8/8 • Экзаменов сдано: ${passedCount} из ${examsCount}`}
-          buttonLabel="Ещё один пробный экзамен"
+          title={pick('Вы готовы к Teoriprøven', 'Ви готові до Teoriprøven')}
+          description={pick(
+            `Все 8 уроков, контрольная и серия из ${REQUIRED_MOCK_EXAM_STREAK} пробных экзаменов подряд успешно пройдены.`,
+            `Усі 8 уроків, контрольна та серія з ${REQUIRED_MOCK_EXAM_STREAK} пробних іспитів поспіль успішно пройдено.`
+          )}
+          statsText={pick(
+            `Пройдено уроков: 8/8 • Экзаменов сдано: ${passedCount} из ${examsCount}`,
+            `Пройдено уроків: 8/8 • Іспитів складено: ${passedCount} із ${examsCount}`
+          )}
+          buttonLabel={pick('Ещё один пробный экзамен', 'Ще один пробний іспит')}
           onPrimary={() => {
             setExtraMockExam(true);
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
-          secondaryLabel="Умная тренировка"
+          secondaryLabel={pick('Умная тренировка', 'Розумне тренування')}
           onSecondary={onOpenSmartTraining}
-          tertiaryLabel="Вернуться в главное меню"
+          tertiaryLabel={pick('Вернуться в главное меню', 'Повернутися до головного меню')}
           onTertiary={handleExit}
         />
       );
@@ -258,12 +273,14 @@ export const CourseView: React.FC<CourseViewProps> = ({
     // Interstitial screens before review, fix, checkpoint, mock_exam
     if (showInterstitial) {
       if (activeStep.kind === 'review') {
+        const freshReview = getNextCourseStep(appState, Date.now(), uiLang);
+        const reviewReason = freshReview.kind === 'review' ? freshReview.reason : activeStep.reason;
         return (
           <CourseInterstitial
             variant="review"
-            title="Сначала повторим"
-            description={activeStep.reason}
-            buttonLabel={`Повторить (${activeStep.questions.length} вопр.)`}
+            title={pick('Сначала повторим', 'Спочатку повторимо')}
+            description={reviewReason}
+            buttonLabel={`${pick('Повторить', 'Повторити')} (${activeStep.questions.length} ${pick('вопр.', 'пит.')})`}
             onPrimary={() => {
               setShowInterstitial(false);
               window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -276,9 +293,12 @@ export const CourseView: React.FC<CourseViewProps> = ({
         return (
           <CourseInterstitial
             variant="fix"
-            title={`Исправим ошибки урока ${activeStep.moduleId}`}
-            description={`Осталось разобрать проблемные билеты (${activeStep.questions.length} шт.), чтобы уверенно закрыть тему.`}
-            buttonLabel={`Исправить (${activeStep.questions.length} вопр.)`}
+            title={pick(`Исправим ошибки урока ${activeStep.moduleId}`, `Виправимо помилки уроку ${activeStep.moduleId}`)}
+            description={pick(
+              `Осталось разобрать проблемные билеты (${activeStep.questions.length} шт.), чтобы уверенно закрыть тему.`,
+              `Залишилося розібрати проблемні білети (${activeStep.questions.length} шт.), щоб упевнено закрити тему.`
+            )}
+            buttonLabel={`${pick('Исправить', 'Виправити')} (${activeStep.questions.length} ${pick('вопр.', 'пит.')})`}
             onPrimary={() => {
               setShowInterstitial(false);
               window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -294,9 +314,12 @@ export const CourseView: React.FC<CourseViewProps> = ({
         return (
           <CourseInterstitial
             variant="retake_quiz"
-            title={`Закрепим Урок ${activeStep.moduleId} ещё раз`}
-            description={`Ошибки разобраны, но с 1-й попытки было ${modProg.bestFirstTryScore} из ${modTotal} (нужно минимум ${modThreshold}). Пройдите тест ещё раз без подсказок.`}
-            buttonLabel={`Пройти тест (${activeStep.questions.length} вопр.)`}
+            title={pick(`Закрепим Урок ${activeStep.moduleId} ещё раз`, `Закріпимо Урок ${activeStep.moduleId} ще раз`)}
+            description={pick(
+              `Ошибки разобраны, но с 1-й попытки было ${modProg.bestFirstTryScore} из ${modTotal} (нужно минимум ${modThreshold}). Пройдите тест ещё раз без подсказок.`,
+              `Помилки розібрані, але з 1-ї спроби було ${modProg.bestFirstTryScore} із ${modTotal} (потрібно щонайменше ${modThreshold}). Пройдіть тест ще раз без підказок.`
+            )}
+            buttonLabel={`${pick('Пройти тест', 'Пройти тест')} (${activeStep.questions.length} ${pick('вопр.', 'пит.')})`}
             onPrimary={() => {
               setShowInterstitial(false);
               window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -309,12 +332,15 @@ export const CourseView: React.FC<CourseViewProps> = ({
         return (
           <CourseInterstitial
             variant="checkpoint"
-            title="Контрольная: уроки 1–4"
+            title={pick('Контрольная: уроки 1–4', 'Контрольна: уроки 1–4')}
             description={
               checkpointRetryBanner ??
-              `12 вопросов по первым четырём темам. Для перехода к Уроку 5 нужно ответить верно минимум на ${CHECKPOINT_MIN_PASS_SCORE}.`
+              pick(
+                `12 вопросов по первым четырём темам. Для перехода к Уроку 5 нужно ответить верно минимум на ${CHECKPOINT_MIN_PASS_SCORE}.`,
+                `12 питань із перших чотирьох тем. Для переходу до Уроку 5 потрібно відповісти правильно щонайменше на ${CHECKPOINT_MIN_PASS_SCORE}.`
+              )
             }
-            buttonLabel="Начать контрольную (12 вопр.)"
+            buttonLabel={pick('Начать контрольную (12 вопр.)', 'Почати контрольну (12 пит.)')}
             onPrimary={() => {
               setCheckpointRetryBanner(null);
               setShowInterstitial(false);
@@ -329,10 +355,16 @@ export const CourseView: React.FC<CourseViewProps> = ({
         return (
           <CourseInterstitial
             variant="mock_exam"
-            title="Пробный экзамен Teoriprøven"
-            description="Все уроки пройдены. Время экзамена: 25 вопросов, 25 минут, нужно минимум 20 верных."
-            statsText={`Сдано подряд: ${streak} из ${REQUIRED_MOCK_EXAM_STREAK}`}
-            buttonLabel="Начать экзамен (25 вопр.)"
+            title={pick('Пробный экзамен Teoriprøven', 'Пробний іспит Teoriprøven')}
+            description={pick(
+              'Все уроки пройдены. Время экзамена: 25 вопросов, 25 минут, нужно минимум 20 верных.',
+              'Усі уроки пройдено. Час іспиту: 25 питань, 25 хвилин, потрібно щонайменше 20 правильних.'
+            )}
+            statsText={pick(
+              `Сдано подряд: ${streak} из ${REQUIRED_MOCK_EXAM_STREAK}`,
+              `Складено поспіль: ${streak} із ${REQUIRED_MOCK_EXAM_STREAK}`
+            )}
+            buttonLabel={pick('Начать экзамен (25 вопр.)', 'Почати іспит (25 пит.)')}
             onPrimary={() => {
               setShowInterstitial(false);
               window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -357,8 +389,8 @@ export const CourseView: React.FC<CourseViewProps> = ({
             languageMode={appState.languageMode}
             nextButtonLabel={
               modProgress.flashcardsCompleted
-                ? 'Я прочитал — к тесту'
-                : 'Я прочитал — к карточкам и тесту'
+                ? pick('Я прочитал — к тесту', 'Я прочитав — до тесту')
+                : pick('Я прочитал — к карточкам и тесту', 'Я прочитав — до карток і тесту')
             }
             onComplete={() => {
               danishSpeech.stop();
@@ -391,7 +423,7 @@ export const CourseView: React.FC<CourseViewProps> = ({
       case 'fix': {
         const mId = activeStep.moduleId;
         const isFullQuiz = activeStep.kind === 'quiz';
-        const mod = MODULES_DATA.find((m) => m.id === mId);
+        const mod = modules.find((m) => m.id === mId);
         return (
           <QuizSessionView
             key={stepKey}
@@ -399,8 +431,8 @@ export const CourseView: React.FC<CourseViewProps> = ({
             draftKey={getDraftKeyForStep(activeStep)}
             title={
               isFullQuiz
-                ? `Тест · Урок ${mId}: ${mod?.titleRu ?? ''}`
-                : `Работа над ошибками · Урок ${mId}`
+                ? `${pick('Тест · Урок', 'Тест · Урок')} ${mId}: ${mod?.titleRu ?? ''}`
+                : `${pick('Работа над ошибками · Урок', 'Робота над помилками · Урок')} ${mId}`
             }
             moduleId={mId}
             initialQuestions={activeStep.questions}
@@ -418,8 +450,14 @@ export const CourseView: React.FC<CourseViewProps> = ({
                 moduleId: mId,
                 wasPassedBefore,
                 scoreText: isFullQuiz
-                  ? `Результат с 1-й попытки: ${firstTryScore} из ${total}`
-                  : `Ошибки исправлены (${total} вопр.)`,
+                  ? pick(
+                      `Результат с 1-й попытки: ${firstTryScore} из ${total}`,
+                      `Результат з 1-ї спроби: ${firstTryScore} із ${total}`
+                    )
+                  : pick(
+                      `Ошибки исправлены (${total} вопр.)`,
+                      `Помилки виправлено (${total} пит.)`
+                    ),
               });
             }}
             onExit={handleExit}
@@ -433,7 +471,7 @@ export const CourseView: React.FC<CourseViewProps> = ({
             key={stepKey}
             mode="course"
             draftKey="course_review"
-            title="Повторение пройденных тем"
+            title={pick('Повторение пройденных тем', 'Повторення пройдених тем')}
             initialQuestions={activeStep.questions}
             srsMap={appState.srs}
             languageMode={appState.languageMode}
@@ -454,7 +492,7 @@ export const CourseView: React.FC<CourseViewProps> = ({
             key={stepKey}
             mode="course"
             draftKey="course_checkpoint"
-            title="Контрольная · Уроки 1–4"
+            title={pick('Контрольная · Уроки 1–4', 'Контрольна · Уроки 1–4')}
             initialQuestions={activeStep.questions}
             srsMap={appState.srs}
             languageMode={appState.languageMode}
@@ -488,7 +526,7 @@ export const CourseView: React.FC<CourseViewProps> = ({
             onTrainFailedQuestions={onTrainFailedQuestions}
             onBackToCourse={() => {
               danishSpeech.stop();
-              const next = getNextCourseStep(appState);
+              const next = getNextCourseStep(appState, Date.now(), uiLang);
               setActiveStep(next);
               setStepKey(`step_${Date.now()}`);
               setShowInterstitial(shouldShowInterstitial(next, appState));
@@ -519,7 +557,10 @@ export const CourseView: React.FC<CourseViewProps> = ({
         <div className="space-y-4 animate-slide-up">
           <div className="nordic-card flex flex-wrap items-center justify-between gap-3 border-teal-200/80 bg-teal-50/50 px-4 py-3 dark:border-teal-900/50 dark:bg-teal-950/20">
             <div className="text-xs font-medium text-teal-900 dark:text-teal-200">
-              Режим повторения теории · прогресс основного курса сохранён
+              {pick(
+                'Режим повторения теории · прогресс основного курса сохранён',
+                'Режим повторення теорії · прогрес основного курсу збережено'
+              )}
             </div>
             <button
               type="button"
@@ -530,14 +571,14 @@ export const CourseView: React.FC<CourseViewProps> = ({
               }}
               className="rounded-lg bg-zinc-900 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-white"
             >
-              ← Вернуться к текущему шагу курса
+              {pick('← Вернуться к текущему шагу курса', '← Повернутися до поточного кроку курсу')}
             </button>
           </div>
           <LessonTheory
             key={`browse_${browsingModuleId}`}
             moduleId={browsingModuleId}
             languageMode={appState.languageMode}
-            nextButtonLabel="Вернуться к текущему шагу"
+            nextButtonLabel={pick('Вернуться к текущему шагу', 'Повернутися до поточного кроку')}
             onComplete={() => {
               danishSpeech.stop();
               setBrowsingModuleId(null);

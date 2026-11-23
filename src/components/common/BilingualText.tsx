@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
+import { useUiLang } from '../../i18n/UiLangContext';
 import { LanguageMode } from '../../types';
 
 interface BilingualTextProps {
@@ -25,6 +26,7 @@ export const BilingualText: React.FC<BilingualTextProps> = ({
   ruClassName = '',
   className = '',
 }) => {
+  const { pick } = useUiLang();
   const [revealed, setRevealed] = useState(false);
 
   useEffect(() => {
@@ -83,7 +85,11 @@ export const BilingualText: React.FC<BilingualTextProps> = ({
               ? 'border-zinc-200 bg-zinc-50 text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800/80 dark:text-zinc-300'
               : 'border-dashed border-zinc-300 bg-zinc-100/80 text-zinc-500 hover:border-zinc-400 hover:text-zinc-800 dark:border-zinc-700 dark:bg-zinc-800/60 dark:text-zinc-400 dark:hover:border-zinc-500 dark:hover:text-zinc-200'
           }`}
-          title={revealed ? 'Скрыть перевод' : 'Показать перевод на русский'}
+          title={
+            revealed
+              ? pick('Скрыть перевод', 'Приховати переклад')
+              : pick('Показать перевод на русский', 'Показати переклад українською')
+          }
         >
           {revealed ? (
             <>
@@ -93,7 +99,7 @@ export const BilingualText: React.FC<BilingualTextProps> = ({
           ) : (
             <>
               <Eye className="h-3 w-3 shrink-0" />
-              <span>Показать перевод</span>
+              <span>{pick('Показать перевод', 'Показати переклад')}</span>
             </>
           )}
         </button>

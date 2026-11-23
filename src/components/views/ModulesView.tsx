@@ -14,9 +14,7 @@ import {
   ShieldCheck,
   Signpost,
 } from 'lucide-react';
-import { MODULES_DATA } from '../../data/modulesData';
-import { QUESTIONS_BANK } from '../../data/questionsBank';
-import { DICTIONARY_ENTRIES } from '../../data/signsAndGlossary';
+import { useUiLang } from '../../i18n/UiLangContext';
 import { shuffleItems } from '../../services/coursePlanner';
 import { loadAllTheorySlideIndices } from '../../services/sessionPersistence';
 import { BOX_META, computeProgressStats, getSRSRecord } from '../../services/srsEngine';
@@ -68,6 +66,7 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
   onRecordEntryReview,
   onOpenCourse,
 }) => {
+  const { uiLang, pick, modules, questions, dictionary } = useUiLang();
   const [activeId, setActiveId] = useState<number>(selectedModuleId);
   const [viewMode, setViewMode] = useState<'list' | 'lesson'>(initialViewMode);
   const [lessonTab, setLessonTab] = useState<LessonTab>(initialLessonTab);
@@ -123,10 +122,13 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
         <section className="nordic-card flex flex-col justify-between gap-4 p-5 sm:flex-row sm:items-center sm:p-6">
           <div>
             <h1 className="text-xl font-bold tracking-tight text-zinc-900 sm:text-2xl dark:text-zinc-100">
-              Справочник курса: 8 обязательных тем
+              {pick('Справочник курса: 8 обязательных тем', 'Довідник курсу: 8 обов’язкових тем')}
             </h1>
             <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-              Свободное чтение любого модуля или последовательное прохождение в управляемом курсе.
+              {pick(
+                'Свободное чтение любого модуля или последовательное прохождение в управляемом курсе.',
+                'Вільне читання будь-якого модуля або послідовне проходження у керованому курсі.'
+              )}
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
@@ -136,14 +138,14 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
               className="inline-flex h-11 shrink-0 items-center justify-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-4 text-xs font-semibold text-zinc-800 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
             >
               <ShieldCheck className="h-4 w-4 text-teal-600 dark:text-teal-400" />
-              <span>План автошколы (M1–M5)</span>
+              <span>{pick('План автошколы (M1–M5)', 'План автошколи (M1–M5)')}</span>
             </button>
             <button
               type="button"
               onClick={onOpenCourse}
               className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-teal-600 px-5 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-teal-500 sm:text-sm"
             >
-              <span>Пройти в режиме курса</span>
+              <span>{pick('Пройти в режиме курса', 'Пройти в режимі курсу')}</span>
               <ArrowRight className="h-4 w-4" />
             </button>
           </div>
@@ -154,18 +156,24 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
             <div className="grid gap-5 lg:grid-cols-2">
               <div>
                 <h2 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
-                  Структура датской автошколы (Undervisningsplan B • Forløbsplan)
+                  {pick(
+                    'Структура датской автошколы (Undervisningsplan B • Forløbsplan)',
+                    'Структура данської автошколи (Undervisningsplan B • Forløbsplan)'
+                  )}
                 </h2>
                 <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
-                  Как 8 тем курса соответствуют 5 обязательным модулям датской автошколы (29 теория + 4 площадка + 16 дорога + 4 KTA):
+                  {pick(
+                    'Как 8 тем курса соответствуют 5 обязательным модулям датской автошколы (29 теория + 4 площадка + 16 дорога + 4 KTA):',
+                    'Як 8 тем курсу відповідають 5 обов’язковим модулям данської автошколи (29 теорія + 4 майданчик + 16 дорога + 4 KTA):'
+                  )}
                 </p>
                 <div className="mt-3 space-y-2 text-xs">
                   {[
-                    { code: 'M1', da: 'Grundlæggende trafikforståelse', ru: 'Поведение, § 3, восприятие, манёвренность ТС, сигналы (Уроки 1, 2, 3)', lessons: 'Mål 3, 4, 5.1, 6.1–6.2' },
-                    { code: 'M2', da: 'Forberedende teori + Manøvrebane', ru: 'Устройство авто, документы + 3–4 ч площадка (Уроки 1, 2)', lessons: 'Mål 1.1–1.3, 2.1–2.9' },
-                    { code: 'M3', da: 'Grundlæggende kørsel på vej', ru: 'Базовая езда: знаки, перекрёстки, круги, велосипедисты (Уроки 3, 4, 5)', lessons: 'Mål 7.1–7.4, 7.6–7.15' },
-                    { code: 'M4', da: 'Udvidet kørsel på vej', ru: 'Обгон, Motorvej, E43, туннель, Letbane, ночь и парковка (Уроки 4, 6, 7)', lessons: 'Mål 7.5, 7.9, 7.16–7.21, 8' },
-                    { code: 'M5', da: 'Afsluttende + Glatbane (KTA)', ru: 'Скользкая площадка, обочина rabat, экзамены (Урок 8 + Контроль)', lessons: 'Mål 9.1–9.5, 7.22, 10' },
+                    { code: 'M1', da: 'Grundlæggende trafikforståelse', ru: 'Поведение, § 3, восприятие, манёвренность ТС, сигналы (Уроки 1, 2, 3)', uk: 'Поведінка, § 3, сприйняття, маневреність ТЗ, сигнали (Уроки 1, 2, 3)', lessons: 'Mål 3, 4, 5.1, 6.1–6.2' },
+                    { code: 'M2', da: 'Forberedende teori + Manøvrebane', ru: 'Устройство авто, документы + 3–4 ч площадка (Уроки 1, 2)', uk: 'Будова авто, документи + 3–4 год майданчик (Уроки 1, 2)', lessons: 'Mål 1.1–1.3, 2.1–2.9' },
+                    { code: 'M3', da: 'Grundlæggende kørsel på vej', ru: 'Базовая езда: знаки, перекрёстки, круги, велосипедисты (Уроки 3, 4, 5)', uk: 'Базова їзда: знаки, перехрестя, кільця, велосипедисти (Уроки 3, 4, 5)', lessons: 'Mål 7.1–7.4, 7.6–7.15' },
+                    { code: 'M4', da: 'Udvidet kørsel på vej', ru: 'Обгон, Motorvej, E43, туннель, Letbane, ночь и парковка (Уроки 4, 6, 7)', uk: 'Обгін, Motorvej, E43, тунель, Letbane, ніч і паркування (Уроки 4, 6, 7)', lessons: 'Mål 7.5, 7.9, 7.16–7.21, 8' },
+                    { code: 'M5', da: 'Afsluttende + Glatbane (KTA)', ru: 'Скользкая площадка, обочина rabat, экзамены (Урок 8 + Контроль)', uk: 'Слизький майданчик, узбіччя rabat, іспити (Урок 8 + Контроль)', lessons: 'Mål 9.1–9.5, 7.22, 10' },
                   ].map((st) => (
                     <div key={st.code} className="flex items-start gap-2.5 rounded-xl border border-zinc-200/80 bg-zinc-50/70 p-2.5 dark:border-zinc-800 dark:bg-zinc-950/60">
                       <span className="shrink-0 rounded-md bg-teal-600 px-2 py-0.5 text-[11px] font-bold text-white">
@@ -173,7 +181,7 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
                       </span>
                       <div className="min-w-0 flex-1">
                         <div className="font-semibold text-zinc-900 dark:text-zinc-100">{st.da}</div>
-                        <div className="text-[11px] text-zinc-600 dark:text-zinc-400">{st.ru}</div>
+                        <div className="text-[11px] text-zinc-600 dark:text-zinc-400">{pick(st.ru, st.uk)}</div>
                         <div className="mt-0.5 text-[10px] font-medium text-teal-700 dark:text-teal-400">{st.lessons}</div>
                       </div>
                       <SpeakButton id={`school_stage_${st.code}`} text={st.da} />
@@ -184,17 +192,20 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
 
               <div>
                 <h2 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
-                  Чек-лист допуска к экзамену (Tjekliste)
+                  {pick('Чек-лист допуска к экзамену (Tjekliste)', 'Чек-ліст допуску до іспиту (Tjekliste)')}
                 </h2>
                 <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
-                  Обязательные документы, без которых автошкола не сможет записать вас на Teoriprøve:
+                  {pick(
+                    'Обязательные документы, без которых автошкола не сможет записать вас на Teoriprøve:',
+                    'Обов’язкові документи, без яких автошкола не зможе записати вас на Teoriprøve:'
+                  )}
                 </p>
                 <div className="mt-3 space-y-2">
                   {[
-                    { id: 'pasfoto', daTerm: 'Pasfoto', title: '📷 Pasfoto (фото 35×45 мм)', desc: 'Строгие требования полиции (лучше фотоателье / Fotoportalen, автоматы часто отклоняют).' },
-                    { id: 'laegeattest', daTerm: 'Digital lægeattest', title: '🩺 Digital Lægeattest (справка от врача)', desc: 'Сначала заполните Del A на Borger.dk, затем семейный врач оформит Del B.' },
-                    { id: 'forstehjaelp', daTerm: 'Færdselsrelateret førstehjælpsbevis', title: '⛑️ Førstehjælpsbevis (8 ч первой помощи)', desc: 'Сертификат Færdselsrelateret førstehjælp (не старше 12 мес при подаче!).' },
-                    { id: 'fuldmagt', daTerm: 'Fuldmagt', title: '✍️ Fuldmagt (доверенность школе)', desc: 'Подписывается через MitID на Borger.dk, чтобы школа могла бронировать экзамены.' },
+                    { id: 'pasfoto', daTerm: 'Pasfoto', title: '📷 Pasfoto (фото 35×45 мм)', titleUk: '📷 Pasfoto (фото 35×45 мм)', desc: 'Строгие требования полиции (лучше фотоателье / Fotoportalen, автоматы часто отклоняют).', descUk: 'Суворі вимоги поліції (краще фотоательє / Fotoportalen, автомати часто відхиляють).' },
+                    { id: 'laegeattest', daTerm: 'Digital lægeattest', title: '🩺 Digital Lægeattest (справка от врача)', titleUk: '🩺 Digital Lægeattest (довідка від лікаря)', desc: 'Сначала заполните Del A на Borger.dk, затем семейный врач оформит Del B.', descUk: 'Спочатку заповніть Del A на Borger.dk, потім сімейний лікар оформить Del B.' },
+                    { id: 'forstehjaelp', daTerm: 'Færdselsrelateret førstehjælpsbevis', title: '⛑️ Førstehjælpsbevis (8 ч первой помощи)', titleUk: '⛑️ Førstehjælpsbevis (8 год першої допомоги)', desc: 'Сертификат Færdselsrelateret førstehjælp (не старше 12 мес при подаче!).', descUk: 'Сертифікат Færdselsrelateret førstehjælp (не старіший за 12 міс під час подання!).' },
+                    { id: 'fuldmagt', daTerm: 'Fuldmagt', title: '✍️ Fuldmagt (доверенность школе)', titleUk: '✍️ Fuldmagt (довіреність школі)', desc: 'Подписывается через MitID на Borger.dk, чтобы школа могла бронировать экзамены.', descUk: 'Підписується через MitID на Borger.dk, щоб школа могла бронювати іспити.' },
                   ].map((doc) => {
                     const checked = Boolean(docChecks[doc.id]);
                     return (
@@ -217,8 +228,8 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
                             }`}
                           />
                           <div>
-                            <div className="text-xs font-bold text-zinc-900 dark:text-zinc-100">{doc.title}</div>
-                            <div className="mt-0.5 text-[11px] text-zinc-600 dark:text-zinc-400">{doc.desc}</div>
+                            <div className="text-xs font-bold text-zinc-900 dark:text-zinc-100">{pick(doc.title, doc.titleUk)}</div>
+                            <div className="mt-0.5 text-[11px] text-zinc-600 dark:text-zinc-400">{pick(doc.desc, doc.descUk)}</div>
                           </div>
                         </button>
                         <SpeakButton id={`doc_${doc.id}`} text={doc.daTerm} />
@@ -232,8 +243,8 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
         )}
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {MODULES_DATA.map((item) => {
-            const qs = QUESTIONS_BANK.filter((q) => q.moduleId === item.id);
+          {modules.map((item) => {
+            const qs = questions.filter((q) => q.moduleId === item.id);
             const st = computeProgressStats(
               qs.map((q) => q.id),
               srsMap
@@ -267,12 +278,12 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
                       {hasErrors ? (
                         <span className="inline-flex items-center gap-1 rounded-full bg-rose-600/90 px-2.5 py-0.5 text-[11px] font-semibold text-white backdrop-blur-sm">
                           <AlertTriangle className="h-3 w-3" />
-                          Ошибки ({st.boxCounts[1]})
+                          {pick('Ошибки', 'Помилки')} ({st.boxCounts[1]})
                         </span>
                       ) : isPassed ? (
                         <span className="inline-flex items-center gap-1 rounded-full bg-emerald-600/90 px-2.5 py-0.5 text-[11px] font-semibold text-white backdrop-blur-sm">
                           <CheckCircle2 className="h-3 w-3" />
-                          Пройден
+                          {pick('Пройден', 'Пройдено')}
                         </span>
                       ) : isInProgress ? (
                         <span className="rounded-full bg-sky-600/90 px-2.5 py-0.5 text-[11px] font-semibold text-white backdrop-blur-sm">
@@ -327,8 +338,8 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
                       </div>
                     </div>
                     <div className="mt-1 flex justify-between text-[11px] text-zinc-400">
-                      <span>Пройдено: {st.seenItems} из {st.totalItems} билетов</span>
-                      <span>Усвоено: {st.masteredItems}/{st.totalItems}</span>
+                      <span>{pick(`Пройдено: ${st.seenItems} из ${st.totalItems} билетов`, `Пройдено: ${st.seenItems} із ${st.totalItems} білетів`)}</span>
+                      <span>{pick('Усвоено', 'Засвоєно')}: {st.masteredItems}/{st.totalItems}</span>
                     </div>
                   </div>
 
@@ -340,8 +351,8 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
                     >
                       <span>
                         {(savedSlideIndices[item.id] ?? 0) > 0
-                          ? `Продолжить (слайд ${savedSlideIndices[item.id] + 1})`
-                          : 'Читать урок'}
+                          ? `${pick('Продолжить (слайд', 'Продовжити (слайд')} ${savedSlideIndices[item.id] + 1})`
+                          : pick('Читать урок', 'Читати урок')}
                       </span>
                       <ArrowRight className="h-3.5 w-3.5" />
                     </button>
@@ -350,7 +361,7 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
                       onClick={() =>
                         onStartModuleQuiz(
                           `Урок ${item.id}: ${item.titleRu}`,
-                          `${item.titleDa} (${qs.length} вопр.)`,
+                          `${item.titleDa} (${qs.length} ${pick('вопр.', 'пит.')})`,
                           qs,
                           item.id
                         )
@@ -358,7 +369,7 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
                       className="inline-flex items-center justify-center gap-1 rounded-xl border border-zinc-200 bg-white px-3 py-2.5 text-xs font-semibold text-zinc-700 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
                     >
                       <Play className="h-3 w-3 fill-current" />
-                      <span>Сразу к тесту ({qs.length})</span>
+                      <span>{pick('Сразу к тесту', 'Одразу до тесту')} ({qs.length})</span>
                     </button>
                   </div>
                 </div>
@@ -371,10 +382,10 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
   }
 
   // Lesson detail mode
-  const mod = MODULES_DATA.find((m) => m.id === activeId) ?? MODULES_DATA[0];
-  const modQuestions = QUESTIONS_BANK.filter((q) => q.moduleId === mod.id);
+  const mod = modules.find((m) => m.id === activeId) ?? modules[0];
+  const modQuestions = questions.filter((q) => q.moduleId === mod.id);
   const modFailedQuestions = modQuestions.filter((q) => getSRSRecord(srsMap, q.id).box === 1);
-  const modEntries = DICTIONARY_ENTRIES.filter((d) => d.moduleId === mod.id);
+  const modEntries = dictionary.filter((d) => d.moduleId === mod.id);
   const modSigns = modEntries.filter((d) => d.category === 'sign' && Boolean(d.signCode));
   const modStats = computeProgressStats(
     modQuestions.map((q) => q.id),
@@ -395,7 +406,7 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
           className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-xs font-semibold text-zinc-700 transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
         >
           <ArrowLeft className="h-3.5 w-3.5" />
-          <span>Ко всем урокам (8 тем)</span>
+          <span>{pick('Ко всем урокам (8 тем)', 'До всіх уроків (8 тем)')}</span>
         </button>
 
         <div className="flex items-center gap-1.5">
@@ -406,20 +417,20 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
             className="inline-flex items-center gap-1 rounded-xl border border-zinc-200 bg-white px-2.5 py-1.5 text-xs font-semibold text-zinc-700 transition-colors hover:bg-zinc-50 disabled:opacity-35 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
           >
             <ChevronLeft className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline">Пред.</span>
+            <span className="hidden sm:inline">{pick('Пред.', 'Попер.')}</span>
           </button>
 
           <span className="rounded-xl bg-zinc-900 px-3 py-1.5 text-xs font-bold text-white dark:bg-zinc-100 dark:text-zinc-900">
-            Урок {mod.id} из {MODULES_DATA.length}
+            Урок {mod.id} {pick('из', 'із')} {modules.length}
           </span>
 
           <button
             type="button"
-            disabled={mod.id >= MODULES_DATA.length}
+            disabled={mod.id >= modules.length}
             onClick={() => handleOpenLesson(mod.id + 1)}
             className="inline-flex items-center gap-1 rounded-xl border border-zinc-200 bg-white px-2.5 py-1.5 text-xs font-semibold text-zinc-700 transition-colors hover:bg-zinc-50 disabled:opacity-35 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
           >
-            <span className="hidden sm:inline">След.</span>
+            <span className="hidden sm:inline">{pick('След.', 'Наст.')}</span>
             <ChevronRight className="h-3.5 w-3.5" />
           </button>
         </div>
@@ -434,13 +445,13 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
                 {mod.code}
               </span>
               <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
-                Билетов решено: {modStats.seenItems}/{modStats.totalItems} • Усвоено:{' '}
+                {pick('Билетов решено:', 'Білетів вирішено:')} {modStats.seenItems}/{modStats.totalItems} • {pick('Усвоено:', 'Засвоєно:')}{' '}
                 {modStats.masteryPercent}%
               </span>
               {courseModules?.[mod.id]?.theoryCompleted && (
                 <span className="inline-flex items-center gap-1 rounded-full bg-teal-50 px-2 py-0.5 text-[10px] font-semibold text-teal-700 dark:bg-teal-950/60 dark:text-teal-300">
                   <CheckCircle2 className="h-3 w-3" />
-                  Теория прочитана
+                  {pick('Теория прочитана', 'Теорію прочитано')}
                 </span>
               )}
             </div>
@@ -471,7 +482,7 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
               onClick={onOpenCourse}
               className="inline-flex items-center gap-1.5 rounded-xl bg-teal-50 px-3 py-1.5 text-xs font-semibold text-teal-700 transition-colors hover:bg-teal-100 dark:bg-teal-950/60 dark:text-teal-300 dark:hover:bg-teal-900/60"
             >
-              <span>В курс</span>
+              <span>{pick('В курс', 'У курс')}</span>
               <ArrowRight className="h-3.5 w-3.5" />
             </button>
           </div>
@@ -482,17 +493,17 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
           {[
             {
               id: 'slides' as LessonTab,
-              label: 'Слайды урока',
+              label: pick('Слайды урока', 'Слайди уроку'),
               icon: <Layers className="h-3.5 w-3.5" />,
             },
             {
               id: 'sheet' as LessonTab,
-              label: `Весь конспект (${mod.cheatSheet.length})`,
+              label: `${pick('Весь конспект', 'Весь конспект')} (${mod.cheatSheet.length})`,
               icon: <BookOpen className="h-3.5 w-3.5" />,
             },
             {
               id: 'signs' as LessonTab,
-              label: `Знаки и словарь (${modEntries.length})`,
+              label: `${pick('Знаки и словарь', 'Знаки та словник')} (${modEntries.length})`,
               icon: <Signpost className="h-3.5 w-3.5" />,
             },
           ].map((tab) => {
@@ -525,12 +536,15 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
           key={`ref_slides_${mod.id}`}
           moduleId={mod.id}
           languageMode={languageMode}
-          nextButtonLabel={`Теория прочитана — к тесту (${modQuestions.length} вопр.)`}
+          nextButtonLabel={pick(
+            `Теория прочитана — к тесту (${modQuestions.length} вопр.)`,
+            `Теорію прочитано — до тесту (${modQuestions.length} пит.)`
+          )}
           onComplete={() => {
             onMarkTheoryRead?.(mod.id);
             onStartModuleQuiz(
               `Урок ${mod.id}: ${mod.titleRu}`,
-              `${mod.titleDa} (${modQuestions.length} вопр.)`,
+              `${mod.titleDa} (${modQuestions.length} ${pick('вопр.', 'пит.')})`,
               modQuestions,
               mod.id
             );
@@ -582,7 +596,7 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
               <div className="flex items-center gap-2">
                 <BookOpen className="h-4 w-4 text-teal-600 dark:text-teal-400" />
                 <h2 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
-                  Все правила и разборы урока ({mod.cheatSheet.length})
+                  {pick('Все правила и разборы урока', 'Усі правила та розбори уроку')} ({mod.cheatSheet.length})
                 </h2>
               </div>
               <div className="flex flex-wrap items-center gap-1.5">
@@ -650,7 +664,7 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
             {mod.algorithms && mod.algorithms.length > 0 && (
               <div className="mt-5 rounded-2xl border border-sky-200/80 bg-sky-50/50 p-4 dark:border-sky-900/50 dark:bg-sky-950/25">
                 <h3 className="mb-3 text-xs font-bold uppercase tracking-wider text-sky-800 dark:text-sky-300">
-                  Обязательный алгоритм действий
+                  {pick('Обязательный алгоритм действий', 'Обов’язковий алгоритм дій')}
                 </h3>
                 <div className="grid gap-3 md:grid-cols-3">
                   {mod.algorithms.map((alg) => (
@@ -698,7 +712,10 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
               <div className="mb-3 flex items-center gap-2">
                 <ShieldCheck className="h-4 w-4 text-sky-600 dark:text-sky-400" />
                 <h2 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
-                  Интерактивная схема Kontrolprøven (нажмите на любой узел)
+                  {pick(
+                    'Интерактивная схема Kontrolprøven (нажмите на любой узел)',
+                    'Інтерактивна схема Kontrolprøven (натисніть на будь-який вузол)'
+                  )}
                 </h2>
               </div>
               <CarTechnicalSVG initialTab="motorrum" languageMode={languageMode} />
@@ -708,7 +725,7 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
           {modSigns.length > 0 && (
             <section className="nordic-card p-5 sm:p-6">
               <h2 className="mb-3 text-sm font-bold text-zinc-900 dark:text-zinc-100">
-                Дорожные знаки Урока {mod.id} ({modSigns.length})
+                {pick(`Дорожные знаки Урока ${mod.id}`, `Дорожні знаки Уроку ${mod.id}`)} ({modSigns.length})
               </h2>
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6">
                 {modSigns.map((sign) => (
@@ -737,7 +754,7 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
           {modEntries.length > 0 && (
             <section className="nordic-card p-5 sm:p-6">
               <h2 className="mb-3 text-sm font-bold text-zinc-900 dark:text-zinc-100">
-                Термины и карточки урока ({modEntries.length})
+                {pick('Термины и карточки урока', 'Терміни та картки уроку')} ({modEntries.length})
               </h2>
               <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
                 {modEntries.map((entry) => {
@@ -754,7 +771,7 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
                           <span
                             className={`rounded-full border px-2 py-0.5 text-[10px] font-semibold ${meta.badgeClass}`}
                           >
-                            Box {rec.box} • {meta.labelRu}
+                            Box {rec.box} • {uiLang === 'uk' ? meta.labelUk : meta.labelRu}
                           </span>
                           <SpeakButton id={`entry_${entry.id}`} text={`${entry.da}. ${entry.detailsDa}`} />
                         </div>
@@ -788,7 +805,10 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
                                 href={getOrdnetUrl(w)}
                                 target="_blank"
                                 rel="noreferrer"
-                                title={`Открыть «${w}» на Den Danske Ordbog (аудио и транскрипция)`}
+                                title={pick(
+                                  `Открыть «${w}» на Den Danske Ordbog (аудио и транскрипция)`,
+                                  `Відкрити «${w}» на Den Danske Ordbog (аудіо та транскрипція)`
+                                )}
                                 className="inline-flex items-center gap-0.5 rounded-md border border-zinc-200/80 bg-white px-1.5 py-0.5 text-[10px] font-medium text-teal-700 transition-colors hover:border-teal-300 hover:bg-teal-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-teal-400"
                               >
                                 <span>{w}</span>
@@ -806,7 +826,7 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
                           className="inline-flex flex-1 items-center justify-center gap-1 rounded-xl border border-rose-200 bg-white py-1.5 text-[11px] font-semibold text-rose-700 transition-colors hover:bg-rose-50 dark:border-rose-900/60 dark:bg-zinc-900 dark:text-rose-400"
                         >
                           <RotateCcw className="h-3 w-3" />
-                          Повторить (Box 1)
+                          {pick('Повторить (Box 1)', 'Повторити (Box 1)')}
                         </button>
                         <button
                           type="button"
@@ -814,7 +834,7 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
                           className="inline-flex flex-1 items-center justify-center gap-1 rounded-xl border border-emerald-200 bg-emerald-50/80 py-1.5 text-[11px] font-semibold text-emerald-700 transition-colors hover:bg-emerald-100 dark:border-emerald-900/60 dark:bg-emerald-950/50 dark:text-emerald-300"
                         >
                           <CheckCircle2 className="h-3 w-3" />
-                          Знаю (+Box)
+                          {pick('Знаю (+Box)', 'Знаю (+Box)')}
                         </button>
                       </div>
                     </div>
@@ -834,10 +854,13 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
               Практика • Урок {mod.id}
             </div>
             <h2 className="text-lg font-bold tracking-tight sm:text-xl">
-              Проверить знания по теме «{mod.titleRu}»
+              {pick('Проверить знания по теме', 'Перевірити знання за темою')} «{mod.titleRu}»
             </h2>
             <p className="text-xs text-zinc-300 sm:text-sm dark:text-zinc-600">
-              Решите все {modQuestions.length} билетов темы или короткий блиц из 10 случайных ситуаций.
+              {pick(
+                `Решите все ${modQuestions.length} билетов темы или короткий блиц из 10 случайных ситуаций.`,
+                `Вирішіть усі ${modQuestions.length} білетів теми або короткий бліц із 10 випадкових ситуацій.`
+              )}
             </p>
           </div>
 
@@ -847,8 +870,8 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
                 type="button"
                 onClick={() =>
                   onStartModuleQuiz(
-                    `Блиц · Урок ${mod.id}: ${mod.titleRu}`,
-                    `${mod.titleDa} (10 случайных вопр.)`,
+                    `${pick('Блиц', 'Бліц')} · Урок ${mod.id}: ${mod.titleRu}`,
+                    `${mod.titleDa} (10 ${pick('случайных вопр.', 'випадкових пит.')})`,
                     shuffleItems(modQuestions).slice(0, 10),
                     mod.id
                   )
@@ -856,7 +879,7 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
                 className="inline-flex items-center justify-center gap-1.5 rounded-2xl border border-zinc-700 bg-zinc-800 px-4 py-3 text-xs font-bold text-white transition-colors hover:bg-zinc-700 dark:border-zinc-300 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
               >
                 <Play className="h-3.5 w-3.5 fill-current" />
-                <span>Блиц (10)</span>
+                <span>{pick('Блиц (10)', 'Бліц (10)')}</span>
               </button>
 
               <button
@@ -864,14 +887,14 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
                 onClick={() =>
                   onStartModuleQuiz(
                     `Урок ${mod.id}: ${mod.titleRu}`,
-                    `${mod.titleDa} (${modQuestions.length} вопр.)`,
+                    `${mod.titleDa} (${modQuestions.length} ${pick('вопр.', 'пит.')})`,
                     modQuestions,
                     mod.id
                   )
                 }
                 className="inline-flex items-center justify-center gap-2 rounded-2xl bg-emerald-500 px-5 py-3 text-sm font-bold text-white shadow-sm transition-all hover:bg-emerald-400"
               >
-                <span>Полный тест ({modQuestions.length})</span>
+                <span>{pick('Полный тест', 'Повний тест')} ({modQuestions.length})</span>
                 <ArrowRight className="h-4 w-4" />
               </button>
             </div>
@@ -881,8 +904,8 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
                 type="button"
                 onClick={() =>
                   onStartModuleQuiz(
-                    `Ошибки Урока ${mod.id}`,
-                    `${mod.titleRu} (${modFailedQuestions.length} вопр. из Box 1)`,
+                    `${pick('Ошибки Урока', 'Помилки Уроку')} ${mod.id}`,
+                    `${mod.titleRu} (${modFailedQuestions.length} ${pick('вопр. из Box 1', 'пит. із Box 1')})`,
                     modFailedQuestions,
                     mod.id
                   )
@@ -890,7 +913,7 @@ export const ModulesView: React.FC<ModulesViewProps> = ({
                 className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-rose-400/50 bg-rose-500/20 px-4 py-2 text-xs font-semibold text-rose-200 transition-colors hover:bg-rose-500/30 dark:border-rose-300 dark:bg-rose-100 dark:text-rose-700"
               >
                 <RotateCcw className="h-3.5 w-3.5" />
-                <span>Отработать только ошибки урока ({modFailedQuestions.length})</span>
+                <span>{pick('Отработать только ошибки урока', 'Відпрацювати лише помилки уроку')} ({modFailedQuestions.length})</span>
               </button>
             )}
           </div>

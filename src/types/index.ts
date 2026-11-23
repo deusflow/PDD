@@ -1,4 +1,5 @@
 export type LanguageMode = 'both' | 'spoiler' | 'da_only';
+export type UiLanguage = 'ru' | 'uk';
 export type ThemeMode = 'light' | 'dark';
 export type BoxLevel = 0 | 1 | 2 | 3 | 4 | 5;
 export type ActiveTab = 'dashboard' | 'course' | 'modules' | 'exam' | 'dictionary';
@@ -170,6 +171,7 @@ export interface UserAppState {
   version: 1 | 2;
   hasSeenOnboarding: boolean;
   languageMode: LanguageMode;
+  uiLang?: UiLanguage;
   theme: ThemeMode;
   srs: Record<string, SRSRecord>;
   examHistory: ExamAttemptSummary[];

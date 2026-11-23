@@ -1,8 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, CheckCircle2, Sparkles } from 'lucide-react';
-import { MODULES_DATA } from '../../data/modulesData';
-import { QUESTIONS_BANK } from '../../data/questionsBank';
-import { DICTIONARY_ENTRIES } from '../../data/signsAndGlossary';
+import { useUiLang } from '../../i18n/UiLangContext';
 import {
   clearTheorySlideIndex,
   loadTheorySlideIndex,
@@ -37,22 +35,24 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
   nextButtonLabel,
   onComplete,
 }) => {
+  const { modules, questions, dictionary, pick } = useUiLang();
+
   const mod = useMemo(
-    () => MODULES_DATA.find((m) => m.id === moduleId) ?? MODULES_DATA[0],
-    [moduleId]
+    () => modules.find((m) => m.id === moduleId) ?? modules[0],
+    [modules, moduleId]
   );
 
   const modQuestions = useMemo(
-    () => QUESTIONS_BANK.filter((q) => q.moduleId === mod.id),
-    [mod.id]
+    () => questions.filter((q) => q.moduleId === mod.id),
+    [questions, mod.id]
   );
 
   const moduleSigns = useMemo(
     () =>
-      DICTIONARY_ENTRIES.filter(
+      dictionary.filter(
         (d) => d.moduleId === mod.id && d.category === 'sign' && Boolean(d.signCode)
       ),
-    [mod.id]
+    [dictionary, mod.id]
   );
 
   const slides: TheorySlide[] = useMemo(() => {
@@ -68,7 +68,7 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
     }
     list.push({ kind: 'summary' });
     return list;
-  }, [mod]);
+  }, [mod, moduleSigns.length]);
 
   const [slideIndex, setSlideIndex] = useState(() =>
     loadTheorySlideIndex(moduleId, slides.length)
@@ -143,7 +143,11 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
                     </h1>
                   )}
                 </div>
-                <SpeakButton id={`course_cov_${mod.id}`} text={mod.titleDa} size="md" />
+                <SpeakButton
+                  id={`course_cov_${mod.id}`}
+                  text={mod.subtitleDa ? `${mod.titleDa}. ${mod.subtitleDa}` : mod.titleDa}
+                  size="md"
+                />
               </div>
 
               <p className="text-[15px] leading-7 text-zinc-600 sm:text-base dark:text-zinc-300">
@@ -169,7 +173,7 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
                         <SpeakButton
                           id={`goal_${mod.id}_${goal.code}`}
                           text={goal.titleDa}
-                          title={`Озвучить датскую цель: ${goal.titleDa}`}
+                          title={`${pick('Озвучить датскую цель', 'Озвучити данську ціль')}: ${goal.titleDa}`}
                           className="h-5 w-5 border-transparent bg-transparent"
                         />
                       </div>
@@ -262,7 +266,9 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
         return (
           <div className="space-y-4">
             <h2 className="text-xl font-semibold tracking-tight text-zinc-900 sm:text-2xl dark:text-zinc-100">
-              {mod.id === 1 ? 'Интерактивная схема авто для Kontrolprøven' : 'Все знаки этого урока'}
+              {mod.id === 1
+                ? pick('Интерактивная схема авто для Kontrolprøven', 'Інтерактивна схема авто для Kontrolprøven')
+                : pick('Все знаки этого урока', 'Усі знаки цього уроку')}
             </h2>
 
             {mod.id === 1 && (
@@ -303,7 +309,7 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
         return (
           <div className="space-y-5">
             <h2 className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-100">
-              Пошаговый алгоритм
+              {pick('Пошаговый алгоритм', 'Покроковий алгоритм')}
             </h2>
             <div className="grid gap-3 md:grid-cols-3">
               {mod.algorithms?.map((alg) => (
@@ -363,11 +369,13 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
           <div className="space-y-5">
             <div className="flex items-center gap-2 text-teal-600 dark:text-teal-400">
               <Sparkles className="h-5 w-5" />
-              <span className="text-xs font-semibold uppercase tracking-wider">Итог урока</span>
+              <span className="text-xs font-semibold uppercase tracking-wider">
+                {pick('Итог урока', 'Підсумок уроку')}
+              </span>
             </div>
 
             <h2 className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-100">
-              Главное за 30 секунд
+              {pick('Главное за 30 секунд', 'Головне за 30 секунд')}
             </h2>
 
             <div className="grid gap-6 lg:grid-cols-2 lg:items-start">
@@ -392,7 +400,7 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
               {keyRules.length > 0 && (
                 <div className="space-y-2.5 rounded-2xl border border-zinc-200/80 bg-zinc-50/60 p-4 dark:border-zinc-800 dark:bg-zinc-950/40">
                   <div className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-                    Ловушки на экзамене
+                    {pick('Ловушки на экзамене', 'Пастки на іспиті')}
                   </div>
                   {keyRules.map((q) => (
                     <div
@@ -427,7 +435,7 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
         <div className="mb-4 space-y-2.5">
           <div className="flex items-center justify-between gap-2">
             <span className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">
-              Шаг {slideIndex + 1} из {slides.length} · Маршрут урока
+              {pick('Шаг', 'Крок')} {slideIndex + 1} {pick('из', 'із')} {slides.length} · {pick('Маршрут урока', 'Маршрут уроку')}
             </span>
             <span className="text-[11px] font-medium text-teal-700 dark:text-teal-400">
               {Math.round(((slideIndex + 1) / slides.length) * 100)}%
@@ -439,24 +447,24 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
                 s.kind === 'cover'
                   ? languageMode === 'da_only'
                     ? 'Oversigt'
-                    : 'Введение'
+                    : pick('Введение', 'Вступ')
                   : s.kind === 'rule'
                     ? `${s.index + 1}. ${(languageMode === 'da_only' ? s.rule.titleDa : s.rule.titleRu).split(/[:(—]/)[0].trim().slice(0, 20)}`
                     : s.kind === 'visual'
                       ? mod.id === 1
                         ? languageMode === 'da_only'
                           ? 'Bilskema'
-                          : 'Схема авто'
+                          : pick('Схема авто', 'Схема авто')
                         : languageMode === 'da_only'
                           ? 'Skilte'
-                          : 'Знаки'
+                          : pick('Знаки', 'Знаки')
                       : s.kind === 'algorithms'
                         ? languageMode === 'da_only'
                           ? 'Trin'
-                          : 'Алгоритм'
+                          : pick('Алгоритм', 'Алгоритм')
                         : languageMode === 'da_only'
                           ? 'Opsummering'
-                          : 'Итог';
+                          : pick('Итог', 'Підсумок');
               const isCurrent = idx === slideIndex;
               const isVisited = idx < slideIndex;
               return (
@@ -491,7 +499,7 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
             className="inline-flex h-12 items-center justify-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-4 text-sm font-semibold text-zinc-700 transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
           >
             <ArrowLeft className="h-4 w-4" />
-            <span>Назад</span>
+            <span>{pick('Назад', 'Назад')}</span>
           </button>
         )}
 
@@ -501,7 +509,7 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
             onClick={() => goToSlide(slideIndex + 1)}
             className="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-xl bg-teal-600 px-6 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-teal-500"
           >
-            <span>Дальше</span>
+            <span>{pick('Дальше', 'Далі')}</span>
             <ArrowRight className="h-4 w-4" />
           </button>
         ) : (

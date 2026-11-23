@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Volume2, VolumeX } from 'lucide-react';
+import { useUiLang } from '../../i18n/UiLangContext';
 import { danishSpeech } from '../../services/speech';
 
 interface SpeakButtonProps {
@@ -19,8 +20,9 @@ export const SpeakButton: React.FC<SpeakButtonProps> = ({
   size = 'sm',
   label,
   className = '',
-  title = 'Озвучить по-датски (da-DK)',
+  title,
 }) => {
+  const { pick } = useUiLang();
   const [speakingId, setSpeakingId] = useState<string | null>(() => danishSpeech.getCurrentId());
   const supported = danishSpeech.isSupported();
 
@@ -32,13 +34,14 @@ export const SpeakButton: React.FC<SpeakButtonProps> = ({
     return null;
   }
 
+  const baseTitle = title ?? pick('Озвучить по-датски (da-DK)', 'Озвучити данською (da-DK)');
   const isSpeaking = speakingId === id;
   const voiceStatus = danishSpeech.getVoiceStatus();
   const computedTitle = isSpeaking
-    ? 'Остановить озвучку'
+    ? pick('Остановить озвучку', 'Зупинити озвучку')
     : voiceStatus === 'missing_da'
-      ? `${title} (датский системный голос не найден — читается базовым голосом ОС)`
-      : title;
+      ? `${baseTitle} (${pick('датский системный голос не найден — читается базовым голосом ОС', 'данський системний голос не знайдено — читається базовим голосом ОС')})`
+      : baseTitle;
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -72,7 +75,7 @@ export const SpeakButton: React.FC<SpeakButtonProps> = ({
       ) : (
         <Volume2 className={size === 'sm' ? 'h-3.5 w-3.5' : 'h-4 w-4'} />
       )}
-      {label && <span>{isSpeaking ? 'Стоп' : label}</span>}
+      {label && <span>{isSpeaking ? pick('Стоп', 'Стоп') : label}</span>}
     </button>
   );
 };

@@ -14,9 +14,8 @@ import {
   RefreshCw,
   XCircle,
 } from 'lucide-react';
-import { QUESTIONS_BANK } from '../../data/questionsBank';
-import { DICTIONARY_ENTRIES } from '../../data/signsAndGlossary';
-import { LanguageMode, ModuleCheatRule, TeoriQuestion } from '../../types';
+import { useUiLang } from '../../i18n/UiLangContext';
+import { DictionaryEntry, LanguageMode, ModuleCheatRule, TeoriQuestion } from '../../types';
 import { extractOrdnetLookupWords, getOrdnetUrl } from '../../utils/ordnet';
 import { CarTechnicalSVG } from '../visuals/CarTechnicalSVG';
 import { DanishRoadSignSVG } from '../visuals/DanishRoadSignSVG';
@@ -39,6 +38,7 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
   ruleIndex = 0,
   languageMode,
 }) => {
+  const { questions, dictionary, pick } = useUiLang();
   const [activeTermId, setActiveTermId] = useState<string | null>(null);
   const [microAnswer, setMicroAnswer] = useState<boolean | null>(null);
   const [checkVariant, setCheckVariant] = useState(0);
@@ -73,10 +73,10 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
       .join(' ')
       .toLowerCase();
 
-    const preferred: typeof DICTIONARY_ENTRIES = [];
-    const fallback: typeof DICTIONARY_ENTRIES = [];
+    const preferred: DictionaryEntry[] = [];
+    const fallback: DictionaryEntry[] = [];
 
-    for (const entry of DICTIONARY_ENTRIES) {
+    for (const entry of dictionary) {
       const signMatch =
         Boolean(entry.signCode) && haystack.includes(entry.signCode!.toLowerCase());
       const head = entry.da
@@ -98,7 +98,7 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
     }
 
     return [...preferred, ...fallback].slice(0, 6);
-  }, [rule, moduleId]);
+  }, [dictionary, rule, moduleId]);
 
   const activeTerm = useMemo(
     () => matchedTerms.find((t) => t.id === activeTermId) ?? null,
@@ -108,8 +108,8 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
   const microCandidates = useMemo<TeoriQuestion[]>(() => {
     const pool =
       moduleId !== undefined
-        ? QUESTIONS_BANK.filter((q) => q.moduleId === moduleId)
-        : QUESTIONS_BANK;
+        ? questions.filter((q) => q.moduleId === moduleId)
+        : questions;
     if (pool.length === 0) return [];
 
     const ruleTokens = new Set(
@@ -251,7 +251,7 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
               <div className="mb-1 text-[11px] font-bold uppercase tracking-wider text-teal-800 dark:text-teal-300">
                 {languageMode === 'da_only'
                   ? 'Hvorfor lærer vi dette?'
-                  : 'Зачем мы это учим (суть простыми словами)'}
+                  : pick('Зачем мы это учим (суть простыми словами)', 'Навіщо ми це вчимо (суть простими словами)')}
               </div>
               <TheoryBilingual
                 ru={introRu}
@@ -262,7 +262,7 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
             </div>
           </div>
           {introDa && (
-            <SpeakButton id={`rule_intro_${rule.titleDa.slice(0, 12)}`} text={introDa} />
+            <SpeakButton id={`rule_intro_${moduleId ?? 0}_${ruleIndex}`} text={introDa} />
           )}
         </div>
       )}
@@ -280,7 +280,7 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
                 <span>
                   {languageMode === 'da_only'
                     ? 'Trin for trin i praksis (1 → 2 → 3)'
-                    : 'Как делать шаг за шагом (1 → 2 → 3)'}
+                    : pick('Как делать шаг за шагом (1 → 2 → 3)', 'Як робити крок за кроком (1 → 2 → 3)')}
                 </span>
               </div>
               <ol className="space-y-2">
@@ -301,6 +301,12 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
                         ruClassName="text-xs sm:text-[13px] font-medium leading-snug"
                       />
                     </div>
+                    {attentionDa[idx] && (
+                      <SpeakButton
+                        id={`rule_step_${moduleId ?? 0}_${ruleIndex}_${idx}`}
+                        text={attentionDa[idx]}
+                      />
+                    )}
                   </li>
                 ))}
               </ol>
@@ -331,7 +337,7 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
                       </div>
                     </div>
                     {daText && (
-                      <SpeakButton id={`rule_pt_${rule.titleDa.slice(0, 12)}_${idx}`} text={daText} />
+                      <SpeakButton id={`rule_pt_${moduleId ?? 0}_${ruleIndex}_${idx}`} text={daText} />
                     )}
                   </li>
                 );
@@ -362,8 +368,14 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
                       </div>
                     )}
                     <div className="min-w-0 flex-1">
-                      <div className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
-                        {languageMode === 'da_only' ? side.labelDa : side.labelRu}
+                      <div className="flex items-start justify-between gap-1.5">
+                        <div className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
+                          {languageMode === 'da_only' ? side.labelDa : side.labelRu}
+                        </div>
+                        <SpeakButton
+                          id={`rule_cmp_${moduleId ?? 0}_${ruleIndex}_${idx}`}
+                          text={`${side.labelDa}. ${side.summaryDa}`}
+                        />
                       </div>
                       <TheoryBilingual
                         ru={side.summaryRu}
@@ -386,7 +398,7 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
                 <Info className="mt-0.5 h-4 w-4 shrink-0 text-sky-600 dark:text-sky-400" />
                 <div className="min-w-0 flex-1">
                   <div className="mb-0.5 text-xs font-bold text-sky-900 dark:text-sky-200">
-                    {languageMode === 'da_only' ? 'Undtagelse' : 'Исключение'}
+                    {languageMode === 'da_only' ? 'Undtagelse' : pick('Исключение', 'Виняток')}
                   </div>
                   <TheoryBilingual
                     ru={rule.exceptionsRu ?? rule.exceptionsDa ?? ''}
@@ -398,7 +410,7 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
                 </div>
               </div>
               {rule.exceptionsDa && (
-                <SpeakButton id={`rule_exc_${rule.titleDa.slice(0, 12)}`} text={rule.exceptionsDa} />
+                <SpeakButton id={`rule_exc_${moduleId ?? 0}_${ruleIndex}`} text={rule.exceptionsDa} />
               )}
             </div>
           )}
@@ -410,7 +422,7 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
                 <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400" />
                 <div className="min-w-0 flex-1">
                   <div className="mb-0.5 text-xs font-bold text-amber-900 dark:text-amber-200">
-                    {languageMode === 'da_only' ? 'Typisk fælde til prøven' : 'Ловушка на экзамене'}
+                    {languageMode === 'da_only' ? 'Typisk fælde til prøven' : pick('Ловушка на экзамене', 'Пастка на іспиті')}
                   </div>
                   <TheoryBilingual
                     ru={rule.trapRu ?? rule.trapDa ?? ''}
@@ -422,7 +434,7 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
                 </div>
               </div>
               {rule.trapDa && (
-                <SpeakButton id={`rule_trap_${rule.titleDa.slice(0, 12)}`} text={rule.trapDa} />
+                <SpeakButton id={`rule_trap_${moduleId ?? 0}_${ruleIndex}`} text={rule.trapDa} />
               )}
             </div>
           )}
@@ -437,7 +449,7 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
             <span>
               {languageMode === 'da_only'
                 ? 'Nøgleord på dette slide (klik for forklaring)'
-                : 'Словарь этого слайда (нажмите на слово, чтобы открыть простое объяснение)'}
+                : pick('Словарь этого слайда (нажмите на слово, чтобы открыть простое объяснение)', 'Словник цього слайда (натисніть на слово, щоб відкрити просте пояснення)')}
             </span>
           </div>
           <div className="flex flex-wrap gap-1.5">
@@ -481,7 +493,7 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
                     href={getOrdnetUrl(lookupWord)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    title={`Открыть «${lookupWord}» на ordnet.dk/ddo`}
+                    title={`${pick('Открыть', 'Відкрити')} «${lookupWord}» ${pick('на ordnet.dk/ddo', 'на ordnet.dk/ddo')}`}
                     className="inline-flex items-center gap-0.5 rounded px-1 py-0.5 text-[10px] font-bold text-teal-700 hover:bg-teal-100/70 dark:text-teal-400 dark:hover:bg-teal-950/50"
                   >
                     DDO
@@ -530,7 +542,7 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
               <span>
                 {languageMode === 'da_only'
                   ? 'Hurtigt tjek: sådan spørges der til prøven'
-                  : 'Проверь себя за 5 секунд: реальный вопрос из базы экзамена'}
+                  : pick('Проверь себя за 5 секунд: реальный вопрос из базы экзамена', 'Перевір себе за 5 секунд: реальне питання з бази іспиту')}
               </span>
             </div>
             {microCandidates.length > 1 && (
@@ -543,7 +555,7 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
                 className="inline-flex items-center gap-1 rounded-lg border border-zinc-200/80 bg-white px-2 py-0.5 text-[11px] font-semibold text-zinc-600 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
               >
                 <RefreshCw className="h-3 w-3" />
-                <span>{languageMode === 'da_only' ? 'Nyt tjek' : 'Другой вопрос'}</span>
+                <span>{languageMode === 'da_only' ? 'Nyt tjek' : pick('Другой вопрос', 'Інше питання')}</span>
               </button>
             )}
           </div>
@@ -566,8 +578,8 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
 
             <div className="flex shrink-0 items-center gap-2 self-end sm:self-start">
               {[
-                { val: true, da: 'Ja', ru: 'Да' },
-                { val: false, da: 'Nej', ru: 'Нет' },
+                { val: true, da: 'Ja', ru: pick('Да', 'Так') },
+                { val: false, da: 'Nej', ru: pick('Нет', 'Ні') },
               ].map((btn) => {
                 const chosen = microAnswer === btn.val;
                 const isTarget = microAnswer !== null && microSub.correctAnswer === btn.val;
@@ -616,17 +628,20 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
                   {microAnswer === microSub.correctAnswer
                     ? languageMode === 'da_only'
                       ? 'Rigtigt!'
-                      : 'Верно!'
+                      : pick('Верно!', 'Правильно!')
                     : languageMode === 'da_only'
                       ? `Forkert — det rigtige svar er ${microSub.correctAnswer ? 'Ja' : 'Nej'}`
-                      : `Не совсем — правильный ответ: ${microSub.correctAnswer ? 'Ja / Да' : 'Nej / Нет'}`}
+                      : `${pick('Не совсем — правильный ответ', 'Не зовсім — правильна відповідь')}: ${microSub.correctAnswer ? pick('Ja / Да', 'Ja / Так') : pick('Nej / Нет', 'Nej / Ні')}`}
                 </div>
-                <TheoryBilingual
-                  ru={microSub.explanationRu}
-                  da={microSub.explanationDa}
-                  mode={languageMode === 'da_only' ? 'both' : languageMode}
-                  compact
-                />
+                <div className="flex items-start justify-between gap-2">
+                  <TheoryBilingual
+                    ru={microSub.explanationRu}
+                    da={microSub.explanationDa}
+                    mode={languageMode === 'da_only' ? 'both' : languageMode}
+                    compact
+                  />
+                  <SpeakButton id={`micro_exp_${microSub.id}`} text={microSub.explanationDa} />
+                </div>
               </div>
             </div>
           )}

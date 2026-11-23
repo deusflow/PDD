@@ -26,6 +26,8 @@ const QuizSessionView = lazy(() =>
 );
 import { QUESTIONS_BANK } from './data/questionsBank';
 import { DICTIONARY_ENTRIES } from './data/signsAndGlossary';
+import type { UkDataBundle } from './data/localizedData';
+import { UiLangProvider } from './i18n/UiLangContext';
 import {
   canModulePass,
   getModuleProgress,
@@ -56,6 +58,7 @@ import {
   ModuleCourseProgress,
   SRSRecord,
   TeoriQuestion,
+  UiLanguage,
   UserAppState,
 } from './types';
 
@@ -166,6 +169,26 @@ export const App: React.FC = () => {
   );
   const [isOnboardingOpen, setIsOnboardingOpen] = useState<boolean>(false);
   const [isBackupOpen, setIsBackupOpen] = useState<boolean>(false);
+  const [ukBundle, setUkBundle] = useState<UkDataBundle | null>(null);
+
+  const uiLang: UiLanguage = appState.uiLang ?? 'ru';
+
+  useEffect(() => {
+    if (uiLang !== 'uk' || ukBundle) return;
+    let cancelled = false;
+    import('./data/uk/index').then((mod) => {
+      if (!cancelled) {
+        setUkBundle({
+          dictionaryUk: mod.DICTIONARY_UK,
+          modulesUk: mod.MODULES_UK,
+          questionsUk: mod.QUESTIONS_UK,
+        });
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [uiLang, ukBundle]);
 
   // Persist to localStorage whenever appState updates
   useEffect(() => {
@@ -222,6 +245,10 @@ export const App: React.FC = () => {
     setAppState((prev) => ({ ...prev, languageMode }));
   };
 
+  const handleUiLangChange = (nextLang: UiLanguage) => {
+    setAppState((prev) => ({ ...prev, uiLang: nextLang }));
+  };
+
   const handleThemeToggle = () => {
     setAppState((prev) => ({
       ...prev,
@@ -274,8 +301,14 @@ export const App: React.FC = () => {
     const selected = buildSmartSession(QUESTIONS_BANK, appState.srs, count);
     setActiveSession({
       key: `smart_${Date.now()}`,
-      title: `Умная тренировка (${selected.length} вопр.)`,
-      subtitle: 'Ошибки Box 1 + Повторения Box 2–3 + Новые Box 0',
+      title:
+        uiLang === 'uk'
+          ? `Розумне тренування (${selected.length} пит.)`
+          : `Умная тренировка (${selected.length} вопр.)`,
+      subtitle:
+        uiLang === 'uk'
+          ? 'Помилки Box 1 + Повторення Box 2–3 + Нові Box 0'
+          : 'Ошибки Box 1 + Повторения Box 2–3 + Новые Box 0',
       questions: selected,
       requeueFailures: true,
     });
@@ -474,62 +507,65 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="relative min-h-screen overflow-x-clip bg-[#F7F8F7] text-zinc-900 dark:bg-[#0B1117] dark:text-zinc-100">
-      {/* Partial atmospheric site background matching Danish driving-school visuals */}
-      <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-0 overflow-hidden select-none">
-        {/* Soft Nordic teal & warm sunlight ambient glows */}
-        <div className="absolute -left-32 -top-24 h-96 w-96 rounded-full bg-teal-400/15 blur-3xl dark:bg-teal-500/[0.08]" />
-        <div className="absolute -bottom-32 right-0 h-[28rem] w-[28rem] rounded-full bg-amber-300/15 blur-3xl dark:bg-amber-400/[0.05]" />
+    <UiLangProvider uiLang={uiLang} ukBundle={ukBundle}>
+      <div className="relative min-h-screen overflow-x-clip bg-[#F7F8F7] text-zinc-900 dark:bg-[#0B1117] dark:text-zinc-100">
+        {/* Partial atmospheric site background matching Danish driving-school visuals */}
+        <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-0 overflow-hidden select-none">
+          {/* Soft Nordic teal & warm sunlight ambient glows */}
+          <div className="absolute -left-32 -top-24 h-96 w-96 rounded-full bg-teal-400/15 blur-3xl dark:bg-teal-500/[0.08]" />
+          <div className="absolute -bottom-32 right-0 h-[28rem] w-[28rem] rounded-full bg-amber-300/15 blur-3xl dark:bg-amber-400/[0.05]" />
 
-        {/* Partial faded country-road illustration in top-right */}
-        <div
-          className="absolute right-0 top-0 h-[58vh] w-full sm:w-[68%] lg:w-[56%]"
-          style={{
-            WebkitMaskImage: 'radial-gradient(ellipse at top right, rgba(0,0,0,0.95) 8%, rgba(0,0,0,0.4) 42%, transparent 74%)',
-            maskImage: 'radial-gradient(ellipse at top right, rgba(0,0,0,0.95) 8%, rgba(0,0,0,0.4) 42%, transparent 74%)',
-          }}
-        >
-          <img
-            src="./images/rules/country-lanes.jpg"
-            alt=""
-            className="h-full w-full object-cover object-center opacity-[0.14] saturate-[0.85] dark:opacity-[0.18]"
-          />
+          {/* Partial faded country-road illustration in top-right */}
+          <div
+            className="absolute right-0 top-0 h-[58vh] w-full sm:w-[68%] lg:w-[56%]"
+            style={{
+              WebkitMaskImage: 'radial-gradient(ellipse at top right, rgba(0,0,0,0.95) 8%, rgba(0,0,0,0.4) 42%, transparent 74%)',
+              maskImage: 'radial-gradient(ellipse at top right, rgba(0,0,0,0.95) 8%, rgba(0,0,0,0.4) 42%, transparent 74%)',
+            }}
+          >
+            <img
+              src="./images/rules/country-lanes.jpg"
+              alt=""
+              className="h-full w-full object-cover object-center opacity-[0.14] saturate-[0.85] dark:opacity-[0.18]"
+            />
+          </div>
+
+          {/* Subtle minimalist road-lane perspective accent in bottom-left */}
+          <svg
+            viewBox="0 0 600 220"
+            className="absolute bottom-0 left-0 h-44 w-[480px] opacity-[0.04] dark:opacity-[0.06]"
+            fill="none"
+          >
+            <path d="M 30 220 L 210 20" stroke="currentColor" strokeWidth="2" />
+            <path d="M 380 220 L 290 20" stroke="currentColor" strokeWidth="2" />
+            <path d="M 205 220 L 250 20" stroke="currentColor" strokeWidth="3" strokeDasharray="16 14" />
+          </svg>
         </div>
 
-        {/* Subtle minimalist road-lane perspective accent in bottom-left */}
-        <svg
-          viewBox="0 0 600 220"
-          className="absolute bottom-0 left-0 h-44 w-[480px] opacity-[0.04] dark:opacity-[0.06]"
-          fill="none"
-        >
-          <path d="M 30 220 L 210 20" stroke="currentColor" strokeWidth="2" />
-          <path d="M 380 220 L 290 20" stroke="currentColor" strokeWidth="2" />
-          <path d="M 205 220 L 250 20" stroke="currentColor" strokeWidth="3" strokeDasharray="16 14" />
-        </svg>
-      </div>
+        <div className="relative z-10">
+          <Header
+            activeTab={activeTab}
+            inActiveSession={Boolean(activeSession)}
+            onTabChange={handleTabChange}
+            languageMode={appState.languageMode}
+            onLanguageModeChange={handleLanguageChange}
+            uiLang={uiLang}
+            onUiLangChange={handleUiLangChange}
+            theme={appState.theme}
+            onThemeToggle={handleThemeToggle}
+            onOpenOnboarding={() => setIsOnboardingOpen(true)}
+            onOpenBackup={() => setIsBackupOpen(true)}
+            dueBadgeCount={questionStats.dueCount}
+          />
 
-      <div className="relative z-10">
-        <Header
-          activeTab={activeTab}
-          inActiveSession={Boolean(activeSession)}
-          onTabChange={handleTabChange}
-          languageMode={appState.languageMode}
-          onLanguageModeChange={handleLanguageChange}
-          theme={appState.theme}
-          onThemeToggle={handleThemeToggle}
-          onOpenOnboarding={() => setIsOnboardingOpen(true)}
-          onOpenBackup={() => setIsBackupOpen(true)}
-          dueBadgeCount={questionStats.dueCount}
-        />
-
-        <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 sm:py-8">
-        <Suspense
-          fallback={
-            <div className="nordic-card mx-auto max-w-3xl p-8 text-center text-sm text-zinc-500 dark:text-zinc-400">
-              Загрузка раздела...
-            </div>
-          }
-        >
+          <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 sm:py-8">
+          <Suspense
+            fallback={
+              <div className="nordic-card mx-auto max-w-3xl p-8 text-center text-sm text-zinc-500 dark:text-zinc-400">
+                {uiLang === 'uk' ? 'Завантаження розділу...' : 'Загрузка раздела...'}
+              </div>
+            }
+          >
           {activeSession ? (
           <QuizSessionView
             key={activeSession.key}
@@ -583,8 +619,12 @@ export const App: React.FC = () => {
                 onFinishExam={handleFinishExam}
                 onTrainFailedQuestions={(failedQs) => {
                   handleStartCustomSession(
-                    'Отработка ошибок экзамена (Box 1)',
-                    'Повтор билетов, в которых были допущены ошибки',
+                    uiLang === 'uk'
+                      ? 'Опрацювання помилок іспиту (Box 1)'
+                      : 'Отработка ошибок экзамена (Box 1)',
+                    uiLang === 'uk'
+                      ? 'Повтор білетів, у яких були допущені помилки'
+                      : 'Повтор билетов, в которых были допущены ошибки',
                     failedQs
                   );
                 }}
@@ -624,8 +664,12 @@ export const App: React.FC = () => {
                 onFinishExam={handleFinishExam}
                 onTrainFailedQuestions={(failedQs) => {
                   handleStartCustomSession(
-                    'Отработка ошибок экзамена (Box 1)',
-                    'Повтор билетов, в которых были допущены ошибки',
+                    uiLang === 'uk'
+                      ? 'Опрацювання помилок іспиту (Box 1)'
+                      : 'Отработка ошибок экзамена (Box 1)',
+                    uiLang === 'uk'
+                      ? 'Повтор білетів, у яких були допущені помилки'
+                      : 'Повтор билетов, в которых были допущены ошибки',
                     failedQs
                   );
                 }}
@@ -665,6 +709,7 @@ export const App: React.FC = () => {
         )}
       </Suspense>
     </div>
+    </UiLangProvider>
   );
 };
 

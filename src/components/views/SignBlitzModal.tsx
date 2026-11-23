@@ -8,7 +8,7 @@ import {
   X,
   XCircle,
 } from 'lucide-react';
-import { DICTIONARY_ENTRIES } from '../../data/signsAndGlossary';
+import { useUiLang } from '../../i18n/UiLangContext';
 import { shuffleItems } from '../../services/coursePlanner';
 import { getSRSRecord } from '../../services/srsEngine';
 import { DictionaryEntry, LanguageMode, SRSRecord } from '../../types';
@@ -28,8 +28,12 @@ interface BlitzRound {
   options: DictionaryEntry[];
 }
 
-function buildBlitzRounds(srsMap: Record<string, SRSRecord>, count: number = 10): BlitzRound[] {
-  const allSigns = DICTIONARY_ENTRIES.filter((e) => e.category === 'sign' && Boolean(e.signCode));
+function buildBlitzRounds(
+  srsMap: Record<string, SRSRecord>,
+  entries: DictionaryEntry[],
+  count: number = 10
+): BlitzRound[] {
+  const allSigns = entries.filter((e) => e.category === 'sign' && Boolean(e.signCode));
   const sorted = [...allSigns].sort((a, b) => {
     const ba = getSRSRecord(srsMap, a.id).box;
     const bb = getSRSRecord(srsMap, b.id).box;
@@ -58,6 +62,7 @@ export const SignBlitzModal: React.FC<SignBlitzModalProps> = ({
   onRecordEntryReview,
   onClose,
 }) => {
+  const { pick, dictionary } = useUiLang();
   const [rounds, setRounds] = useState<BlitzRound[]>([]);
   const [index, setIndex] = useState(0);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -66,12 +71,12 @@ export const SignBlitzModal: React.FC<SignBlitzModalProps> = ({
 
   useEffect(() => {
     if (!isOpen) return;
-    setRounds(buildBlitzRounds(srsMap, 10));
+    setRounds(buildBlitzRounds(srsMap, dictionary, 10));
     setIndex(0);
     setSelectedId(null);
     setScore(0);
     setFinished(false);
-  }, [isOpen]);
+  }, [isOpen, dictionary]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -133,7 +138,7 @@ export const SignBlitzModal: React.FC<SignBlitzModalProps> = ({
   };
 
   const handleRestart = () => {
-    setRounds(buildBlitzRounds(srsMap, 10));
+    setRounds(buildBlitzRounds(srsMap, dictionary, 10));
     setIndex(0);
     setSelectedId(null);
     setScore(0);
@@ -162,10 +167,13 @@ export const SignBlitzModal: React.FC<SignBlitzModalProps> = ({
                 id="sign-blitz-title"
                 className="text-base font-bold text-zinc-900 dark:text-zinc-50"
               >
-                Блиц-тест по дорожным знакам Дании
+                {pick('Блиц-тест по дорожным знакам Дании', 'Бліц-тест із дорожніх знаків Данії')}
               </h2>
               <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                10 знаков с приоритетом ещё не выученных (обновляет SRS-коробки)
+                {pick(
+                  '10 знаков с приоритетом ещё не выученных (обновляет SRS-коробки)',
+                  '10 знаків із пріоритетом ще не вивчених (оновлює SRS-коробки)'
+                )}
               </p>
             </div>
           </div>
@@ -173,13 +181,13 @@ export const SignBlitzModal: React.FC<SignBlitzModalProps> = ({
           <div className="flex items-center gap-2.5">
             {!finished && (
               <span className="rounded-lg bg-zinc-100 px-2.5 py-1 text-xs font-semibold text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200">
-                {index + 1} / {rounds.length} · Верно: {score}
+                {index + 1} / {rounds.length} · {pick('Верно:', 'Вірно:')} {score}
               </span>
             )}
             <button
               type="button"
               onClick={onClose}
-              aria-label="Закрыть блиц-тест"
+              aria-label={pick('Закрыть блиц-тест', 'Закрити бліц-тест')}
               className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200/80 text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-900 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
             >
               <X className="h-4 w-4" />
@@ -193,10 +201,13 @@ export const SignBlitzModal: React.FC<SignBlitzModalProps> = ({
               <Award className="h-8 w-8" />
             </div>
             <h3 className="text-xl font-bold text-zinc-900 dark:text-zinc-50">
-              Результат блица: {score} из {rounds.length}
+              {pick('Результат блица:', 'Результат бліцу:')} {score} {pick('из', 'з')} {rounds.length}
             </h3>
             <p className="max-w-md text-sm text-zinc-600 dark:text-zinc-400">
-              Ошибки автоматически отправлены в Box 1, а верные знаки продвинулись выше.
+              {pick(
+                'Ошибки автоматически отправлены в Box 1, а верные знаки продвинулись выше.',
+                'Помилки автоматично відправлені до Box 1, а правильні знаки просунулися вище.'
+              )}
             </p>
             <div className="flex gap-3 pt-2">
               <button
@@ -205,14 +216,14 @@ export const SignBlitzModal: React.FC<SignBlitzModalProps> = ({
                 className="inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-5 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900"
               >
                 <RotateCcw className="h-4 w-4" />
-                Ещё 10 знаков
+                {pick('Ещё 10 знаков', 'Ще 10 знаків')}
               </button>
               <button
                 type="button"
                 onClick={onClose}
                 className="rounded-xl border border-zinc-200 px-5 py-2.5 text-xs font-semibold text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-200"
               >
-                Закрыть
+                {pick('Закрыть', 'Закрити')}
               </button>
             </div>
           </div>
@@ -225,7 +236,7 @@ export const SignBlitzModal: React.FC<SignBlitzModalProps> = ({
                 size={132}
               />
               <p className="mt-3 text-xs font-medium text-zinc-500 dark:text-zinc-400">
-                Что означает этот датский знак?
+                {pick('Что означает этот датский знак?', 'Що означає цей данський знак?')}
               </p>
             </div>
 
@@ -303,8 +314,8 @@ export const SignBlitzModal: React.FC<SignBlitzModalProps> = ({
           <div className="flex items-center justify-between border-t border-zinc-200/80 bg-zinc-50/70 px-6 py-3.5 dark:border-zinc-800 dark:bg-zinc-950/50">
             <span className="text-xs text-zinc-500 dark:text-zinc-400">
               {isAnswered
-                ? 'Enter — следующий знак · Esc — закрыть'
-                : 'Клавиши 1–4 — быстрый выбор ответа'}
+                ? pick('Enter — следующий знак · Esc — закрыть', 'Enter — наступний знак · Esc — закрити')
+                : pick('Клавиши 1–4 — быстрый выбор ответа', 'Клавіші 1–4 — швидкий вибір відповіді')}
             </span>
             <button
               type="button"
@@ -312,7 +323,9 @@ export const SignBlitzModal: React.FC<SignBlitzModalProps> = ({
               onClick={handleNext}
               className="inline-flex items-center gap-1.5 rounded-xl bg-zinc-900 px-4 py-2 text-xs font-semibold text-white transition-all hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-40 dark:bg-zinc-100 dark:text-zinc-900"
             >
-              {index + 1 >= rounds.length ? 'Итоги блица' : 'Дальше'}
+              {index + 1 >= rounds.length
+                ? pick('Итоги блица', 'Підсумки бліцу')
+                : pick('Дальше', 'Далі')}
               <ArrowRight className="h-3.5 w-3.5" />
             </button>
           </div>

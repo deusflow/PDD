@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { CheckCircle2, RotateCw, XCircle } from 'lucide-react';
 import { DICTIONARY_ENTRIES } from '../../data/signsAndGlossary';
+import { useUiLang } from '../../i18n/UiLangContext';
 import {
   clearFlashcardsDraft,
   loadFlashcardsDraft,
@@ -26,6 +27,7 @@ export const LessonFlashcards: React.FC<LessonFlashcardsProps> = ({
   onAnswer,
   onComplete,
 }) => {
+  const { getEntry, pick } = useUiLang();
   const initialState = useMemo(() => {
     const map = new Map<string, DictionaryEntry>();
     for (const d of DICTIONARY_ENTRIES) {
@@ -88,7 +90,7 @@ export const LessonFlashcards: React.FC<LessonFlashcardsProps> = ({
     return null;
   }
 
-  const card = queue[index];
+  const card = getEntry(queue[index].id) ?? queue[index];
 
   const handleGrade = (known: boolean) => {
     onAnswer(card.id, known);
@@ -126,9 +128,9 @@ export const LessonFlashcards: React.FC<LessonFlashcardsProps> = ({
   return (
     <div className="mx-auto max-w-4xl space-y-5">
       <div className="flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
-        <span>Карточки урока</span>
+        <span>{pick('Карточки урока', 'Картки уроку')}</span>
         <span className="font-semibold tabular-nums text-zinc-700 dark:text-zinc-300">
-          {index + 1} из {queue.length}
+          {index + 1} {pick('из', 'із')} {queue.length}
         </span>
       </div>
 
@@ -153,10 +155,10 @@ export const LessonFlashcards: React.FC<LessonFlashcardsProps> = ({
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium text-zinc-400">
                 {card.category === 'sign'
-                  ? 'Дорожный знак'
+                  ? pick('Дорожный знак', 'Дорожній знак')
                   : card.category === 'kontrol'
-                    ? 'Технический опрос'
-                    : 'Термин ПДД'}
+                    ? pick('Технический опрос', 'Технічне опитування')
+                    : pick('Термин ПДД', 'Термін ПДР')}
               </span>
               <SpeakButton id={`fc_front_${card.id}`} text={card.da} size="md" />
             </div>
@@ -173,7 +175,7 @@ export const LessonFlashcards: React.FC<LessonFlashcardsProps> = ({
 
             <div className="flex items-center justify-center gap-1.5 text-xs text-zinc-400">
               <RotateCw className="h-3.5 w-3.5" />
-              <span>Нажмите на карточку, чтобы увидеть объяснение</span>
+              <span>{pick('Нажмите на карточку, чтобы увидеть объяснение', 'Натисніть на картку, щоб побачити пояснення')}</span>
             </div>
           </div>
 
@@ -181,7 +183,7 @@ export const LessonFlashcards: React.FC<LessonFlashcardsProps> = ({
           <div className="nordic-card col-start-1 row-start-1 flex min-h-[290px] flex-col justify-between p-6 sm:p-8 backface-hidden rotate-y-180">
             <div className="flex items-center justify-between">
               <span className="text-xs font-semibold text-teal-600 dark:text-teal-400">
-                Объяснение
+                {pick('Объяснение', 'Пояснення')}
               </span>
               <SpeakButton
                 id={`fc_back_${card.id}`}
@@ -203,7 +205,7 @@ export const LessonFlashcards: React.FC<LessonFlashcardsProps> = ({
             </div>
 
             <div className="text-center text-xs text-zinc-400">
-              Оцените, насколько уверенно вы это знаете
+              {pick('Оцените, насколько уверенно вы это знаете', 'Оцініть, наскільки впевнено ви це знаєте')}
             </div>
           </div>
         </div>
@@ -218,7 +220,7 @@ export const LessonFlashcards: React.FC<LessonFlashcardsProps> = ({
             className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-zinc-900 px-6 text-sm font-semibold text-white transition-colors hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
           >
             <RotateCw className="h-4 w-4" />
-            <span>Показать ответ</span>
+            <span>{pick('Показать ответ', 'Показати відповідь')}</span>
           </button>
         ) : (
           <div className="grid grid-cols-2 gap-3">
@@ -228,7 +230,7 @@ export const LessonFlashcards: React.FC<LessonFlashcardsProps> = ({
               className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-rose-200 bg-rose-50 px-4 text-sm font-semibold text-rose-700 transition-colors hover:bg-rose-100 dark:border-rose-900/60 dark:bg-rose-950/40 dark:text-rose-300"
             >
               <XCircle className="h-4 w-4" />
-              <span>Не знаю</span>
+              <span>{pick('Не знаю', 'Не знаю')}</span>
             </button>
             <button
               type="button"
@@ -236,7 +238,7 @@ export const LessonFlashcards: React.FC<LessonFlashcardsProps> = ({
               className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-teal-600 px-4 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-teal-500"
             >
               <CheckCircle2 className="h-4 w-4" />
-              <span>Знаю</span>
+              <span>{pick('Знаю', 'Знаю')}</span>
             </button>
           </div>
         )}

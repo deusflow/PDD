@@ -155,6 +155,9 @@ function collectAllPhrases() {
   }
   for (const hs of hotspots) {
     add(`${hs.labelDa}. ${hs.whyDa} ${hs.checkDa}`, 'tech:info');
+    if (hs.lookDa) add(hs.lookDa, 'tech:look');
+    if (hs.okDa) add(hs.okDa, 'tech:ok');
+    if (hs.failDa) add(hs.failDa, 'tech:fail');
     add(hs.examDa, 'tech:exam');
   }
 
@@ -182,11 +185,16 @@ function collectAllPhrases() {
   }
   for (const kq of kontrolQuestions) {
     add(kq.promptDa, 'kontrol:prompt');
+    if (kq.normDa) add(kq.normDa, 'kontrol:norm');
+    for (const opt of kq.options ?? []) {
+      if (opt.da) add(opt.da, 'kontrol:option');
+    }
   }
 
   // 6. MODULES_DATA
   for (const mod of MODULES_DATA) {
     add(mod.titleDa, 'mod:title');
+    if (mod.subtitleDa) add(`${mod.titleDa}. ${mod.subtitleDa}`, 'mod:cover');
     for (const goal of mod.officialGoals ?? []) {
       add(goal.titleDa, 'mod:goal');
     }
@@ -195,6 +203,13 @@ function collectAllPhrases() {
       add(`${rule.titleDa}. ${rule.bodyDa}`, 'mod:ruleComposite');
       const introDa = rule.whyDa || rule.bodyDa;
       if (introDa) add(introDa, 'mod:ruleIntro');
+      for (const step of rule.attentionStepsDa ?? []) {
+        add(step, 'mod:ruleStep');
+      }
+      if (rule.comparePair) {
+        add(`${rule.comparePair.left.labelDa}. ${rule.comparePair.left.summaryDa}`, 'mod:compareLeft');
+        add(`${rule.comparePair.right.labelDa}. ${rule.comparePair.right.summaryDa}`, 'mod:compareRight');
+      }
       for (const pt of rule.pointsDa ?? []) {
         add(pt, 'mod:rulePoint');
       }
