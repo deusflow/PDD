@@ -174,6 +174,13 @@ export const App: React.FC = () => {
   const uiLang: UiLanguage = appState.uiLang ?? 'ru';
 
   useEffect(() => {
+    document.title =
+      uiLang === 'uk'
+        ? 'Danmark Kørekort B — Teoriprøve & Kontrolprøve (Dansk / Українська)'
+        : 'Danmark Kørekort B — Teoriprøve & Kontrolprøve (Dansk / Русский)';
+  }, [uiLang]);
+
+  useEffect(() => {
     if (uiLang !== 'uk' || ukBundle) return;
     let cancelled = false;
     import('./data/uk/index').then((mod) => {
@@ -559,6 +566,11 @@ export const App: React.FC = () => {
           />
 
           <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 sm:py-8">
+          {uiLang === 'uk' && !ukBundle ? (
+            <div className="nordic-card mx-auto max-w-3xl p-8 text-center text-sm text-zinc-500 dark:text-zinc-400">
+              Завантаження української версії...
+            </div>
+          ) : (
           <Suspense
             fallback={
               <div className="nordic-card mx-auto max-w-3xl p-8 text-center text-sm text-zinc-500 dark:text-zinc-400">
@@ -690,6 +702,7 @@ export const App: React.FC = () => {
           </>
         )}
         </Suspense>
+          )}
       </main>
       </div>
 

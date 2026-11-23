@@ -62,9 +62,9 @@ const TERM_SCENE_MAP: Record<string, string> = {
 const MODULE_DEFAULT_SCENE: Record<number, string> = {
   1: 'pov_glass_wiper_exhaust',
   2: 'pov_spejl_skulder',
-  3: 'pov_hajtaender_b11',
-  4: 'pov_bus_byzone',
-  5: 'pov_sign_shapes_abcde',
+  3: 'pov_sign_shapes_abcde',
+  4: 'pov_hajtaender_b11',
+  5: 'pov_bus_byzone',
   6: 'pov_motorvej_merge',
   7: 'pov_parking_meters',
   8: 'pov_night_fog_lights',

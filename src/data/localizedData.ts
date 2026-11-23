@@ -48,6 +48,13 @@ export function applyRuleUk(
         : rule.comparePair,
     exceptionsRu: uk.exceptionsUk ?? rule.exceptionsRu,
     trapRu: uk.trapUk ?? rule.trapRu,
+    visual:
+      rule.visual && uk.maneuverBadgeUk
+        ? {
+            ...rule.visual,
+            maneuverBadge: uk.maneuverBadgeUk,
+          }
+        : rule.visual,
   };
 }
 
@@ -58,6 +65,17 @@ export function applyModuleUk(mod: ModuleInfo, uk?: ModuleUkOverlay): ModuleInfo
     titleRu: uk.titleUk,
     subtitleRu: uk.subtitleUk,
     schoolStageLabelRu: uk.schoolStageLabelUk ?? mod.schoolStageLabelRu,
+    teacherIntroRu: uk.teacherIntroUk ?? mod.teacherIntroRu,
+    prereqTerms: mod.prereqTerms?.map((t, idx) => {
+      const tUk = uk.prereqTermsUk?.[idx];
+      return tUk
+        ? {
+            ...t,
+            termRu: tUk.termUk,
+            explainRu: tUk.explainUk,
+          }
+        : t;
+    }),
     officialGoals: mod.officialGoals?.map((g) => ({
       ...g,
       titleRu: uk.officialGoalsUk?.[g.code] ?? g.titleRu,
@@ -83,6 +101,7 @@ export function applyQuestionUk(q: TeoriQuestion, uk?: QuestionUkOverlay): Teori
     visual: {
       ...q.visual,
       captionRu: uk.captionUk ?? q.visual.captionRu,
+      maneuverBadge: uk.maneuverBadgeUk ?? q.visual.maneuverBadge,
     },
     subQuestions: q.subQuestions.map((sq) => {
       const subUk = uk.subQuestionsUk[sq.id];

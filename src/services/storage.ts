@@ -231,11 +231,15 @@ export const StorageManager = {
     return JSON.stringify(state, null, 2);
   },
 
-  importFromJson(jsonText: string): UserAppState {
+  importFromJson(jsonText: string, uiLang: UiLanguage = 'ru'): UserAppState {
     const parsed = JSON.parse(jsonText);
     const validated = validateAndMigrateState(parsed);
     if (!validated) {
-      throw new Error('Неверный формат файла резервной копии JSON.');
+      throw new Error(
+        uiLang === 'uk'
+          ? 'Неправильний формат файлу резервної копії JSON.'
+          : 'Неверный формат файла резервной копии JSON.'
+      );
     }
     this.save(validated);
     return validated;
@@ -308,10 +312,14 @@ export const StorageManager = {
     return SYNC_PREFIX + btoa(binary);
   },
 
-  decodeSyncString(rawCode: string): UserAppState {
+  decodeSyncString(rawCode: string, uiLang: UiLanguage = 'ru'): UserAppState {
     const trimmed = rawCode.trim();
     if (!trimmed.startsWith(SYNC_PREFIX)) {
-      throw new Error('Код синхронизации должен начинаться с DKK1:');
+      throw new Error(
+        uiLang === 'uk'
+          ? 'Код синхронізації повинен починатися з DKK1:'
+          : 'Код синхронизации должен начинаться с DKK1:'
+      );
     }
     const base64 = trimmed.slice(SYNC_PREFIX.length);
     const binary = atob(base64);
@@ -323,7 +331,11 @@ export const StorageManager = {
     const payload = JSON.parse(json);
 
     if (!payload || (payload.v !== 1 && payload.v !== 2) || typeof payload.s !== 'object') {
-      throw new Error('Повреждённый или устаревший код синхронизации.');
+      throw new Error(
+        uiLang === 'uk'
+          ? 'Пошкоджений або застарілий код синхронізації.'
+          : 'Повреждённый или устаревший код синхронизации.'
+      );
     }
 
     const srs: Record<string, SRSRecord> = {};
@@ -382,7 +394,11 @@ export const StorageManager = {
     });
 
     if (!reconstructed) {
-      throw new Error('Не удалось восстановить состояние из кода синхронизации.');
+      throw new Error(
+        uiLang === 'uk'
+          ? 'Не вдалося відновити стан із коду синхронізації.'
+          : 'Не удалось восстановить состояние из кода синхронизации.'
+      );
     }
 
     this.save(reconstructed);

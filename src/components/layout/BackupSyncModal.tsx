@@ -27,7 +27,7 @@ export const BackupSyncModal: React.FC<BackupSyncModalProps> = ({
   onRestoreState,
   onResetAll,
 }) => {
-  const { pick } = useUiLang();
+  const { pick, uiLang } = useUiLang();
   const [syncInput, setSyncInput] = useState('');
   const [copied, setCopied] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{ type: 'ok' | 'err'; text: string } | null>(
@@ -77,7 +77,7 @@ export const BackupSyncModal: React.FC<BackupSyncModalProps> = ({
 
   const handleApplySyncCode = () => {
     try {
-      const next = StorageManager.decodeSyncString(syncInput);
+      const next = StorageManager.decodeSyncString(syncInput, uiLang);
       onRestoreState(next);
       setSyncInput('');
       setStatusMessage({
@@ -120,7 +120,7 @@ export const BackupSyncModal: React.FC<BackupSyncModalProps> = ({
     reader.onload = () => {
       try {
         const text = String(reader.result ?? '');
-        const next = StorageManager.importFromJson(text);
+        const next = StorageManager.importFromJson(text, uiLang);
         onRestoreState(next);
         setStatusMessage({
           type: 'ok',

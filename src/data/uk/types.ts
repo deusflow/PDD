@@ -24,12 +24,18 @@ export interface ModuleRuleUkOverlay {
   };
   exceptionsUk?: string;
   trapUk?: string;
+  maneuverBadgeUk?: string;
 }
 
 export interface ModuleUkOverlay {
   titleUk: string;
   subtitleUk: string;
   schoolStageLabelUk?: string;
+  teacherIntroUk?: string;
+  prereqTermsUk?: Array<{
+    termUk: string;
+    explainUk: string;
+  }>;
   officialGoalsUk?: Record<string, string>; // code -> titleUk
   keyMetricsUk: string[]; // aligned by index with keyMetrics
   cheatSheetUk: ModuleRuleUkOverlay[]; // aligned by index with cheatSheet
@@ -40,6 +46,7 @@ export interface QuestionUkOverlay {
   situationUk: string;
   keyRuleUk: string;
   captionUk?: string;
+  maneuverBadgeUk?: string;
   subQuestionsUk: Record<
     string,
     {

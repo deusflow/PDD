@@ -6,6 +6,7 @@ import { MODULES_DATA } from '../src/data/modulesData';
 import { QUESTIONS_BANK } from '../src/data/questionsBank';
 import { DICTIONARY_ENTRIES } from '../src/data/signsAndGlossary';
 import { applyDictionaryUk, applyModuleUk, applyQuestionUk } from '../src/data/localizedData';
+import { StorageManager } from '../src/services/storage';
 import { DICTIONARY_UK, MODULES_UK, QUESTIONS_UK } from '../src/data/uk/index';
 import {
   CAR_HOTSPOTS_UK,
@@ -37,6 +38,15 @@ test('MODULES_UK covers all 8 modules, goals, metrics, cheatSheet rules, and alg
     assert.ok(uk, `Missing MODULES_UK overlay for module ${mod.id}`);
     assert.ok(uk.titleUk.trim().length > 0, `Empty titleUk for module ${mod.id}`);
     assert.ok(uk.subtitleUk.trim().length > 0, `Empty subtitleUk for module ${mod.id}`);
+    assert.ok(uk.teacherIntroUk && uk.teacherIntroUk.trim().length > 0, `Empty teacherIntroUk for module ${mod.id}`);
+    assert.equal(
+      uk.prereqTermsUk?.length,
+      (mod.prereqTerms ?? []).length,
+      `prereqTermsUk length mismatch in module ${mod.id}`
+    );
+    for (const termUk of uk.prereqTermsUk ?? []) {
+      assert.ok(termUk.explainUk.trim().length > 0, `Empty prereq explainUk in module ${mod.id}`);
+    }
 
     if (mod.schoolStageLabelRu) {
       assert.ok(
@@ -103,6 +113,12 @@ test('MODULES_UK covers all 8 modules, goals, metrics, cheatSheet rules, and alg
       if (rule.trapRu) {
         assert.ok(ruleUk.trapUk?.trim().length, `Missing trapUk in module ${mod.id} rule ${idx}`);
       }
+      if (rule.visual?.maneuverBadge) {
+        assert.ok(
+          ruleUk.maneuverBadgeUk?.trim().length,
+          `Missing maneuverBadgeUk in module ${mod.id} rule ${idx}`
+        );
+      }
     });
 
     for (const alg of mod.algorithms ?? []) {
@@ -118,7 +134,7 @@ test('MODULES_UK covers all 8 modules, goals, metrics, cheatSheet rules, and alg
   }
 });
 
-test('QUESTIONS_UK covers all 200 questions, captions, and subQuestions with matching IDs', () => {
+test('QUESTIONS_UK covers all 240 questions, captions, badges, and subQuestions with matching IDs', () => {
   assert.equal(Object.keys(QUESTIONS_UK).length, QUESTIONS_BANK.length);
   for (const q of QUESTIONS_BANK) {
     const uk = QUESTIONS_UK[q.id];
@@ -129,6 +145,12 @@ test('QUESTIONS_UK covers all 200 questions, captions, and subQuestions with mat
       assert.ok(
         uk.captionUk && uk.captionUk.trim().length > 0,
         `Missing captionUk for ${q.id}`
+      );
+    }
+    if (q.visual.maneuverBadge) {
+      assert.ok(
+        uk.maneuverBadgeUk && uk.maneuverBadgeUk.trim().length > 0,
+        `Missing maneuverBadgeUk for ${q.id}`
       );
     }
 
@@ -206,4 +228,21 @@ test('src/data/uk/*.ts contains zero Russian-specific Cyrillic characters [ыэ�
   for (const [k, v] of Object.entries(DRIVER_POV_LABELS_UK)) {
     assertCleanValue(`DRIVER_POV_LABELS_UK[${k}]`, v);
   }
+});
+
+test('StorageManager sync/import errors localize into Ukrainian', () => {
+  assert.throws(
+    () => StorageManager.decodeSyncString('bad', 'uk'),
+    (err: unknown) =>
+      err instanceof Error &&
+      err.message.includes('Код синхронізації повинен починатися з DKK1:') &&
+      !/[ыэёъЫЭЁЪ]/.test(err.message)
+  );
+  assert.throws(
+    () => StorageManager.decodeSyncString('DKK1:e30=', 'uk'),
+    (err: unknown) =>
+      err instanceof Error &&
+      err.message.includes('Пошкоджений або застарілий код синхронізації') &&
+      !/[ыэёъЫЭЁЪ]/.test(err.message)
+  );
 });

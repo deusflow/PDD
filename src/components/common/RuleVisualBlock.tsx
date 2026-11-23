@@ -15,7 +15,13 @@ import {
   XCircle,
 } from 'lucide-react';
 import { useUiLang } from '../../i18n/UiLangContext';
-import { DictionaryEntry, LanguageMode, ModuleCheatRule, TeoriQuestion } from '../../types';
+import {
+  DictionaryEntry,
+  LanguageMode,
+  ModuleCheatRule,
+  SubQuestion,
+  TeoriQuestion,
+} from '../../types';
 import { extractOrdnetLookupWords, getOrdnetUrl } from '../../utils/ordnet';
 import { CarTechnicalSVG } from '../visuals/CarTechnicalSVG';
 import { DanishRoadSignSVG } from '../visuals/DanishRoadSignSVG';
@@ -105,7 +111,7 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
     [matchedTerms, activeTermId]
   );
 
-  const microCandidates = useMemo<TeoriQuestion[]>(() => {
+  const microPool = useMemo<Array<{ question: TeoriQuestion; sub: SubQuestion }>>(() => {
     const pool =
       moduleId !== undefined
         ? questions.filter((q) => q.moduleId === moduleId)
@@ -147,24 +153,30 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
 
     scored.sort((a, b) => b.score - a.score || a.idx - b.idx);
     const bestScore = scored[0]?.score ?? 0;
-    if (bestScore >= 12) {
-      return scored.slice(0, 3).map((s) => s.q);
+    const selectedQuestions =
+      bestScore >= 12
+        ? scored.slice(0, 4).map((s) => s.q)
+        : [
+            pool[(ruleIndex * 3) % pool.length],
+            pool[(ruleIndex * 3 + 1) % pool.length],
+            pool[(ruleIndex * 3 + 2) % pool.length],
+          ].filter((v, i, arr) => arr.findIndex((x) => x.id === v.id) === i);
+
+    const items: Array<{ question: TeoriQuestion; sub: SubQuestion }> = [];
+    for (const q of selectedQuestions) {
+      for (const sub of q.subQuestions.slice(0, 2)) {
+        if (items.length < 6) {
+          items.push({ question: q, sub });
+        }
+      }
     }
+    return items;
+  }, [questions, moduleId, rule, ruleIndex]);
 
-    // Deterministic spread across module rules if no direct keyword hit
-    const startIdx = (ruleIndex * 3) % pool.length;
-    return [
-      pool[startIdx],
-      pool[(startIdx + 1) % pool.length],
-      pool[(startIdx + 2) % pool.length],
-    ].filter((v, i, arr) => arr.findIndex((x) => x.id === v.id) === i);
-  }, [moduleId, rule, ruleIndex]);
-
-  const microQuestion =
-    microCandidates.length > 0
-      ? microCandidates[checkVariant % microCandidates.length]
-      : null;
-  const microSub = microQuestion?.subQuestions[0] ?? null;
+  const activeMicro =
+    microPool.length > 0 ? microPool[checkVariant % microPool.length] : null;
+  const microQuestion = activeMicro?.question ?? null;
+  const microSub = activeMicro?.sub ?? null;
 
   const renderVisual = () => {
     if (!rule.visual) return null;
@@ -233,6 +245,8 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
 
   const introRu = rule.whyRu || rule.bodyRu;
   const introDa = rule.whyDa || rule.bodyDa;
+  const showCoreSummary =
+    Boolean(rule.whyRu && rule.bodyRu && rule.whyRu.trim() !== rule.bodyRu.trim());
   const pointsRu = rule.pointsRu ?? [];
   const pointsDa = rule.pointsDa ?? [];
   const hasPoints = pointsRu.length > 0 || pointsDa.length > 0;
@@ -242,27 +256,54 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
 
   return (
     <div className="space-y-5">
-      {/* Stage 1: Full-Width Top Intro Banner ("Why we learn this") */}
+      {/* Stage 1: Full-Width Top Intro Banner ("Why we learn this") + Core Rule Summary */}
       {(introRu || introDa) && (
-        <div className="flex items-start justify-between gap-3 rounded-xl border border-teal-200/75 bg-teal-50/55 px-4 py-3.5 dark:border-teal-900/50 dark:bg-teal-950/25">
-          <div className="flex min-w-0 flex-1 items-start gap-2.5">
-            <Lightbulb className="mt-0.5 h-4 w-4 shrink-0 text-teal-600 dark:text-teal-400" />
-            <div className="min-w-0 flex-1">
-              <div className="mb-1 text-[11px] font-bold uppercase tracking-wider text-teal-800 dark:text-teal-300">
-                {languageMode === 'da_only'
-                  ? 'Hvorfor lærer vi dette?'
-                  : pick('Зачем мы это учим (суть простыми словами)', 'Навіщо ми це вчимо (суть простими словами)')}
+        <div className="space-y-2.5">
+          <div className="flex items-start justify-between gap-3 rounded-xl border border-teal-200/75 bg-teal-50/55 px-4 py-3.5 dark:border-teal-900/50 dark:bg-teal-950/25">
+            <div className="flex min-w-0 flex-1 items-start gap-2.5">
+              <Lightbulb className="mt-0.5 h-4 w-4 shrink-0 text-teal-600 dark:text-teal-400" />
+              <div className="min-w-0 flex-1">
+                <div className="mb-1 text-[11px] font-bold uppercase tracking-wider text-teal-800 dark:text-teal-300">
+                  {languageMode === 'da_only'
+                    ? 'Hvorfor lærer vi dette?'
+                    : pick(
+                        'Зачем мы это учим (объяснение преподавателя)',
+                        'Навіщо ми це вчимо (пояснення викладача)'
+                      )}
+                </div>
+                <TheoryBilingual
+                  ru={introRu}
+                  da={introDa}
+                  mode={languageMode}
+                  ruClassName="text-sm sm:text-[15px] leading-relaxed font-medium"
+                />
               </div>
-              <TheoryBilingual
-                ru={introRu}
-                da={introDa}
-                mode={languageMode}
-                ruClassName="text-sm sm:text-[15px] leading-relaxed font-medium"
-              />
             </div>
+            {introDa && (
+              <SpeakButton id={`rule_intro_${moduleId ?? 0}_${ruleIndex}`} text={introDa} />
+            )}
           </div>
-          {introDa && (
-            <SpeakButton id={`rule_intro_${moduleId ?? 0}_${ruleIndex}`} text={introDa} />
+
+          {showCoreSummary && (
+            <div className="flex items-start justify-between gap-3 rounded-xl border border-zinc-200/80 bg-zinc-50/80 px-4 py-3 dark:border-zinc-800 dark:bg-zinc-900/60">
+              <div className="min-w-0 flex-1">
+                <div className="mb-0.5 text-[11px] font-bold uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
+                  {languageMode === 'da_only'
+                    ? 'Kernepunkt (kort)'
+                    : pick('Главное правило (коротко)', 'Головне правило (коротко)')}
+                </div>
+                <TheoryBilingual
+                  ru={rule.bodyRu}
+                  da={rule.bodyDa}
+                  mode={languageMode}
+                  compact
+                  ruClassName="text-xs sm:text-sm leading-relaxed font-medium text-zinc-800 dark:text-zinc-200"
+                />
+              </div>
+              {rule.bodyDa && (
+                <SpeakButton id={`rule_core_${moduleId ?? 0}_${ruleIndex}`} text={rule.bodyDa} />
+              )}
+            </div>
           )}
         </div>
       )}
@@ -545,18 +586,23 @@ export const RuleVisualBlock: React.FC<RuleVisualBlockProps> = ({
                   : pick('Проверь себя за 5 секунд: реальный вопрос из базы экзамена', 'Перевір себе за 5 секунд: реальне питання з бази іспиту')}
               </span>
             </div>
-            {microCandidates.length > 1 && (
-              <button
-                type="button"
-                onClick={() => {
-                  setMicroAnswer(null);
-                  setCheckVariant((v) => v + 1);
-                }}
-                className="inline-flex items-center gap-1 rounded-lg border border-zinc-200/80 bg-white px-2 py-0.5 text-[11px] font-semibold text-zinc-600 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
-              >
-                <RefreshCw className="h-3 w-3" />
-                <span>{languageMode === 'da_only' ? 'Nyt tjek' : pick('Другой вопрос', 'Інше питання')}</span>
-              </button>
+            {microPool.length > 1 && (
+              <div className="flex items-center gap-2">
+                <span className="text-[11px] font-semibold tabular-nums text-zinc-400">
+                  {(checkVariant % microPool.length) + 1}/{microPool.length}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMicroAnswer(null);
+                    setCheckVariant((v) => v + 1);
+                  }}
+                  className="inline-flex items-center gap-1 rounded-lg border border-zinc-200/80 bg-white px-2 py-0.5 text-[11px] font-semibold text-zinc-600 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
+                >
+                  <RefreshCw className="h-3 w-3" />
+                  <span>{languageMode === 'da_only' ? 'Nyt tjek' : pick('Другой вопрос', 'Інше питання')}</span>
+                </button>
+              </div>
             )}
           </div>
 

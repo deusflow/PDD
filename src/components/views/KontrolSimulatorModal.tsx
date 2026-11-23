@@ -530,7 +530,10 @@ export const KontrolSimulatorModal: React.FC<KontrolSimulatorModalProps> = ({
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-1 rounded-md border border-amber-200/80 bg-white/80 px-2 py-0.5 text-[10px] font-medium text-amber-800 transition-colors hover:bg-amber-100/70 dark:border-amber-800/70 dark:bg-zinc-900/80 dark:text-amber-300 dark:hover:bg-amber-950/60"
-                        title={`Открыть слово «${word}» в Den Danske Ordbog (ordnet.dk)`}
+                        title={pick(
+                          `Открыть слово «${word}» в Den Danske Ordbog (ordnet.dk)`,
+                          `Відкрити слово «${word}» у Den Danske Ordbog (ordnet.dk)`
+                        )}
                       >
                         <span>DDO: {word}</span>
                         <ExternalLink className="h-2.5 w-2.5" />

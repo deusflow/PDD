@@ -195,12 +195,18 @@ function collectAllPhrases() {
   for (const mod of MODULES_DATA) {
     add(mod.titleDa, 'mod:title');
     if (mod.subtitleDa) add(`${mod.titleDa}. ${mod.subtitleDa}`, 'mod:cover');
+    if (mod.teacherIntroDa) add(mod.teacherIntroDa, 'mod:teacherIntro');
+    for (const term of mod.prereqTerms ?? []) {
+      add(term.termDa, 'mod:prereqTerm');
+      add(`${term.termDa}. ${term.explainDa}`, 'mod:prereqFull');
+    }
     for (const goal of mod.officialGoals ?? []) {
       add(goal.titleDa, 'mod:goal');
     }
     for (const rule of mod.cheatSheet ?? []) {
       add(rule.titleDa, 'mod:ruleTitle');
       add(`${rule.titleDa}. ${rule.bodyDa}`, 'mod:ruleComposite');
+      if (rule.bodyDa) add(rule.bodyDa, 'mod:ruleBodyCore');
       const introDa = rule.whyDa || rule.bodyDa;
       if (introDa) add(introDa, 'mod:ruleIntro');
       for (const step of rule.attentionStepsDa ?? []) {

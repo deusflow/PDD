@@ -129,6 +129,14 @@ export interface ModuleInfo {
   titleRu: string;
   subtitleDa: string;
   subtitleRu: string;
+  teacherIntroDa?: string;
+  teacherIntroRu?: string;
+  prereqTerms?: Array<{
+    termDa: string;
+    termRu: string;
+    explainDa: string;
+    explainRu: string;
+  }>;
   keyMetrics: Array<{
     labelDa: string;
     labelRu: string;

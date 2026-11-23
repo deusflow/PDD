@@ -154,6 +154,74 @@ export const LessonTheory: React.FC<LessonTheoryProps> = ({
                 {languageMode !== 'da_only' ? mod.subtitleRu : mod.subtitleDa}
               </p>
 
+              {(mod.teacherIntroRu || mod.teacherIntroDa) && (
+                <div className="rounded-2xl border border-teal-200/80 bg-teal-50/55 p-3.5 dark:border-teal-900/60 dark:bg-teal-950/25">
+                  <div className="mb-1.5 flex items-center justify-between gap-2">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-teal-800 dark:text-teal-300">
+                      {languageMode === 'da_only'
+                        ? 'Lærerens introduktion'
+                        : pick(
+                            'Вводная преподавателя: что к чему в этом уроке',
+                            'Вступ від викладача: що до чого в цьому уроці'
+                          )}
+                    </span>
+                    {mod.teacherIntroDa && (
+                      <SpeakButton id={`course_intro_${mod.id}`} text={mod.teacherIntroDa} />
+                    )}
+                  </div>
+                  <TheoryBilingual
+                    ru={mod.teacherIntroRu ?? mod.teacherIntroDa ?? ''}
+                    da={mod.teacherIntroDa}
+                    mode={languageMode}
+                    compact
+                    ruClassName="text-xs sm:text-[13px] leading-relaxed text-zinc-700 dark:text-zinc-200"
+                  />
+                </div>
+              )}
+
+              {mod.prereqTerms && mod.prereqTerms.length > 0 && (
+                <div className="space-y-2 pt-0.5">
+                  <div className="text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+                    {languageMode === 'da_only'
+                      ? '3 grundbegreber før start'
+                      : pick('3 базовых понятия до старта', '3 базові поняття до старту')}
+                  </div>
+                  <div className="grid gap-2 sm:grid-cols-3">
+                    {mod.prereqTerms.map((term, idx) => (
+                      <div
+                        key={idx}
+                        className="flex flex-col justify-between gap-1.5 rounded-xl border border-zinc-200/80 bg-white/85 p-2.5 dark:border-zinc-800 dark:bg-zinc-900/70"
+                      >
+                        <div className="flex items-start justify-between gap-1.5">
+                          <div className="min-w-0">
+                            <div className="text-xs font-bold leading-snug text-zinc-900 dark:text-zinc-100">
+                              {languageMode === 'da_only' ? term.termDa : term.termRu}
+                            </div>
+                            {languageMode === 'both' && (
+                              <div className="text-[10px] font-medium text-teal-800/85 dark:text-teal-300">
+                                {term.termDa}
+                              </div>
+                            )}
+                          </div>
+                          <SpeakButton
+                            id={`course_pre_${mod.id}_${idx}`}
+                            text={`${term.termDa}. ${term.explainDa}`}
+                            className="h-5 w-5 shrink-0 border-transparent bg-transparent"
+                          />
+                        </div>
+                        <TheoryBilingual
+                          ru={term.explainRu}
+                          da={term.explainDa}
+                          mode={languageMode}
+                          compact
+                          ruClassName="text-[11px] leading-snug text-zinc-600 dark:text-zinc-300"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {(mod.schoolStageLabelRu || (mod.officialGoals && mod.officialGoals.length > 0)) && (
                 <div className="space-y-1.5 pt-1">
                   {mod.schoolStageLabelRu && (
